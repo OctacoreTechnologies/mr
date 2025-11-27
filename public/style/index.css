@@ -1,0 +1,48 @@
+        .card-header {
+            border-radius: 8px 8px 0 0;
+        }
+        .card-body {
+            background-color: #f9f9f9;
+            border-radius: 0 0 8px 8px;
+        }
+        .btn-outline-primary, .btn-outline-danger, .btn-outline-teal {
+            font-size: 14px;
+            padding: 5px 12px;
+            border-radius: 25px;
+        }
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-outline-teal:hover {
+            background-color: #20c997;
+            color: white;
+        }
+        .table th, .table td {
+            padding: 15px;
+            text-align: center;
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+        .badge-success {
+            background-color: #28a745;
+        }
+        .badge-warning {
+            background-color: #ffc107;
+        }
+        /* applying a custom font's */
+        /* @font-face {
+        font-family: 'Poppins';
+        src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+       }
+
+       body {
+        font-family: 'Poppins', sans-serif;
+       } */

@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('customer_follow_ups', function (Blueprint $table) {
+            $table->id();
+            $table->string('customer_id',24);
+            $table->date('follow_up_date')->nullable();
+            $table->dateTime('next_follow_up_date')->nullable();
+            $table->string('notes');
+            $table->softDeletes();
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('customer_follow_ups');
+    }
+};

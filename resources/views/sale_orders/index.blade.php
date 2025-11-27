@@ -1,0 +1,1 @@
+<x-sale-order-index :salesOrders="$salesOrders" />
