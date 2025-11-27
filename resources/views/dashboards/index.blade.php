@@ -3,10 +3,10 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <div class="text-center mb-4">
-        <h1 class="font-weight-bold text-dark">📊 Dashboard Overview</h1>
-        <p class="text-muted">Financial Year: {{ $financialYear }}</p>
-    </div>
+<div class="text-center mb-4">
+    <h1 class="font-weight-bold text-dark">📊 Dashboard Overview</h1>
+    <p class="text-muted">Financial Year: {{ $financialYear }}</p>
+</div>
 @stop
 
 @section('content')
@@ -22,27 +22,27 @@
                 'route' => route('lead.index'),
                 'color' => '#d39e00',
                 'button' => 'Track Leads',
-                 'sub' => [
-                           ['label' => 'New', 'value' => (clone $leads)->where('status', 'new')->count()],
-                           ['label' => 'Contacted', 'value' => (clone $leads)->where('status', 'contacted')->count()],
-                           ['label' => 'Qualified', 'value' => (clone $leads)->where('status', 'qualified')->count()],
-                           ['label' => 'Delivered', 'value' => (clone $leads)->where('status', 'delivered')->count()],
-                           ['label' => 'Disqualified', 'value' => (clone $leads)->where('status', 'disqualifies')->count()],
-                    ]
+                'sub' => [
+                    ['label' => 'New', 'value' => (clone $leads)->where('status', 'new')->count()],
+                    ['label' => 'Contacted', 'value' => (clone $leads)->where('status', 'contacted')->count()],
+                    ['label' => 'Qualified', 'value' => (clone $leads)->where('status', 'qualified')->count()],
+                    ['label' => 'Delivered', 'value' => (clone $leads)->where('status', 'delivered')->count()],
+                    ['label' => 'Disqualified', 'value' => (clone $leads)->where('status', 'disqualifies')->count()],
+                ]
             ],
             [
                 'title' => 'Opportunities',
-                'count' => $opportunities->count()??'0',
+                'count' => $opportunities->count() ?? '0',
                 'icon' => 'fas fa-fw fa-hand-holding-usd',
                 'route' => route('opportunity.index'),
                 'color' => '#6f42c1',
                 'button' => 'Track Opportunities',
-                'sub' => [ 
-                           ['label' => 'New Buisness', 'value' => (clone $opportunities)->where('type', 'new_business')->count()],
-                           ['label' => 'Upsell', 'value' => (clone $opportunities)->where('type', 'upsell')->count()],
-                           ['label' => 'Cross Sell', 'value' => (clone $opportunities)->where('type', 'cross_sell')->count()],
-                           ['label' => 'Renewal', 'value' => (clone $opportunities)->where('type', 'renewal')->count()],
-                    ]
+                'sub' => [
+                    ['label' => 'New Enquiry', 'value' => (clone $opportunities)->where('type', 'new_business')->count()],
+                    ['label' => 'Upsell', 'value' => (clone $opportunities)->where('type', 'upsell')->count()],
+                    ['label' => 'Cross Sell', 'value' => (clone $opportunities)->where('type', 'cross_sell')->count()],
+                    ['label' => 'Renewal', 'value' => (clone $opportunities)->where('type', 'renewal')->count()],
+                ]
 
             ],
             [
@@ -52,12 +52,12 @@
                 'route' => route('quotation.index'),
                 'color' => '#0056b3',
                 'button' => 'View All',
-                'sub' => [  
-                           ['label' => 'Draft', 'value' => (clone $quotations)->where('status', 'Draft')->count()],
-                           ['label' => 'Send', 'value' => (clone $quotations)->where('status', 'Sent')->count()],
-                           ['label' => 'Approved', 'value' => (clone $quotations)->where('status', 'Accepted')->count()],
-                           ['label' => 'Reject', 'value' => (clone $quotations)->where('status', 'Rejected')->count()],
-                    ]
+                'sub' => [
+                    ['label' => 'Draft', 'value' => (clone $quotations)->where('status', 'Draft')->count()],
+                    ['label' => 'Send', 'value' => (clone $quotations)->where('status', 'Sent')->count()],
+                    ['label' => 'Approved', 'value' => (clone $quotations)->where('status', 'Accepted')->count()],
+                    ['label' => 'Reject', 'value' => (clone $quotations)->where('status', 'Rejected')->count()],
+                ]
 
             ],
             [
@@ -68,12 +68,12 @@
                 'color' => '#0056b3',
                 'button' => 'View All',
                 'sub' => [
-                           ['label' => 'Pending', 'value' => (clone $saleOrders)->where('status', 'pending')->count()],
-                           ['label' => 'Processing', 'value' => (clone $saleOrders)->where('status', 'processing')->count()],
-                           ['label' => 'Shipped', 'value' => (clone $saleOrders)->where('status', 'shipped')->count()],
-                           ['label' => 'Delivered', 'value' => (clone $saleOrders)->where('status', 'delivered')->count()],
-                           ['label' => 'Canceled', 'value' => (clone $saleOrders)->where('status', 'canceled')->count()],
-                    ]
+                    ['label' => 'Pending', 'value' => (clone $saleOrders)->where('status', 'pending')->count()],
+                    ['label' => 'Processing', 'value' => (clone $saleOrders)->where('status', 'processing')->count()],
+                    ['label' => 'Shipped', 'value' => (clone $saleOrders)->where('status', 'shipped')->count()],
+                    ['label' => 'Delivered', 'value' => (clone $saleOrders)->where('status', 'delivered')->count()],
+                    ['label' => 'Canceled', 'value' => (clone $saleOrders)->where('status', 'canceled')->count()],
+                ]
 
             ],
             [
@@ -128,92 +128,94 @@
                     @endif
 
                     <div class="text-center mt-auto">
-                        <a href="{{ $card['route'] }}" class="btn btn-sm text-white px-4 rounded-pill" style="background-color: {{ $card['color'] }};">
+                        <a href="{{ $card['route'] }}" class="btn btn-sm text-white px-4 rounded-pill"
+                            style="background-color: {{ $card['color'] }};">
                             {{ $card['button'] }}
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-    @endforeach 
+    @endforeach
 
     <!-- Loop through users and generate dynamic cards -->
- {{--  @foreach ($users as $user)
-        <div class="col-xl-4 col-md-6 mb-4 d-flex align-items-stretch">
-            <div class="card shadow w-100 d-flex flex-column">
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div>
-                            <h6 class="text-uppercase text-muted">{{ $user->name }}</h6>
-                            <h2 class="text-dark font-weight-bold">{{ $user->draft_count+$user->sent_count+$user->accepted_count+$user->rejected_count }}</h2>
-                        </div>
-                        <div class="icon-circle" style="background-color: #007bff;">
-                            <i class="fas fa-user-circle text-white fa-2x"></i>
-                        </div>
+    {{-- @foreach ($users as $user)
+    <div class="col-xl-4 col-md-6 mb-4 d-flex align-items-stretch">
+        <div class="card shadow w-100 d-flex flex-column">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h6 class="text-uppercase text-muted">{{ $user->name }}</h6>
+                        <h2 class="text-dark font-weight-bold">{{
+                            $user->draft_count+$user->sent_count+$user->accepted_count+$user->rejected_count }}</h2>
                     </div>
+                    <div class="icon-circle" style="background-color: #007bff;">
+                        <i class="fas fa-user-circle text-white fa-2x"></i>
+                    </div>
+                </div>
 
-                    <div class="row text-center mb-3">
-                        <div class="col-6">
-                            <h6 class="mb-0 text-dark font-weight-bold">{{ $user->draft_count }}</h6>
-                            <small class="text-muted">Draft</small>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="mb-0 text-dark font-weight-bold">{{ $user->sent_count }}</h6>
-                            <small class="text-muted">Sent</small>
-                        </div>
+                <div class="row text-center mb-3">
+                    <div class="col-6">
+                        <h6 class="mb-0 text-dark font-weight-bold">{{ $user->draft_count }}</h6>
+                        <small class="text-muted">Draft</small>
                     </div>
+                    <div class="col-6">
+                        <h6 class="mb-0 text-dark font-weight-bold">{{ $user->sent_count }}</h6>
+                        <small class="text-muted">Sent</small>
+                    </div>
+                </div>
 
-                    <div class="row text-center mb-3">
-                        <div class="col-6">
-                            <h6 class="mb-0 text-dark font-weight-bold">{{ $user->accepted_count }}</h6>
-                            <small class="text-muted">Accepted</small>
-                        </div>
-                        <div class="col-6">
-                            <h6 class="mb-0 text-dark font-weight-bold">{{ $user->rejected_count }}</h6>
-                            <small class="text-muted">Rejected</small>
-                        </div>
+                <div class="row text-center mb-3">
+                    <div class="col-6">
+                        <h6 class="mb-0 text-dark font-weight-bold">{{ $user->accepted_count }}</h6>
+                        <small class="text-muted">Accepted</small>
                     </div>
+                    <div class="col-6">
+                        <h6 class="mb-0 text-dark font-weight-bold">{{ $user->rejected_count }}</h6>
+                        <small class="text-muted">Rejected</small>
+                    </div>
+                </div>
 
-                    <div class="text-center mt-auto">
-                        <a href="#" class="btn btn-sm text-white px-4 rounded-pill" style="background-color: #28a745;">
-                            View Details
-                        </a>
-                    </div>
+                <div class="text-center mt-auto">
+                    <a href="#" class="btn btn-sm text-white px-4 rounded-pill" style="background-color: #28a745;">
+                        View Details
+                    </a>
                 </div>
             </div>
         </div>
+    </div>
     @endforeach--}}
 
 </div>
 @stop
 
 @section('css')
-    <style>
-        .icon-circle {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+<style>
+    .icon-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .card {
-            border-radius: 12px;
-            transition: 0.3s ease;
-        }
+    .card {
+        border-radius: 12px;
+        transition: 0.3s ease;
+    }
 
-        .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
 
-        .card-body {
-            padding: 20px 25px;
-        }
-    </style>
+    .card-body {
+        padding: 20px 25px;
+    }
+</style>
 @stop
 
 @section('js')
-    <!-- JS Plugins if needed -->
+<!-- JS Plugins if needed -->
 @stop

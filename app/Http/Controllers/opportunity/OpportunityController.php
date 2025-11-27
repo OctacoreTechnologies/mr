@@ -7,6 +7,7 @@ use App\Http\Requests\OpportunityRequest;
 use App\Models\Lead;
 use App\Models\Opportunity;
 use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class OpportunityController extends Controller
@@ -16,23 +17,27 @@ class OpportunityController extends Controller
      */
     public function index()
     {
-        $opportunities=Opportunity::with('quotation')->orderByDesc('created_at')->get();
-        return response()->view('opportunities.index',[
-           'opportunities'=>$opportunities
-       ]);
+        $opportunities = Opportunity::with('quotation')->orderByDesc('created_at')->get();
+        return response()->view('opportunities.index', [
+            'opportunities' => $opportunities
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $leads=Lead::orderByDesc('created_at')->where('status','qualified')->get();
-        $users=User::orderByDesc('created_at')->get();
-        // return $leads;
-        return response()->view('opportunities.create',[
-            'leads'=>$leads,
-            'users'=>$users,
+        $leads = Lead::orderByDesc('created_at')->where('status', 'qualified')->get();
+        $users = User::orderByDesc('created_at')->get();
+        $customers = Customer::orderByDesc('created_at')->get();
+
+
+
+        return response()->view('opportunities.create', [
+            'leads' => $leads,
+            'users' => $users,
+            'customers' => $customers
         ]);
     }
 
@@ -41,9 +46,9 @@ class OpportunityController extends Controller
      */
     public function store(OpportunityRequest $request)
     {
-        $opportunity=Opportunity::create($request->validated());
+        $opportunity = Opportunity::create($request->validated());
         // session()->flash('success','opportunity is created successfully');
-        session()->flash('success','opportunity is created successfully');
+        session()->flash('success', 'opportunity is created successfully');
         return response()->redirectTo(route('opportunity.index'));
     }
 
@@ -52,10 +57,10 @@ class OpportunityController extends Controller
      */
     public function show(string $id)
     {
-        $opportunity=Opportunity::with(['lead'])->findOrFail($id);
-     
-        return response()->view('opportunities.show',[
-            'opportunity'=>$opportunity,
+        $opportunity = Opportunity::with(['lead'])->findOrFail($id);
+
+        return response()->view('opportunities.show', [
+            'opportunity' => $opportunity,
         ]);
     }
 
@@ -64,11 +69,11 @@ class OpportunityController extends Controller
      */
     public function edit(string $id)
     {
-        $opportunity=Opportunity::findOrFail($id);
-        $leads=Lead::orderByDesc('created_at')->get();
-        return response()->view('opportunities.edit',[
-            'opportunity'=>$opportunity,
-            'leads'=>$leads
+        $opportunity = Opportunity::findOrFail($id);
+        $leads = Lead::orderByDesc('created_at')->get();
+        return response()->view('opportunities.edit', [
+            'opportunity' => $opportunity,
+            'leads' => $leads
         ]);
     }
 
@@ -77,9 +82,9 @@ class OpportunityController extends Controller
      */
     public function update(OpportunityRequest $request, string $id)
     {
-        $opportunity=Opportunity::findOrFail($id);
+        $opportunity = Opportunity::findOrFail($id);
         $opportunity->update($request->validated());
-        session()->flash('success','opportunity updated successfully');
+        session()->flash('success', 'opportunity updated successfully');
         return response()->redirectToRoute('opportunity.index');
     }
 
@@ -88,10 +93,9 @@ class OpportunityController extends Controller
      */
     public function destroy(string $id)
     {
-        $opportunity=Opportunity::findOrFail($id);
+        $opportunity = Opportunity::findOrFail($id);
         $opportunity->delete();
-        session()->flash('success','opportunity is deleted successfully');
+        session()->flash('success', 'opportunity is deleted successfully');
         return response()->redirectToRoute('opportunity.index');
-    
     }
 }

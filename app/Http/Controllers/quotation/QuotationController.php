@@ -161,7 +161,6 @@ class QuotationController extends Controller
         session()->flash('success', 'quotation is created successfully');
 
         return response()->redirectToRoute('quotation.index');
-
     }
 
     /**
@@ -189,7 +188,7 @@ class QuotationController extends Controller
             "quotation" => $quotation,
             'products' => $products,
             'customers' => $cleints,
-            'users'=> User::all()
+            'users' => User::all()
         ]);
     }
 
@@ -217,9 +216,9 @@ class QuotationController extends Controller
                 'model' => 'Quotation'
             ]);
         }
-          if($quotation->status == 'Approved'){
-               $this->updateSts($id,'Approved');
-            }
+        if ($quotation->status == 'Approved') {
+            $this->updateSts($id, 'Approved');
+        }
         session()->flash('success', 'quotation is updated successfully');
         // Notification::send(User::all(),new QuotationReminderNotification($quotation));
         return response()->redirectToRoute('quotation.index');
@@ -241,7 +240,7 @@ class QuotationController extends Controller
         $numberWords = new NumberToWords();
         $numberTransformer = $numberWords->getNumberTransformer('en');
         $termCondition = TearmCondition::findOrFail(1);
-        $quotation = Quotation::with(['customer', 'application', 'user','followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2'])->findOrFail($id);
+        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2'])->findOrFail($id);
         $words = convertToIndianWords((int) ($quotation->total_price ?? 0) - (int) ($quotation->discount ?? 0));
         $viewName = null;
         if ($quotation->machine->name == 'High Speed Heater Mixer') {
@@ -263,11 +262,11 @@ class QuotationController extends Controller
             'words' => $words,
             'isJob' => false,
         ])->setOption([
-                    'fontDir' => public_path('/fonts'),
-                    'fontCache' => public_path('/fonts'),
-                    'defaultFont' => 'Poppins',
-                    'isRemoteEnabled' => true
-             ]);
+            'fontDir' => public_path('/fonts'),
+            'fontCache' => public_path('/fonts'),
+            'defaultFont' => 'Poppins',
+            'isRemoteEnabled' => true
+        ]);
         return $pdf->stream('quotation');
     }
 
@@ -313,30 +312,28 @@ class QuotationController extends Controller
         // return $validated;
         session(['previewData' => $validated]);
         return redirect()->route('quotation.create');
-
     }
 
     function getNextReference($inputRef)
     {
-        
-         if (preg_match('/^(.*)\/(\d+)R$/', $inputRef, $matches)) {
-             $baseRef = $matches[1];          
-             $currentNumber = intval($matches[2]);
-             $nextNumber = $currentNumber + 1; 
-             return $baseRef . '/R' . $nextNumber; // Ensure the format R1, R2, R3, etc.
-         } else {
-            
-             if (preg_match('/^(.*)\/R(\d+)$/', $inputRef, $matches)) {
-                 $baseRef = $matches[1];           // e.g. MR/007/2025-26
-                 $currentNumber = intval($matches[2]);
-                 $nextNumber = $currentNumber + 1; // Increase by 1
-                 return $baseRef . '/R' . $nextNumber; // Ensure the format R1, R2, R3, etc.
-             } else {
-          
-                 return $inputRef . '/R1';
-             }
-        }
 
+        if (preg_match('/^(.*)\/(\d+)R$/', $inputRef, $matches)) {
+            $baseRef = $matches[1];
+            $currentNumber = intval($matches[2]);
+            $nextNumber = $currentNumber + 1;
+            return $baseRef . '/R' . $nextNumber; // Ensure the format R1, R2, R3, etc.
+        } else {
+
+            if (preg_match('/^(.*)\/R(\d+)$/', $inputRef, $matches)) {
+                $baseRef = $matches[1];           // e.g. MR/007/2025-26
+                $currentNumber = intval($matches[2]);
+                $nextNumber = $currentNumber + 1; // Increase by 1
+                return $baseRef . '/R' . $nextNumber; // Ensure the format R1, R2, R3, etc.
+            } else {
+
+                return $inputRef . '/R1';
+            }
+        }
     }
 
     public function isVerified(Request $request)
@@ -349,226 +346,262 @@ class QuotationController extends Controller
     }
 
 
-public function full_edit($id)
-{
-    // Load the quotation and related models
-    $quotation = Quotation::with([
-        'customer', 
-        'application', 
-        'user', 
-        'machine', 
-        'modele', 
-        'materialToProcess', 
-        'batch', 
-        'mixingTool', 
-        'electricalControl', 
-        'acFrequencyDrive', 
-        'bearinge', 
-        'pneumatic', 
-        'motorRequirement',  // Ensure motorRequirement is loaded
-        'motorRequirement2', // Ensure motorRequirement2 is loaded
-    ])->findOrFail($id);
+    public function full_edit($id)
+    {
+        // Load the quotation and related models
+        $quotation = Quotation::with([
+            'customer',
+            'application',
+            'user',
+            'machine',
+            'modele',
+            'materialToProcess',
+            'batch',
+            'mixingTool',
+            'electricalControl',
+            'acFrequencyDrive',
+            'bearinge',
+            'pneumatic',
+            'motorRequirement',  // Ensure motorRequirement is loaded
+            'motorRequirement2', // Ensure motorRequirement2 is loaded
+        ])->findOrFail($id);
 
-    // Get the data for the form
-    $product = $quotation->application;
-    $machine = $quotation->machine;
-    $model = $quotation->modele;
-    $customer = $quotation->customer;
+        // Get the data for the form
+        $product = $quotation->application;
+        $machine = $quotation->machine;
+        $model = $quotation->modele;
+        $customer = $quotation->customer;
 
-    // Fetch motor requirements for the model and machine
-    $modeles = Modele::where('name', 'LIKE', '%' . $model->name . '%')
-        ->where('machine_id', $machine->id)
-        ->with(relations: ['motorRequirement', 'motorRequirement2'])
-        ->get();
+        // Fetch motor requirements for the model and machine
+        $modeles = Modele::where('name', 'LIKE', '%' . $model->name . '%')
+            ->where('machine_id', $machine->id)
+            ->with(relations: ['motorRequirement', 'motorRequirement2'])
+            ->get();
 
-    // Prepend the selected motor requirements
-    $motorRequirements = $modeles->pluck('motorRequirement')->unique('id');
-    $motorRequirements2 = $modeles->pluck('motorRequirement2')->unique('id');
+        // Prepend the selected motor requirements
+        $motorRequirements = $modeles->pluck('motorRequirement')->unique('id');
+        $motorRequirements2 = $modeles->pluck('motorRequirement2')->unique('id');
 
-    $motorRequirements = $motorRequirements->prepend($quotation->motorRequirement);
-    $motorRequirements2 = $motorRequirements2->prepend($quotation->motorRequirement2);
-
-   
-    $batches = Batch::get();
-    $mixingTools = MixingTool::all()->prepend($quotation->mixingTool);
-
-    // Fetch other required data
-    $materialToProcess = MaterialToProcess::all();
-    $electricalControls = ElelctricalControl::all();
-    $acFrequencyDrives = AcFequencyDrive::all();
-    $bearings = Bearing::all();
-    $pneumatics = Pneumatic::all();
-    $machines = Machine::all();
-    $users = User::all();
-    $makeMotors = MakeMotor::all();
-
-    // Get the rotating and fixed blades for the model
-    $noOfRotatingBlades = Blade::where([
-        'model_id' => $model->id,
-        'type' => 'rotating_blades'
-    ])->get();
-
-    $noOfFixesBlades = Blade::where([
-        'model_id' => $model->id,
-        'type' => 'fix_blades'
-    ])->get();
-
-    // Get the capacities for the model
-    $capacities = Capacity::where('model_id', $model->id)->get();
-
-    // Pass the selected data to the view
-    return view('quotations.fulledit', [
-        'quotation' => $quotation,
-        'customer' => $customer,
-        'materialToProcess' => $materialToProcess,
-        'batches' => $batches,  // Prepend batch
-        'mixingTools' => $mixingTools,  // Prepend mixingTool
-        'motorRequirements' => $motorRequirements,  // Prepend motorRequirement
-        'motorRequirements2' => $motorRequirements2,  // Prepend motorRequirement2
-        'model' => $model,
-        'machine' => $machine,
-        'product' => $product,
-        'electricalControls' => $electricalControls,
-        'acFrequencyDrives' => $acFrequencyDrives,
-        'bearings' => $bearings,
-        'pneumatics' => $pneumatics,
-        'machines' => $machines,
-        'users' => $users,
-        'makeMotors' => $makeMotors,
-        'noOfRotatingBlades' => $noOfRotatingBlades,
-        'noOfFixesBlades' => $noOfFixesBlades,
-        'capacities' => $capacities,
-    ]);
-}
+        $motorRequirements = $motorRequirements->prepend($quotation->motorRequirement);
+        $motorRequirements2 = $motorRequirements2->prepend($quotation->motorRequirement2);
 
 
+        $batches = Batch::get();
+        $mixingTools = MixingTool::all()->prepend($quotation->mixingTool);
+
+        // Fetch other required data
+        $materialToProcess = MaterialToProcess::all();
+        $electricalControls = ElelctricalControl::all();
+        $acFrequencyDrives = AcFequencyDrive::all();
+        $bearings = Bearing::all();
+        $pneumatics = Pneumatic::all();
+        $machines = Machine::all();
+        $users = User::all();
+        $makeMotors = MakeMotor::all();
+
+        // Get the rotating and fixed blades for the model
+        $noOfRotatingBlades = Blade::where([
+            'model_id' => $model->id,
+            'type' => 'rotating_blades'
+        ])->get();
+
+        $noOfFixesBlades = Blade::where([
+            'model_id' => $model->id,
+            'type' => 'fix_blades'
+        ])->get();
+
+        // Get the capacities for the model
+        $capacities = Capacity::where('model_id', $model->id)->get();
+
+        // Pass the selected data to the view
+        return view('quotations.fulledit', [
+            'quotation' => $quotation,
+            'customer' => $customer,
+            'materialToProcess' => $materialToProcess,
+            'batches' => $batches,  // Prepend batch
+            'mixingTools' => $mixingTools,  // Prepend mixingTool
+            'motorRequirements' => $motorRequirements,  // Prepend motorRequirement
+            'motorRequirements2' => $motorRequirements2,  // Prepend motorRequirement2
+            'model' => $model,
+            'machine' => $machine,
+            'product' => $product,
+            'electricalControls' => $electricalControls,
+            'acFrequencyDrives' => $acFrequencyDrives,
+            'bearings' => $bearings,
+            'pneumatics' => $pneumatics,
+            'machines' => $machines,
+            'users' => $users,
+            'makeMotors' => $makeMotors,
+            'noOfRotatingBlades' => $noOfRotatingBlades,
+            'noOfFixesBlades' => $noOfFixesBlades,
+            'capacities' => $capacities,
+        ]);
+    }
 
 
-//   FUll Update
 
-public function full_update(FullUpdateQuotationRequest $request, $id)
-{
-    // Retrieve the quotation to update
-    $quotation = Quotation::findOrFail($id);
 
-    // Validate the incoming request
-    $validated = $request->validated();
+    //   FUll Update
 
-    // Define relation fields for the quotation
-    $relationfields = [
-        'material_to_process' => [MaterialToProcess::class, 'material_to_process'],
-        'motor_requirement' => [MototRequirement::class, 'motor_requirement'],
-        'motor_requirement2' => [MototRequirement::class, 'motor_requirement'],
-        'make_motor' => [MakeMotor::class, 'name'],
-        'batch' => [Batch::class, 'batches'],
-        'batch2' => [Batch::class, 'batches'],
-        'mixing_tool' => [MixingTool::class, 'mixing_tool'],
-        'electrical_control' => [ElelctricalControl::class, 'electrical_control'],
-        'ac_frequency_drive' => [AcFequencyDrive::class, 'ac_fequency_drive'],
-        'bearing' => [Bearing::class, 'bearing'],
-        'pneumatic' => [Pneumatic::class, 'pneumatic'],
-    ];
+    public function full_update(FullUpdateQuotationRequest $request, $id)
+    {
+        // Retrieve the quotation to update
+        $quotation = Quotation::findOrFail($id);
 
-    // Initialize foreign keys array
-    $foreignKeys = [];
+        // Validate the incoming request
+        $validated = $request->validated();
 
-    // Iterate over each field and handle relation creation or update
-    foreach ($relationfields as $field => [$modelClass, $columnName]) {
-        if (isset($validated[$field]) && $validated[$field] != null) {
-            // Update the existing record if it exists, otherwise create a new one
-            $record = $modelClass::firstOrCreate([$columnName => $validated[$field]]);
-            $foreignKeys[$field . '_id'] = $record->id;
+        // Define relation fields for the quotation
+        $relationfields = [
+            'material_to_process' => [MaterialToProcess::class, 'material_to_process'],
+            'motor_requirement' => [MototRequirement::class, 'motor_requirement'],
+            'motor_requirement2' => [MototRequirement::class, 'motor_requirement'],
+            'make_motor' => [MakeMotor::class, 'name'],
+            'batch' => [Batch::class, 'batches'],
+            'batch2' => [Batch::class, 'batches'],
+            'mixing_tool' => [MixingTool::class, 'mixing_tool'],
+            'electrical_control' => [ElelctricalControl::class, 'electrical_control'],
+            'ac_frequency_drive' => [AcFequencyDrive::class, 'ac_fequency_drive'],
+            'bearing' => [Bearing::class, 'bearing'],
+            'pneumatic' => [Pneumatic::class, 'pneumatic'],
+        ];
+
+        // Initialize foreign keys array
+        $foreignKeys = [];
+
+        // Iterate over each field and handle relation creation or update
+        foreach ($relationfields as $field => [$modelClass, $columnName]) {
+            if (isset($validated[$field]) && $validated[$field] != null) {
+                // Update the existing record if it exists, otherwise create a new one
+                $record = $modelClass::firstOrCreate([$columnName => $validated[$field]]);
+                $foreignKeys[$field . '_id'] = $record->id;
+            } else {
+                // If the field is not provided, set it to null
+                $foreignKeys[$field . '_id'] = null;
+            }
+        }
+
+        // Handle the model_id specifically
+        if (isset($validated['model_id']) && $validated['model_id'] != null) {
+            $model = Modele::find($validated['model_id']);
         } else {
-            // If the field is not provided, set it to null
-            $foreignKeys[$field . '_id'] = null;
+            // If model_id is not provided, fallback to the first available model
+            $model = Modele::first(); // Fallback to the first model
+        }
+
+        if ($model) {
+            $foreignKeys['model_id'] = $model->id;
+        } else {
+            // If no model is found or provided, set to null or handle as necessary
+            $foreignKeys['model_id'] = null;
+        }
+
+        // Combine the validated fields and the foreign key fields
+        $finalData = array_merge(
+            // Regular fields (excluding relations)
+            collect($validated)->except(array_keys($relationfields))->toArray(),
+
+            // Foreign key fields
+            $foreignKeys
+        );
+
+        // Update the existing quotation with the final data
+        $quotation->update($finalData);
+
+        // Flash success message
+        session()->flash('success', 'Quotation is updated successfully');
+
+        // Redirect to the quotations index page
+        return response()->redirectToRoute('quotation.index');
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $this->updateSts($request->id, $request->status);
+        //    $quotation=Quotation::findOrFail($request->id);
+        //    $quotation->status=$request->status;
+        //    $quotation->save();
+        //    if($quotation->status == 'Approved'){
+        //        $saleOrder=SaleOrder::where('quotation_id',$quotation->id)->latest()->first();
+        //                 if(is_null($saleOrder)){
+        //                     SaleOrder::create([
+        //                         'quotation_id'          =>        $quotation->id,
+        //                         'status'                =>        'pending',
+        //                         'total_amount'          =>        $quotation->quantity * $quotation->total_price,
+        //                         'order_date'            =>        Carbon::today()->toDateString(), // Correct and safe
+        //                         'discount'              =>        $quotation->discount??'0',
+        //                         'followed_by'           =>        $quotation->followed_by,
+        //                         'payment_term'          =>        0,
+        //                         'discount_type'         =>        $quotation->discount_type,
+        //                         'discount_amount'       =>        $quotation->discount_amount,
+        //                         'discount_percentage'   =>        $quotation->discount_percentage,
+        //                         'grand_total'           =>        $quotation->grand_total,
+        //                     ]);
+        //                 }
+        //    }
+        return response()->redirectToRoute('quotation.index')->with('success', 'Quotation Status is Successfully Updated');
+    }
+
+    public function updateSts($id, $status)
+    {
+
+        $quotation = Quotation::findOrFail($id);
+        $quotation->status = $status;
+        $quotation->save();
+        if ($quotation->status == 'Approved') {
+            $saleOrder = SaleOrder::where('quotation_id', $quotation->id)->latest()->first();
+            if (is_null($saleOrder)) {
+                SaleOrder::create([
+                    'quotation_id'          =>        $quotation->id,
+                    'status'                =>        'pending',
+                    'total_amount'          =>        $quotation->quantity * $quotation->total_price,
+                    'order_date'            =>        Carbon::today()->toDateString(), // Correct and safe
+                    'discount'              =>        $quotation->discount ?? '0',
+                    'followed_by'           =>        $quotation->followed_by,
+                    'payment_term'          =>        0,
+                    'discount_type'         =>        $quotation->discount_type,
+                    'discount_amount'       =>        $quotation->discount_amount,
+                    'discount_percentage'   =>        $quotation->discount_percentage,
+                    'grand_total'           =>        $quotation->grand_total,
+                ]);
+            }
         }
     }
 
-    // Handle the model_id specifically
-    if (isset($validated['model_id']) && $validated['model_id'] != null) {
-        $model = Modele::find($validated['model_id']);
-    } else {
-        // If model_id is not provided, fallback to the first available model
-        $model = Modele::first(); // Fallback to the first model
+    /**
+     * Reorder an existing quotation (create a duplicate for the customer)
+     */
+    public function reorder($id)
+    {
+        $sourceQuotation = Quotation::findOrFail($id);
+
+        // Create a new quotation with the same details
+        $newQuotation = $sourceQuotation->replicate();
+        $newQuotation->status = 'Draft';
+
+        // Generate a new reference number
+        $referenceNO = Quotation::withTrashed()->count() + 1;
+        $today = now();
+
+        // Determine financial year
+        $year = $today->year;
+        $month = $today->month;
+
+        if ($month >= 4) {
+            // April to December
+            $financialYear = $year . '-' . substr($year + 1, -2);
+        } else {
+            // January to March
+            $financialYear = ($year - 1) . '-' . substr($year, -2);
+        }
+
+        $referenceNO = str_pad($referenceNO, 3, '0', STR_PAD_LEFT);
+        $newQuotation->reference_no = 'MR/' . $referenceNO . '/' . $financialYear;
+        $newQuotation->reordered_from = $sourceQuotation->id;
+
+        $newQuotation->save();
+
+        session()->flash('success', 'Quotation reordered successfully with new reference: ' . $newQuotation->reference_no);
+        return response()->redirectToRoute('quotation.edit', ['quotation' => $newQuotation->id]);
     }
-
-    if ($model) {
-        $foreignKeys['model_id'] = $model->id;
-    } else {
-        // If no model is found or provided, set to null or handle as necessary
-        $foreignKeys['model_id'] = null;
-    }
-
-    // Combine the validated fields and the foreign key fields
-    $finalData = array_merge(
-        // Regular fields (excluding relations)
-        collect($validated)->except(array_keys($relationfields))->toArray(),
-
-        // Foreign key fields
-        $foreignKeys
-    );
-
-    // Update the existing quotation with the final data
-    $quotation->update($finalData);
-
-    // Flash success message
-    session()->flash('success', 'Quotation is updated successfully');
-
-    // Redirect to the quotations index page
-    return response()->redirectToRoute('quotation.index');
- }
-
- public function updateStatus(Request $request){
-    $this->updateSts($request->id,$request->status);
-//    $quotation=Quotation::findOrFail($request->id);
-//    $quotation->status=$request->status;
-//    $quotation->save();
-//    if($quotation->status == 'Approved'){
-//        $saleOrder=SaleOrder::where('quotation_id',$quotation->id)->latest()->first();
-//                 if(is_null($saleOrder)){
-//                     SaleOrder::create([
-//                         'quotation_id'          =>        $quotation->id,
-//                         'status'                =>        'pending',
-//                         'total_amount'          =>        $quotation->quantity * $quotation->total_price,
-//                         'order_date'            =>        Carbon::today()->toDateString(), // Correct and safe
-//                         'discount'              =>        $quotation->discount??'0',
-//                         'followed_by'           =>        $quotation->followed_by,
-//                         'payment_term'          =>        0,
-//                         'discount_type'         =>        $quotation->discount_type,
-//                         'discount_amount'       =>        $quotation->discount_amount,
-//                         'discount_percentage'   =>        $quotation->discount_percentage,
-//                         'grand_total'           =>        $quotation->grand_total,
-//                     ]);
-//                 }
-//    }
-   return response()->redirectToRoute('quotation.index')->with('success','Quotation Status is Successfully Updated');
- }
-
- public function updateSts($id,$status){
-     
-   $quotation=Quotation::findOrFail($id);
-   $quotation->status=$status;
-   $quotation->save();
-   if($quotation->status == 'Approved'){
-       $saleOrder=SaleOrder::where('quotation_id',$quotation->id)->latest()->first();
-                if(is_null($saleOrder)){
-                    SaleOrder::create([
-                        'quotation_id'          =>        $quotation->id,
-                        'status'                =>        'pending',
-                        'total_amount'          =>        $quotation->quantity * $quotation->total_price,
-                        'order_date'            =>        Carbon::today()->toDateString(), // Correct and safe
-                        'discount'              =>        $quotation->discount??'0',
-                        'followed_by'           =>        $quotation->followed_by,
-                        'payment_term'          =>        0,
-                        'discount_type'         =>        $quotation->discount_type,
-                        'discount_amount'       =>        $quotation->discount_amount,
-                        'discount_percentage'   =>        $quotation->discount_percentage,
-                        'grand_total'           =>        $quotation->grand_total,
-                    ]);
-                }
-   }
-     
- }
-
-
 }

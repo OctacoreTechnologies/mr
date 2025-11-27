@@ -80,7 +80,6 @@ class SaleOrderController extends Controller
             DB::commit();
 
             return redirect()->route('sale-order.index')->with('success', 'Sale order created successfully.');
-
         } catch (\Exception $e) {
             DB::rollBack();
             // Log or handle error as needed
@@ -94,17 +93,17 @@ class SaleOrderController extends Controller
     public function show(string $id)
     {
         $saleOrder = SaleOrder::with('payments', 'quotation', 'quotation.customer')->findOrFail($id);
-        $totalLedgerAmount = $saleOrder->payments->where('type','after')->sum('amount');
-        $advancePayment = $saleOrder->payments->where('type','before')->sum('amount');
+        $totalLedgerAmount = $saleOrder->payments->where('type', 'after')->sum('amount');
+        $advancePayment = $saleOrder->payments->where('type', 'before')->sum('amount');
         $grandTotal = $saleOrder->grand_total ?? 0;
-        
+
         $totalPaid = $totalLedgerAmount + $advancePayment;
         $pendingAmount = $grandTotal - $totalPaid;
 
         return response()->view('sale_orders.show', [
             'saleOrder' => $saleOrder,
             'totalLedgerAmount' => $totalLedgerAmount,
-            'advancePayment' => $advancePayment??'0s',
+            'advancePayment' => $advancePayment ?? '0s',
             'pendingAmount' => $pendingAmount,
             'grandTotal' => $grandTotal,
         ]);
@@ -133,11 +132,11 @@ class SaleOrderController extends Controller
         DB::beginTransaction();
 
         try {
-            if($saleOrder->po_no!=$validated['po_no'] && !is_null($validated['po_no'])){
-               $customer=Customer::findOrFail($saleOrder->quotation->customer_id);
-               $customer->update([
-                'po_no'=>$validated['po_no']
-               ]);
+            if ($saleOrder->po_no != $validated['po_no'] && !is_null($validated['po_no'])) {
+                $customer = Customer::findOrFail($saleOrder->quotation->customer_id);
+                $customer->update([
+                    'po_no' => $validated['po_no']
+                ]);
             }
             $saleOrder->update([
                 'quotation_id' => $validated['quotation_id'],
@@ -149,8 +148,8 @@ class SaleOrderController extends Controller
                 'total_amount' => $validated['total_amount'],
                 'tax' => $validated['tax'],
                 'discount_type' => $validated['discount_type'],
-                'discount_amount' => $validated['discount_amount']??0,
-                'discount_percentage' => $validated['discount_percentage']??0,
+                'discount_amount' => $validated['discount_amount'] ?? 0,
+                'discount_percentage' => $validated['discount_percentage'] ?? 0,
                 'insurance' => $validated['insurance'],
                 'packging' => $validated['packging'],
                 'grand_total' => $validated['grand_total'],
@@ -166,24 +165,23 @@ class SaleOrderController extends Controller
 
             SaleLedger::where('sale_order_id', $saleOrder->id)->delete();
 
-           if(isset($validated['payments']) && $validated['payments']!=null){
-            foreach ($validated['payments'] as $payment) {
-                SaleLedger::create([
-                    'sale_order_id' => $saleOrder->id, // ✅ Should work now
-                    'type' => $payment['type'],
-                    'payment_date' => $payment['date'],
-                    'amount' => $payment['amount'],
-                    'mode' => $payment['mode'],
-                    'transaction_id' => $payment['mode'] === 'online' ? $payment['transaction_id'] : null,
-                    'remarks' => $payment['mode'] === 'other' ? $payment['remarks'] : null,
-                ]);
+            if (isset($validated['payments']) && $validated['payments'] != null) {
+                foreach ($validated['payments'] as $payment) {
+                    SaleLedger::create([
+                        'sale_order_id' => $saleOrder->id, // ✅ Should work now
+                        'type' => $payment['type'],
+                        'payment_date' => $payment['date'],
+                        'amount' => $payment['amount'],
+                        'mode' => $payment['mode'],
+                        'transaction_id' => $payment['mode'] === 'online' ? $payment['transaction_id'] : null,
+                        'remarks' => $payment['mode'] === 'other' ? $payment['remarks'] : null,
+                    ]);
+                }
             }
-          }
 
             DB::commit();
 
             return redirect()->route('sale-order.index')->with('success', 'Sale order updated successfully.');
-
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors('Something went wrong: ' . $e->getMessage())->withInput();
@@ -247,11 +245,11 @@ class SaleOrderController extends Controller
             ]);
 
         return $pdf->stream('advance-payment.pdf');
-
     }
 
-    public function getAccountDetails($id){
-        $saleOrder = SaleOrder::with(['quotation.customer', 'quotation.machine', 'quotation.modele','payments'])->findOrFail($id);
+    public function getAccountDetails($id)
+    {
+        $saleOrder = SaleOrder::with(['quotation.customer', 'quotation.machine', 'quotation.modele', 'payments'])->findOrFail($id);
 
         return response()->json([
             'success' => true,
@@ -259,16 +257,46 @@ class SaleOrderController extends Controller
         ]);
     }
 
+    /**
+     * Return sale orders for a given customer (used by AJAX in opportunity create view)
+     */
+    public function saleOrdersByCustomer($customerId)
+    {
+        $saleOrders = SaleOrder::with(['quotation', 'quotation.machine', 'quotation.application'])->whereHas('quotation', function ($q) use ($customerId) {
+            $q->where('customer_id', $customerId);
+        })->orderByDesc('created_at')->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $saleOrders,
+        ]);
+    }
+
+    /**
+     * Return quotations for a given customer (used by AJAX in opportunity create view)
+     */
+    public function quotationsByCustomer($customerId)
+    {
+        $quotations = Quotation::with(['machine', 'application'])->where('customer_id', $customerId)->orderByDesc('created_at')->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $quotations,
+        ]);
+    }
+
     // advance index
-    public function advanceIndex(){
+    public function advanceIndex()
+    {
         $salesOrders = SaleOrder::with('quotation', 'quotation.customer')->orderByDesc('created_at')->get();
         return response()->view('sale_orders.advance_payment_letters.index', [
             'salesOrders' => $salesOrders,
         ]);
     }
 
-    public function advancePaymentEdit(string $id){
-     
+    public function advancePaymentEdit(string $id)
+    {
+
         $saleOrder = SaleOrder::with(['quotation', 'quotation.customer', 'quotation.machine', 'quotation.modele'])->findOrFail($id);
 
         return response()->view('sale_orders.advance_payment_letters.edit', [
@@ -276,9 +304,5 @@ class SaleOrderController extends Controller
             'saleOrder' => $saleOrder,
             'users' => User::all(),
         ]);
-  
     }
-
- 
-
 }
