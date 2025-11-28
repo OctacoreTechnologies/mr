@@ -68,6 +68,8 @@ Route::middleware(['auth'])->group(function () {
   Route::resource('/lead', LeadController::class);
   Route::resource('/opportunity', OpportunityController::class);
   Route::resource('/quotation', QuotationController::class);
+  // Quotation audit/history
+  Route::get('/quotation/{id}/audits', [App\Http\Controllers\quotation\QuotationController::class, 'audits'])->name('quotation.audits');
   Route::post('/quotation/store', [QuotationController::class, 'store'])->name('q.stores');
   Route::get('/quotation/{id}/reorder', [QuotationController::class, 'reorder'])->name('quotation.reorder');
   Route::get('/quoation/preview', [QuotationController::class, 'previewForm'])->name('quotation.previewForm');

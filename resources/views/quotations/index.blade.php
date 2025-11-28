@@ -123,6 +123,10 @@
                                         href="{{ route('quotation.reorder', $quotation->id) }}">
                                         <i class="fas fa-redo"></i> Reorder Quotation
                                     </a>
+                                    <button class="dropdown-item text-secondary" data-toggle="modal"
+                                        data-target="#historyModal" data-id="{{ $quotation->id }}">
+                                        <i class="fas fa-history"></i> History
+                                    </button>
 
                                 </div>
                             </div>
@@ -214,6 +218,92 @@
 
 @push('js')
     <script src="{{ asset('js/quotation.js') }}"> </script>
+@endpush
+
+<!-- History Modal -->
+<x-adminlte-modal id="historyModal" title="Quotation History" theme="secondary" icon="fas fa-history" size="lg">
+    <div id="historyContent">
+        <table class="table table-sm table-bordered">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Event</th>
+                    <th>User</th>
+                    <th>When</th>
+                    <th>Changes</th>
+                </tr>
+            </thead>
+            <tbody id="historyBody">
+                <tr>
+                    <td colspan="5" class="text-center">Loading...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</x-adminlte-modal>
+
+@push('js')
+    <script>
+        // Fetch and display audits when history modal opens
+        $('#historyModal').on('show.bs.modal', function (event) {
+            const button = $(event.relatedTarget);
+            const id = button.data('id');
+            const body = $('#historyBody');
+            body.html('<tr><td colspan="5" class="text-center">Loading...</td></tr>');
+
+            fetch(`{{ url('') }}/quotation/${id}/audits`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data || data.length === 0) {
+                        body.html('<tr><td colspan="5" class="text-center">No history found</td></tr>');
+                        return;
+                    }
+                    let rows = '';
+                    data.forEach((a, idx) => {
+                        // Prepare a readable changes string (show old -> new)
+                        let changes = '';
+                        const oldVals = a.old_values || {};
+                        const newVals = a.new_values || {};
+                        const keys = Array.from(new Set(Object.keys(oldVals).concat(Object.keys(newVals))));
+                        if (keys.length === 0) {
+                            changes = '-';
+                        } else {
+                            changes = '<ul style="margin:0;padding-left:14px;">';
+                            keys.forEach(k => {
+                                const ov = (oldVals[k] === undefined || oldVals[k] === null) ? '' : escapeHtml(String(oldVals[k]));
+                                const nv = (newVals[k] === undefined || newVals[k] === null) ? '' : escapeHtml(String(newVals[k]));
+                                if (ov === nv) return; // skip identical
+                                changes += `<li><strong>${escapeHtml(k)}</strong>: ${ov} ➜ ${nv}</li>`;
+                            });
+                            changes += '</ul>';
+                        }
+
+                        rows += `
+                                <tr>
+                                    <td>${idx + 1}</td>
+                                    <td>${escapeHtml(a.event)}</td>
+                                    <td>${escapeHtml(a.user_name ?? a.user_id ?? 'System')}</td>
+                                    <td>${escapeHtml(a.created_at)}</td>
+                                    <td>${changes}</td>
+                                </tr>`;
+                    });
+                    body.html(rows);
+                }).catch(err => {
+                    body.html('<tr><td colspan="5" class="text-center text-danger">Failed to load history</td></tr>');
+                    console.error(err);
+                });
+        });
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+    </script>
 @endpush
 
 <!-- @section('css')

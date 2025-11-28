@@ -181,7 +181,7 @@ class SaleOrderController extends Controller
 
             DB::commit();
 
-            return redirect()->route('sale-order.index')->with('success', 'Sale order updated successfully.');
+            return redirect()->route('order-acceptence-letter.edit', $saleOrder->id)->with('success', 'Sale order updated successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->withErrors('Something went wrong: ' . $e->getMessage())->withInput();

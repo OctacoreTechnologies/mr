@@ -517,7 +517,7 @@ class QuotationController extends Controller
 
     public function updateStatus(Request $request)
     {
-        $this->updateSts($request->id, $request->status);
+        $saleOrder = $this->updateSts($request->id, $request->status);
         //    $quotation=Quotation::findOrFail($request->id);
         //    $quotation->status=$request->status;
         //    $quotation->save();
@@ -539,19 +539,22 @@ class QuotationController extends Controller
         //                     ]);
         //                 }
         //    }
+        if ($saleOrder) {
+            return response()->redirectToRoute('total_order_advance.index.edit', $saleOrder->id);
+        }
         return response()->redirectToRoute('quotation.index')->with('success', 'Quotation Status is Successfully Updated');
     }
 
     public function updateSts($id, $status)
     {
-
+        $saleOrder = null;
         $quotation = Quotation::findOrFail($id);
         $quotation->status = $status;
         $quotation->save();
         if ($quotation->status == 'Approved') {
             $saleOrder = SaleOrder::where('quotation_id', $quotation->id)->latest()->first();
             if (is_null($saleOrder)) {
-                SaleOrder::create([
+                $saleOrder =  SaleOrder::create([
                     'quotation_id'          =>        $quotation->id,
                     'status'                =>        'pending',
                     'total_amount'          =>        $quotation->quantity * $quotation->total_price,
@@ -566,6 +569,7 @@ class QuotationController extends Controller
                 ]);
             }
         }
+        return $saleOrder;
     }
 
     /**
@@ -603,5 +607,46 @@ class QuotationController extends Controller
 
         session()->flash('success', 'Quotation reordered successfully with new reference: ' . $newQuotation->reference_no);
         return response()->redirectToRoute('quotation.edit', ['quotation' => $newQuotation->id]);
+    }
+
+    /**
+     * Return audits (history) for a quotation as JSON.
+     */
+    public function audits($id)
+    {
+        $quotation = Quotation::findOrFail($id);
+
+        // Using OwenIt Auditing: $quotation->audits gives collection of audit entries
+        $audits = $quotation->audits()->orderByDesc('created_at')->get();
+
+        // Preload users referenced in audits to avoid N+1 queries
+        $userIds = $audits->pluck('user_id')->filter()->unique()->values()->all();
+        $users = User::whereIn('id', $userIds)->get()->keyBy('id');
+
+        // Map audit entries to a lighter payload for frontend (include user name/email)
+        $payload = $audits->map(function ($a) use ($users) {
+            $userName = null;
+            $userEmail = null;
+            if (!empty($a->user_id) && isset($users[$a->user_id])) {
+                $user = $users[$a->user_id];
+                $userName = $user->name ?? null;
+                $userEmail = $user->email ?? null;
+            }
+
+            return [
+                'id' => $a->id,
+                'event' => $a->event,
+                'user_id' => $a->user_id ?? null,
+                'user_name' => $userName,
+                'user_email' => $userEmail,
+                'user_type' => $a->user_type ?? null,
+                'created_at' => $a->created_at->toDateTimeString(),
+                'old_values' => $a->old_values ?? [],
+                'new_values' => $a->new_values ?? [],
+                'url' => $a->url ?? null,
+            ];
+        });
+
+        return response()->json($payload);
     }
 }

@@ -5,10 +5,63 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Quotation extends Model
+class Quotation extends Model implements Auditable
 {
-  use SoftDeletes;
+  use SoftDeletes, \OwenIt\Auditing\Auditable;
+
+  protected $auditInclude = [
+    'id',
+    'reordered_from',
+    'customer_id',
+    'reference_no',
+    'date',
+    'quantity',
+    'discount',
+    'total_price',
+    'offer_notes',
+    'status',
+    'user_id',
+    'remarks',
+    'deleted_at',
+    'created_at',
+    'updated_at',
+    'machine_id',
+    'model_id',
+    'material_to_process_id',
+    'batch_id',
+    'mixing_tool_id',
+    'motor_requirement_id',
+    'electrical_control_id',
+    'ac_frequency_drive_id',
+    'bearing_id',
+    'pneumatic_id',
+    'application_id',
+    'water_pressure',
+    'operating_pressure',
+    'cooling_water_inlet_temperature',
+    'cooling_water_flow_rate',
+    'feeding_air_pressure',
+    'contact_part',
+    'no_of_rotating_blades',
+    'no_of_fixes_blades',
+    'capacity',
+    'make_motor_id',
+    'motor_requirement2_id',
+    'batch2_id',
+    'total_capacity',
+    'useful_volume',
+    'compress_air_consumption',
+    'reminder_date',
+    'is_verified',
+    'remark',
+    'followed_by',
+    'discount_type',
+    'discount_percentage',
+    'discount_amount',
+    'total',
+  ];
   protected $guarded = [];
 
   // public function opportunity(){

@@ -12,7 +12,7 @@ class StoreCustomerRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check()?true:false;
+        return Auth::check() ? true : false;
     }
 
     /**
@@ -30,8 +30,9 @@ class StoreCustomerRequest extends FormRequest
             'city' => 'nullable|string|max:255',
             'area' => 'nullable|string|max:255',
             'pincode' => 'nullable|string|max:10',
-            'contact_no'=>'nullable|string|min:9',
-            'company_name'=>'nullable|string',
+            'contact_no' => 'nullable|string|min:9',
+            'company_name' => 'nullable|string',
+            'type' => 'nullable|string|in:customer,lead',
             'address_line_1' => 'nullable|string|max:255',
             'address_line_2' => 'nullable|string|max:255',
             'contact_person_1_name' => 'nullable|string|max:255',
@@ -65,15 +66,15 @@ class StoreCustomerRequest extends FormRequest
 
             'gst' => 'nullable|string|max:255',
             'remark' => 'nullable|string|max:500',
-            'status' => 'nullable|string|in:new,quoated,lead,invoice',
-            'followed_by'=>'required|exists:users,id',
-            'continent'=>'required',
+            'status' => 'nullable|string|in:new,contacted,qualified,disqualified',
+            'followed_by' => 'required|exists:users,id',
+            'continent' => 'required',
             // 'email3' =>'nullable|email',
             // 'email4' =>'nullable|email',
             // 'email5' =>'nullable|email',
             // 'email6' =>'nullable|email',
-            'remark2'=>'nullable|string',
-        
+            'remark2' => 'nullable|string',
+
         ];
     }
 }
