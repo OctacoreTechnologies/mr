@@ -44,7 +44,7 @@
                     </div>
 
                     <!-- Continent -->
-                    <div class="col-md-6">{{ $lead->continent }}
+                    <div class="col-md-6">
                         <x-adminlte-select name="continent" label="Select Continent" fgroup-class="mb-3">
                             <option value="">--Please choose an option--</option>
                             <option value="africa" {{ old('continent', $lead->continent) == 'africa' ? 'selected' : '' }}>
@@ -64,6 +64,7 @@
                     <!-- Country -->
                     <div class="col-md-6">
                         <x-adminlte-select name="country" label="Select Country">
+                            <option value="">--Please choose an option--</option>
                             @foreach ($countries as $country)
                                 <option value="{{ strtolower($country->country) }}" {{ old('country', $lead->country) == strtolower($country->country) ? 'selected' : '' }}>{{ $country->country }}
                                 </option>

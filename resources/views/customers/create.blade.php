@@ -209,21 +209,21 @@
 
                 for (let i = 1; i <= numberOfPersons; i++) {
                     const fieldHTML = `
-                                    <div class="col-md-4">
-                                        <x-adminlte-input name="contact_person_${i}_name" label="Contact Person ${i} Name" placeholder="Enter Name" fgroup-class="mb-3" />
-                                    </div>
-                                    <div class="col-md-4">
-                                        <x-adminlte-input name="contact_person_${i}_designation"  label="Contact Person ${i} Designation" placeholder="Enter Designation" fgroup-class="mb-3" />
-                                    </div>
-                                    <div class="col-md-4">
-                                        <x-adminlte-input name="contact_person_${i}_contact"  label="Contact Person ${i} Contact" placeholder="Enter Contact" fgroup-class="mb-3" />
-                                    </div>
-                                    <div class="col-md-4">
-                                        <x-adminlte-input type="email" name="contact_person_${i}_email"  label="Contact Person ${i} Email" placeholder="Enter Email" fgroup-class="mb-3" />
-                                    </div>
+                                        <div class="col-md-4">
+                                            <x-adminlte-input name="contact_person_${i}_name" label="Contact Person ${i} Name" placeholder="Enter Name" fgroup-class="mb-3" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <x-adminlte-input name="contact_person_${i}_designation"  label="Contact Person ${i} Designation" placeholder="Enter Designation" fgroup-class="mb-3" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <x-adminlte-input name="contact_person_${i}_contact"  label="Contact Person ${i} Contact" placeholder="Enter Contact" fgroup-class="mb-3" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <x-adminlte-input type="email" name="contact_person_${i}_email"  label="Contact Person ${i} Email" placeholder="Enter Email" fgroup-class="mb-3" />
+                                        </div>
 
 
-                                `;
+                                    `;
                     contactPersonFieldsContainer.innerHTML += fieldHTML;
                 }
             }

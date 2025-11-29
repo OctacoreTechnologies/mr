@@ -19,7 +19,8 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::with('user')->get();
+        $customers = Customer::with('user')
+            ->where('type', 'customer')->orWhere('status', 'approved')->get();
         return response()->view('customers.index', [
             "customers" => $customers
         ]);
