@@ -252,7 +252,7 @@ class QuotationController extends Controller
         $numberTransformer = $numberWords->getNumberTransformer('en');
         $termCondition = TearmCondition::findOrFail(1);
         $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2','blower','rotaryAirLockValve','feedingHooperCapacity'])->findOrFail($id);
-        $words = convertToIndianWords((int) ($quotation->total_price ?? 0) - (int) ($quotation->discount ?? 0));
+        $words = convertToIndianWords((int) ($quotation->total ?? 0) - (int) ($quotation->discount ?? 0));
         $viewName = null;
         if ($quotation->machine->name == 'High Speed Heater Mixer') {
             $viewName = "quotations.new_pdf";

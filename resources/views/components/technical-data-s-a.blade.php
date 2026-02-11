@@ -133,7 +133,7 @@ $capacity=implode(' ',$capacity);
 </div>
 
 <div class="page-break" style="margin-left:-12px;">
-    <div class="techincal-data parameter-table-t">
+    <div class="parameter-table-t">
         <div class="parameter-heading" style="text-align:left; width: 95%; padding:20px 0 15px 0; text-size:16px">
             <h3 style="font-weight: bolder;">1.3 DESIGN PARAMETER OF HORIZONTAL COOLER MIXER</h3>
         </div>
@@ -157,7 +157,7 @@ $capacity=implode(' ',$capacity);
             <h3 style="font-weight: bolder;">1.4 ELECTRICAL PARAMETERS</h3>
         </div>
 
-        <table class="parameter-table-t" style="padding:0 0 0 25px">
+        <table class="parameter-table" style="padding:5px 0 0 25px">
             <tr>
                 <td>• &nbsp; Motor Requirement</td>
                 <td class="value-cell">{{ $quotation->motorRequirement2->motor_requirement ?? '' }}</td>
