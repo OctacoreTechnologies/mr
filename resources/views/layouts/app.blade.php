@@ -179,6 +179,30 @@
         });
 
     </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    // Aaj ki date YYYY-MM-DD format me
+    let today = new Date();
+    let yyyy = today.getFullYear();
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let dd = String(today.getDate()).padStart(2, '0');
+
+    let formattedDate = yyyy + '-' + mm + '-' + dd;
+
+    // Sare date inputs select karo
+    document.querySelectorAll('input[type="date"]').forEach(function (input) {
+
+        // Agar already value nahi hai tabhi set karo
+        if (!input.value) {
+            input.value = formattedDate;
+        }
+
+    });
+
+});
+</script>
+
 @endpush
 
 {{-- Add common CSS customizations --}}

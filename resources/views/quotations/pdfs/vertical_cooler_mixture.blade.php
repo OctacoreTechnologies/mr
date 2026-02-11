@@ -47,6 +47,52 @@
         // Add more items as needed
     ];
 @endphp
+<style>
+    /* General Table Styling */
+    .parameter-table-t {
+        border-collapse: collapse;
+        font-size: 14px;
+        width: 90%;
+        line-height: 1;
+        margin: 0 5px 15px 2px;
+        padding-bottom: 25px;
+    }
+
+    .parameter-table-t td {
+        padding: 4px;
+        vertical-align: top;
+        word-wrap: break-word;
+        /* Allow long words to break and wrap onto the next line */
+        word-break: break-word;
+        /* Prevent overflow of long words */
+    }
+
+
+
+    .parameter-heading h3 {
+        padding: 6px 0px 6px 15px;
+        /* background-color: #2daae3; */
+        /* border-radius: 15px; */
+        /* color: white; */
+        color: black;
+        font-size: small;
+        text-decoration: underline;
+    }
+
+    /* Make the table layout auto to allow dynamic width for content */
+    .parameter-table {
+        width: 100%;
+        table-layout: auto;
+        /* Allow cells to adjust according to content */
+        margin-left: 20px;
+    }
+
+    /* Optional: Improve readability by increasing row height for better spacing */
+    .parameter-table td {
+        height: 30px;
+        /* Adjust row height */
+    }
+</style>
 <x-technical-specification-one  heading-number="2."  heading-text="TECHNICAL SPECIFICATION OF MIXER" :items="$mixerSpecs" />
 <x-offer :quotation="$quotation" :words="$words"/>
 <x-term-and-condition-pdf :termCondition="$termCondition" />
