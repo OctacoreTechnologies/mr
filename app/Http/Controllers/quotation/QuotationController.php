@@ -12,6 +12,7 @@ use App\Models\Application;
 use App\Models\Batch;
 use App\Models\Bearing;
 use App\Models\Blade;
+use App\Models\Blower;
 use App\Models\Capacity;
 use App\Models\Customer;
 use App\Models\MachineType;
@@ -26,6 +27,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use NumberToWords\NumberToWords;
 use App\Models\ElelctricalControl;
+use App\Models\FeedingHooperCapacity;
 use App\Models\Machine;
 use App\Models\MakeMotor;
 use App\Models\MaterialToProcess;
@@ -34,6 +36,7 @@ use App\Models\MototRequirement;
 use App\Models\Pneumatic;
 use App\Models\QuotationNotification;
 use App\Models\Reminder;
+use App\Models\RotaryAirLockValve;
 use App\Models\SaleOrder;
 use App\Models\User;
 use Carbon\Carbon;
@@ -111,6 +114,10 @@ class QuotationController extends Controller
             'noOfFixesBlades' => Blade::where(['model_id' => $previewData['model_id'], 'type' => 'fix_blades'])->get(),
             'capacities' => Capacity::where('model_id', $previewData['model_id'])->get(),
             'batches' => Batch::where('model_id', $previewData['model_id'])->get(),
+            'blowers' => Blower::where('model_id', $previewData['model_id'])->get(),
+            'rotaryAirLockValves' => RotaryAirLockValve::where('model_id', $previewData['model_id'])->get(),
+            'feedingHooperCapacities' => FeedingHooperCapacity::where('model_id', $previewData['model_id'])->get(),
+
 
         ]);
     }
@@ -135,6 +142,10 @@ class QuotationController extends Controller
             'bearing' => [Bearing::class, 'bearing'],
             'pneumatic' => [Pneumatic::class, 'pneumatic'],
             //   'model'=>[Modele::class,'name'],
+            'blower' => [Blower::class, 'blower'],
+            'rotary_air_lock_valve' => [RotaryAirLockValve::class, 'rotary_air_lock_valve'],
+            'feeding_hooper_capacity' => [FeedingHooperCapacity::class, 'feeding_hooper_capacity'],
+        
         ];
 
         $foreignKeys = [];
@@ -240,7 +251,7 @@ class QuotationController extends Controller
         $numberWords = new NumberToWords();
         $numberTransformer = $numberWords->getNumberTransformer('en');
         $termCondition = TearmCondition::findOrFail(1);
-        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2'])->findOrFail($id);
+        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2','blower','rotaryAirLockValve','feedingHooperCapacity'])->findOrFail($id);
         $words = convertToIndianWords((int) ($quotation->total_price ?? 0) - (int) ($quotation->discount ?? 0));
         $viewName = null;
         if ($quotation->machine->name == 'High Speed Heater Mixer') {
@@ -253,7 +264,12 @@ class QuotationController extends Controller
             $viewName = "quotations.pdfs.high_speed_heater_and_vertical_cooler_mixture";
         } else if ($quotation->machine->name == 'High-Speed Heater and Horizontal Cooler') {
             $viewName = "quotations.pdfs.high_speed_heater_and_horizontal_cooler";
-        } else {
+        } else if ($quotation->machine->name == 'Pulverizer') {
+            $viewName = "quotations.pdfs.pulverizer";
+        } else if ($quotation->machine->name == 'Agglomerator') {
+            $viewName = "quotations.pdfs.agglomerator";
+        }  
+        else {
             $viewName = "quotations.new_pdf";
         }
         $pdf = Pdf::loadView($viewName, [
@@ -606,7 +622,7 @@ class QuotationController extends Controller
         $newQuotation->save();
 
         session()->flash('success', 'Quotation reordered successfully with new reference: ' . $newQuotation->reference_no);
-        return response()->redirectToRoute('quotation.edit', ['quotation' => $newQuotation->id]);
+        return response()->redirectToRoute('quotation.edit', ['quotation' => $newQuotation->id,'reorder'=>1]);
     }
 
     /**

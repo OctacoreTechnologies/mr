@@ -1,13 +1,14 @@
 @php
     $heads = [
-        'ID',
-        'Name',
-        'Email',
+        'Sr.No',
+        'Company Name',
+        'Email', 
         'Status',
         'Phone',
         'FollowUp',
         ['label' => 'Actions', 'no-export' => false,],
     ];
+    $srno=1;
 @endphp
 
 @extends('layouts.app')
@@ -30,14 +31,17 @@
             <x-adminlte-datatable id="table1" :heads="$heads" striped hoverable with-buttons>
                 @foreach ($leads as $lead)
                     <tr class="{{$lead->status}}">
-                        <td>{{$lead->id}}</td>
+                        <td>{{$srno++}}</td>
                         <td>{{$lead->company_name}}</td>
-                        <td>{{$lead->email}}</td>
+                        <td>{{ $lead->contact_person_1_email }}</td>
                         <td>{{ ucwords($lead->status) }}</td>
-                        <td>{{$lead->phone}}</td>
+                        <td>{{$lead->contact_person_1_contact}}</td>
                         <td>
-                            <a class="btn btn-link text-info" href="{{ route('lead.followup.edit', $lead->id) }}"
-                                target="_blank"><i class="fas fa-calendar-check"></i> Follow Up</a>
+                             <a href="{{ route('followup.edit', $lead->id) }}"
+                                   class="btn btn-sm btn-outline-info shadow-sm btn-round"
+                                   target="_blank" title="Add Follow-Up">
+                                    <i class="fas fa-phone-alt"></i> Follow Up
+                            </a>
                         </td>
 
                         <td>

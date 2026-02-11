@@ -138,6 +138,18 @@ class Quotation extends Model implements Auditable
   {
     return $this->belongsTo(Pneumatic::class, 'pneumatic_id');
   }
+  public function blower()
+  {
+    return $this->belongsTo(Blower::class, 'blower_id');
+  }
+  public function rotaryAirLockValve()
+  {
+    return $this->belongsTo(RotaryAirLockValve::class, 'rotary_air_lock_valve_id');
+  }
+  public function feedingHooperCapacity()
+  {
+    return $this->belongsTo(FeedingHooperCapacity::class, 'feeding_hooper_capacity_id');
+  }
 
   public function application()
   {

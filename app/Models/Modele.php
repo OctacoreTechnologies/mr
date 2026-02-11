@@ -44,6 +44,18 @@ class Modele extends Model
     public function application(){
         return $this->belongsTo(Application::class,'model_id');
     }
+
+    public function blowers(){
+        return $this->hasMany(Blower::class,'model_id');
+    }
+
+    public function rotaryAirLockValve(){
+        return $this->hasMany(RotaryAirLockValve::class,'model_id');
+    }
+
+    public function feedingHooperCapacity(){
+        return $this->hasMany(FeedingHooperCapacity::class,'model_id');
+    }
 }
 
     

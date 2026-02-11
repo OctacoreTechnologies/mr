@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\OrderAcceptanceLetter;
+use App\Models\Quotation;
 use App\Models\SaleOrder;
 
 class SaleOrderObserver
@@ -28,7 +29,22 @@ class SaleOrderObserver
      */
     public function updated(SaleOrder $saleOrder): void
     {
-        //
+        if ($saleOrder->status !== 'delivered') {
+          return;
+        }
+
+        $quotation = $saleOrder->quotation;
+
+        if (!$quotation) {
+           return;
+        }
+
+        if ($quotation->status !== 'Order Confirm') {
+             $quotation->update([
+            'status' => 'Order Confirm',
+           ]);
+        }
+    
     }
 
     /**

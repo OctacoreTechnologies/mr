@@ -5,11 +5,12 @@
             font-size: 14px;
             width: 90%;
             line-height: 1;
-            margin: 0 5px 15px 2px;
+            margin: 0 5px 5px 2px;
+            table-layout: fixed;
         }
 
         .parameter-table-t td {
-            padding: 4px;
+            padding: 2px;
             vertical-align: top;
             word-wrap: break-word; /* Allow long words to break and wrap onto the next line */
             word-break: break-word; /* Prevent overflow of long words */
@@ -31,7 +32,7 @@
         /* Make the table layout auto to allow dynamic width for content */
         .parameter-table {
             width: 100%;
-            table-layout: auto;  /* Allow cells to adjust according to content */
+            table-layout: auto; 
             margin-left: 30px;
         }
 
@@ -80,16 +81,16 @@ $capacity=implode(' ',$capacity);
 @endphp
 
 
-<div class="page-break">
+<div class="page-break" style="margin-left:-12px;">
     <div class="techincal-data parameter-table-t">
         <h2 style="font-weight: bolder; font-size: 24px;" >1. TECHNICAL DATA</h2>
 
         <!-- DESIGN PARAMETER -->
-        <div class="parameter-heading">
+        <div class="parameter-heading" style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
             <h3 style="font-weight: bold;">1.1 DESIGN PARAMETER OF HIGH SPEED HEATER </h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table" style="padding:5px 0 0 25px">
             <tr><td>• &nbsp; Model</td><td class="value-cell">{{ $firstPart }}</td></tr>
             <tr><td>• &nbsp; Product</td><td class="value-cell">{{ $quotation->application->name ?? '' }} </td></tr>
 
@@ -108,7 +109,7 @@ $capacity=implode(' ',$capacity);
             <h3 style="font-weight: bolder;">1.2 ELECTRICAL PARAMETERS</h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table" style="padding:5px 0 0 25px">
             <tr>
                 <td>• &nbsp; Motor Requirement</td>
                 <td class="value-cell">{{ $quotation->motorRequirement->motor_requirement ?? '' }}</td>
@@ -131,13 +132,13 @@ $capacity=implode(' ',$capacity);
     </div>
 </div>
 
-<div class="page-break">
+<div class="page-break" style="margin-left:-12px;">
     <div class="techincal-data parameter-table-t">
-        <div class="parameter-heading">
+        <div class="parameter-heading" style="text-align:left; width: 95%; padding:20px 0 15px 0; text-size:16px">
             <h3 style="font-weight: bolder;">1.3 DESIGN PARAMETER OF HORIZONTAL COOLER MIXER</h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table" style="padding:5px 0 0 25px">
             <tr><td>• &nbsp; Model</td><td class="value-cell">{{ $secondPart }} </td></tr>
             <tr><td>• &nbsp; Product</td><td class="value-cell">{{ $quotation->application->name ?? '' }} Compound</td></tr>
             <tr><td>• &nbsp; Total Capacity</td><td class="value-cell">{{ $capacity }} Ltr  </td></tr>
@@ -152,11 +153,11 @@ $capacity=implode(' ',$capacity);
         </table>
 
         <!-- ELECTRICAL PARAMETERS -->
-        <div class="parameter-heading">
+        <div class="parameter-heading" style="text-align:left; width: 95%; padding:20px 0 15px 0; text-size:16px">
             <h3 style="font-weight: bolder;">1.4 ELECTRICAL PARAMETERS</h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table-t" style="padding:0 0 0 25px">
             <tr>
                 <td>• &nbsp; Motor Requirement</td>
                 <td class="value-cell">{{ $quotation->motorRequirement2->motor_requirement ?? '' }}</td>
@@ -179,13 +180,13 @@ $capacity=implode(' ',$capacity);
     </div>
 </div>
 
-<div class="page-break">
-    <div class="techincal-data parameter-table-t">
+<div class="page-break" style="margin-left:-12px;">
+    <div class="techincal-data parameter-table-t" style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
         <div class="parameter-heading">
             <h3 style="font-weight: bolder;">1.5 TRANSMISSION</h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table" style="padding:5px 0 0 25px">
             <tr>
                 <td>• &nbsp; Gear Box</td>
                 <td class="value-cell">Speed reduction Gear box is provided Heli Bevel Type</td>

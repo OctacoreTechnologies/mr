@@ -51,6 +51,16 @@ class StoreApplicationRequest extends FormRequest
          'useful_volume'=>'nullable',
          'compress_air_consumption'=>'nullable',
          'total_capacity'=>'nullable',
+         'size_of_input_material'=>'nullable',
+         'output'=>'nullable',
+         'finish_mesh_size'=>'nullable',
+         'blower'=>'nullable',
+         'rotary_air_lock_valve'=>'nullable',
+         'feeding_hooper_capacity'=>'nullable',
+         'conveying_pipe' => 'nullable',
+         'rotor'=>'nullable',
+         'material'=>'nullable',
+         'tank' => 'nullable',
 
         ];
     }

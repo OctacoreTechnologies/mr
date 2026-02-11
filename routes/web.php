@@ -16,7 +16,7 @@ use App\Http\Controllers\Categories\ModeleController;
 use App\Http\Controllers\Categories\MotorRequirementController;
 use App\Http\Controllers\Categories\PneumaticController;
 use App\Http\Controllers\customer\CustomerController;
-use App\Http\Controllers\Customer\CustomerFollowUpController;
+use App\Http\Controllers\customer\CustomerFollowUpController;
 use App\Http\Controllers\dashboard\DashBoardController;
 use App\Http\Controllers\lead\LeadController;
 use App\Http\Controllers\lead\LeadFollowUpController;

@@ -56,8 +56,19 @@ class StoreQuotationRequest extends FormRequest
             'useful_volume'=>'nullable',
             'compress_air_consumption'=>'nullable',
             'total_capacity'=>'nullable',
+            'size_of_input_material'=>'nullable',
+            'output'=>'nullable',
+            'finish_mesh_size'=>'nullable',
+            'blower'=>'nullable',
+            'rotary_air_lock_valve'=>'nullable',
+            'feeding_hooper_capacity'=>'nullable',
+            'tank'=>'nullable',
+            'rotor'=>'nullable',
+            'material'=>'nullable',
+             
             'remark'=>'nullable',
             'followed_by'=>'required|exists:users,id',
+            'conveying_pipe' => 'nullable',
         
         ];
     }

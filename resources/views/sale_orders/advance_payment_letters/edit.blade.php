@@ -33,6 +33,7 @@
                     <x-adminlte-input value="{{ $saleOrder->quotation->reference_no ?? '' }}" label="Quotation"
                         name="quotation" readonly onclick="showQuotationDetailsModal()" style="cursor:pointer;" />
                     <input type="hidden" value="{{ $saleOrder->quotation_id }}" name="quotation_id" />
+                    <input type="hidden" name="customer_name" value="{{$saleOrder->quotation->customer->company_name ?? 'N/A'}}">
                 </div>
 
                 {{--<div class="col-md-3 mb-3">
@@ -101,8 +102,8 @@
                 <div class="col-md-3 mb-3">
                     <label for="transporation_payment">Transporation Payment</label>
                     <select name="transporation_payment" class="form-control" id="transporationpayment">
-                        <option value="0" {{ $saleOrder->transporation_payment == "0"?'selected':'' }}>Mr Will Pay</option>
-                        <option value="1" {{ $saleOrder->transporation_payment == "1"?'selected':'' }}>To Pay</option>
+                        <option value="0" {{ $saleOrder->transporation_payment == "0" ? 'selected' : '' }}>Mr Will Pay</option>
+                        <option value="1" {{ $saleOrder->transporation_payment == "1" ? 'selected' : '' }}>To Pay</option>
                     </select>
                 </div>
 
@@ -175,6 +176,10 @@
                     <x-adminlte-input label="Customer Po No." name="po_no" id="po_no" value="{{$saleOrder->po_no}}"
                         required />
                 </div>
+                  <div class="col-md-4 mb-3">
+                    <x-adminlte-input type="text" label="Payment  Condition" name="payment_term_condition"
+                        value="{{ $saleOrder->payment_term_condition??'40% Advance & 60% Before Dispatch' }}" />
+                </div>
 
                 {{-- Notes --}}
                 <div class="col-md-6 mb-3">
@@ -182,11 +187,11 @@
                     <textarea name="remarks" rows="3" class="form-control"
                         placeholder="Add any comments or instructions...">{{ $saleOrder->remarks }}</textarea>
                 </div>
-                <div class="col-md-6 mb-3">
+              {{--  <div class="col-md-6 mb-3">
                     <label for="address">Customer Address</label>
                     <textarea name="address" rows="3" class="form-control"
                         placeholder="Add   address here...">{{ $saleOrder->address ?? $saleOrder->quotation->customer->address_line_1 ?? '' }}</textarea>
-                </div>
+                </div>--}}
                 <div class="col-md-3 mb-3">
                     <x-adminlte-select class="select2" label="Followed By" name="followed_by">
                         <option>Select User</option>
@@ -200,7 +205,14 @@
             <!-- <hr> -->
 
             {{-- Ledger Section --}}
-          <h5><i class="fas fa-rupee-sign"></i>Advance Payment Ledger</h5>
+          <!-- <h5><i class="fas fa-rupee-sign"></i>Advance Payment Ledger</h5> -->
+        <h5 class="d-flex justify-content-between align-items-center">
+            <span><i class="fas fa-rupee-sign"></i> Advance Payment Ledger</span>
+        
+            <button type="button" class="btn btn-sm btn-outline-primary" id="printLedgerPdf">
+                <i class="fas fa-print"></i> Print Ledger
+            </button>
+        </h5>
             <div class="table-responsive">
                 <table class="table table-bordered" id="ledger_table">
                     <thead class="thead-light">
@@ -310,20 +322,20 @@
 
                 <table class="table table-bordered table-sm">
                     @php
-                        $tax=$saleOrder->tax??0;
-                        $taxAmount=(($saleOrder->total_amount + $saleOrder->transporation_charge) * $tax) / 100;
+$tax = $saleOrder->tax ?? 0;
+$taxAmount = (($saleOrder->total_amount + $saleOrder->transporation_charge) * $tax) / 100;
 
-                        $grandTotal=$saleOrder->total_amount + $taxAmount;
-                        $totalTransporation = 0;
-                        $totalFreight = 0;
+$grandTotal = $saleOrder->total_amount + $taxAmount;
+$totalTransporation = 0;
+$totalFreight = 0;
 
-                        foreach ($saleOrder->payments as $payment) {
-                            if ($payment->type == 'transportation') {
-                                $totalTransporation += $payment->amount;
-                            } else if ($payment->type == 'freight') {
-                                $totalFreight += $payment->amount;
-                            }
-                        }
+foreach ($saleOrder->payments as $payment) {
+    if ($payment->type == 'transportation') {
+        $totalTransporation += $payment->amount;
+    } else if ($payment->type == 'freight') {
+        $totalFreight += $payment->amount;
+    }
+}
 
                     @endphp
                     <tbody>
@@ -407,6 +419,36 @@
     </div>
 </div>
 <!-- End of Modal -->
+
+<!-- invoice pdf download -->
+<div id="ledgerPrintArea" style="position:absolute; left:-9999px; top:0; width:800px; background:#fff; padding:20px;">
+    <h2>Advance Payment Ledger</h2>
+    <p>Work Order No: {{ $saleOrder->work_order_no }}</p>
+    <p>Customer Name: {{ $saleOrder->quotation->customer->company_name ?? 'N/A' }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Payment Date</th>
+                <th>Amount (₹)</th>
+                <th>Mode</th>
+                <th>Transaction ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($saleOrder->payments as $payment)
+            <tr>
+                <td>{{ $payment->payment_date }}</td>
+                <td>{{ $payment->amount }}</td>
+                <td>{{ ucfirst($payment->mode) }}</td>
+                <td>{{ $payment->transaction_id }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
+
 @stop
 
 @push('css')
@@ -415,9 +457,66 @@
         .remarks.d-none {
             display: none !important;
         }
+        #ledgerPrintArea table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+ #ledgerPrintArea th,
+ #ledgerPrintArea td {
+     border: 1px solid #000;
+     padding: 6px;
+ }
+
+ #ledgerPrintArea h2 {
+     margin-bottom: 10px;
+ }
+ 
     </style>
 @endpush
 
 @push('js')
     <script src="{{ asset('js/sale_order.js') }}"></script>
+    <script>
+ document.getElementById('printLedgerPdf').addEventListener('click', function() {
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Header
+    doc.setFontSize(16);
+    doc.text("Advance Payment Ledger", 14, 20);
+
+    // Order Info
+    doc.setFontSize(12);
+    doc.text(`Work Order No: ${document.querySelector('input[name="purchase_order_no"]').value}`, 14, 30);
+    doc.text(`Customer Name: ${document.querySelector('input[name="customer_name"]').value}`, 14, 36);
+
+    // Table Data
+    let payments = [];
+    const rows = document.querySelectorAll('#ledger_table tbody tr');
+    rows.forEach((row) => {
+        let date = row.querySelector('input[name*="[date]"]').value;
+        let amount = row.querySelector('input[name*="[amount]"]').value;
+        let mode = row.querySelector('select[name*="[mode]"]').value;
+        let transaction = row.querySelector('input[name*="[transaction_id]"]').value || '';
+        payments.push([date, amount, mode, transaction]);
+    });
+
+    // autoTable
+    doc.autoTable({
+        startY: 45,
+        head: [['Payment Date', 'Amount', 'Mode', 'Transaction ID']],
+        body: payments,
+        theme: 'grid',
+        headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
+        styles: { fontSize: 10 },
+    });
+
+    // Save PDF
+    doc.save(`Advance_Payment_Ledger_${new Date().getTime()}.pdf`);
+});
+
+    </script>
 @endpush

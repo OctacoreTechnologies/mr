@@ -6,6 +6,10 @@
     <title>Order Acceptance Letter</title>
     <style>
         /* General Body Styles */
+
+        @page {
+          margin: 20px 70px 0px 40px;
+       }
         body { 
             font-family: 'DejaVu Sans', sans-serif; 
             font-size: 12px; 
@@ -20,16 +24,32 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            margin-top: 45px;
+            margin-bottom: 25px;
         }
 
         /* Header Styling */
-        header {
+        /* header {
+            position: fixed;
             text-align: right;
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 1px solid #ccc;
-        }
+        } */
 
+  header {
+    position: fixed;
+    top: -5px;
+    left: 0;
+    right: 0;
+    /* height: 100px; */
+    text-align: right;
+    /* padding-bottom: 50px; */
+    /* margin-bottom: 20px;
+    padding-bottom: 10px; */
+    /* border-bottom: 1px solid #ccc; */
+   }
+    
         header img {
             height: 80px;
         }
@@ -68,14 +88,15 @@
 
         /* Footer Section */
         .footer {
-            margin-top: 40px;
-            border-top: 1px solid #ccc;
+            /* margin-top: 40px; */
+            /* border-top: 1px solid #ccc; */
             padding-top: 10px;
         }
 
         .footer table {
             width: 100%;
             border: none;
+            margin-top: 40px;
         }
 
         .footer td {
@@ -88,17 +109,18 @@
             font-weight: bold;
             text-decoration: underline;
         }
+
     </style>
 </head>
 <body>
 
+<!-- Header Section -->
+    <header>
+       {{-- <img src="{{ asset('./image/mr_logo.png') }}" alt="Logo"> --}}
+        <img src="{{ public_path('./image/mr_logo.png') }}" alt="Logo">
+    </header>
 <!-- Main Container -->
 <div class="container">
-
-    <!-- Header Section -->
-    <header>
-        <img src="{{ asset('./image/mr_logo.png') }}" alt="Logo">
-    </header>
 
     <!-- Title Section -->
     <h2>Order Acceptance Letter</h2>

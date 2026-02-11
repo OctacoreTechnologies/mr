@@ -4,13 +4,14 @@ namespace App\Http\Controllers\reports;
 
 use App\Http\Controllers\Controller;
 use App\Models\Lead;
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class ReportLeadController extends Controller
 {
     public function leadReport(Request $request){
-        $leads=Lead::query();
+        $leads=Customer::query();
 
         if($request->has('lead_source') && $request->lead_source!=''){
            $leads->whereIn('lead_source',(array)$request->lead_source);

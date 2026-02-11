@@ -368,17 +368,21 @@
   <!-- Page Number -->
 
 
-  <div style="font-size: 16px; padding: 150px 0px 10px 10px; line-height: 1.2;">
+  <div style="font-size: 16px; padding: 170px 0px 10px 10px; line-height: 1.2;">
 
     <!-- Title Section -->
-    <div style="padding-top: 20px; text-align: center;">
+    <div style="padding-top: 35px; text-align: center;">
       <div style="font-size: 30px; font-weight: bold; color: #2daae3; text-transform: uppercase; 
                 word-spacing: 3px; font-family: 'Montserrat', sans-serif; text-decoration: underline;">
         TECHNO-COMMERCIAL OFFER
       </div>
       <div style="font-size: 25px; margin-top: 6px; word-break: break-word; white-space: normal;">
-        Proposal for High-Speed Heater Mixer Model {{ $quotation->modele->name ?? '' }}
-      </div>
+  Proposal for  Heater Mixer 
+  <span style="white-space: nowrap;">
+    Model {{ $quotation->modele->name ?? '' }}
+  </span>
+</div>
+
     </div>
 
     <!-- Client Info Table -->
@@ -461,7 +465,7 @@
               style="width: 50%; font-weight: bold; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px; font-size: 16px;">
               Contact No.
             </div>
-            <div style="margin-top: 5px;">+91 89281 61634</div>
+            <div style="margin-top: 5px;">{{ '+91 ' . substr($quotation->followedBy->contact_no ?? '8912929114', 0, 5) . ' ' . substr($quotation->followedBy->mobile_no ?? '8912929114', 5) }}</div>
           </td>
 
           <!-- E–Mail ID: Right aligned -->
@@ -492,11 +496,11 @@
 
   {{-- --}}
 
-  <div class="page-break">
+  <div class="page-break" style="padding: 110px 20px 10px 10px;">
     <div class="table-index">
       <h1 style="text-align: left; display: flex; justify-content:center; align-self: center; margin-bottom: 45px;">
         TABLE OF CONTENTS</h1>
-      <div class="content" style="font-size: 16px;">
+      <div class="content" style="font-size: 16px; padding-top:20px">
         <div
           style="border-top: 1px solid black; padding:10px 0px 10px 0px; display: flex; justify-content: space-between; position: relative;">
           <span>TECHNICAL DATA</span> <span style="position: absolute; right: 5px;">3</span>
@@ -586,7 +590,7 @@
     </div>
   </div>
   {{--start--}}
-  <div class="page-break" style="padding: 100px 20px 15px 10px;  font-size: 14px;  box-sizing: border-box;">
+  <div class="page-break" style="padding: 110px 20px 10px 10px;  font-size: 14px;  box-sizing: border-box;">
     <div class="technical-datayrt">
 
       <h2 style="margin-bottom: 10px; text-decoration: underline;">2.&nbsp; TECHNICAL SPECIFICATION OF MIXER</h2>
@@ -665,7 +669,7 @@
   {{--end of page break--}}
   {{--2nd page-s--}}
   <div class="page-break"
-    style="padding:10px 10px 0px 10px;  font-size: 14px; box-sizing: border-box;  page-break-inside:avoid">
+    style="padding:110px 10px 0px 10px;  font-size: 14px; box-sizing: border-box;  page-break-inside:avoid">
 
     {{-- <div class="technical-datayrt" style="page-break-inside: avoid;"> --}}
 
@@ -676,8 +680,7 @@
             <span>&#8226;&nbsp; Mixing Tool</span>
           </td>
           <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;STAINLESS STEEL: 304 GRADES. OR ALLOY STEEL Consisting three blades – Bottom Scraper, Fluidizing
-            blade and Horn Shaped Blade. Specially Designed Shape and Angle Suitable for your Compound with Height
+            :&nbsp;STAINLESS STEEL: 304 GRADES. OR ALLOY STEEL. Specially Designed Shape and Angle Suitable for your Compound with Height
             adjustment. Spacers with wear resistance treatment.
           </td>
         </tr>

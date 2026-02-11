@@ -222,6 +222,7 @@
     <!-- jsPDF for PDF export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="{{ asset('js/report.js') }}"></script>
 
     <script>
         $(document).ready(function () {
@@ -238,64 +239,21 @@
             });
         });
 
-        // export files code  
-        document.getElementById('exportExcelBtn').addEventListener('click', function () {
-            event.preventDefault();
+        
+document.getElementById('exportExcelBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    ReportExport.exportExcel('customerTable', 'customerreport.xlsx');
+});
 
-            var table = document.getElementById('customerTable');
-            var wb = XLSX.utils.table_to_book(table, { sheet: 'customers' });
-            XLSX.writeFile(wb, 'customers.xlsx');
-        });
+document.getElementById('exportCsvBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    ReportExport.exportCSV('customerTable', 'customerreport.csv');
+});
 
-        // CSV Export (using PapaParse)
-        document.getElementById('exportCsvBtn').addEventListener('click', function () {
-            event.preventDefault();
-
-            var table = document.getElementById('customerTable');
-            var rows = Array.from(table.rows).map(row => Array.from(row.cells).map(cell => cell.innerText));
-            var csv = Papa.unparse(rows);
-            var blob = new Blob([csv], { type: 'text/csv' });
-            var link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'customers.csv';
-
-            link.click();
-        });
-
-        // PDF Export (using jsPDF)
-        document.getElementById('exportPdfBtn').addEventListener('click', function (event) {
-            event.preventDefault();
-
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-
-            const table = document.getElementById('customerTable');
-
-            // Get headers
-            const headers = Array.from(table.rows[0].cells).map(cell => cell.innerText);
-
-            // Get data rows
-            const data = Array.from(table.rows)
-                .slice(1)
-                .map(row => Array.from(row.cells).map(cell => cell.innerText.trim()));
-
-            doc.text("Customer Report", 14, 10);
-
-            doc.autoTable({
-                startY: 20,
-                head: [headers],
-                body: data,
-                styles: {
-                    fontSize: 8
-                },
-                headStyles: {
-                    fillColor: [52, 58, 64], // Dark header
-                    textColor: 255
-                }
-            });
-
-            doc.save('customers.pdf');
-        });
+document.getElementById('exportPdfBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    ReportExport.exportPDF('customerTable', 'Customer Reports', 'customer.pdf');
+});
 
     </script>
 @endpush

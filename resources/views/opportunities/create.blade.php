@@ -248,7 +248,7 @@
             });
 
             // Auto-open customer modal when page loads if no customer selected
-            @if ($preselectedCustomer)
+             @if (isset($preselectedCustomer))
                 // Pre-select customer from query parameter
                 $('#customerId').val({{ $preselectedCustomer->id }});
                 $('#customerName').val('{{ $preselectedCustomer->company_name ?? $preselectedCustomer->name }}');
@@ -257,7 +257,7 @@
                 fetchSaleOrdersForCustomer({{ $preselectedCustomer->id }});
                 fetchQuotationsForCustomer({{ $preselectedCustomer->id }});
             @else
-                                if (!$('#customerId').val()) {
+                                                if (!$('#customerId').val()) {
                     $('#customerSelectModal').modal('show');
                     // open select2 dropdown after modal shown
                     $('#customerSelectModal').on('shown.bs.modal', function () {

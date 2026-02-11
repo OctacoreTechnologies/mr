@@ -152,6 +152,9 @@
                         ['label' => 'Select No of Rotating Blade', 'name' => 'no_of_rotating_blades', 'name1' => 'no_of_rotating_blade_id', 'options' => $noOfRotatingBlades, 'key' => 'no_of_blades'],
                         ['label' => 'Select No of Fixes Blade', 'name' => 'no_of_fixes_blades', 'name1' => 'no_of_fixes_blade_id', 'options' => $noOfFixesBlades, 'key' => 'no_of_blades'],
                         ['label' => 'Select Capacity', 'name' => 'capacity', 'name1' => 'capacity_id', 'options' => $capacities, 'key' => 'capacity'],
+                        ['label' => 'Select Blower', 'name' => 'blower', 'name1' => 'blower_id', 'options' => $blowers, 'key' => 'blower'],
+                        ['label' => 'Select Rotary Air Lock Valve', 'name' => 'rotary_air_lock_valve', 'name1' => 'rotary_air_lock_valve_id', 'options' => $rotaryAirLockValves, 'key' => 'rotary_air_lock_valve'],
+                        ['label' => 'Select Feeding Hooper Capacity', 'name' => 'feeding_hooper_capacity', 'name1' => 'feeding_hooper_capacity_id', 'options' => $feedingHooperCapacities, 'key' => 'feeding_hooper_capacity'],
                     ];
                 @endphp
 
@@ -348,10 +351,54 @@
                     <i class="fas fa-pencil-alt edit-icon"></i>
                  </div>
                @endif
-               @if(isset($product->capacity))
+               @if(isset($product->size_of_input_material))
                   <div class="col-md-6">
-                     <label>Capacity</label>
-                    <input name="capacity" value="{{$product->capacity}}"  class="form-control readonly-input" required/>
+                     <label>
+                        Size of Input Material
+                     </label>
+                    <input name="size_of_input_material" value="{{$product->size_of_input_material}}"  class="form-control readonly-input" required/>
+                    <i class="fas fa-pencil-alt edit-icon"></i>
+                 </div>
+              @endif
+              @if(isset($product->output))
+                  <div class="col-md-6">
+                     <label>Output</label>
+                    <input name="output" value="{{$product->output}}"  class="form-control readonly-input" required/>
+                    <i class="fas fa-pencil-alt edit-icon"></i>
+                 </div>
+              @endif
+              @if(isset($product->finish_mesh_size))
+                  <div class="col-md-6">
+                     <label>Finish Mesh Size</label>
+                    <input name="finish_mesh_size" value="{{$product->finish_mesh_size}}"  class="form-control readonly-input" required/>
+                    <i class="fas fa-pencil-alt edit-icon"></i>
+                 </div>
+              @endif
+              @if(isset($product->conveying_pipe))
+                  <div class="col-md-6">
+                     <label>Conveying Pipe</label>
+                    <input name="conveying_pipe" value="{{$product->conveying_pipe}}"  class="form-control readonly-input" required/>
+                    <i class="fas fa-pencil-alt edit-icon"></i>
+                 </div>
+              @endif
+              @if(isset($product->tank))
+                  <div class="col-md-6">
+                     <label>Tank</label>
+                    <input name="tank" value="{{$product->tank}}"  class="form-control readonly-input" required/>
+                    <i class="fas fa-pencil-alt edit-icon"></i>
+                 </div>
+              @endif
+              @if(isset($product->rotary))
+                  <div class="col-md-6">
+                     <label>Rotary</label>
+                    <input name="rotary" value="{{$product->rotary}}"  class="form-control readonly-input" required/>
+                    <i class="fas fa-pencil-alt edit-icon"></i>
+                 </div>
+              @endif
+              @if(isset($product->material))
+                  <div class="col-md-6">
+                     <label>Material</label>
+                    <input name="material" value="{{$product->material}}"  class="form-control readonly-input" required/>
                     <i class="fas fa-pencil-alt edit-icon"></i>
                  </div>
               @endif
@@ -380,44 +427,47 @@
 
 @push('js')
 <script>
-    $(document).ready(function () {
+$(document).ready(function () {
 
-        // Toggle readonly/editable on pencil icon click
-        $('.edit-icon').on('click', function () {
-            const field = $(this).siblings('input, select');
-             var price = parseFloat($('#total_price').val()) || 0;
-             var quantity = parseFloat($('#quantity').val())||1 ;
+   $('.edit-icon').on('click', function () {
 
-             var total = price*quantity;
+    const field = $(this).siblings('input, select');
 
-            // For input fields
-            if (field.is('input')) {
-                if (field.prop('readonly')) {
-                    field.prop('readonly', false);  // Make the field editable
-                    field.removeClass('readonly-input');  // Remove readonly class for styling
-                    field.css('background-color', '#fff');  // Change background to white when editable
-                } else {
-                    field.prop('readonly', true);  // Make the field readonly
-                    field.addClass('readonly-input');  // Add readonly class for styling
-                    field.css('background-color', '#f8f9fa');  // Set background color to indicate readonly state
-                }
-            }
+    /* INPUT */
+    if (field.is('input')) {
+        let isReadonly = field.prop('readonly');
 
-            // For select fields (select2)
-            if (field.is('select')) {
-                if (field.hasClass('readonly-select')) {
-                    field.removeClass('readonly-select');  // Remove readonly class for select
-                    field.select2('enable', true);  // Enable select2 functionality
-                    field.css('background-color', '#fff');  // Set background to white when editable
-                } else {
-                    field.addClass('readonly-select');  // Add readonly class for select
-                    field.select2('enable', false);  // Disable select2 functionality
-                    field.css('background-color', '#f8f9fa');  // Set background color to indicate readonly state
-                }
-            }
-        });
+        field.prop('readonly', !isReadonly)
+             .toggleClass('readonly-input', !isReadonly);
+    }
 
+    /* SELECT2 */
+    if (field.is('select')) {
+        let container = field.next('.select2-container');
+        let isReadonly = field.data('readonly') === true;
+
+        if (isReadonly) {
+            field.data('readonly', false);
+            container.removeClass('select2-readonly')
+                     .find('.select2-selection')
+                     .css('pointer-events', 'auto');
+        } else {
+            field.data('readonly', true);
+            container.addClass('select2-readonly')
+                     .find('.select2-selection')
+                     .css('pointer-events', 'none');
+        }
+    }
+});
+
+
+    /* ========= FORM SUBMIT (VERY IMPORTANT) ========= */
+    $('form').on('submit', function () {
+        $('input, select').prop('readonly', false).prop('disabled', false);
     });
+
+});
+
 </script>
 @endpush
 

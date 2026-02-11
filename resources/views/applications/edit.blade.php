@@ -103,6 +103,35 @@
                     placeholder="Enter Contact Part" fgroup-class="mb-3" />
             </div>
             <div class="col-md-6">
+                <x-adminlte-input name="size_of_input_material" label="Size of Input Material" value="{{ old('size_of_input_material',$product->size_of_input_material) }}"
+                    placeholder="Enter Size of Input Material(e.g 2,4)" fgroup-class="mb-3" />
+            </div>
+            <div class="col-md-6">
+                <x-adminlte-input name="output" label="Output" value="{{ old('output',$product->output) }}"
+                    placeholder="Enter Output " fgroup-class="mb-3" />
+            </div>
+            <div class="col-md-6">
+                <x-adminlte-input name="finish_mesh_size" label="Finish Mesh Size" value="{{ old('finish_mesh_size',$product->finish_mesh_size) }}"
+                    placeholder="Enter Finish Mesh Size" fgroup-class="mb-3" />
+            </div>
+
+            <div class="col-md-6">
+                <x-adminlte-input name="conveying_pipe" label="Conveying Pipe" value="{{ old('conveying_pipe',$product->conveying_pipe) }}"
+                    placeholder="Enter Conveing Pipe(MM Dia)" fgroup-class="mb-3" />
+            </div>
+               <div class="col-md-6">
+                <x-adminlte-input name="tank" label="Tank" value="{{ old('tank',$product->tank) }}"
+                    placeholder="Enter tank (for e.g SS 304)" fgroup-class="mb-3" />
+            </div>
+            <div class="col-md-6">
+                <x-adminlte-input name="rotor" label="Rotor" value="{{ old('rotor',$product->rotor) }}"
+                    placeholder="Enter Rotor " fgroup-class="mb-3" />
+            </div>
+                        <div class="col-md-6">
+                <x-adminlte-input name="material" label="Material" value="{{ old('material',$product->material) }}"
+                    placeholder="Enter Material" fgroup-class="mb-3" />
+            </div>
+            <div class="col-md-6">
                 <x-adminlte-select class="select2" name="capacity" label="Select Capacity (kg/hr)">
                     <option value="">Select</option>
                     @foreach ($capacities as $item)
@@ -130,7 +159,7 @@
                     <option value="">Select</option>
                     @foreach ($rotatingBlades as $item)
                         <option value="{{ $item->id }}" 
-                            {{ $product->no_of_rotating_blade_id== $item->no_of_blades ? 'selected' : '' }}>
+                            {{ $product->no_of_rotating_blade_id== $item->id ? 'selected' : '' }}>
                             {{ $item->no_of_blades }}
                         </option>
                     @endforeach
@@ -142,9 +171,35 @@
                     <option value="">Select</option>
                     @foreach ($fixedBlades as $item)
                         <option value="{{ $item->id }}" 
-                            {{ $product->no_of_fixes_blade_id == $item->no_of_blades ? 'selected' : '' }}>
+                            {{ $product->no_of_fixes_blade_id == $item->id ? 'selected' : '' }}>
                             {{ $item->no_of_blades }}
                         </option>
+                    @endforeach
+                </x-adminlte-select>
+            </div>
+             <div class="col-md-6">
+                <x-adminlte-select class="select2" name="blower_id" label="Select Blower">
+                    <option value="">Select</option>
+                    @foreach ($blowers as $item)
+                        <option value="{{ $item->id }}"  {{ $product->blower_id == $item->id ? 'selected' : '' }}>{{ $item->blower }}</option>
+                    @endforeach
+                </x-adminlte-select>
+            </div>
+
+            <div class="col-md-6">
+                <x-adminlte-select class="select2" name="rotary_air_lock_valve" label="Rotary Air Lock Valve">
+                    <option value="">Select</option>
+                    @foreach ($rotaryAirLockValves as $item)
+                        <option value="{{ $item->id }}"  {{ $product->rotary_air_lock_valve_id == $item->id ? 'selected' : '' }}> {{ $item->rotary_air_lock_valve }}</option>
+                    @endforeach
+                </x-adminlte-select>
+            </div>
+            
+             <div class="col-md-6">
+                <x-adminlte-select class="select2" name="feeding_hooper_capacity" label="Feeding Hooper">
+                    <option value="">Select</option>
+                    @foreach ($feedingHooperCapacities as $item)
+                        <option value="{{ $item->id }}" {{ $product->feeding_hooper_capacity_id == $item->id ? 'selected' : '' }}>{{ $item->feeding_hooper_capacity }}</option>
                     @endforeach
                 </x-adminlte-select>
             </div>

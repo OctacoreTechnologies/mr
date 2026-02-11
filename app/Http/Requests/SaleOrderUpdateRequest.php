@@ -41,10 +41,11 @@ class SaleOrderUpdateRequest extends FormRequest
             'remarks' => 'nullable|string|max:1000',
             'followed_by'=>'required|exists:users,id',
             'payment_term'=>'required|numeric',
+            'payment_term_condition'=>'required|string',
             'advanace_payment'=>'required|numeric',
             'advance_payment_date'=>'nullable|date',
             'po_no'=>'required',
-            'address' => 'required',
+            // 'address' => 'required',
             // Payments array validation
             'payments' => 'nullable|array',
             'payments.*.date' => 'nullable|date',

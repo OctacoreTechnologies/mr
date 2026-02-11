@@ -1,73 +1,67 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Letter for Advance Payment</title>
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
-    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
 </head>
+
 <style>
-    @font-face {
+    @page {
+        size: A4;
+        margin: 8mm;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+     @font-face {
         font-family: 'Poppins';
         src: url('/fonts/Poppins-Regular.ttf') format('truetype');
         font-weight: normal;
         font-style: normal;
-    }
+       }
 
     body {
-        /* font-family: "Times New Roman", Times, serif; */
         font-family: 'Poppins', sans-serif;
-        font-size: 14px;
+        font-size: 12.5px; /* 🔹 reduced only for single-page fit */
         margin: 0;
         padding: 0;
-        /* font-family: 'Times New Roman', Times, serif; */
-
-    }
-
-    .header {
-        text-align: center;
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .company_heading {
-        font-size: 18px;
-        padding-bottom: 0px;
-        padding-top: 0px;
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    .sub-header {
-        text-align: center;
-        /* font-style: italic; */
-        font-weight: bold;
-        text-decoration: underline;
-        margin-top: 10px;
+        overflow: hidden;
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-
+        page-break-inside: avoid;
     }
 
-    table tr {
-        padding: 12px;
-    }
-
-    table tr td {
-        padding: 6px;
+    table tr td,
+    table tr th {
+        padding: 5px;
+        vertical-align: top;
     }
 
     .bordered {
         border: 1px solid black;
     }
 
-    .content td {
-        padding: 5px;
-        vertical-align: top;
+    .header {
+        text-align: center;
+        font-weight: bold;
+        font-size: 15px;
+    }
+
+    .company_heading {
+        font-size: 17px;
+        margin: 0;
+    }
+
+    .sub-header {
+        text-align: center;
+        font-weight: bold;
+        text-decoration: underline;
+        margin-top: 8px;
     }
 
     .left-col {
@@ -79,177 +73,127 @@
         border-left: 1px solid black;
     }
 
-    .label {
-        /* font-style: italic; */
-    }
-
-    .bold {
-        font-weight: bold;
-    }
-
-    .italic-bold {
-        /* font-style: italic; */
-        font-weight: bold;
-    }
-
-    .sono {
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-    }
-
     .advncTitle {
+        font-size: 18px;
         font-weight: bolder;
-        font-size: 20px;
     }
 </style>
 
 <body>
-    <table class="bordered">
-        <tr>
-            <td colspan="2" class="header">
-                <p class="company_heading">M. R. ENGINEERS</p>
-                SNO.: 351/2-A, PSL COMPOUND, CHAR RASTA, <br>
-                KACHIGAM, NANI DAMAN: 396 210 <br>
-                EMAIL: <span style="text-transform: lowercase;">sales@mrengineers.co.in, mihir@mrengineers.co.in</span>
-            </td>
+
+@php
+
+@endphp
+
+<!-- ================= HEADER ================= -->
+<table class="bordered">
+    <tr>
+        <td colspan="2" class="header">
+            <p class="company_heading">M. R. ENGINEERS</p>
+            SNO.: 351/2-A, PSL COMPOUND, CHAR RASTA,<br>
+            KACHIGAM, NANI DAMAN: 396 210<br>
+            EMAIL: <span style="text-transform: lowercase;">sales@mrengineers.co.in, mihir@mrengineers.co.in</span>
+        </td>
+    </tr>
+
+    <tr class="advncTitle" style="border-top:1px solid black;border-bottom:1px solid black;">
+        <td colspan="2" class="sub-header">LETTER FOR ADVANCE PAYMENT</td>
+    </tr>
+
+    <!-- ================= BILL / SHIP ================= -->
+    <tr class="bordered">
+        <td class="left-col" style="padding:0;">
+            <table style="width:100%; font-size:12px;">
+                <tr><td colspan="2"><b><i>BILL TO :</i></b></td></tr>
+                <tr>
+                    <td colspan="2">
+                        M/s. {{ $saleOrder->quotation->customer->contact_person_1_name ?? '' }}<br>
+                        {{ $saleOrder->quotation->customer->address_line_1 ?? '' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="40%"><b><i>GST NO.:</i></b></td>
+                    <td width="60%">{{ $saleOrder->quotation->customer->gst ?? '' }}</td>
+                </tr>
+                <tr style="border-top:1px solid black;">
+                    <td><b><i>LAP NO.:</i></b></td>
+                    <td>{{ $saleOrder->lap_no ?? '0' }}/{{ $saleOrder->financial_year ?? '2025-26' }}</td>
+                </tr>
+                <tr>
+                    <td><b><i>Quotation No.:</i></b></td>
+                    <td>{{ $saleOrder->quotation->reference_no ?? '' }}</td>
+                </tr>
+                <tr>
+                    <td><b><i>Date:</i></b></td>
+                    <td>{{ formatDate($saleOrder->order_date ?? '') }}</td>
+                </tr>
+            </table>
+        </td>
+
+        <td class="right-col" style="padding:0;">
+            <table style="width:100%; font-size:12px;">
+                <tr><td colspan="2"><b><i>SHIP TO :</i></b></td></tr>
+                <tr>
+                    <td colspan="2">
+                        M/s.
+                        {{ $saleOrder->quotation->customer->contact_person_2_name ?? $saleOrder->quotation->customer->contact_person_1_name }}<br>
+                        {{ $saleOrder->quotation->customer->address_line_2 ?? $saleOrder->quotation->customer->address_line_1 }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="40%"><b><i>Kind Attn.:</i></b></td>
+                    <td width="60%">{{ $saleOrder->followedBy->name ?? '' }}</td>
+                </tr>
+                <tr style="border-top:1px solid black;">
+                    <td><b>Contact Detail:</b></td>
+                    <td>{{ $saleOrder->quotation->customer->contact_no ?? '' }}</td>
+                </tr>
+                <tr>
+                    <td><b>Email:</b></td>
+                    <td>{{ $saleOrder->quotation->customer->contact_person_1_email ?? '' }}</td>
+                </tr>
+                <tr>
+                    <td><b><i>Customer P.O No.:</i></b></td>
+                    <td>{{ $saleOrder->quotation->customer->po_no ?? '' }}</td>
+                </tr>
+                <tr>
+                    <td><b><i>Date:</i></b></td>
+                    <td>{{ formatDate($saleOrder->quotation->customer->po_date ?? '') }}</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<!-- ================= ITEMS ================= -->
+@php
+    $maxRows = 3; // 🔒 fixed for one page
+    $usedRows = 1;
+    $emptyRows = $maxRows - $usedRows;
+    $unitPrice = 100000;
+@endphp
+
+<table style="border-top:hidden;">
+    <thead>
+        <tr class="bordered">
+            <th width="45%" style="border: 1px solid black; text-align: center;">Description</th>
+            <th width="10%" style="border: 1px solid black; text-align: center;">HSN</th>
+            <th width="5%"  style="border: 1px solid black; text-align: center;">Qty</th>
+            <th width="5%"  style="border: 1px solid black; text-align: center;">Unit</th>
+            <th width="10%" style="border: 1px solid black; text-align: center;">Unit Rate</th>
+            <th width="15%" style="border: 1px solid black; text-align: center;">Amount Rs.</th>
         </tr>
-        <tr style="border-top: 1px solid black; border-bottom: 1px solid black;" class="advncTitle">
-            <td colspan="2" class="sub-header">LETTER FOR ADVANCE PAYMENT</td>
-        </tr>
-        <tr class="content bordered">
-
-            <!-- BILL TO (LEFT) -->
-            <td class="left-col" style="vertical-align: top; padding: 0;">
-                <table style="width:100%; font-size:12px; border-collapse:collapse;">
-                    <tr>
-                        <td colspan="2" style="padding: 6px; font-weight: bold; font-style: italic;">
-                            BILL TO :
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" style="padding: 6px;">
-                            M/s. {{ $saleOrder->quotation->customer->contact_person_1_name ?? '' }}<br>
-                            {{ $saleOrder->quotation->customer->address_line_1 ?? '' }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="width: 40%; padding: 6px; font-weight: bold; font-style: italic;">GST NO.:</td>
-                        <td style="width: 60%; padding: 6px;">
-                            {{ $saleOrder->quotation->customer->gst ?? '' }}
-                        </td>
-                    </tr>
-
-                    <tr style="border-top: 1px solid black">
-                        <td style="padding: 6px; font-weight: bold; font-style: italic;">LAP NO.:</td>
-                        <td style="padding: 6px;">
-                            {{ $saleOrder->lap_no ?? '0' }}/{{ $saleOrder->financial_year ?? '2025-26' }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding: 6px; font-weight: bold; font-style: italic;">Quotation No.:</td>
-                        <td style="padding: 6px;">
-                            {{ $saleOrder->quotation->reference_no ?? '' }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding: 6px; font-weight: bold; font-style: italic;">Date:</td>
-                        <td style="padding: 6px;">
-                            {{ formatDate($saleOrder->order_date ?? '') }}
-                        </td>
-                    </tr>
-                </table>
+    </thead>
+    <tbody>
+        <tr class="bordered">
+            <td style="border: 1px solid black;">
+                <b>{{ strtoupper($saleOrder->quotation->machine->name) }}
+                {{ $saleOrder->quotation->modele->name }}</b>
             </td>
-
-            <!-- SHIP TO (RIGHT) -->
-            <td class="right-col" style="vertical-align: top; padding: 0;">
-                <table style="width:100%; font-size:12px; border-collapse:collapse;">
-                    <tr>
-                        <td colspan="2" style="padding: 6px; font-weight: bold; font-style: italic;">
-                            SHIP TO :
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2" style="padding: 6px;">
-                            M/s.
-                            {{ $saleOrder->quotation->customer->contact_person_2_name ?? $saleOrder->quotation->customer->contact_person_1_name }}<br>
-                            {{ $saleOrder->quotation->customer->address_line_2 ?? $saleOrder->quotation->customer->address_line_1 }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="width: 40%; padding: 6px; font-weight: bold; font-style: italic;">Kind Attn.: Mr.
-                        </td>
-                        <td style="width: 60%; padding: 6px;">
-                            {{ $saleOrder->followedBy->name ?? '' }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding: 6px; font-weight: bold;">Contact Detail:</td>
-                        <td style="padding: 6px;">
-                            {{ $saleOrder->quotation->customer->contact_no ?? '' }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding: 6px; font-weight: bold;">Email:</td>
-                        <td style="padding: 6px;">
-                            {{ $saleOrder->quotation->customer->contact_person_1_email ?? '' }}
-                        </td>
-                    </tr>
-
-                    <tr style="border-top: 1px solid black">
-                        <td style="padding: 6px; font-weight: bold; font-style: italic;">Customer P.O No.:</td>
-                        <td style="padding: 6px;">
-                            {{ $saleOrder->quotation->customer->po_no ?? '' }}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td style="padding: 6px; font-weight: bold; font-style: italic;">Date:</td>
-                        <td style="padding: 6px;">
-                            {{ formatDate($saleOrder->quotation->customer->po_date ?? '') }}
-                        </td>
-                    </tr>
-                </table>
-            </td>
-
-        </tr>
-
-    </table>
-    <table
-        style="width: 100%; border-collapse: collapse; font-family: 'Poppins', sans-serif; font-size: 14px;border-top:hidden; ">
-        <thead>
-            <tr style="border: 1px solid black;">
-                <th style="border: 1px solid black; width: 45%; text-align: center;"><i>Description</i></th>
-                <th style="border: 1px solid black; width: 10%; text-align: center;"><i>HSN CODE</i></th>
-                <th style="border: 1px solid black; width: 5%; text-align: center;"><i>Qty</i></th>
-                <th style="border: 1px solid black; width: 5%; text-align: center;"><i>Unit</i></th>
-                <th style="border: 1px solid black; width: 10%; text-align: center;"><i>Unit Rate</i></th>
-                <!-- <th style="border: 1px solid black; width: 10%; text-align: center;"><i>Discount Rs.</i></th> -->
-                <th style="border: 1px solid black; width: 15%; text-align: center;"><i>Amount Rs.</i></th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data row -->
-            <tr>
-                <td style="border: 1px solid black; padding: 6px;">
-                    <b>{{ strtoupper($saleOrder->quotation->machine->name) }} Model
-                        {{ $saleOrder->quotation->modele->name }} </b><br>
-                    <!-- ALONG WITH AC FREQUENCY DRIVE<br> -->
-                    <!-- ELECTRICAL PANEL<br><br> -->
-                    <br>
-                </td>
-                <td style="border: 1px solid black;">{{ $saleOrder->quoation->machine->hsn ?? '' }}</td>
-                <td style="border: 1px solid black; text-align: center;">{{ $saleOrder->quotation->quantity ?? '' }}
-                </td>
-                <td style="border: 1px solid black; text-align: center;">NOS.</td>
-                @php
+            <td style="border: 1px solid black;">{{ $saleOrder->quotation->machine->hsn ?? '' }}</td>
+            <td align="center" style="border: 1px solid black;">{{ $saleOrder->quotation->quantity ?? '' }}</td>
+            <td align="center" style="border: 1px solid black;">NOS.</td>
+              @php
                     $dicountType = $saleOrder->discount_type;
                     $unitPrice = $saleOrder->total_amount;
 
@@ -260,36 +204,25 @@
                         $unitPrice = $unitPrice - $saleOrder->disount_amount;
                     }
                 @endphp
-                {{--<td style="border: 1px solid black; text-align: right;">{{
-                    format_indian_number($saleOrder->quotation->total_price) }}</td>--}}
-                {{--<td style="border: 1px solid black; text-align: right;">{{
-                    format_indian_number($saleOrder->discount) }}</td>--}}
-                <td style="border: 1px solid black; text-align: right;">
-                    {{ format_indian_number($unitPrice / $saleOrder->quotation->quantity) }}
-                </td>
-                <td style="border: 1px solid black; text-align: right;">{{ format_indian_number($unitPrice) }}</td>
-            </tr>
+            <td align="right"  style="border: 1px solid black;">{{ format_indian_number($unitPrice / $saleOrder->quotation->quantity) }}</td>
+            <td align="right" style="border: 1px solid black;">{{ format_indian_number($unitPrice) }}</td>
+        </tr>
 
-            <!-- Empty rows -->
-            @for ($i = 0; $i < 2; $i++)
-                <tr style="border: 1px solid black;">
-                    <td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;">&nbsp;</td>
-                    <td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;">&nbsp;</td>
-                    <td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;">&nbsp;</td>
-                    <td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;">&nbsp;</td>
-                    <td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;">&nbsp;</td>
-                    {{-- <td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;">&nbsp;</td> --}}
-                    <td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;">&nbsp;</td>
-                </tr>
-            @endfor
-        </tbody>
-    </table>
-    <table
-        style="width: 100%; border-collapse: collapse;   font-family: 'Poppins', sans-serif; font-size: 14px; border: 1px solid black;padding-bottom:0;">
+        @for($i=0;$i<$emptyRows;$i++)
+        <tr class="bordered">
+            <td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;">&nbsp; </td><td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;"></td><td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;"></td><td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;"></td><td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;"></td><td style="border-left: 1px solid black;border-top:hidden;border-bottom:hidden;"></td>
+        </tr>
+        @endfor
+    </tbody>
+</table>
+
+<!-- ================= REST SAME AS OLD ================= -->
+<!-- Payment / GST / Bank / Signature block unchanged -->
+     <table>
         <!-- Payment and GST rows -->
         <tr>
             <td style="width: 70%; border: 1px solid black; padding: 3px;">
-                <b><i>Payment: 40% Advance & 60% Before Dispatch</i></b>
+                <b><i>{{$saleOrder->payment_term_condition}}</i></b>
             </td>
             <td style="width: 15%; border: 1px solid black; text-align: center;"><b>Total<br>Amount</b></td>
             {{-- <td style="width: 15%; border: 1px solid black; text-align: right;">{{
@@ -298,8 +231,8 @@
                 {{ format_indian_number($unitPrice ?? '0') }}
             </td>
         </tr>
-        <tr>
-            <td style="border: 1px solid black; padding: 3px;">
+        <tr style="border-right:1px solid black;">
+            <td style="border: 1px solid black; padding: 3px; border-right:none;">
                 <b><i>Freight: {{ $saleOrder->transporation_payment ? 'To Pay' : 'Will Pay' }}</i></b>
             </td>
             @if ($saleOrder->transporation_payment)
@@ -380,10 +313,10 @@
             </td>
         </tr>--}}
 
-        <tr style="height: 100px; line-height: 1.5; ">
+        <tr style="height: 100px; line-height: 1.5; " class="bordered">
             <table style="width: 143%; ">
                 <tr>
-                    <td style="border: 1px solid black;border: none; border-top: 1px solid black;">
+                    <td class="bordered" style="border-left: none; border-bottom:none;">
                         <i>
                             Our Bank details:<br>
                             Company Name: <b>M. R. Engineers</b><br>
@@ -419,5 +352,4 @@
     </table>
 
 </body>
-
 </html>

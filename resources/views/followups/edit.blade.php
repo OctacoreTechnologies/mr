@@ -5,9 +5,10 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h1>Edit Quotation Follow-ups</h1>
-        <a href="{{ route('lead.index') }}" class="btn btn-sm btn-outline-primary">
-            <i class="fas fa-home"></i> Back to Leads
-        </a>
+       <a href="{{ url()->previous() }}" class="btn btn-sm btn-outline-primary">
+         <i class="fas fa-home"></i> Back
+      </a>
+
     </div>
 @stop
 

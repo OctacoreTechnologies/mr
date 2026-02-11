@@ -156,11 +156,12 @@ class SaleOrderController extends Controller
                 'remarks' => $validated['remarks'],
                 'followed_by' => $validated['followed_by'],
                 'payment_term' => $validated['payment_term'],
+                'payment_term_condition' => $validated['payment_term_condition'],
                 'advanace_payment' => $validated['advanace_payment'],
                 // 'advance_payment_date' => $validated['advance_payment_date'],
                 'po_no' => $validated['po_no'],
                 'transporation_charge' => $validated['transporation_charge'],
-                'address' => $validated['address'],
+                // 'address' => $validated['address'],
             ]);
 
             SaleLedger::where('sale_order_id', $saleOrder->id)->delete();
@@ -202,6 +203,8 @@ class SaleOrderController extends Controller
     {
         $saleOrder = SaleOrder::findOrFail($id);
 
+
+
         // return response()->view('sale_orders.pdf',[
         //     'saleOrder' => $saleOrder,
         // ]);
@@ -215,7 +218,7 @@ class SaleOrderController extends Controller
                 'isHtml5ParserEnabled' => true,  // Enable HTML5 parsing
                 'isPhpEnabled' => true,  // Allow PHP functions (if needed)
             ]);
-        return $pdf->stream('incvoice_' . $saleOrder->id . 'pdf');
+        return $pdf->stream('invoice_' . $saleOrder->id . 'pdf');
     }
 
     public function downloadAccountPdf($id)
@@ -242,7 +245,10 @@ class SaleOrderController extends Controller
                 'fontDir' => public_path('/fonts'),
                 'fontCache' => public_path('/fonts'),
                 'defaultFont' => 'Poppins',
+                'isFontSubsettingEnabled' => false,
+                'isHtml5ParserEnabled' => true,
             ]);
+        
 
         return $pdf->stream('advance-payment.pdf');
     }

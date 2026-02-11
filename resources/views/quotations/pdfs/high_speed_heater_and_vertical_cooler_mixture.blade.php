@@ -122,6 +122,7 @@
             width: 90%;
             line-height: 1;
             margin: 0 5px 15px 2px;
+            padding-bottom:25px; 
         }
 
         .parameter-table-t td {
@@ -136,11 +137,20 @@
         }
 
         .parameter-heading {
-            text-align: left;
+            /* text-align: left;
             width: 95%;
             margin-bottom: 10px;
             margin-top: 20px;
-            margin-left:20px; 
+            margin-left:20px;  */
+            /* text-decoration: underline; */
+        }
+        .parameter-heading h3{
+            padding: 6px 0px 6px 15px;
+            /* background-color: #2daae3; */
+            /* border-radius: 15px; */
+            /* color: white; */
+            color: black;
+            font-size: small;
             text-decoration: underline;
         }
 
@@ -148,7 +158,7 @@
         .parameter-table {
             width: 100%;
             table-layout: auto;  /* Allow cells to adjust according to content */
-            margin-left: 30px;
+            margin-left: 20px;
         }
 
         /* Optional: Improve readability by increasing row height for better spacing */
@@ -192,16 +202,16 @@ $secondPart = trim($parts[1]);
 @endphp
 
 
-<div class="page-break">
-    <div class="techincal-data parameter-table-t">
+<div class="page-break" style="margin-left:-12px;">
+    <div class="techincal-data parameter-table-t" style="padding-top:4px; ">
         <h2 style="font-weight: bolder; font-size: 24px;" >1. TECHNICAL DATA</h2>
 
         <!-- DESIGN PARAMETER -->
-        <div class="parameter-heading">
-            <h3 style="font-weight: bold;">1.1 DESIGN PARAMETER OF HIGH SPEED HEATER </h3>
+        <div class="parameter-heading"  style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
+            <h3 style="font-weight: bold;">1.1 <span> DESIGN PARAMETER OF HIGH SPEED HEATER </h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table" style="padding:5px 0 0 25px">
             <tr><td>• &nbsp; Model</td><td class="value-cell">{{ $firstPart }}</td></tr>
             <tr><td>• &nbsp; Product</td><td class="value-cell">{{ $quotation->application->name ?? '' }} </td></tr>
 
@@ -220,7 +230,7 @@ $secondPart = trim($parts[1]);
             <h3 style="font-weight: bolder;">1.2 ELECTRICAL PARAMETERS</h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table"  style="padding:5px 0 0 25px">
             <tr>
                 <td>• &nbsp; Motor Requirement</td>
                 <td class="value-cell">{{ $quotation->motorRequirement->motor_requirement ?? '' }}</td>
@@ -243,13 +253,13 @@ $secondPart = trim($parts[1]);
     </div>
 </div>
 
-<div class="page-break">
+<div class="page-break" style="margin-left:-12px;">
     <div class="techincal-data parameter-table-t">
-        <div class="parameter-heading">
+        <div class="parameter-heading" style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
             <h3 style="font-weight: bolder;">1.3 DESIGN PARAMETER OF VERTICAL COOLER MIXER</h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table"  style="padding:5px 0 0 25px">
             <tr><td>• &nbsp; Model</td><td class="value-cell">{{ $secondPart }}</td></tr>
             <tr><td>• &nbsp; Product</td><td class="value-cell">{{ $quotation->application->name ?? '' }} Compound</td></tr>
             <tr><td>• &nbsp; Batch Size</td><td class="value-cell">{{ $quotation->batche2->batches??'' }}Kg  </td></tr>
@@ -261,11 +271,11 @@ $secondPart = trim($parts[1]);
         </table>
 
         <!-- ELECTRICAL PARAMETERS -->
-        <div class="parameter-heading">
+        <div class="parameter-heading" style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
             <h3 style="font-weight: bolder;">1.4 ELECTRICAL PARAMETERS</h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table"  style="padding:5px 0 0 25px">
             <tr>
                 <td>• &nbsp; Motor Requirement</td>
                 <td class="value-cell">{{ $quotation->motorRequirement2->motor_requirement ?? '' }}</td>
@@ -288,13 +298,13 @@ $secondPart = trim($parts[1]);
     </div>
 </div>
 
-<div class="page-break">
-    <div class="techincal-data parameter-table-t">
+<div class="page-break" style="margin-left:-12px;">
+    <div class="techincal-data parameter-table-t" style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
         <div class="parameter-heading">
             <h3 style="font-weight: bolder;">1.5 TRANSMISSION</h3>
         </div>
 
-        <table class="parameter-table">
+        <table class="parameter-table"  style="padding:5px 0 0 25px">
             <tr>
                 <td>• &nbsp; Gear Box</td>
                 <td class="value-cell">Speed reduction Gear box is provided Heli Bevel Type</td>
@@ -346,7 +356,7 @@ $secondPart = trim($parts[1]);
      $mixerSpecs2 = [
         [
          'title'=>'Mixing Tool',
-         'description'=>'In Heater Mixer Consisting three blades – Bottom   Scraper, Fluidizing blade and Horn Shaped Blade. Specially Designed Shape and Angle Suitable for your Compound with Height adjustment. Spacers with wear resistance treatment. Cooler Mixer Blade Made from STAINLESSSTEEL: 304 specially designed shovel type'
+         'description'=>'Specially Designed Shape and Angle Suitable for your Compound with Height adjustment. Spacers with wear resistance treatment. Cooler Mixer Blade Made from STAINLESSSTEEL: 304 specially designed shovel type'
         ],
 
         [

@@ -1,43 +1,84 @@
         .card-header {
             border-radius: 8px 8px 0 0;
         }
+
         .card-body {
             background-color: #f9f9f9;
             border-radius: 0 0 8px 8px;
         }
-        .btn ,.btn-outline-primary, .btn-outline-danger, .btn-outline-info{
+
+        .btn,
+        .btn-outline-primary,
+        .btn-outline-danger,
+        .btn-outline-info {
             font-size: 14px;
             padding: 6px 14px;
             border-radius: 25px;
         }
+
         .btn-outline-primary:hover {
             background-color: #007bff;
             color: white;
         }
+
         .btn-outline-danger:hover {
             background-color: #dc3545;
             color: white;
         }
-        .table th, .table td {
+
+        .table th,
+        .table td {
             padding: 10px;
             text-align: center;
         }
+
         .table tbody tr:hover {
             background-color: #f1f1f1;
         }
-        .bg-primary, .btn-primary{
-            background:linear-gradient(to bottom, #4169E1, #007FFF);
+
+        .bg-primary,
+        .btn-primary {
+            background: linear-gradient(to bottom, #4169E1, #007FFF);
         }
-        .text-primary{
+
+        .text-primary {
             color: linear-gradient(to bottom, #4169E1, #007FFF);
         }
-        @font-face {
-        font-family: 'Poppins';
-        src: url('/fonts/Poppins-Regular.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-       }
 
-       body {
-        font-family: 'Poppins', sans-serif;
-       }
+        @font-face {
+            font-family: 'Poppins';
+            src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* ================= INPUT READONLY ================= */
+        .readonly-input {
+            background-color: #f4f6f9 !important;
+            /* AdminLTE readonly bg */
+            border-color: #ced4da !important;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        /* ================= SELECT2 READONLY ================= */
+        .select2-readonly .select2-selection {
+            background-color: #f4f6f9 !important;
+            border-color: #ced4da !important;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        /* text dim */
+        .select2-readonly .select2-selection__rendered {
+            color: #6c757d !important;
+        }
+
+        /* arrow fade */
+        .select2-readonly .select2-selection__arrow {
+            opacity: 0.4;
+        }

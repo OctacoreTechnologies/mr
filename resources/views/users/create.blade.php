@@ -50,6 +50,21 @@
                         @enderror
                     </div>
 
+                     <div class="col-md-6">
+                        <x-adminlte-input 
+                            name="contact_no" 
+                            value="{{ old('contact_no') }}" 
+                            label="Contact No" 
+                            placeholder="Enter Contact No" 
+                            fgroup-class="mb-3" 
+                            disable-feedback 
+                            required 
+                        />
+                        @error('contact_no')
+                            <p class="text-danger mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     {{-- Password --}}
                     <div class="col-md-6">
                         <x-adminlte-input 

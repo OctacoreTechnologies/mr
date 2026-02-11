@@ -196,7 +196,7 @@ function addLedgerRow(payment) {
 
         // Call API to get details
         $.ajax({
-            url: 'https://mrcrm.test/sale-order/' + saleOrderId + '/account-details',
+            url: 'https://mr.octacoretechnologies.in/sale-order/' + saleOrderId + '/account-details',
            
             method: 'GET',
             success: function(response) {
@@ -264,4 +264,6 @@ function addLedgerRow(payment) {
     //end here
 
  });
+
+// pdf invoice download code 
 

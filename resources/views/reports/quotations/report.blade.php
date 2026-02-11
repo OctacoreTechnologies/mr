@@ -196,6 +196,8 @@
     <!-- jsPDF for PDF export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="{{ asset('js/report.js') }}"></script>
+
 <script>
     $(document).ready(function() {
         // Initialize Select2 for multi-select dropdowns
@@ -211,78 +213,19 @@
         });
     });
 
-    // export files code  
-     document.getElementById('exportExcelBtn').addEventListener('click', function () {
-            event.preventDefault();
-            var table = document.getElementById('quotationTable');
-            var wb = XLSX.utils.table_to_book(table, { sheet: 'Quotations' });
-            XLSX.writeFile(wb, 'quotations.xlsx');
-        });
+    document.getElementById('exportExcelBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    ReportExport.exportExcel('quotationTable', 'quotations.xlsx');
+});
 
-        // CSV Export (using PapaParse)
-        document.getElementById('exportCsvBtn').addEventListener('click', function () {
-            event.preventDefault();
-            var table = document.getElementById('quotationTable');
-            var rows = Array.from(table.rows).map(row => Array.from(row.cells).map(cell => cell.innerText));
-            var csv = Papa.unparse(rows);
-            var blob = new Blob([csv], { type: 'text/csv' });
-            var link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'quotations.csv';
-    
-            link.click();
-        });
+document.getElementById('exportCsvBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    ReportExport.exportCSV('quotationTable', 'quotations.csv');
+});
 
-        // PDF Export (using jsPDF)
-// PDF Export (using jsPDF)
-document.getElementById('exportPdfBtn').addEventListener('click', function () {
-    event.preventDefault();
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    const table = document.getElementById('quotationTable');
-
-    if (!table) {
-        alert("Table not found!");
-        return;
-    }
-
-    // Extract headers
-    const headers = Array.from(table.querySelectorAll("thead tr th")).map(th => th.innerText.trim());
-
-    // Extract body data
-    const bodyRows = table.querySelectorAll("tbody tr");
-    const data = Array.from(bodyRows).map(row =>
-        Array.from(row.cells).map(cell => cell.innerText.trim())
-    );
-
-    // Set Title
-    doc.setFontSize(14);
-    doc.text("Quotation Report", 14, 15);
-
-    // Generate table using autoTable
-    doc.autoTable({
-        startY: 20,
-        head: [headers],
-        body: data,
-        styles: {
-            fontSize: 9,
-            cellPadding: 3,
-            overflow: 'linebreak',
-        },
-        headStyles: {
-            fillColor: [0, 123, 255],
-            textColor: 255,
-            fontStyle: 'bold',
-        },
-        alternateRowStyles: {
-            fillColor: [245, 245, 245],
-        },
-        theme: 'striped',
-        margin: { top: 20 },
-    });
-
-    doc.save('quotations.pdf');
+document.getElementById('exportPdfBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    ReportExport.exportPDF('quotationTable', 'Quotation Report', 'quotations.pdf');
 });
 
 </script>

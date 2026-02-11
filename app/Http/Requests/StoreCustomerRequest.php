@@ -24,6 +24,7 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'location_type' => 'nullable|string|max:255',
+            'lead_source'=>'nullable|string|max:255',
             'country' => 'nullable|string|max:255',
             'region' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
@@ -38,6 +39,7 @@ class StoreCustomerRequest extends FormRequest
             'contact_person_1_name' => 'nullable|string|max:255',
             'contact_person_1_designation' => 'nullable|string|max:255',
             'contact_person_1_email' => 'nullable|email|max:255',
+            'contact_person_1_contact' => 'nullable|string|max:255',
 
             'contact_person_2_name' => 'nullable|string|max:255',
             'contact_person_2_designation' => 'nullable|string|max:255',

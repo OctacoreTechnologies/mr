@@ -44,12 +44,14 @@
                         <td>
                             @php
                                 $statusClass = [
-                                    'Draft' => 'warning',
-                                    'Sent' => 'info',
-                                    //'Accepted' => 'success',
-                                    'Approved' => 'success',
-                                    'Rejected' => 'danger',
-                                ];
+                                               'Draft'         => 'secondary', // initial stage
+                                               'Sent'          => 'info',      // in progress
+                                               'Approved'      => 'primary',   // approved but not confirmed
+                                               'Order Confirm' => 'success',   // final positive stage
+                                               'Rejected'      => 'danger',    // failed state
+                                                //    'Accepted'      => '',
+                                               ];
+
 
                                 $badgeClass = $statusClass[$quotation->status] ?? 'secondary'; // fallback if status is unknown
                             @endphp
@@ -59,7 +61,32 @@
                             </span>
                         </td>
                         <td>
-                            {{ is_null($quotation->is_verified) ? 'N.A' : ($quotation->is_verified ? 'Yes' : 'No') }}
+                            {{--is_null($quotation->is_verified) ? 'Pending' : ($quotation->is_verified ? 'Yes' : 'No') --}}
+                            @php
+                            $verifiedStatusClass = [
+                                    'Reject' => 'danger',
+                                    'Yes' => 'success',
+                                    'Editable' => 'warning',
+                                ];
+                            $verifiedStatus = "Pending";
+                            if(is_null($quotation->is_verified)){
+                              $verifiedStatus = "Pending";
+                            }
+                            elseif($quotation->is_verified== "0"){
+                              $verifiedStatus = "Reject";
+                            }
+                            elseif($quotation->is_verified == "1"){
+                              $verifiedStatus = "Yes";
+                            }
+                            elseif($quotation->is_verified == "2"){
+                              $verifiedStatus = "Editable";
+                            }
+                            $verifiedBadgeClass = $verifiedStatusClass[$verifiedStatus] ?? 'secondary';
+                            @endphp
+
+                            <span class="badge badge-{{ $verifiedBadgeClass }}">
+                                {{ ucfirst($verifiedStatus) }}
+                            </span>
                         </td>
                         <td>
                             <a class="btn btn-link text-danger" href="{{ route('quotation.pdf', $quotation->id) }}"
@@ -151,7 +178,8 @@
             <x-adminlte-select name="is_verified" label="Select" id="isVerified" fgroup-class="col-12 mb-3" required>
                 <option disabled selected>Select Quotation Verify</option>
                 <option value="1">Yes</option>
-                <option value="0">No</option>
+                <option value="0">Reject</option>
+                <option value="2">Editable</option>
             </x-adminlte-select>
         </div>
         <div class="d-flex justify-content-end mt-3">
@@ -306,10 +334,65 @@
     </script>
 @endpush
 
-<!-- @section('css')
-<link rel="stylesheet" href="{{ asset('style/index.css') }}">
-@stop -->
-{{--
 @push('css')
-<link rel="stylesheet" href="{{asset('style/customer.css')}}">
-@endpush--}}
+<style>
+    /* ===== Card Enhancement ===== */
+/* ===== Prevent Horizontal Scroll ===== */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
+/* ===== Content Wrapper Fix (AdminLTE) ===== */
+.content-wrapper {
+    margin-left: 250px !important; /* sidebar width */
+    overflow-x: hidden;
+}
+
+/* ===== When Sidebar Collapsed ===== */
+.sidebar-collapse .content-wrapper {
+    margin-left: 80px !important;
+}
+
+/* ===== Main Content Padding ===== */
+.content {
+    padding: 15px 20px;
+    overflow-x: hidden;
+}
+
+/* ===== Table Responsive Control ===== */
+.table-responsive {
+    overflow-x: auto;
+    padding-bottom: 5px;
+}
+
+/* ===== Datatable Width Fix ===== */
+table.dataTable {
+    width: 100% !important;
+    table-layout: auto;
+}
+
+/* ===== Fix Floating Card Rows ===== */
+table.dataTable tbody tr {
+    max-width: 100%;
+}
+
+/* ===== Actions Column Wrap Control ===== */
+table.dataTable td:last-child {
+    white-space: nowrap;
+}
+
+/* ===== Sidebar Shadow Separation ===== */
+.main-sidebar {
+    box-shadow: 2px 0 12px rgba(0,0,0,0.08);
+}
+
+/* ===== Remove Extra Body Margin ===== */
+.wrapper {
+    overflow-x: hidden;
+}
+
+</style>
+@endpush
+
+
