@@ -417,7 +417,7 @@
       <tr>
         <td style="color: #032854; padding: 3px 2px;">Date</td>
         <td style="text-align: center; padding: 3px;">:</td>
-        <td style="padding: 3px 0;">{{ $quotation->date ?? '' }}</td>
+        <td style="padding: 3px 0;">{{ formatDate($quotation->date ?? '') }}</td>
       </tr>
 
       <tr>
@@ -696,14 +696,6 @@
         </tr>
         <tr>
           <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
-            <span>&#8226;&nbsp; Motor</span>
-          </td>
-          <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;HINDUSTAN Make 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley Arrangement.
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
             <span>&#8226;&nbsp; Driving System</span>
           </td>
           <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
@@ -711,7 +703,14 @@
             drive transmission. The Belts Are Tightened by means of motor sliding screw.
           </td>
         </tr>
-
+        <tr>
+          <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
+            <span>&#8226;&nbsp; Motor</span>
+          </td>
+          <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
+            :&nbsp;{{$quotation->makeMotor->name??''}}.
+          </td>
+        </tr>
         <tr>
           <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
             <span>&#8226;&nbsp; Electrical Control</span>

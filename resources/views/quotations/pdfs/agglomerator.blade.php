@@ -149,7 +149,7 @@
         [
             'title' => 'Motor',
             'description' =>
-                'HINDUSTAN Make 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley   Arrangement.',
+                'Motor 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley   Arrangement.',
         ],
 
         [

@@ -80,7 +80,7 @@
 
                 <div class="col-md-6 mb-3">
                     <label>Price(Unit)</label>
-                    <input type="number" name="total_price" id="total_price" class="form-control" step="0.01" value="{{ old('total_price') }}">
+                    <input type="text" name="total_price" id="total_price" class="form-control format-number" step="0.01" value="{{ old('total_price') }}">
                 </div>
 
                 <div class="col-md-6 mb-3">

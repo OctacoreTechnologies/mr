@@ -49,7 +49,7 @@
         <tr>
             <td style="color: #032854; padding: 3px 2px;">Date</td>
             <td style="text-align: center; padding: 3px;">:</td>
-            <td style="padding: 3px 0;">{{ $quotation->date ?? '' }}</td>
+            <td style="padding: 3px 0;">{{ formatDate($quotation->date ?? '') }}</td>
         </tr>
 
         <tr>

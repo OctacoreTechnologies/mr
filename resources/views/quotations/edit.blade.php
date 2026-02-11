@@ -67,12 +67,12 @@
 
                     <div class="form-group col-md-6">
                         <label for="quantity">Quantity</label>
-                        <input type="number" id="quantity" class="form-control" name="quantity" step="0.01" value="{{ old('quantity', $quotation->quantity) }}">
+                        <input type="number" id="quantity" class="form-control " name="quantity" step="0.01" value="{{ old('quantity', $quotation->quantity) }}">
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="total_price">Price(Unit)</label>
-                        <input type="number" class="form-control" id="total_price" name="total_price" step="0.01" value="{{ old('total_price', $quotation->total_price) }}">
+                        <input type="text" class="form-control format-number" id="total_price" name="total_price" step="0.01" value="{{ old('total_price', $quotation->total_price) }}">
                     </div>
 
                     <!-- <div class="form-group col-md-6">
@@ -93,11 +93,11 @@
                             />
                     </div>
                     <div class="form-group col-md-6 mb-3" id="discountAmount">
-                        <x-adminlte-input type="number" label="Discount Amount" id="discount_amount" name="discount_amount" value="{{ $quotation->discount_amount }}"
+                        <x-adminlte-input type="text" label="Discount Amount" id="discount_amount" name="discount_amount" value="{{ $quotation->discount_amount }}" class="format-number"
                              />
                     </div>
                      <div class="form-group col-md-6 mb-3" id="total">
-                        <x-adminlte-input type="number" id="total_amount" label="Total" name="total" value="{{ $quotation->total }}"
+                        <x-adminlte-input type="text" id="total_amount" label="Total" name="total" value="{{ $quotation->total }}" class="format-number"
                            />
                     </div>
                     <div class="form-group col-md-6" id="reminder">
@@ -173,12 +173,12 @@
 
     // Function to update the total price
     function updateTotal() {
-        var price = parseFloat($('#total_price').val()) || 0;
-        var quantity = parseFloat($('#quantity').val())||1 ;
-        var discountType = $('#discountType').val();
-        var discountPercentage = parseFloat($('#discount_percentage').val()) || 0;
-        var discountAmount = parseFloat($('#discount_amount').val()) || 0;
-
+       // Remove commas and parse as float
+         var price = parseFloat($('#total_price').val().replace(/,/g, '')) || 0;
+         var quantity = parseFloat($('#quantity').val().replace(/,/g, '')) || 1;
+         var discountType = $('#discountType').val();
+         var discountPercentage = parseFloat($('#discount_percentage').val().replace(/,/g, '')) || 0;
+         var discountAmount = parseFloat($('#discount_amount').val().replace(/,/g, '')) || 0;
         // var totalPirce = price*quantity;
 
         var total = price*quantity;
