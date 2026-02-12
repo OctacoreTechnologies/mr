@@ -62,7 +62,7 @@
             <td style="color: #032854; padding: 3px 2px;">Contact No</td>
             <td style="text-align: center; padding: 3px;">:</td>
             <td style="padding: 3px 0;">
-                {{ '+91 ' . substr($quotation->customer->contact_no ?? '8912929114', 0, 5) . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 5) }}
+                {{ $quotation->customer->country_code??'+91'.' '. substr($quotation->customer->contact_no ?? '8912929114', 0, 5) . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 5) }}
             </td>
         </tr>
 

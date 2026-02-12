@@ -3,7 +3,7 @@
 @section('title', 'Edit Lead')
 
 @section('content_header')
-<a href="{{ route('lead.index') }}" class="text-primary"><i class="fas fa-arrow-left"></i> Home</a>
+    <a href="{{ route('lead.index') }}" class="text-primary"><i class="fas fa-arrow-left"></i> Home</a>
 @stop
 
 @section('content')
@@ -23,12 +23,20 @@
                     <input type="hidden" name="type" value="lead">
                     <div class="col-md-6">
                         <x-adminlte-select name="lead_source" label="Lead Source" fgroup-class="mb-3">
-                            <option value="web" {{ old('lead_source', $lead->lead_source) == 'web' ? 'selected' : '' }}>Web
+                            <option value="web" {{ old('lead_source', $lead->lead_source) == 'web' ? 'selected' : '' }}>
+                                Web
                             </option>
-                            <option value="referral" {{ old('lead_source', $lead->lead_source) == 'referral' ? 'selected' : '' }}>Referral</option>
-                            <option value="cold_call" {{ old('lead_source', $lead->lead_source) == 'cold_call' ? 'selected' : '' }}>Cold Call</option>
-                            <option value="social_media" {{ old('lead_source', $lead->lead_source) == 'social_media' ? 'selected' : '' }}>Social Media</option>
-                            <option value="other" {{ old('lead_source', $lead->lead_source) == 'other' ? 'selected' : '' }}>
+                            <option value="referral"
+                                {{ old('lead_source', $lead->lead_source) == 'referral' ? 'selected' : '' }}>Referral
+                            </option>
+                            <option value="cold_call"
+                                {{ old('lead_source', $lead->lead_source) == 'cold_call' ? 'selected' : '' }}>Cold Call
+                            </option>
+                            <option value="social_media"
+                                {{ old('lead_source', $lead->lead_source) == 'social_media' ? 'selected' : '' }}>Social
+                                Media</option>
+                            <option value="other"
+                                {{ old('lead_source', $lead->lead_source) == 'other' ? 'selected' : '' }}>
                                 Other</option>
                         </x-adminlte-select>
                         @error('lead_source')
@@ -38,8 +46,12 @@
                     <!-- Location Type -->
                     <div class="col-md-6">
                         <x-adminlte-select name="location_type" label="Location Type" fgroup-class="mb-3">
-                            <option value="international" {{ old('location_type', $lead->location_type) == 'international' ? 'selected' : '' }}>International</option>
-                            <option value="domestic" {{ old('location_type', $lead->location_type) == 'domestic' ? 'selected' : '' }}>Domestic</option>
+                            <option value="international"
+                                {{ old('location_type', $lead->location_type) == 'international' ? 'selected' : '' }}>
+                                International</option>
+                            <option value="domestic"
+                                {{ old('location_type', $lead->location_type) == 'domestic' ? 'selected' : '' }}>Domestic
+                            </option>
                         </x-adminlte-select>
                     </div>
 
@@ -49,24 +61,34 @@
                             <option value="">--Please choose an option--</option>
                             <option value="africa" {{ old('continent', $lead->continent) == 'africa' ? 'selected' : '' }}>
                                 Africa</option>
-                            <option value="antarctica" {{ old('continent', $lead->continent) == 'antarctica' ? 'selected' : '' }}>Antarctica</option>
-                            <option value="asia" {{ old('continent', $lead->continent) == 'asia' ? 'selected' : '' }}>Asia
+                            <option value="antarctica"
+                                {{ old('continent', $lead->continent) == 'antarctica' ? 'selected' : '' }}>Antarctica
+                            </option>
+                            <option value="asia" {{ old('continent', $lead->continent) == 'asia' ? 'selected' : '' }}>
+                                Asia
                             </option>
                             <option value="europe" {{ old('continent', $lead->continent) == 'europe' ? 'selected' : '' }}>
                                 Europe</option>
-                            <option value="north_america" {{ old('continent', $lead->continent) == 'north_america' ? 'selected' : '' }}>North America</option>
-                            <option value="oceania" {{ old('continent', $lead->continent) == 'oceania' ? 'selected' : '' }}>
+                            <option value="north_america"
+                                {{ old('continent', $lead->continent) == 'north_america' ? 'selected' : '' }}>North America
+                            </option>
+                            <option value="oceania"
+                                {{ old('continent', $lead->continent) == 'oceania' ? 'selected' : '' }}>
                                 Oceania</option>
-                            <option value="south_america" {{ old('continent', $lead->continent) == 'south_america' ? 'selected' : '' }}>South America</option>
+                            <option value="south_america"
+                                {{ old('continent', $lead->continent) == 'south_america' ? 'selected' : '' }}>South America
+                            </option>
                         </x-adminlte-select>
                     </div>
 
                     <!-- Country -->
                     <div class="col-md-6">
-                        <x-adminlte-select name="country" label="Select Country">
+                        <x-adminlte-select name="country" label="Select Country" class="country-select">
                             <option value="">--Please choose an option--</option>
                             @foreach ($countries as $country)
-                                <option value="{{ strtolower($country->country) }}" {{ old('country', $lead->country) == strtolower($country->country) ? 'selected' : '' }}>{{ $country->country }}
+                                <option value="{{ strtolower($country->country) }}" data-code="{{ $country->country_code }}"
+                                    {{ old('country', $lead->country) == strtolower($country->country) ? 'selected' : '' }}>
+                                    {{ $country->country }}
                                 </option>
                             @endforeach
                         </x-adminlte-select>
@@ -77,7 +99,8 @@
                         <label for="region" class="font-weight-bold text-muted">Region</label>
                         <select name="region" id="region" class="form-control select2 rounded-pill">
                             @foreach ($regions as $region)
-                                <option value="{{ $region }}" {{ old('region', $lead->region) == $region ? 'selected' : '' }}>
+                                <option value="{{ $region }}"
+                                    {{ old('region', $lead->region) == $region ? 'selected' : '' }}>
                                     {{ $region }}</option>
                             @endforeach
                         </select>
@@ -87,7 +110,9 @@
                     <div class="col-md-6" id="stateGroup">
                         <x-adminlte-select name="state" label="State" class="form-control w-100">
                             @foreach ($states as $state)
-                                <option value="{{ $state->name }}" {{ old('state', $lead->state) == $state->name ? 'selected' : '' }}>{{ $state->name }}</option>
+                                <option value="{{ $state->name }}"
+                                    {{ old('state', $lead->state) == $state->name ? 'selected' : '' }}>{{ $state->name }}
+                                </option>
                             @endforeach
                         </x-adminlte-select>
                     </div>
@@ -118,10 +143,24 @@
 
                     <!-- Contact No -->
                     <div class="col-md-6">
-                        <x-adminlte-input name="contact_no" value="{{ old('contact_no', $lead->contact_no) }}"
-                            label="Contact No" placeholder="Enter Contact No" fgroup-class="mb-3" disable-feedback />
-                    </div>
 
+                        <label>Contact No</label>
+
+                        <div class="input-group">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text country-code">
+                                    {{ $lead->country_code ?? +91 }}
+                                </span>
+                                <input type="hidden" name="country_code" id="countryCodeField" id="countryCode"
+                                    value="{{ $lead->country_code ?? +91 }}">
+                            </div>
+
+                            <input type="text" name="contact_no" value="{{ $lead->contact_no }}" 
+                                class="form-control contact-number" placeholder="Enter Contact No">
+
+                        </div>
+                    </div>
                     <!-- Address Lines -->
                     <div class="col-md-6">
                         <x-adminlte-textarea name="address_line_1" label="Address Line 1 (Bill To)"
@@ -137,7 +176,8 @@
                     <div class="col-md-6">
                         <x-adminlte-select name="no_of_persons" id="no_of_persons" label="No. Of Contact Person's">
                             @for ($i = 1; $i <= 6; $i++)
-                                <option value="{{ $i }}" {{ old('no_of_persons', $lead->no_of_persons) == $i ? 'selected' : '' }}>
+                                <option value="{{ $i }}"
+                                    {{ old('no_of_persons', $lead->no_of_persons) == $i ? 'selected' : '' }}>
                                     {{ $i }}</option>
                             @endfor
                         </x-adminlte-select>
@@ -153,12 +193,31 @@
                         <div class="col-md-6">
                             <x-adminlte-input name="contact_person_1_designation"
                                 value="{{ old('contact_person_1_designation', $lead->contact_person_1_designation) }}"
-                                label="Contact Person 1 Designation" placeholder="Enter Designation" fgroup-class="mb-3" />
+                                label="Contact Person 1 Designation" placeholder="Enter Designation"
+                                fgroup-class="mb-3" />
                         </div>
-                        <div class="col-md-6">
+                        {{-- <div class="col-md-6">
                             <x-adminlte-input name="contact_person_1_contact"
                                 value="{{ old('contact_person_1_contact', $lead->contact_person_1_contact) }}"
-                                label="Contact Person 1 Contact" placeholder="Enter contact" fgroup-class="mb-3" />
+                                label="Contact Person 1 Contact" placeholder="Enter contact" fgroup-class="mb-3" class="contact-number"/>
+                        </div> --}}
+                        <div class="col-md-6">
+                            <label>Contact Person {{ $i }} Contact</label>
+
+                            <div class="input-group">
+
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text country-code">
+                                        {{ $lead->country_code ?? +91 }}
+                                    </span>
+                                    <input type="hidden" name="country_code" id="countryCodeField"
+                                        class="country_code_field" value="{{ $lead->country_code ?? +91 }}">
+                                </div>
+
+                                <input type="text" name="contact_person_{{ $i }}_contact"
+                                    value="{{ $lead->{'contact_person_' . $i . '_contact'} ?? '' }}"
+                                    class="form-control contact-number" placeholder="Enter Contact No">
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <x-adminlte-input name="contact_person_1_email"
@@ -175,10 +234,15 @@
                     <!-- Status and Followed By -->
                     <div class="col-md-6">
                         <x-adminlte-select name="status" label="Status" fgroup-class="mb-3">
-                            <option value="new" {{ old('status', $lead->status) == 'new' ? 'selected' : '' }}>New</option>
-                            <option value="contacted" {{ old('status', $lead->status) == 'contacted' ? 'selected' : '' }}>Contacted</option>
-                            <option value="qualified" {{ old('status', $lead->status) == 'qualified' ? 'selected' : '' }}>Qualified</option>
-                            <option value="disqualified" {{ old('status', $lead->status) == 'disqualified' ? 'selected' : '' }}>Disqualified</option>
+                            <option value="new" {{ old('status', $lead->status) == 'new' ? 'selected' : '' }}>New
+                            </option>
+                            <option value="contacted" {{ old('status', $lead->status) == 'contacted' ? 'selected' : '' }}>
+                                Contacted</option>
+                            <option value="qualified" {{ old('status', $lead->status) == 'qualified' ? 'selected' : '' }}>
+                                Qualified</option>
+                            <option value="disqualified"
+                                {{ old('status', $lead->status) == 'disqualified' ? 'selected' : '' }}>Disqualified
+                            </option>
                         </x-adminlte-select>
                     </div>
                     <!-- Remarks -->
@@ -193,7 +257,9 @@
                     <div class="col-md-6">
                         <x-adminlte-select name="followed_by" label="Followed By" class="select2" fgroup-class="mb-3">
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ old('followed_by', $lead->followed_by) == $user->id ? 'selected' : '' }}>{{ $user->name }}</option>
+                                <option value="{{ $user->id }}"
+                                    {{ old('followed_by', $lead->followed_by) == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }}</option>
                             @endforeach
                         </x-adminlte-select>
                     </div>
@@ -212,41 +278,50 @@
 @endsection
 
 @push('css')
-    <link rel="stylesheet" href="{{asset('style/customer.css')}}">
+    <link rel="stylesheet" href="{{ asset('style/customer.css') }}">
 @endpush
 
 @push('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const noOfPersonsSelect = document.getElementById('no_of_persons') || document.querySelector('[name="no_of_persons"]');
+        document.addEventListener('DOMContentLoaded', function() {
+            const noOfPersonsSelect = document.getElementById('no_of_persons') || document.querySelector(
+                '[name="no_of_persons"]');
             const contactPersonFieldsContainer = document.getElementById('contact_person_fields');
 
             const existingContacts = {};
             @for ($i = 1; $i <= 6; $i++)
                 existingContacts[{{ $i }}] = {
                     name: {!! json_encode(old('contact_person_' . $i . '_name', $lead->{'contact_person_' . $i . '_name'} ?? '')) !!},
-                    designation: {!! json_encode(old('contact_person_' . $i . '_designation', $lead->{'contact_person_' . $i . '_designation'} ?? '')) !!},
+                    designation: {!! json_encode(
+                        old('contact_person_' . $i . '_designation', $lead->{'contact_person_' . $i . '_designation'} ?? ''),
+                    ) !!},
                     contact: {!! json_encode(old('contact_person_' . $i . '_contact', $lead->{'contact_person_' . $i . '_contact'} ?? '')) !!},
                     email: {!! json_encode(old('contact_person_' . $i . '_email', $lead->{'contact_person_' . $i . '_email'} ?? '')) !!}
                 };
             @endfor
 
-                function escapeHtml(str) {
-                    if (str === null || str === undefined) return '';
-                    return String(str)
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/\"/g, '&quot;')
-                        .replace(/'/g, '&#39;');
-                }
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/\"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
 
             function renderContactPersons() {
                 const numberOfPersons = parseInt((noOfPersonsSelect && noOfPersonsSelect.value) || 1);
                 if (!contactPersonFieldsContainer) return;
                 contactPersonFieldsContainer.innerHTML = '';
+                var countryCode = $("#countryCode").val()??+91;
                 for (let i = 1; i <= numberOfPersons; i++) {
-                    const data = existingContacts[i] || { name: '', designation: '', contact: '', email: '' };
+                    const data = existingContacts[i] || {
+                        name: '',
+                        designation: '',
+                        contact: '',
+                        email: ''
+                    };
                     const fieldHTML = `
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
@@ -260,11 +335,21 @@
                                     <input type="text" class="form-control" id="contact_person_${i}_designation" name="contact_person_${i}_designation" placeholder="Enter Designation" value="${escapeHtml(data.designation)}">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="contact_person_${i}_contact">Contact Person ${i} Contact</label>
-                                    <input type="text" class="form-control" id="contact_person_${i}_contact" name="contact_person_${i}_contact" placeholder="Enter Contact" value="${escapeHtml(data.contact)}">
-                                </div>
+                           <div class="col-md-6">
+                                   <label>Contact No</label>
+                                            <div class="input-group">
+
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text country-code">
+                                                   ${countryCode}
+                                                </span>
+                                                <input type="hidden" name="country_code" id="countryCodeField" value="+91">
+                                            </div>
+
+                                             <input type="text" name="contact_person_${i}_contact" value="${escapeHtml(data.designation)}"
+                                                 class="form-control contact-number" placeholder="Enter Contact No">
+                 
+                                             </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
@@ -283,4 +368,5 @@
             }
         });
     </script>
+    <script src={{ asset('js/country.js') }}></script>
 @endpush

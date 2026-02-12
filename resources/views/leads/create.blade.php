@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Lead  Create')
+@section('title', 'Lead Create')
 
 @section('content_header')
-<a href="{{ route('lead.index') }}" class="text-primary"><i class="fas fa-arrow-left"></i> Home</a>
+    <a href="{{ route('lead.index') }}" class="text-primary"><i class="fas fa-arrow-left"></i> Home</a>
 @stop
 
 @section('content')
@@ -59,9 +59,9 @@
 
                     <!-- Country -->
                     <div class="col-md-6">
-                        <x-adminlte-select name="country" label="Select Country">
+                        <x-adminlte-select name="country" label="Select Country"  class="country-select">
                             @foreach ($countries as $country)
-                                <option value="{{ strtolower($country->country) }}">{{ $country->country }}</option>
+                                <option value="{{ strtolower($country->country) }}" data-code="{{ $country->country_code }}">{{ $country->country }}</option>
                             @endforeach
                         </x-adminlte-select>
                     </div>
@@ -71,7 +71,7 @@
                         <label for="region" class="font-weight-bold text-muted">Region</label>
                         <select name="region" id="region" class="form-control select2 rounded-pill">
                             @foreach ($regions as $region)
-                                <option value="{{ old('region', $region)}}">{{ $region}}</option>
+                                <option value="{{ old('region', $region) }}">{{ $region }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -87,14 +87,14 @@
 
                     <!-- City -->
                     <div class="col-md-6">
-                        <x-adminlte-input name="city" value="{{ old('city') }}" label="City" placeholder="Enter City"
-                            fgroup-class="mb-3" disable-feedback />
+                        <x-adminlte-input name="city" value="{{ old('city') }}" label="City"
+                            placeholder="Enter City" fgroup-class="mb-3" disable-feedback />
                     </div>
 
                     <!-- Area -->
                     <div class="col-md-6">
-                        <x-adminlte-input name="area" value="{{ old('area') }}" label="Area" placeholder="Enter Area"
-                            fgroup-class="mb-3" disable-feedback />
+                        <x-adminlte-input name="area" value="{{ old('area') }}" label="Area"
+                            placeholder="Enter Area" fgroup-class="mb-3" disable-feedback />
                     </div>
 
                     <!-- Pincode -->
@@ -110,10 +110,25 @@
                     </div>
 
                     <!-- Contact No -->
-                    <div class="col-md-6">
-                        <x-adminlte-input name="contact_no" value="{{ old('contact_no') }}" label="Contact No"
-                            placeholder="Enter Contact No" fgroup-class="mb-3" disable-feedback />
+                    <div class="col-md-6 contact-wrapper">
+
+                        <label>Contact No</label>
+
+                        <div class="input-group">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text country-code">
+                                    +91
+                                </span>
+                                <input type="hidden" name="country_code">
+                            </div>
+
+                            <input type="text" name="contact_no" value="{{ old('contact_no') }}"
+                                class="form-control contact-number" placeholder="Enter Contact No">
+
+                        </div>
                     </div>
+
 
                     <!-- Address Lines -->
                     <div class="col-md-6">
@@ -147,8 +162,9 @@
                                 placeholder="Enter Designation" fgroup-class="mb-3" />
                         </div>
                         <div class="col-md-6">
-                            <x-adminlte-input name="contact_person_1_contact" value="{{ old('contact_person_1_contact') }}"
-                                label="Contact Person 1 Contact" placeholder="Enter contact" fgroup-class="mb-3" />
+                            <x-adminlte-input name="contact_person_1_contact"
+                                value="{{ old('contact_person_1_contact') }}" label="Contact Person 1 Contact"
+                                placeholder="Enter contact" fgroup-class="mb-3" class="contact-number"/>
                         </div>
                         <div class="col-md-6">
                             <x-adminlte-input name="contact_person_1_email" value="{{ old('contact_person_1_email') }}"
@@ -165,9 +181,12 @@
                     <div class="col-md-6">
                         <x-adminlte-select name="status" label="Status" fgroup-class="mb-3">
                             <option value="new" {{ old('status') == 'new' ? 'selected' : '' }}>New</option>
-                            <option value="contacted" {{ old('status') == 'contacted' ? 'selected' : '' }}>Contacted</option>
-                            <option value="qualified" {{ old('status') == 'qualified' ? 'selected' : '' }}>Qualified</option>
-                            <option value="disqualified" {{ old('status') == 'disqualified' ? 'selected' : '' }}>Disqualified
+                            <option value="contacted" {{ old('status') == 'contacted' ? 'selected' : '' }}>Contacted
+                            </option>
+                            <option value="qualified" {{ old('status') == 'qualified' ? 'selected' : '' }}>Qualified
+                            </option>
+                            <option value="disqualified" {{ old('status') == 'disqualified' ? 'selected' : '' }}>
+                                Disqualified
                             </option>
                         </x-adminlte-select>
                     </div>
@@ -204,13 +223,14 @@
 @endsection
 
 @push('css')
-    <link rel="stylesheet" href="{{asset('style/customer.css')}}">
+    <link rel="stylesheet" href="{{ asset('style/customer.css') }}">
 @endpush
 
 @push('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const noOfPersonsSelect = document.getElementById('no_of_persons') || document.querySelector('[name="no_of_persons"]');
+        document.addEventListener('DOMContentLoaded', function() {
+            const noOfPersonsSelect = document.getElementById('no_of_persons') || document.querySelector(
+                '[name="no_of_persons"]');
             const contactPersonFieldsContainer = document.getElementById('contact_person_fields');
 
             const existingContacts = {};
@@ -223,22 +243,28 @@
                 };
             @endfor
 
-                function escapeHtml(str) {
-                    if (str === null || str === undefined) return '';
-                    return String(str)
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/\"/g, '&quot;')
-                        .replace(/'/g, '&#39;');
-                }
+            function escapeHtml(str) {
+                if (str === null || str === undefined) return '';
+                return String(str)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/\"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
 
             function renderContactPersons() {
                 const numberOfPersons = parseInt((noOfPersonsSelect && noOfPersonsSelect.value) || 1);
+                 var code = $(this).find(':selected').data('code');
                 if (!contactPersonFieldsContainer) return;
                 contactPersonFieldsContainer.innerHTML = '';
                 for (let i = 1; i <= numberOfPersons; i++) {
-                    const data = existingContacts[i] || { name: '', designation: '', contact: '', email: '' };
+                    const data = existingContacts[i] || {
+                        name: '',
+                        designation: '',
+                        contact: '',
+                        email: ''
+                    };
                     const fieldHTML = `
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -253,10 +279,20 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label for="contact_person_${i}_contact">Contact Person ${i} Contact</label>
-                                        <input type="text" class="form-control" id="contact_person_${i}_contact" name="contact_person_${i}_contact" placeholder="Enter Contact" value="${escapeHtml(data.contact)}">
-                                    </div>
+                                   <label>Contact No</label>
+                                            <div class="input-group">
+
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text country-code">
+                                                    +91
+                                                </span>
+                                                <input type="hidden" name="country_code" id="countryCodeField" value="+91">
+                                            </div>
+
+                                             <input type="text" name="contact_person_${i}_contact" value=""
+                                                 class="form-control contact-number" placeholder="Enter Contact No">
+                 
+                                             </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mb-3">
@@ -275,4 +311,5 @@
             }
         });
     </script>
+    <script src={{ asset('js/country.js') }}></script>
 @endpush

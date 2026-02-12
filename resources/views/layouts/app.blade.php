@@ -222,6 +222,44 @@
                 return decimalPart ? formatted + '.' + decimalPart : formatted;
             }
 
+
+            function formatContactNumber(value) {
+                if (!value) return '';
+
+                // Remove all spaces & non digits
+                value = value.replace(/\D/g, '');
+
+                // Indian mobile (10 digit) format: 5-5
+                if (value.length <= 5) {
+                    return value;
+                } else if (value.length <= 10) {
+                    return value.slice(0, 5) + ' ' + value.slice(5);
+                }
+                // If country code included (like 91XXXXXXXXXX)
+                else if (value.length > 10) {
+                    return value.slice(0, value.length - 10) + ' ' +
+                        value.slice(-10, -5) + ' ' +
+                        value.slice(-5);
+                }
+
+                return value;
+            }
+
+            // Apply to contact-number class
+            document.querySelectorAll('.contact-number').forEach(function(input) {
+
+                input.addEventListener('input', function() {
+                    let cursorPosition = input.selectionStart;
+                    let originalLength = input.value.length;
+
+                    input.value = formatContactNumber(input.value);
+
+                    let newLength = input.value.length;
+                    input.selectionEnd = cursorPosition + (newLength - originalLength);
+                });
+
+            });
+
             // Format all fields with format-number class on page load
             document.querySelectorAll('.format-number').forEach(function(input) {
                 if (input.value) {
@@ -239,14 +277,48 @@
                     });
                 }
 
-                // Remove commas before submit
+
+            });
+
+            document.querySelectorAll('.contact-number').forEach(function(input) {
+
+                input.addEventListener('input', function() {
+                    let cursorPosition = input.selectionStart;
+                    let originalLength = input.value.length;
+
+                    input.value = formatContactNumber(input.value);
+
+                    let newLength = input.value.length;
+                    input.selectionEnd = cursorPosition + (newLength - originalLength);
+                });
+
+                // Remove spaces before submit
                 let form = input.closest('form');
                 if (form) {
                     form.addEventListener('submit', function() {
-                        input.value = input.value.replace(/,/g, '');
+                        input.value = input.value.replace(/\s/g, '');
                     });
                 }
             });
+
+            document.querySelectorAll('form').forEach(function(form) {
+
+                form.addEventListener('submit', function() {
+
+                    // Remove spaces from contact numbers
+                    form.querySelectorAll('.contact-number').forEach(function(input) {
+                        input.value = input.value.replace(/\s/g, '');
+                    });
+
+                    // Remove commas from formatted numbers
+                    form.querySelectorAll('.format-number').forEach(function(input) {
+                        input.value = input.value.replace(/,/g, '');
+                    });
+
+                });
+
+            });
+
 
 
         });

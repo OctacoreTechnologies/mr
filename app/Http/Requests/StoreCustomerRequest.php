@@ -71,6 +71,7 @@ class StoreCustomerRequest extends FormRequest
             'status' => 'nullable|string|in:new,contacted,qualified,disqualified',
             'followed_by' => 'required|exists:users,id',
             'continent' => 'required',
+            'country_code' => 'nullable',
             // 'email3' =>'nullable|email',
             // 'email4' =>'nullable|email',
             // 'email5' =>'nullable|email',

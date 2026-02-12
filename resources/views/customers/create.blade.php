@@ -3,10 +3,10 @@
 @section('title', 'Create Customer')
 
 @section('content_header')
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="mb-0 text-primary font-weight-bold">Add New Customer</h1>
-    <a href="{{ route('customer.index') }}" class="btn btn-outline-primary"><i class="fas fa-home"></i> Home</a>
-</div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0 text-primary font-weight-bold">Add New Customer</h1>
+        <a href="{{ route('customer.index') }}" class="btn btn-outline-primary"><i class="fas fa-home"></i> Home</a>
+    </div>
 @stop
 
 @section('content')
@@ -47,9 +47,10 @@
 
                     <!-- Country -->
                     <div class="col-md-4">
-                        <x-adminlte-select name="country" label="Select Country">
+                        <x-adminlte-select name="country" label="Select Country" class="country-select">
                             @foreach ($countries as $country)
-                                <option value="{{ strtolower($country->country) }}">{{ $country->country }}</option>
+                                <option value="{{ strtolower($country->country) }}"
+                                    data-code="{{ $country->country_code }}">{{ $country->country }}</option>
                             @endforeach
                         </x-adminlte-select>
                     </div>
@@ -59,7 +60,7 @@
                         <label for="region" class="font-weight-bold text-muted">Region</label>
                         <select name="region" id="region" class="form-control select2 rounded-pill">
                             @foreach ($regions as $region)
-                                <option value="{{ old('region', $region)}}">{{ $region}}</option>
+                                <option value="{{ old('region', $region) }}">{{ $region }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -81,8 +82,8 @@
 
                     <!-- Area -->
                     <div class="col-md-4">
-                        <x-adminlte-input name="area" value="{{ old('area') }}" label="Area" placeholder="Enter Area"
-                            fgroup-class="mb-3" disable-feedback />
+                        <x-adminlte-input name="area" value="{{ old('area') }}" label="Area"
+                            placeholder="Enter Area" fgroup-class="mb-3" disable-feedback />
                     </div>
 
                     <!-- Pincode -->
@@ -98,9 +99,23 @@
                     </div>
 
                     <!-- Contact No -->
-                    <div class="col-md-4">
-                        <x-adminlte-input name="contact_no" value="{{ old('contact_no') }}" label="Contact No"
-                            placeholder="Enter Contact No" fgroup-class="mb-3" disable-feedback />
+                    <div class="col-md-4 contact-wrapper">
+
+                        <label>Contact No</label>
+
+                        <div class="input-group">
+
+                            <div class="input-group-prepend">
+                                <span class="input-group-text country-code">
+                                    +91
+                                </span>
+                                <input type="hidden" name="country_code" id="countryCodeField" value="+91">
+                            </div>
+
+                            <input type="text" name="contact_no" value="{{ old('contact_no') }}"
+                                class="form-control contact-number" placeholder="Enter Contact No">
+
+                        </div>
                     </div>
 
                     <!-- Address Lines -->
@@ -135,8 +150,9 @@
                                 placeholder="Enter Designation" fgroup-class="mb-3" />
                         </div>
                         <div class="col-md-4">
-                            <x-adminlte-input name="contact_person_1_contact" value="{{ old('contact_person_1_contact') }}"
-                                label="Contact Person 1 Contact" placeholder="Enter contact" fgroup-class="mb-3" />
+                            <x-adminlte-input name="contact_person_1_contact"
+                                value="{{ old('contact_person_1_contact') }}" label="Contact Person 1 Contact"
+                                placeholder="Enter contact" fgroup-class="mb-3" />
                         </div>
                         <div class="col-md-4">
                             <x-adminlte-input name="contact_person_1_email" value="{{ old('contact_person_1_email') }}"
@@ -153,9 +169,12 @@
                     <div class="col-md-4">
                         <x-adminlte-select name="status" label="Status" fgroup-class="mb-3">
                             <option value="new" {{ old('status') == 'new' ? 'selected' : '' }}>New</option>
-                            <option value="contacted" {{ old('status') == 'contacted' ? 'selected' : '' }}>Contacted</option>
-                            <option value="qualified" {{ old('status') == 'qualified' ? 'selected' : '' }}>Qualified</option>
-                            <option value="disqualified" {{ old('status') == 'disqualified' ? 'selected' : '' }}>Disqualified
+                            <option value="contacted" {{ old('status') == 'contacted' ? 'selected' : '' }}>Contacted
+                            </option>
+                            <option value="qualified" {{ old('status') == 'qualified' ? 'selected' : '' }}>Qualified
+                            </option>
+                            <option value="disqualified" {{ old('status') == 'disqualified' ? 'selected' : '' }}>
+                                Disqualified
                             </option>
                         </x-adminlte-select>
                     </div>
@@ -192,20 +211,21 @@
 @endsection
 
 @push('css')
-    <link rel="stylesheet" href="{{asset('style/customer.css')}}">
+    <link rel="stylesheet" href="{{ asset('style/customer.css') }}">
 @endpush
 
 @push('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Function to update contact person fields based on selected value
             const noOfPersonsSelect = document.getElementById('no_of_persons');
             const contactPersonFieldsContainer = document.getElementById('contact_person_fields');
 
             // Function to render contact person fields
             function renderContactPersons() {
+                var code = $(this).find(':selected').data('code');
                 const numberOfPersons = parseInt(noOfPersonsSelect.value);
-                contactPersonFieldsContainer.innerHTML = '';  // Clear existing fields
+                contactPersonFieldsContainer.innerHTML = ''; // Clear existing fields
 
                 for (let i = 1; i <= numberOfPersons; i++) {
                     const fieldHTML = `
@@ -216,7 +236,19 @@
                                             <x-adminlte-input name="contact_person_${i}_designation"  label="Contact Person ${i} Designation" placeholder="Enter Designation" fgroup-class="mb-3" />
                                         </div>
                                         <div class="col-md-4">
-                                            <x-adminlte-input name="contact_person_${i}_contact"  label="Contact Person ${i} Contact" placeholder="Enter Contact" fgroup-class="mb-3" />
+                                            <label>Contact No</label>
+                                            <div class="input-group">
+
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text country-code">
+                                                    +91
+                                                </span>
+                                            </div>
+
+                                             <input type="text" name="contact_person_${i}_contact" 
+                                                 class="form-control contact-number" placeholder="Enter Contact No">
+                 
+                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <x-adminlte-input type="email" name="contact_person_${i}_email"  label="Contact Person ${i} Email" placeholder="Enter Email" fgroup-class="mb-3" />
@@ -235,4 +267,5 @@
             renderContactPersons();
         });
     </script>
+    <script src={{ asset('js/country.js') }}></script>
 @endpush
