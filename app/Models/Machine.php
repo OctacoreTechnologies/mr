@@ -35,4 +35,13 @@ class Machine extends Model
     public function emails(){
         return $this->hasMany(Email::class,'machine_id');
     }
+
+
+    // sorting
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('name', 'asc');
+        });
+    }
 }

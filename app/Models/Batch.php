@@ -6,23 +6,43 @@ use Illuminate\Database\Eloquent\Model;
 
 class Batch extends Model
 {
-    protected $guarded=[];
+  protected $guarded = [];
 
-      public function quotations(){
-        return $this->hasMany(Quotation::class,'batch_id');
-      }
+  public function quotations()
+  {
+    return $this->hasMany(Quotation::class, 'batch_id');
+  }
 
-      public function quotations2(){
-        return $this->hasMany(Quotation::class,'batch2_id');
-      }
+  public function quotations2()
+  {
+    return $this->hasMany(Quotation::class, 'batch2_id');
+  }
 
-      public function applications(){
-        return $this->hasMany(Quotation::class,'batch_id');
-      }
-      public function machine(){
-        return $this->belongsTo(Machine::class,'machine_id');
-      }
-      public function modele(){
-        return $this->belongsTo(Modele::class,'model_id');
-      }
+  public function applications()
+  {
+    return $this->hasMany(Quotation::class, 'batch_id');
+  }
+  public function machine()
+  {
+    return $this->belongsTo(Machine::class, 'machine_id');
+  }
+  public function modele()
+  {
+    return $this->belongsTo(Modele::class, 'model_id');
+  }
+
+  protected static function booted()
+  {
+    static::addGlobalScope('order', function ($query) {
+      $query->orderByRaw("
+            CAST(
+                TRIM(
+                    SUBSTRING_INDEX(batches, '-', 1)
+                ) AS UNSIGNED
+            ) ASC
+        ");
+    });
+  }
+
+
 }

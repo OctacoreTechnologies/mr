@@ -42,7 +42,13 @@ class Customer extends Model
                   $model->user_id = Auth::id();
               }
           });
+
+        static::addGlobalScope('order', function ($query) {
+          $query->orderBy('company_name', 'asc');
+        });
       }
+
+    
 
 
     

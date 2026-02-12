@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blade extends Model
 {
-    protected $guarded=[];
+    protected $guarded = [];
 
     public function machine()
     {
@@ -17,4 +17,10 @@ class Blade extends Model
         return $this->belongsTo(Modele::class, 'model_id');
     }
 
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('no_of_blades', 'asc');
+        });
+    }
 }

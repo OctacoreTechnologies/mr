@@ -14,4 +14,12 @@ class ElelctricalControl extends Model
       public function applications(){
         return $this->hasMany(Quotation::class,'batch_id');
       }
+
+      
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('electrical_control', 'asc');
+        });
+    }
 }

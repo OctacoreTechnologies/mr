@@ -15,4 +15,10 @@ class MakeMotor extends Model
     public function quotations(){
         return $this->hasMany(Quotation::class,'make_motor_id');
     }
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('name', 'asc');
+        });
+    }
 }

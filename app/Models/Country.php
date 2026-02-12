@@ -10,5 +10,11 @@ class Country extends Model
 
     protected $guarded=[];
 
+    protected static function booted()
+    {
+        static::addGlobalScope('order', function ($query) {
+            $query->orderBy('country', 'asc');
+        });
+    }
 
 }

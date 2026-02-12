@@ -56,6 +56,20 @@ class Modele extends Model
     public function feedingHooperCapacity(){
         return $this->hasMany(FeedingHooperCapacity::class,'model_id');
     }
+
+      // sorting
+   protected static function booted()
+{
+    static::addGlobalScope('order', function ($query) {
+        $query->orderByRaw("
+            CAST(
+                REGEXP_SUBSTR(name, '[0-9]+')
+            AS UNSIGNED
+            ) ASC
+        ");
+    });
+}
+
 }
 
     
