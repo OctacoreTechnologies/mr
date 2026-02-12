@@ -469,6 +469,13 @@ class QuotationController extends Controller
         // Validate the incoming request
         $validated = $request->validated();
 
+        $referenceNo = $quotation->reference_no;
+        if (isset($validated['revise']) && $validated['revise']) {
+            $referenceNo = $this->getNextReference($referenceNo);
+            unset($validated['revise']);
+        }
+        $validated['reference_no'] = $referenceNo;
+
         // Define relation fields for the quotation
         $relationfields = [
             'material_to_process' => [MaterialToProcess::class, 'material_to_process'],

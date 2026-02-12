@@ -31,11 +31,17 @@
             <div class="card-body">
                 <div class="form-row">
                   @if(request()->query('reorder') != 1)
-                    <div class="form-group col-md-6">
-                        <div class="form-check mt-4">
+                    <div class="form-group col-md-3">
+                        <div class="form-check mt-4 ">
                             <input type="checkbox" class="form-check-input" id="revise" name="revise" value="1" {{ old('revise', $quotation->revise) ? 'checked' : '' }}>
-                            <label class="form-check-label" for="revise">Revise Quotation</label>
-                        </div>
+                             <label class="form-check-label" for="revise">Revise Quotation</label>
+                        </div>    
+                    </div>
+                     <div class="form-group col-md-3">
+                        <div class="form-check mt-4 ">
+                             <input type="checkbox" class="form-check-input" id="reflectInPdf" name="reflect_in_pdf" value="1" {{ old('revise', $quotation->revise) ? 'checked' : '' }}>
+                             <label class="form-check-label" for="reflect_in_pdf">Reflect In Pdf</label>
+                        </div>    
                     </div>
                   @endif
 

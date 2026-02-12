@@ -5,7 +5,7 @@
     <div style="padding:35px 0 0 0; padding-left: 0;">
         <div
             style="text-align:center; font-size: 30px; font-weight: bold; color: #2daae3;  text-transform: uppercase; word-spacing: 3px; font-family:'Montserrat',sans-serif !important ; font-style:normal; text-decoration: underline;">
-            TECHNO-COMMERCIAL OFFER
+            TECHNO-COMMERCIAL {{$quotation->reflect_in_pdf?'Revise':''}} OFFER
         </div>
 
         <div

@@ -36,9 +36,11 @@ class UpdateQuotationRequest extends FormRequest
             'total'=>'nullable', 
             'status'=>'required',
             'revise'=>'nullable',
+            'reflect_in_pdf'=>'nullable',
             'reminder_date'=>'nullable|date',
             'remark'=>'nullable',
             'followed_by' =>'required|exists:users,id',
+            
 
         ];
     }

@@ -26,6 +26,8 @@ class FullUpdateQuotationRequest extends FormRequest
         $quotationId = $this->route('quotation'); 
 
         return [
+            'revise' =>'nullable',
+            'reflect_in_pdf'=> 'nullable',
             'customer_id' => 'required|exists:customers,id',
             'machine_id' => 'required|exists:machines,id',
             'model_id' => 'required',
