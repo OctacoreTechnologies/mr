@@ -10,6 +10,7 @@ use App\Models\State;
 use App\Models\User;
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Region;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -46,7 +47,7 @@ class LeadController extends Controller
             'states' => $states,
             'users' => $users,
             'countries' => Country::all(),
-            'regions' => Customer::select('region')->distinct()->pluck('region')
+            'regions' => Region::orderBy('name')->get(),
         ]);
     }
 
@@ -84,7 +85,7 @@ class LeadController extends Controller
             'states' => $states,
             'users' => $users,
             'countries' => Country::all(),
-            'regions' => Customer::select('region')->distinct()->pluck('region')
+            'regions' => Region::orderBy('name')->get(),
         ]);
     }
 

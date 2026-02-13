@@ -31,6 +31,7 @@ use App\Http\Controllers\order_acceptance_letter\OrderAccpetanceLetterController
 use App\Http\Controllers\product\ProductController;
 use App\Http\Controllers\quotation\FollowupQuotationController;
 use App\Http\Controllers\quotation\QuotationController;
+use App\Http\Controllers\region\RegionController;
 use App\Http\Controllers\remiders\ReminderController;
 use App\Http\Controllers\reports\ReportCustomerController;
 use App\Http\Controllers\reports\ReportLeadController;
@@ -223,6 +224,8 @@ Route::middleware(['auth'])->group(function () {
   Route::post('email-templates/{emailTemplate}/send-test', [EmailTemplateController::class, 'sendTest'])->name('email-templates.sendTest');
 });
 Route::resource('email-template', EmailTemplateController_2::class);
+
+Route::get('/get-states/{region_id}', [RegionController::class, 'getStates']);
 
 Route::get('/privacy-poliyc', function () {
   return view('');

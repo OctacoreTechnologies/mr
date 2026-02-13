@@ -71,7 +71,7 @@
                         <label for="region" class="font-weight-bold text-muted">Region</label>
                         <select name="region" id="region" class="form-control select2 rounded-pill">
                             @foreach ($regions as $region)
-                                <option value="{{ old('region', $region) }}">{{ $region }}</option>
+                               <option value="{{ old('region', $region->name) }}" data-region-id={{$region->id}}>{{ $region->name }}</option>
                             @endforeach
                         </select>
                     </div>

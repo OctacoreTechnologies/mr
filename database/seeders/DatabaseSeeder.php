@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             // StateSeeder::class,
             // TearmConditionSeeder::class,
             // CountrySeeder::class
-            CountryPhoneCodeSeeder::class
+            // CountryPhoneCodeSeeder::class
+              $this->call(RegionStateSeeder::class),
         ]);
     }
 }

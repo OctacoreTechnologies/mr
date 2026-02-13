@@ -52,7 +52,7 @@
                         <select name="region" id="region" class="form-control select2 rounded-pill">
                             <option {{ $customer->region }}>{{ $customer->region }}</option>
                             @foreach ($regions as $region)
-                                <option value="{{ $region }}">{{ $region }}</option>
+                                <option value="{{ old('region', $region->name) }}" data-region-id={{$region->id}} {{$customer->region == $region->name?'selected':''}}>{{ $region->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -75,7 +75,7 @@
                         <x-adminlte-select name="state" label="State" fgroup-class="mb-3">
                             @foreach ($states as $state)
                                 <option value="{{ $state->name }}"
-                                    {{ $state->name == $customer->state ? 'selected' : '' }}>
+                                    {{ strtolower($state->name) == strtolower($customer->state) ? 'selected' : '' }}>
                                     {{ $state->name }}</option>
                             @endforeach
                         </x-adminlte-select>

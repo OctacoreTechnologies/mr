@@ -56,11 +56,11 @@
                     </div>
 
                     <!-- Region -->
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="regionGroup">
                         <label for="region" class="font-weight-bold text-muted">Region</label>
-                        <select name="region" id="region" class="form-control select2 rounded-pill">
+                        <select name="region" id="region" class="form-control">
                             @foreach ($regions as $region)
-                                <option value="{{ old('region', $region) }}">{{ $region }}</option>
+                                <option value="{{ old('region', $region->name) }}" data-region-id={{$region->id}}>{{ $region->name }}</option>
                             @endforeach
                         </select>
                     </div>

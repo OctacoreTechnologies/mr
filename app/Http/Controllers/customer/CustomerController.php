@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCustomerRequest;
 use App\Imports\CustomersImport;
 use App\Models\Country;
 use App\Models\Customer;
+use App\Models\Region;
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ class CustomerController extends Controller
             'states' => $states,
             'users' => $users,
             'countries' => $countries,
-            'regions' => Customer::select('region')->distinct()->pluck('region')
+            'regions' => Region::orderBy('name')->get(),
         ]);
     }
 
@@ -85,7 +86,7 @@ class CustomerController extends Controller
             'states' => State::all(),
             'users' => User::all(),
             'countries' => Country::all(),
-            'regions' => Customer::select('region')->distinct()->pluck('region')
+            'regions' => Region::orderBy('name')->get(),
         ]);
     }
 
