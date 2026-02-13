@@ -375,7 +375,7 @@
             <div
                 style="font-size: 30px; font-weight: bold; color: #2daae3; text-transform: uppercase; 
                 word-spacing: 3px; font-family: 'Montserrat', sans-serif; text-decoration: underline;">
-                TECHNO-COMMERCIAL {{ $quotation->reflect_in_pdf ? 'Revise' : '' }} OFFER
+                TECHNO-COMMERCIAL {{ $quotation->reflect_in_pdf ? 'Revised' : '' }} OFFER
             </div>
             <div style="font-size: 25px; margin-top: 6px; word-break: break-word; white-space: normal;">
                 Proposal for Heater Mixer
