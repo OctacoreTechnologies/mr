@@ -118,4 +118,7 @@
             <img src="{{ asset('storage/' . $quotation->machine->image_url) ?? 'mixture.png' }}" class="main-image "
                 style="z-index: 0;">
         </div>
+        <p style="margin-bottom:20px; font-size:13px; color:#6c757d;">
+            *The image shown above is for reference purposes only.
+        </p>
     </div>
