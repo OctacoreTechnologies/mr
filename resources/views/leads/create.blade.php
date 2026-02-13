@@ -279,7 +279,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                   <label>Contact No</label>
+                                   <label>Contact Person ${i} Contact</label>
                                             <div class="input-group">
 
                                             <div class="input-group-prepend">

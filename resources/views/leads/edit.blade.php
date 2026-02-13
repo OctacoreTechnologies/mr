@@ -173,7 +173,7 @@
                             fgroup-class="mb-3">{{ old('address_line_2', $lead->address_line_2) }}</x-adminlte-textarea>
                     </div>
 
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
                         <x-adminlte-select name="no_of_persons" id="no_of_persons" label="No. Of Contact Person's">
                             @for ($i = 1; $i <= 6; $i++)
                                 <option value="{{ $i }}"
@@ -181,49 +181,59 @@
                                     {{ $i }}</option>
                             @endfor
                         </x-adminlte-select>
-                    </div>
+                    </div> --}}
 
                     <!-- Contact Persons -->
-                    <div class="row col-12" id="contact_person_fields">
-                        <div class="col-md-6">
-                            <x-adminlte-input name="contact_person_1_name"
-                                value="{{ old('contact_person_1_name', $lead->contact_person_1_name) }}"
-                                label="Contact Person 1 Name" placeholder="Enter Name" fgroup-class="mb-3" />
-                        </div>
-                        <div class="col-md-6">
-                            <x-adminlte-input name="contact_person_1_designation"
-                                value="{{ old('contact_person_1_designation', $lead->contact_person_1_designation) }}"
-                                label="Contact Person 1 Designation" placeholder="Enter Designation"
-                                fgroup-class="mb-3" />
-                        </div>
-                        {{-- <div class="col-md-6">
-                            <x-adminlte-input name="contact_person_1_contact"
-                                value="{{ old('contact_person_1_contact', $lead->contact_person_1_contact) }}"
-                                label="Contact Person 1 Contact" placeholder="Enter contact" fgroup-class="mb-3" class="contact-number"/>
-                        </div> --}}
-                        <div class="col-md-6">
-                            <label>Contact Person {{ $i }} Contact</label>
-
-                            <div class="input-group">
-
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text country-code">
-                                        {{ $lead->country_code ?? +91 }}
-                                    </span>
-                                    <input type="hidden" name="country_code" id="countryCodeField"
-                                        class="country_code_field" value="{{ $lead->country_code ?? +91 }}">
-                                </div>
-
-                                <input type="text" name="contact_person_{{ $i }}_contact"
-                                    value="{{ $lead->{'contact_person_' . $i . '_contact'} ?? '' }}"
-                                    class="form-control contact-number" placeholder="Enter Contact No">
+                     <div class="row col-12">
+                        @for ($i = 1; $i <= 6; $i++)
+                            <div class="col-md-6">
+                                <x-adminlte-input name="contact_person_{{ $i }}_name"
+                                    value="{{ $lead->{'contact_person_' . $i . '_name'} ?? '' }}"
+                                    label="Contact Person {{ $i }} Name"
+                                    placeholder="Enter Contact Person 2 Name" fgroup-class="mb-3" disable-feedback />
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <x-adminlte-input name="contact_person_1_email"
-                                value="{{ old('contact_person_1_email', $lead->contact_person_1_email) }}"
-                                label="Contact Person 1 Email" placeholder="Enter Email" fgroup-class="mb-3" />
-                        </div>
+
+                            <!-- Contact Person 2 Designation -->
+                            <div class="col-md-6">
+                                <x-adminlte-input name="contact_person_{{ $i }}_designation"
+                                    value="{{ $lead->{'contact_person_' . $i . '_designation'} ?? '' }}"
+                                    label="Contact Person {{ $i }} Designation"
+                                    placeholder="Enter Contact Person 2 Designation" fgroup-class="mb-3"
+                                    disable-feedback />
+                            </div>
+
+                            <!-- Contact Person 2 Contact -->
+                            {{-- <div class="col-md-6">
+                                <x-adminlte-input name="contact_person_{{ $i }}_contact"
+                                    value="{{ $lead->{'contact_person_' . $i . '_contact'} ?? '' }}"
+                                    label="Contact Person {{ $i }} Contact"
+                                    placeholder="Enter Contact Person 2 Contact" fgroup-class="mb-3" disable-feedback
+                                    class="contact-number" />
+                            </div> --}}
+                            <div class="col-md-6">
+                                <label>Contact Person {{ $i }} Contact</label>
+
+                                <div class="input-group">
+
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text country-code">
+                                            {{ $lead->country_code ?? +91 }}
+                                        </span>
+                                        <input type="hidden" name="country_code" id="countryCodeField" class="country_code_field"
+                                            value="{{ $lead->country_code ?? +91 }}">
+                                    </div>
+
+                                    <input type="text" name="contact_person_{{ $i }}_contact"   value="{{ $lead->{'contact_person_' . $i . '_contact'} ?? '' }}"
+                                        class="form-control contact-number" placeholder="Enter Contact No">
+                                </div>
+                            </div>
+                                <div class="col-md-6">
+                                    <x-adminlte-input type="email" name="contact_person_{{ $i }}_eamil"
+                                        value="{{ $lead->{'contact_person_' . $i . '_email'} ?? '' }}"
+                                        label="Contact Person {{ $i }} email"
+                                        placeholder="Enter Contact Person 2 Email" fgroup-class="mb-3" disable-feedback />
+                                </div>
+                        @endfor
                     </div>
 
                     <!-- GST -->
@@ -282,6 +292,7 @@
 @endpush
 
 @push('js')
+ <script src={{ asset('js/country.js') }}></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const noOfPersonsSelect = document.getElementById('no_of_persons') || document.querySelector(
@@ -336,7 +347,7 @@
                                 </div>
                             </div>
                            <div class="col-md-6">
-                                   <label>Contact No</label>
+                                   <label>Contact Person ${i} Contact</label>
                                             <div class="input-group">
 
                                             <div class="input-group-prepend">
@@ -346,7 +357,7 @@
                                                 <input type="hidden" name="country_code" id="countryCodeField" value="+91">
                                             </div>
 
-                                             <input type="text" name="contact_person_${i}_contact" value="${escapeHtml(data.designation)}"
+                                             <input type="text" name="contact_person_${i}_contact" value="${escapeHtml(data.contact)}"
                                                  class="form-control contact-number" placeholder="Enter Contact No">
                  
                                              </div>
@@ -368,5 +379,5 @@
             }
         });
     </script>
-    <script src={{ asset('js/country.js') }}></script>
+    {{-- <script src={{ asset('js/country.js') }}></script> --}}
 @endpush

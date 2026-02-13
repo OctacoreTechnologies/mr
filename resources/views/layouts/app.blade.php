@@ -280,9 +280,12 @@
 
             });
 
-            document.querySelectorAll('.contact-number').forEach(function(input) {
+            document.addEventListener('input', function(e) {
 
-                input.addEventListener('input', function() {
+                if (e.target.classList.contains('contact-number')) {
+
+                    let input = e.target;
+
                     let cursorPosition = input.selectionStart;
                     let originalLength = input.value.length;
 
@@ -290,20 +293,16 @@
 
                     let newLength = input.value.length;
                     input.selectionEnd = cursorPosition + (newLength - originalLength);
-                });
-
-                // Remove spaces before submit
-                let form = input.closest('form');
-                if (form) {
-                    form.addEventListener('submit', function() {
-                        input.value = input.value.replace(/\s/g, '');
-                    });
                 }
+
             });
 
-            document.querySelectorAll('form').forEach(function(form) {
 
-                form.addEventListener('submit', function() {
+            document.addEventListener('submit', function(e) {
+
+                const form = e.target;
+
+                if (form.tagName === 'FORM') {
 
                     // Remove spaces from contact numbers
                     form.querySelectorAll('.contact-number').forEach(function(input) {
@@ -315,9 +314,10 @@
                         input.value = input.value.replace(/,/g, '');
                     });
 
-                });
+                }
 
             });
+
 
 
 

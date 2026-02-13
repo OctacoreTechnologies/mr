@@ -1,4 +1,4 @@
-$(document).on('change', '.country-select', function () {
+$(document).on('input', '.country-select', function () {
 
     var code = $(this).find(':selected').data('code');
 
