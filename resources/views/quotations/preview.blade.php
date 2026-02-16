@@ -80,7 +80,7 @@
 
                 <div class="col-md-6 mb-3">
                     <label>Price(Unit)</label>
-                    <input type="text" name="total_price" id="total_price" class="form-control format-number" step="0.01" value="{{ old('total_price') }}">
+                    <input type="text" name="total_price" id="total_price" class="form-control format-number" step="0.01"   value="{{ old('total_price') }}">
                 </div>
 
                 <div class="col-md-6 mb-3">
@@ -130,7 +130,7 @@
         var totalPrice = productPrice * quantity;
         
         // Update the total price input field
-        $('#total_price').val(totalPrice.toFixed(2));
+        // $('#total_price').val(totalPrice.toFixed(2));
     }
 
     // Update price when product is selected

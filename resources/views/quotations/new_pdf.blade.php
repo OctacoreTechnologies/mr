@@ -352,7 +352,7 @@
         </div>
         <div class="footer-col footer-col-border" style="padding-left: 25px; width: 40%;">
             <b>Factory </b>
-            <p>351 /A & 351 /B, PSL Compound, Near EPL Pipe</p>
+            <p>351 /A & 351 /B, EPL Compound, Near EPL Pipe</p>
             <p>Kachigam Char Rasta, Village Kachigam Nani</p>
             <p>Daman (UT), Daman –396210</p>
             <p>Website: <span style="color: #2daae3;">www.mrengineers.co.in</span></p>
@@ -592,11 +592,6 @@
                         Indicator with
                         Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
                     </td>
-                </tr>
-                <tr>
-                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</strong>
-                    </td>
-                    <td style="padding: 8px;">:&nbsp;3 Tier Alloy Steel</td>
                 </tr>
             </table>
 
