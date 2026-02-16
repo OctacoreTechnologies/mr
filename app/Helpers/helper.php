@@ -5,7 +5,7 @@ use Carbon\Carbon;
 if(!function_exists('formatDate')){
 
     function formatDate($date){
-     return Carbon::parse($date)->format('d-M-Y');
+     return Carbon::parse($date)->format('d-m-Y');
     }
 }
 if(!function_exists('convertToIndianWords')){

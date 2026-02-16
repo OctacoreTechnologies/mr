@@ -312,7 +312,7 @@
     </div>
     <div  class="footer-col footer-col-border" style="padding-left: 25px; width: 40%;">
       <b>Factory </b>
-      <p>351 /A & 351 /B, PSL Compound, Near PLS Pipe</p>
+      <p>351 /A & 351 /B, PSL Compound, Near EPL Pipe</p>
       <p>Kachigam Char Rasta, Village Kachigam Nani</p>
       <p>Daman (UT), Daman –396210</p>
       <p>Website: <span style="color: #2daae3;">www.mrengineers.co.in</span></p>

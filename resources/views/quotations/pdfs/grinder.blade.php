@@ -2,8 +2,8 @@
 <x-client-pdf-template :quotation="$quotation" />
 <x-table-content :specification="'GRINDER'" :pageTechnicalData="4" :pageSpecification="5" :pageOffer="6" :pageTerms="7" />
 <!-- Technical Data -->
-<div class="page-break ">
-    <div class="techincal-data parameter-table">
+<div class="page-break" style="margin-top: -30px">
+    <div class="techincal-data parameter-table" style="margin-left:-12px;">
         <h2 style="text-decoration: underline">1. TECHNICAL DATA</h2>
         <!-- DESING PARAMETER OF HIGH-SPEED -->
         <div class="technical-data-sub-head"
@@ -54,20 +54,20 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Requirement</td>
                 {{-- <td style="padding: 8px;">:&nbsp;15 KW/20 HP Single Speed Mixer – 1440 RPM</td> --}}
-                <td style="padding: 8px;">:&nbsp;{{ $quotation->motorRequirement->motor_requirement }}</td>
+                <td style="padding: 8px;  text-align: justify;">:&nbsp;{{ $quotation->motorRequirement->motor_requirement }}</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Make</td>
                 {{-- <td style="padding: 8px;">:&nbsp;15 KW/20 HP Single Speed Mixer – 1440 RPM</td> --}}
-                <td style="padding: 8px;">:&nbsp;{{ $quotation->makeMotor->name ?? '' }}</td>
+                <td style="padding: 8px;  text-align: justify;">:&nbsp;{{ $quotation->makeMotor->name ?? '' }}  Motor 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley Arrangement.</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
-                <td style="padding: 8px;">:&nbsp;415 V</td>
+                <td style="padding: 8px; text-align: justify;">:&nbsp;415 V</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
-                <td style="padding: 8px;">:&nbsp;50Hz</td>
+                <td style="padding: 8px;  text-align: justify;">:&nbsp;50Hz</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>

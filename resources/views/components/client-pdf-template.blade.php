@@ -5,7 +5,7 @@
     <div style="padding:35px 0 0 0; padding-left: 0;">
         <div
             style="text-align:center; font-size: 30px; font-weight: bold; color: #2daae3;  text-transform: uppercase; word-spacing: 3px; font-family:'Montserrat',sans-serif !important ; font-style:normal; text-decoration: underline;">
-            TECHNO-COMMERCIAL {{$quotation->reflect_in_pdf?'Revised':''}} OFFER
+            TECHNO-COMMERCIAL {{ $quotation->reflect_in_pdf ? 'Revised' : '' }} OFFER
         </div>
 
         <div
@@ -62,7 +62,7 @@
             <td style="color: #032854; padding: 3px 2px;">Contact No</td>
             <td style="text-align: center; padding: 3px;">:</td>
             <td style="padding: 3px 0;">
-                {{ $quotation->customer->country_code??'+91'.' '. substr($quotation->customer->contact_no ?? '8912929114', 0, 5) . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 5) }}
+                {{ $quotation->customer->country_code ?? '+91' . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 0, 5) . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 5) }}
             </td>
         </tr>
 
@@ -118,7 +118,9 @@
             <img src="{{ asset('storage/' . $quotation->machine->image_url) ?? 'mixture.png' }}" class="main-image "
                 style="z-index: 0;">
         </div>
-        <p style="margin-bottom:20px; font-size:13px; color:#6c757d;">
+        <p
+            style="position: fixed;bottom: 360px; left: 45%;  transform: translateX(-50%); font-size: 13px; margin: 0;  text-align: center; font-weight:bolder;">
             *The image shown above is for reference purposes only.
         </p>
+
     </div>
