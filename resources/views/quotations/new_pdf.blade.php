@@ -727,7 +727,7 @@
                     <span>&#8226;&nbsp; Motor</span>
                 </td>
                 <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-                    :&nbsp;{{ $quotation->makeMotor->name ?? '' }} Motor 1440 R.P.M AC Motor Drive Transmission Through
+                    :&nbsp;{{ $quotation->makeMotor->name ?? '' }} Make Motor 1440 R.P.M AC Motor Drive Transmission Through
                     “V” – belt and Pulley Arrangement.
                 </td>
             </tr>

@@ -100,7 +100,7 @@
 
         [
             'title' => 'Motor',
-             'description' => ($quotation->makeMotor?->name ?? '') . ' Motor 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley Arrangement.'
+             'description' => ($quotation->makeMotor?->name ?? '') . ' Make Motor 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley Arrangement.'
         ],
         [
             'title' => 'Driving System',
@@ -210,7 +210,7 @@
             'description' => 'Heli Bevel',
         ],
         [
-            'title' => 'Motor Motors',
+            'title' => 'Motor',
             'description' => 'T Hindustan / ABB / SIEMENS 1440 RPM AC ',
         ],
         [

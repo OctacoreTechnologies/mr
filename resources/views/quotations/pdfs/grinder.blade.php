@@ -59,7 +59,7 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Make</td>
                 {{-- <td style="padding: 8px;">:&nbsp;15 KW/20 HP Single Speed Mixer – 1440 RPM</td> --}}
-                <td style="padding: 8px;  text-align: justify;">:&nbsp;{{ $quotation->makeMotor->name ?? '' }}  Motor 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley Arrangement.</td>
+                <td style="padding: 8px;  text-align: justify;">:&nbsp;{{ $quotation->makeMotor->name ?? '' }}  Make Motor 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley Arrangement.</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>

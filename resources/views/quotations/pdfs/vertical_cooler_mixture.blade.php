@@ -37,8 +37,8 @@
             'description' =>'Heli Bevel'
         ],
         [
-            'title' => 'Motor Motors',
-             'description' => ($quotation->makeMotor?->name ?? '') . ' Motor 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley Arrangement.'
+            'title' => 'Motor',
+             'description' => ($quotation->makeMotor?->name ?? '') . ' Make Motor 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley Arrangement.'
         ],
         [
             'title' => 'Driving System',
