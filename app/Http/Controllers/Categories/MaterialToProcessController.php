@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Categories;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMaterialToProcessRequest;
+use App\Models\Machine;
 use App\Models\MaterialToProcess;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,8 @@ class MaterialToProcessController extends Controller
     public function index()
     {
         $mateiralToProcess=MaterialToProcess::orderByDesc('created_at')->get();
-        return view('categories.material_to_process.index', compact('mateiralToProcess'));
+        $machines = Machine::all();
+        return view('categories.material_to_process.index', compact('mateiralToProcess','machines'));
     }
 
     /**
@@ -50,8 +52,10 @@ class MaterialToProcessController extends Controller
      */
     public function edit(string $id)
     {
-        $materialToProcess=MaterialToProcess::findOrFail($id);
-        return view('categories.material_to_process.update', compact('materialToProcess'));
+        $materialToProcess=MaterialToProcess::with('model','model.machine')->findOrFail($id);
+        // return $materialToProcess;
+        $machines=Machine::all();
+        return view('categories.material_to_process.update', compact('materialToProcess','machines'));
     }
 
     /**

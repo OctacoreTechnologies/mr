@@ -23,7 +23,9 @@ class StoreMaterialToProcessRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'material_to_process'=>'required'
+            'material_to_process'=>'required',
+            'model_id'=>'required',  
+            'model_id'=>'required|integer|exists:modeles,id',
         ];
     }
 }

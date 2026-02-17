@@ -12,6 +12,12 @@ class MaterialToProcess extends Model
   {
     return $this->hasMany(Quotation::class, 'material_to_process_id');
   }
+
+  public function model()
+  {
+    return $this->belongsTo(Modele::class, 'model_id');
+  }
+
   protected static function booted()
   {
     static::addGlobalScope('order', function ($query) {

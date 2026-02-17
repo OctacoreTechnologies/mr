@@ -82,7 +82,7 @@ class QuotationController extends Controller
         $model = Modele::findOrFail($previewData['model_id']);
         // $cleints = Customer::all();
         $customer = Customer::findOrFail($previewData['customer_id']);
-        $materialToProcess = MaterialToProcess::all();
+        $materialToProcess = MaterialToProcess::where('model_id',$previewData['model_id'])->get();
         $batchs = Batch::all();
         $mixingTools = MixingTool::all();
         $modeles = Modele::where('name', 'LIKE', '%' . $model->name . '%')->where('machine_id', $previewData['machine_id'])->with(['motorRequirement', 'motorRequirement2'])->get();

@@ -88,6 +88,26 @@
 <x-adminlte-modal id="modalMin" title="Add Material To Processs" theme="teal" icon="fas fa-plus">
     <form method="POST" action="{{ route('material-to-process.store') }}">
         @csrf
+         <div class="col-12">
+                <x-adminlte-select name="machine_id" label="Select Machine" id="machine_id">
+                    <option disabled selected>Select Machine</option>
+                    @foreach($machines as $machine)
+                        <option value="{{ $machine->id }}">{{ $machine->name }}</option>
+                    @endforeach
+                </x-adminlte-select> 
+        </div>
+         <div class="col-12 mb-3">
+                <label for="model" class="form-label font-weight-bold">Model</label>
+                <select 
+                    id="model_id" 
+                    name="model_id" 
+                    class="form-control select2 form-control-lg" 
+                    style="width: 100%;" 
+                    required
+                >
+                    <option disabled selected>Select Model</option>
+                </select>
+            </div>
         <x-adminlte-input name="material_to_process" label="Material To Process" placeholder="Enter Material To Process" fgroup-class="mb-3" required/>
         <div class="d-flex justify-content-end">
             <x-adminlte-button label="Cancel" theme="outline-danger" data-dismiss="modal" class="mr-2"/>
@@ -99,4 +119,8 @@
 @stop
 @push('css')
 <link rel="stylesheet" href="{{ asset('style/category.css') }}" />
+@endpush
+
+@push('js')
+<script src="{{ asset('js/selection.js') }}"></script>
 @endpush
