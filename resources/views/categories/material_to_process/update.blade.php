@@ -17,7 +17,9 @@
                         <x-adminlte-select name="machine_id" label="Select Machine" id="machine_id">
                             <option disabled selected>Select Machine</option>
                             @foreach ($machines as $machine)
-                                <option value="{{ $machine->id }}" {{$machine->id == $materialToProcess->model->machine->id?'selected':''}}>{{ $machine->name }}</option>
+                                <option value="{{ $machine->id }}"
+                                    {{ $machine->id === ($materialToProcess->model->machine->id ?? null) ? 'selected' : '' }}>
+                                    {{ $machine->name }}</option>
                             @endforeach
                         </x-adminlte-select>
                     </div>
@@ -25,7 +27,7 @@
                         <label for="model" class="form-label font-weight-bold">Model</label>
                         <select id="model_id" name="model_id" class="form-control select2 form-control-lg"
                             style="width: 100%;" required>
-                            <option disabled selected>{{$materialToProcess->model->name??''}}</option>
+                            <option disabled selected>{{ $materialToProcess->model->name ?? '' }}</option>
 
                         </select>
                     </div>
@@ -47,5 +49,5 @@
     </div>
 @stop
 @push('js')
-<script src="{{ asset('js/selection.js') }}"></script>
+    <script src="{{ asset('js/selection.js') }}"></script>
 @endpush
