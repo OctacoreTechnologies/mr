@@ -474,9 +474,9 @@
                             Contact No.
                         </div>
                         <div style="margin-top: 5px;">
-                            {{ '+91 ' .
+                            {{ '+91-' .
                                 substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 0, 5) .
-                                '-' .
+                                ' ' .
                                 substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 5) }}
 
                         </div>
