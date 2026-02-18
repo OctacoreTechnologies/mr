@@ -62,7 +62,13 @@
             <td style="color: #032854; padding: 3px 2px;">Contact No</td>
             <td style="text-align: center; padding: 3px;">:</td>
             <td style="padding: 3px 0;">
-                {{ $quotation->customer->country_code ?? '+91' . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 0, 5) . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 5) }}
+                @php
+                    $countryCode = $quotation->customer->country_code ?? '+91';
+                    $contactNo = $quotation->customer->contact_no ?? '8912929114';
+                @endphp
+
+                {{ $countryCode . '-' . substr($contactNo, 0, 5) . ' ' . substr($contactNo, 5) }}
+
             </td>
         </tr>
 
@@ -94,7 +100,10 @@
                         style="width: 60%; font-weight: bold; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px; font-size: 16px;">
                         Contact No.
                     </div>
-                    <div style="margin-top: 5px;">+91 89281 61634</div>
+                    <div style="margin-top: 5px;">  {{ '+91 ' .
+                                substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 0, 5) .
+                                '-' .
+                                substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 5) }}</div>
                 </td>
 
                 <!-- E–Mail ID: Right aligned -->

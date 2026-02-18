@@ -432,7 +432,13 @@
                 <td style="color: #032854; padding: 3px 2px;">Contact No</td>
                 <td style="text-align: center; padding: 3px;">:</td>
                 <td style="padding: 3px 0;">
-                    {{ $quotation->customer->country_code ?? '+91' . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 0, 5) . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 5) }}
+                    @php
+                        $countryCode = $quotation->customer->country_code ?? '+91';
+                        $contactNo = $quotation->customer->contact_no ?? '8912929114';
+                    @endphp
+
+                    {{ $countryCode . '-' . substr($contactNo, 0, 5) . ' ' . substr($contactNo, 5) }}
+
                 </td>
             </tr>
 
@@ -468,7 +474,11 @@
                             Contact No.
                         </div>
                         <div style="margin-top: 5px;">
-                            {{ '+91 ' . substr($quotation->followedBy->contact_no ?? '8912929114', 0, 5) . ' ' . substr($quotation->followedBy->mobile_no ?? '8912929114', 5) }}
+                            {{ '+91 ' .
+                                substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 0, 5) .
+                                '-' .
+                                substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 5) }}
+
                         </div>
                     </td>
 
@@ -496,7 +506,8 @@
         <div class="border-box">
             <img src="{{ asset('storage/' . $quotation->machine->image_url) ?? 'mixture.png' }}" class="main-image " />
         </div>
-        <p  style="position: fixed;bottom: 360px; left: 45%;  transform: translateX(-50%); font-size: 13px; margin: 0;  text-align: center; font-weight:bolder;">
+        <p
+            style="position: fixed;bottom: 360px; left: 45%;  transform: translateX(-50%); font-size: 13px; margin: 0;  text-align: center; font-weight:bolder;">
             *The image shown above is for reference purposes only.
         </p>
 
@@ -727,7 +738,8 @@
                     <span>&#8226;&nbsp; Motor</span>
                 </td>
                 <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-                    :&nbsp;{{ $quotation->makeMotor->name ?? '' }} Make Motor 1440 R.P.M AC Motor Drive Transmission Through
+                    :&nbsp;{{ $quotation->makeMotor->name ?? '' }} Make Motor 1440 R.P.M AC Motor Drive Transmission
+                    Through
                     “V” – belt and Pulley Arrangement.
                 </td>
             </tr>
