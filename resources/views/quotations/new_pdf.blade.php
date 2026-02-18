@@ -839,7 +839,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-                                {{ format_indian_numbert($amount, 2) }}
+                                {{ format_indian_number($amount, 2) }}
                             </td>
                         </tr>
 
