@@ -100,9 +100,9 @@
                         style="width: 60%; font-weight: bold; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px; font-size: 16px;">
                         Contact No.
                     </div>
-                    <div style="margin-top: 5px;">  {{ '+91 ' .
+                    <div style="margin-top: 5px;">  {{ '+91-' .
                                 substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 0, 5) .
-                                '-' .
+                                ' ' .
                                 substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 5) }}</div>
                 </td>
 
