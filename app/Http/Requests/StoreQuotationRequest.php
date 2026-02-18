@@ -32,6 +32,7 @@ class StoreQuotationRequest extends FormRequest
             'date' => 'nullable|date',
             // 'user_id'=>'required|exists:users,id',
             'total_price' => 'nullable|numeric',
+            'total'=> 'nullable|numeric',
             'electrical_control'=>'nullable',
             'ac_frequency_drive'=>'nullable',
             'bearing'=>'nullable',

@@ -85,7 +85,7 @@
 
                 <div class="col-md-6 mb-3">
                     <label>Quantity</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control" step="0.01" value="{{ old('quantity', 1) }}">
+                    <input type="number" name="quantity" id="quantity" class="form-control" step="1" value="{{ old('quantity', 1) }}">
                 </div>
 
                {{--<div class="col-md-6 mb-3">

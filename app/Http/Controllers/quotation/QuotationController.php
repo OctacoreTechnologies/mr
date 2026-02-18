@@ -167,9 +167,8 @@ class QuotationController extends Controller
             $foreignKeys
         );
 
-        $finalData['total'] = $finalData['total_price'];
-
-
+        // $finalData['total'] = $finalData['total_price'];
+    
         Quotation::create($finalData);
         session()->flash('success', 'quotation is created successfully');
 

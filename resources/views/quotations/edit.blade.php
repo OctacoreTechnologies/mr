@@ -73,12 +73,12 @@
 
                     <div class="form-group col-md-6">
                         <label for="quantity">Quantity</label>
-                        <input type="number" id="quantity" class="form-control " name="quantity" step="0.01" value="{{ old('quantity', $quotation->quantity) }}">
+                        <input type="number" id="quantity" class="form-control " name="quantity" step="1" value="{{ old('quantity', $quotation->quantity) }}">
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="total_price">Price(Unit)</label>
-                        <input type="text" class="form-control format-number" id="total_price" name="total_price" step="0.01" value="{{ old('total_price', $quotation->total_price) }}">
+                        <input type="text" class="form-control format-number" id="total_price" name="total_price" step="1" value="{{ old('total_price', $quotation->total_price) }}">
                     </div>
 
                     <!-- <div class="form-group col-md-6">

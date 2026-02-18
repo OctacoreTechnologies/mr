@@ -822,11 +822,11 @@
                         </td>
                         <td
                             style="text-align: center; vertical-align: top; padding:80px 15px; border: 1px solid black;">
-                            {{ number_format($unitPrice, 2) }}
+                            {{ format_indian_number($unitPrice, 2) }}
                         </td>
                         <td
                             style="text-align: center; vertical-align: top; padding:80px 15px; border: 1px solid black;">
-                            {{ number_format($amount, 2) }}
+                            {{ format_indian_number($amount, 2) }}
                         </td>
                     </tr>
 
@@ -839,7 +839,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-                                {{ number_format($amount, 2) }}
+                                {{ format_indian_numbert($amount, 2) }}
                             </td>
                         </tr>
 
@@ -851,7 +851,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-                                {{ number_format($quotation->discount_amount, 2) }}
+                                {{ format_indian_number($quotation->discount_amount, 2) }}
                             </td>
                         </tr>
 
@@ -863,7 +863,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-                                {{ number_format($quotation->total, 2) }}
+                                {{ format_indian_number($quotation->total, 2) }}
                             </td>
                         </tr>
 
@@ -883,7 +883,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-                                {{ number_format($amount, 2) }}
+                                {{ format_indian_number($amount, 2) }}
                             </td>
                         </tr>
 
@@ -891,11 +891,11 @@
                         <tr style="border: 1px solid black;">
                             <td colspan="4"
                                 style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-                                Less: Discount ({{ number_format($quotation->discount_percentage, 2) }}%)
+                                Less: Discount ({{ format_indian_number($quotation->discount_percentage, 2) }}%)
                             </td>
                             <td
                                 style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-                                {{ number_format($amount * ($quotation->discount_percentage / 100), 2) }}
+                                {{ format_indian_number($amount * ($quotation->discount_percentage / 100), 2) }}
                             </td>
                         </tr>
 
@@ -907,7 +907,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-                                {{ number_format($quotation->total, 2) }}
+                                {{ format_indian_number($quotation->total, 2) }}
                             </td>
                         </tr>
 
@@ -927,7 +927,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-                                {{ number_format($amount, 2) }}
+                                {{ format_indian_number($amount, 2) }}
                             </td>
                         </tr>
 

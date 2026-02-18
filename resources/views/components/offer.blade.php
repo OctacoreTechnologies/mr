@@ -127,10 +127,10 @@
           {{ $qty }} Nos.
         </td>
         <td style="text-align: center; vertical-align: top; padding:80px 15px; border: 1px solid black;">
-          {{ number_format($unitPrice, 2) }}
+          {{ format_indian_number($unitPrice, 2) }}
         </td>
         <td style="text-align: center; vertical-align: top; padding:80px 15px; border: 1px solid black;">
-          {{ number_format($amount, 2) }}
+          {{ format_indian_number($amount, 2) }}
         </td>
       </tr>
 
@@ -141,7 +141,7 @@
             Subtotal
           </td>
           <td style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-            {{ number_format($amount, 2) }}
+            {{ format_indian_number($amount, 2) }}
           </td>
         </tr>
 
@@ -151,7 +151,7 @@
             Less: Discount
           </td>
           <td style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-            {{ number_format($quotation->discount_amount, 2) }}
+            {{ format_indian_number($quotation->discount_amount, 2) }}
           </td>
         </tr>
 
@@ -161,7 +161,7 @@
             Net Payable Amount
           </td>
           <td style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-            {{ number_format($quotation->total, 2) }}
+            {{ format_indian_number($quotation->total, 2) }}
           </td>
         </tr>
 
@@ -178,7 +178,7 @@
             Subtotal
           </td>
           <td style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-            {{ number_format($amount, 2) }}
+            {{ format_indian_number($amount, 2) }}
           </td>
         </tr>
 
@@ -188,7 +188,7 @@
            Discount(%)
           </td>
           <td style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-            {{ number_format($quotation->discount_percentage, 2) }}%
+            {{ format_indian_number($quotation->discount_percentage, 2) }}%
           </td>
         </tr>
 
@@ -198,7 +198,7 @@
             Net Payable Amount
           </td>
           <td style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-            {{ number_format($quotation->total, 2) }}
+            {{ format_indian_number($quotation->total, 2) }}
           </td>
         </tr>
 
@@ -215,7 +215,7 @@
             Total
           </td>
           <td style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-            {{ number_format($amount, 2) }}
+            {{ format_indian_number($amount, 2) }}
           </td>
         </tr>
 

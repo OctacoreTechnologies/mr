@@ -320,8 +320,8 @@
                     {{-- Editable Fields --}}
                     @php
                         $inputs = [
-                            ['label' => 'Date', 'name' => 'date', 'type' => 'date'],
-                            ['label' => 'Quantity', 'name' => 'quantity', 'type' => 'number'],
+                            ['label' => 'Date', 'name' => 'date', 'type' => 'date','id'=>'date'],
+                            ['label' => 'Quantity', 'name' => 'quantity', 'type' => 'number','step'=>'1','id'=>'quantity'],
                         ];
                     @endphp
 
@@ -330,6 +330,8 @@
                             <label>{{ $input['label'] }}</label>
                             <input type="{{ $input['type'] ?? 'text' }}" name="{{ $input['name'] }}"
                                 class="form-control readonly-input" value="{{ $previewData[$input['name']] ?? '' }}"
+                                step={{$input['step']??'1'}}
+                                id={{$input['id']}}
                                 readonly>
                             <i class="fas fa-pencil-alt edit-icon"></i>
                         </div>
@@ -337,9 +339,17 @@
 
                     {{-- Editable Total Price --}}
                     <div class="col-md-6 form-group form-group-position">
-                        <label>Total Price</label>
+                        <label>Price(Unit)</label>
                         <input type="text" name="total_price" class="form-control readonly-input format-number"
-                            value="{{ $previewData['total_price'] }}" step="0.01" readonly>
+                            value="{{ $previewData['total_price'] }}" id='total_price' readonly>
+                        <i class="fas fa-pencil-alt edit-icon"></i>
+                    </div>
+
+                    {{-- Editable Total Price --}}
+                    <div class="col-md-6 form-group form-group-position">
+                        <label>Total Amount</label>
+                        <input type="text" name="total" class="form-control readonly-input format-number"
+                            value="{{ $previewData['total_price']*$previewData['quantity'] }}" id='total_amount'   readonly>
                         <i class="fas fa-pencil-alt edit-icon"></i>
                     </div>
 
@@ -578,6 +588,9 @@
                 }
             });
 
+             $('#total_price, #quantity').on('input', function() {
+                updateTotal();
+            });
 
             /* ========= FORM SUBMIT (VERY IMPORTANT) ========= */
             $('form').on('submit', function() {
@@ -585,6 +598,13 @@
             });
 
         });
+
+        function updateTotal(){
+         var price = parseFloat($('#total_price').val().replace(/,/g, '')) || 0;
+         var quantity = parseFloat($('#quantity').val().replace(/,/g, '')) || 1;
+         var total = price*quantity;
+         $('#total_amount').val(total.toFixed(2));
+        }
     </script>
 @endpush
 
