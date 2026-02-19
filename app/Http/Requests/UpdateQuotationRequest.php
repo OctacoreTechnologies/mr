@@ -12,7 +12,7 @@ class UpdateQuotationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check()?true:false;
+        return Auth::check() ? true : false;
     }
 
     /**
@@ -25,22 +25,26 @@ class UpdateQuotationRequest extends FormRequest
 
         return [
             'customer_id' => 'required|exists:customers,id',
-            'reference_no' => 'required|unique:quotations,reference_no,' . $this->route('quotation'). ',id' ,
-            'quantity'=>'required|numeric',
+            'reference_no' => 'required|unique:quotations,reference_no,' . $this->route('quotation') . ',id',
+            'quantity' => 'required|numeric',
             'date' => 'nullable|date',
             'total_price' => 'nullable|numeric',
             // 'discount'=>'nullable',
-            'discount_type' =>'required',
-            'discount_amount'=>'nullable',
-            'discount_percentage'=>'nullable',
-            'total'=>'nullable', 
-            'status'=>'required',
-            'revise'=>'nullable',
-            'reflect_in_pdf'=>'nullable',
-            'reminder_date'=>'nullable|date',
-            'remark'=>'nullable',
-            'followed_by' =>'required|exists:users,id',
-            
+            'discount_type' => 'required',
+            'discount_amount' => 'nullable',
+            'discount_percentage' => 'nullable',
+            'total' => 'nullable',
+            'status' => 'required',
+            'revise' => 'nullable',
+            'reflect_in_pdf' => 'nullable',
+            'reminder_date' => 'nullable|date',
+            'remark' => 'nullable',
+            'followed_by' => 'required|exists:users,id',
+
+            'remarks' => ['nullable', 'array'],
+            'remarks.*.id' => ['nullable', 'exists:remarks,id'],
+            'remarks.*.remark' => ['nullable', 'string'],
+
 
         ];
     }

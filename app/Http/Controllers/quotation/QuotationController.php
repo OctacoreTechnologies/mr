@@ -41,6 +41,7 @@ use App\Models\SaleOrder;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
 use function PHPUnit\Framework\isEmpty;
@@ -82,7 +83,7 @@ class QuotationController extends Controller
         $model = Modele::findOrFail($previewData['model_id']);
         // $cleints = Customer::all();
         $customer = Customer::findOrFail($previewData['customer_id']);
-        $materialToProcess = MaterialToProcess::where('model_id',$previewData['model_id'])->get();
+        $materialToProcess = MaterialToProcess::where('model_id', $previewData['model_id'])->get();
         $batchs = Batch::all();
         $mixingTools = MixingTool::all();
         $modeles = Modele::where('name', 'LIKE', '%' . $model->name . '%')->where('machine_id', $previewData['machine_id'])->with(['motorRequirement', 'motorRequirement2'])->get();
@@ -145,7 +146,7 @@ class QuotationController extends Controller
             'blower' => [Blower::class, 'blower'],
             'rotary_air_lock_valve' => [RotaryAirLockValve::class, 'rotary_air_lock_valve'],
             'feeding_hooper_capacity' => [FeedingHooperCapacity::class, 'feeding_hooper_capacity'],
-        
+
         ];
 
         $foreignKeys = [];
@@ -159,17 +160,27 @@ class QuotationController extends Controller
             }
         }
 
-        $finalData = array_merge(
-            // Just regular fields
-            collect($validated)->except(array_keys($relationfields))->toArray(),
+        // $finalData = array_merge(
 
-            // Foreign key fields
+        //     collect($validated)->except(array_keys($relationfields))->toArray(),
+
+
+        //     $foreignKeys
+        // );
+        $finalData = array_merge(
+            collect($validated)
+                ->except(array_merge(array_keys($relationfields), ['remark']))
+                ->toArray(),
             $foreignKeys
         );
 
-        // $finalData['total'] = $finalData['total_price'];
-    
-        Quotation::create($finalData);
+
+        $quotation = Quotation::create($finalData);
+        if (!empty($validated['remark'])) {
+            $quotation->remarks()->create([
+                'remark' => $validated['remark']
+            ]);
+        }
         session()->flash('success', 'quotation is created successfully');
 
         return response()->redirectToRoute('quotation.index');
@@ -191,11 +202,13 @@ class QuotationController extends Controller
      */
     public function edit(string $id)
     {
-        // $opportunities=Opportunity::all();
+
         $products = Application::all();
         $cleints = Customer::all();
-        // return $opportunities;
-        $quotation = Quotation::findOrFail($id);
+
+        $quotation = Quotation::with('remarks')->findOrFail($id);
+        // return $quotation->getRelation('remarks');
+
         return response()->view('quotations.edit', [
             "quotation" => $quotation,
             'products' => $products,
@@ -218,7 +231,57 @@ class QuotationController extends Controller
         }
         $validated['reference_no'] = $referenceNo;
 
-        $quotation->update(collect($validated)->except('reminder_date')->toArray());
+        $quotation->update(
+            collect($validated)->except(['reminder_date', 'remarks'])->toArray()
+        );
+
+        $remarksInput = $validated['remarks'] ?? [];
+
+        // Existing remark IDs
+        $existingIds = $quotation->remarks()->pluck('id')->toArray();
+
+        // Submitted IDs
+        $submittedIds = collect($remarksInput)
+            ->pluck('id')
+            ->filter()
+            ->toArray();
+
+        // Delete removed remarks
+        $deleteIds = array_diff($existingIds, $submittedIds);
+        $quotation->remarks()->whereIn('id', $deleteIds)->delete();
+
+        foreach ($remarksInput as $item) {
+
+            // Agar sirf string aa raha hai
+            if (is_string($item)) {
+                if (filled($item)) {
+                    $quotation->remarks()->create([
+                        'remark' => $item,
+                        'created_by' => Auth::id(),
+                    ]);
+                }
+                continue;
+            }
+
+            // Update
+            if (!empty($item['id'])) {
+                $quotation->remarks()
+                    ->where('id', $item['id'])
+                    ->update([
+                        'remark' => $item['remark']
+                    ]);
+            }
+            // Create
+            else {
+                if (filled($item['remark'])) {
+                    $quotation->remarks()->create([
+                        'remark' => $item['remark'],
+                        'created_by' => Auth::id(),
+                    ]);
+                }
+            }
+        }
+
         if (!is_null($validated['reminder_date']) && $validated['reminder_date'] != $quotation->remider_date) {
             Reminder::create([
                 'type_id' => $quotation->id,
@@ -252,7 +315,7 @@ class QuotationController extends Controller
         $numberWords = new NumberToWords();
         $numberTransformer = $numberWords->getNumberTransformer('en');
         $termCondition = TearmCondition::findOrFail(1);
-        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2','blower','rotaryAirLockValve','feedingHooperCapacity'])->findOrFail($id);
+        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'remarks'])->findOrFail($id);
         $words = convertToIndianWords((int) ($quotation->total ?? 0) - (int) ($quotation->discount ?? 0));
         $viewName = null;
         if ($quotation->machine->name == 'High Speed Heater Mixer') {
@@ -269,8 +332,7 @@ class QuotationController extends Controller
             $viewName = "quotations.pdfs.pulverizer";
         } else if ($quotation->machine->name == 'Agglomerator') {
             $viewName = "quotations.pdfs.agglomerator";
-        }  
-        else {
+        } else {
             $viewName = "quotations.new_pdf";
         }
         $pdf = Pdf::loadView($viewName, [
@@ -630,7 +692,7 @@ class QuotationController extends Controller
         $newQuotation->save();
 
         session()->flash('success', 'Quotation reordered successfully with new reference: ' . $newQuotation->reference_no);
-        return response()->redirectToRoute('quotation.edit', ['quotation' => $newQuotation->id,'reorder'=>1]);
+        return response()->redirectToRoute('quotation.edit', ['quotation' => $newQuotation->id, 'reorder' => 1]);
     }
 
     /**

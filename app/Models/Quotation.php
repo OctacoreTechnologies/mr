@@ -196,6 +196,11 @@ class Quotation extends Model implements Auditable
     return $this->belongsTo(User::class, 'followed_by');
   }
 
+  public function remarks()
+  {
+     return $this->morphMany(Remark::class, 'remarkable');
+  }
+
   protected static function booted()
   {
     static::creating(function ($model) {
