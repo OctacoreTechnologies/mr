@@ -128,7 +128,7 @@
                 style="z-index: 0;">
         </div>
         <p
-            style="position: fixed;bottom: 360px; left: 45%;  transform: translateX(-50%); font-size: 13px; margin: 0;  text-align: center; font-weight:bolder;">
+            style="position: fixed;bottom: 360px; left: 45%;  transform: translateX(-50%); font-size: 16px; margin: 0;  text-align: center; font-weight:bolder;width:100%">
             *The image shown above is for reference purposes only.
         </p>
 

@@ -352,7 +352,7 @@
         </div>
         <div class="footer-col footer-col-border" style="padding-left: 25px; width: 40%;">
             <b>Factory </b>
-            <p>351 /A & 351 /B, EPL Compound, Near EPL Pipe</p>
+            <p>351 /A & 351 /B, PSL Compound, Near EPL</p>
             <p>Kachigam Char Rasta, Village Kachigam Nani</p>
             <p>Daman (UT), Daman –396210</p>
             <p>Website: <span style="color: #2daae3;">www.mrengineers.co.in</span></p>
@@ -507,7 +507,7 @@
             <img src="{{ asset('storage/' . $quotation->machine->image_url) ?? 'mixture.png' }}" class="main-image " />
         </div>
         <p
-            style="position: fixed;bottom: 360px; left: 45%;  transform: translateX(-50%); font-size: 13px; margin: 0;  text-align: center; font-weight:bolder;">
+            style="position: fixed;bottom: 360px; left: 45%;  transform: translateX(-50%); font-size: 16px; margin: 0;  text-align: center; font-weight:bolder;width:100%">
             *The image shown above is for reference purposes only.
         </p>
 
@@ -738,9 +738,7 @@
                     <span>&#8226;&nbsp; Motor</span>
                 </td>
                 <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-                    :&nbsp;{{ $quotation->makeMotor->name ?? '' }} Make Motor 1440 R.P.M AC Motor Drive Transmission
-                    Through
-                    “V” – belt and Pulley Arrangement.
+                    :&nbsp;{{ $quotation->makeMotor->name ?? '' }}
                 </td>
             </tr>
             <tr>
