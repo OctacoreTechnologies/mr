@@ -29,7 +29,8 @@
         // GLOBAL COUNTS
         // let remarkCount = $('.remark-item').length;
         // let itemCount = {{ $quotation->items->count() ?? 0 }};
-        let itemCount =0;
+        // let itemCount =0;
+        let itemCount = $('.item-row').length;
 
         function updateTotal() {
 
@@ -175,6 +176,7 @@
                        class="form-control mb-1 item-qty">
 
                 <input type="text"
+                       name='item_total_amount'
                        placeholder="Item Total"
                        class="form-control mb-1 item-total format-number"
                        readonly>

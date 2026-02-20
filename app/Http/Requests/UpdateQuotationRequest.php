@@ -47,7 +47,7 @@ class UpdateQuotationRequest extends FormRequest
 
             'items' => 'nullable|array',
             'items.*.name' => 'nullable|string',
-            'items.*.quantity' => 'nullable|numeric',
+            'items.*.qty' => 'nullable|numeric',
             'items.*.price' => 'nullable|numeric',
 
 

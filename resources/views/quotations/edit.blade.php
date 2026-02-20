@@ -129,11 +129,11 @@
                                     value="{{ $item->item_price }}" placeholder="Item Price"
                                     class="form-control item-price format-number">
 
-                                <input type="number" name="items[{{ $index }}][quantity]"
+                                <input type="number" name="items[{{ $index }}][qty]"
                                     value="{{ $item->item_qty }}" placeholder="Item Quantity"
                                     class="form-control item-qty ">
 
-                                <input type="text" name="items[{{ $index }}][quantity]"
+                                <input type="text" name="total_item_price"
                                     value="{{ $item->item_price * $item->item_qty }}" placeholder="Item Price"
                                     class="form-control item-total format-number item-total" readonly>
 
