@@ -570,7 +570,7 @@
 @push('js')
     <script>
         $(document).ready(function() {
-            let itemCount = 1;
+            let itemCount = 0;
 
             $('.edit-icon').on('click', function() {
 

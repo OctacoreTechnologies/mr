@@ -29,7 +29,7 @@
         // GLOBAL COUNTS
         // let remarkCount = $('.remark-item').length;
         // let itemCount = {{ $quotation->items->count() ?? 0 }};
-        let itemCount =1;
+        let itemCount =0;
 
         function updateTotal() {
 
