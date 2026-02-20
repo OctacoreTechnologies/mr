@@ -169,17 +169,35 @@ class QuotationController extends Controller
         // );
         $finalData = array_merge(
             collect($validated)
-                ->except(array_merge(array_keys($relationfields), ['remark']))
+                ->except(array_merge(array_keys($relationfields),['items']))
                 ->toArray(),
             $foreignKeys
         );
 
 
         $quotation = Quotation::create($finalData);
-        if (!empty($validated['remark'])) {
-            $quotation->remarks()->create([
-                'remark' => $validated['remark']
-            ]);
+        // if (!empty($validated['remark'])) {
+        //     $quotation->remarks()->create([
+        //         'remark' => $validated['remark']
+        //     ]);
+        // }
+        $itemsInput = $validated['items'] ?? [];
+        foreach ($itemsInput as $item) {
+
+            // Agar sirf string aaye (rare case safety)
+            if (is_string($item)) {
+                continue;
+            }
+
+            $price = $item['price'] ?? 0;
+            $qty = $item['qty'] ?? 1;
+            if (!empty($item['name'])) {
+                $quotation->items()->create([
+                    'item_name' => $item['name'],
+                    'item_price' => $price,
+                    'item_qty' => $qty,
+                ]);
+            }
         }
         session()->flash('success', 'quotation is created successfully');
 
@@ -206,7 +224,7 @@ class QuotationController extends Controller
         $products = Application::all();
         $cleints = Customer::all();
 
-        $quotation = Quotation::with('remarks')->findOrFail($id);
+        $quotation = Quotation::with('remarks', 'items')->findOrFail($id);
         // return $quotation->getRelation('remarks');
 
         return response()->view('quotations.edit', [
@@ -232,51 +250,97 @@ class QuotationController extends Controller
         $validated['reference_no'] = $referenceNo;
 
         $quotation->update(
-            collect($validated)->except(['reminder_date', 'remarks'])->toArray()
+            collect($validated)->except(['reminder_date', 'items'])->toArray()
         );
 
-        $remarksInput = $validated['remarks'] ?? [];
+        // $remarksInput = $validated['remarks'] ?? [];
 
-        // Existing remark IDs
-        $existingIds = $quotation->remarks()->pluck('id')->toArray();
 
-        // Submitted IDs
-        $submittedIds = collect($remarksInput)
+        // $existingIds = $quotation->remarks()->pluck('id')->toArray();
+
+        // $submittedIds = collect($remarksInput)
+        //     ->pluck('id')
+        //     ->filter()
+        //     ->toArray();
+
+        // $deleteIds = array_diff($existingIds, $submittedIds);
+        // $quotation->remarks()->whereIn('id', $deleteIds)->delete();
+
+        // foreach ($remarksInput as $item) {
+
+
+        //     if (is_string($item)) {
+        //         if (filled($item)) {
+        //             $quotation->remarks()->create([
+        //                 'remark' => $item,
+        //                 'created_by' => Auth::id(),
+        //             ]);
+        //         }
+        //         continue;
+        //     }
+
+
+        //     if (!empty($item['id'])) {
+        //         $quotation->remarks()
+        //             ->where('id', $item['id'])
+        //             ->update([
+        //                 'remark' => $item['remark']
+        //             ]);
+        //     }
+
+        //     else {
+        //         if (filled($item['remark'])) {
+        //             $quotation->remarks()->create([
+        //                 'remark' => $item['remark'],
+        //                 'created_by' => Auth::id(),
+        //             ]);
+        //         }
+        //     }
+        // }
+
+
+        $itemsInput = $validated['items'] ?? [];
+
+
+        $existingIds = $quotation->items()->pluck('id')->toArray();
+
+
+        $submittedIds = collect($itemsInput)
             ->pluck('id')
             ->filter()
             ->toArray();
 
-        // Delete removed remarks
+        // Delete removed items
         $deleteIds = array_diff($existingIds, $submittedIds);
-        $quotation->remarks()->whereIn('id', $deleteIds)->delete();
+        $quotation->items()->whereIn('id', $deleteIds)->delete();
 
-        foreach ($remarksInput as $item) {
+        foreach ($itemsInput as $item) {
 
-            // Agar sirf string aa raha hai
+            // Agar sirf string aaye (rare case safety)
             if (is_string($item)) {
-                if (filled($item)) {
-                    $quotation->remarks()->create([
-                        'remark' => $item,
-                        'created_by' => Auth::id(),
-                    ]);
-                }
                 continue;
             }
 
-            // Update
+            $price = $item['price'] ?? 0;
+            $qty = $item['qty'] ?? 1;
+
+            // Update existing item
             if (!empty($item['id'])) {
-                $quotation->remarks()
+                $quotation->items()
                     ->where('id', $item['id'])
                     ->update([
-                        'remark' => $item['remark']
+                        'item_name' => $item['name'],
+                        'item_price' => $price,
+                        'item_qty' => $qty,
                     ]);
             }
-            // Create
+            // Create new item
             else {
-                if (filled($item['remark'])) {
-                    $quotation->remarks()->create([
-                        'remark' => $item['remark'],
-                        'created_by' => Auth::id(),
+                if (!empty($item['name'])) {
+                    $quotation->items()->create([
+                        'item_name' => $item['name'],
+                        'item_price' => $price,
+                        'item_qty' => $qty,
                     ]);
                 }
             }
@@ -315,7 +379,7 @@ class QuotationController extends Controller
         $numberWords = new NumberToWords();
         $numberTransformer = $numberWords->getNumberTransformer('en');
         $termCondition = TearmCondition::findOrFail(1);
-        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'remarks'])->findOrFail($id);
+        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'items'])->findOrFail($id);
         $words = convertToIndianWords((int) ($quotation->total ?? 0) - (int) ($quotation->discount ?? 0));
         $viewName = null;
         if ($quotation->machine->name == 'High Speed Heater Mixer') {

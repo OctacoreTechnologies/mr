@@ -810,16 +810,18 @@
                         $unitPrice = $quotation->total_price ?? 0;
                         $discount = $quotation->discount_type;
                         $amount = $qty * $unitPrice;
-                        $remarks = $quotation->getRelation('remarks') ?? [];
-                        $hasRemarks = count($remarks) > 0;
+                        $items = $quotation->getRelation('items') ?? [];
+                        $hasItems = count($items) > 0;
                         $srNo = 2;
+                        $subTotal = 0;
                     @endphp
 
                     {{-- ================= REMARKS MODE ================= --}}
-                    @if ($hasRemarks)
+                    @if ($hasItems)
 
                         <tr style="border: 1px solid black;border-bottom:none;">
-                            <td style="text-align:center; vertical-align: top; padding:10px; border:1px solid black; border-bottom:none;">
+                            <td
+                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black; border-bottom:none;">
                                 1
                             </td>
 
@@ -829,32 +831,45 @@
                                 ELECTRICAL PANEL
                             </td>
 
-                            <td style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
+                            <td
+                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
                                 {{ $qty }} Nos.
                             </td>
 
-                            <td style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
-                                {{ format_indian_number($unitPrice, 2) }}
+                            <td
+                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
+                                {{ format_indian_number($unitPrice) }}
                             </td>
 
-                            <td style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
-                                {{ format_indian_number($amount, 2) }}
+                            <td
+                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
+                                {{ format_indian_number($amount) }}
                             </td>
                         </tr>
 
-                        @foreach ($remarks as $remark)
+                        @foreach ($items as $item)
+                            @php
+                                $subTotal = $item->item_qty * $item->item_price + $subTotal;
+                            @endphp
                             <tr>
-                                <td style="text-align:center; border:1px solid black;border-top:none;border-bottom:none;">
+                                <td
+                                    style="text-align:center; border:1px solid black;border-top:none;border-bottom:none;">
                                     {{ $srNo++ }}
                                 </td>
 
                                 <td style="padding:8px; border:1px solid black;border-top:none;border-bottom:none;">
-                                    {{ $remark->remark }}
+                                    {{ $item->item_name }}
                                 </td>
 
-                                <td style="border:1px solid black;border-top:none;border-bottom:none;"></td>
-                                <td style="border:1px solid black;border-top:none;border-bottom:none;"></td>
-                                <td style="border:1px solid black;border-top:none;border-bottom:none;"></td>
+                                <td
+                                    style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-top:none;border-bottom:none;">
+                                    {{ $item->item_qty }} Nos.</td>
+                                <td
+                                    style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-top:none;border-bottom:none;">
+                                    {{ format_indian_number($item->item_price) }}</td>
+                                <td
+                                    style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-top:none;border-bottom:none;">
+                                    {{ format_indian_number($item->item_price * $item->item_qty) }}</td>
                             </tr>
                         @endforeach
 
@@ -904,7 +919,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-                                {{ format_indian_number($amount, 2) }}
+                                {{ format_indian_number($amount + $subTotal, 2) }}
                             </td>
                         </tr>
 
@@ -920,20 +935,26 @@
                         </tr>
 
                         <tr>
-                            <td colspan="4"
-                                style="text-align: right; padding: 14px 15px; font-weight: bold; border: none;">
-                                Net Payable Amount
-                            </td>
-                            <td
-                                style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-                                {{ format_indian_number($quotation->total, 2) }}
-                            </td>
-                        </tr>
+                            <td colspan="4" style="padding:14px; border:1px solid black; font-weight:bold;">
 
-                        <tr>
-                            <td colspan="5"
-                                style="text-align: center; padding: 16px 10px; font-weight: bold; border: 1px solid black;">
-                                RUPEES {{ strtoupper($words) }} ONLY
+                                <table style="width:100%; border-collapse:collapse;">
+                                    <tr>
+                                        <!-- Rupees Words -->
+                                        <td style="text-align:left; vertical-align:top; padding:0;">
+                                            RUPEES {{ strtoupper($words) }} ONLY
+                                        </td>
+
+                                        <!-- Net Payable Amount -->
+                                        <td style="text-align:right; white-space:nowrap; padding-left:20px;">
+                                            Net Payable Amount
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+
+                            <td style="text-align:right; padding:14px; border:1px solid black; font-weight:bold;">
+                                {{ format_indian_number($quotation->total, 2) }}
                             </td>
                         </tr>
                     @elseif($discount == 'percentage')
@@ -944,7 +965,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-                                {{ format_indian_number($amount, 2) }}
+                                {{ format_indian_number($amount + $subTotal, 2) }}
                             </td>
                         </tr>
 
@@ -960,38 +981,60 @@
                         </tr>
 
                         <tr>
-                            <td colspan="4"
-                                style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-                                Net Payable Amount
+                            <td colspan="4" style="padding:14px; border:1px solid black; font-weight:bold;">
+
+                                <table style="width:100%; border-collapse:collapse;">
+                                    <tr>
+                                        <!-- Rupees Words -->
+                                        <td style="text-align:left; vertical-align:top; padding:0;">
+                                            RUPEES {{ strtoupper($words) }} ONLY
+                                        </td>
+
+                                        <!-- Net Payable Amount -->
+                                        <td style="text-align:right; white-space:nowrap; padding-left:20px;">
+                                            Net Payable Amount
+                                        </td>
+                                    </tr>
+                                </table>
+
                             </td>
-                            <td
-                                style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
+
+                            <td style="text-align:right; padding:14px; border:1px solid black; font-weight:bold;">
                                 {{ format_indian_number($quotation->total, 2) }}
                             </td>
                         </tr>
 
-                        <tr>
-                            <td colspan="5"
-                                style="text-align: center; padding: 16px 10px; font-weight: bold; border: 1px solid black;">
-                                RUPEES {{ strtoupper($words) }} ONLY
-                            </td>
-                        </tr>
                     @else
                         <tr>
-                            <td colspan="4"
-                                style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-                                Total
+                            <td colspan="4" style="padding:14px; border:1px solid black; font-weight:bold;">
+
+                                <table style="width:100%; border-collapse:collapse;">
+                                    <tr>
+                                        <!-- Rupees Words -->
+                                        <td style="text-align:left; vertical-align:top; padding:0;">
+                                            RUPEES {{ strtoupper($words) }} ONLY
+                                        </td>
+
+                                        <!-- Net Payable Amount -->
+                                        <td style="text-align:right; white-space:nowrap; padding-left:20px;">
+                                            Total
+                                        </td>
+                                    </tr>
+                                </table>
+
                             </td>
-                            <td
-                                style="text-align: right; padding: 14px 15px; font-weight: bold; border: 1px solid black;">
-                                {{ format_indian_number($amount, 2) }}
+
+                            <td style="text-align:right; padding:14px; border:1px solid black; font-weight:bold;">
+                                {{ format_indian_number($quotation->total, 2) }}
                             </td>
                         </tr>
+                    @endif
 
-                        <tr>
+                    @if($quotation->remark)
+                       <tr>
                             <td colspan="5"
                                 style="text-align: center; padding: 16px 10px; font-weight: bold; border: 1px solid black;">
-                                RUPEES {{ strtoupper($words) }} ONLY
+                                 Note:{{ $quotation->remark }} 
                             </td>
                         </tr>
                     @endif

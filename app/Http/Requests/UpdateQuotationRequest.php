@@ -41,9 +41,14 @@ class UpdateQuotationRequest extends FormRequest
             'remark' => 'nullable',
             'followed_by' => 'required|exists:users,id',
 
-            'remarks' => ['nullable', 'array'],
-            'remarks.*.id' => ['nullable', 'exists:remarks,id'],
-            'remarks.*.remark' => ['nullable', 'string'],
+            // 'remarks' => ['nullable', 'array'],
+            // 'remarks.*.id' => ['nullable', 'exists:remarks,id'],
+            // 'remarks.*.remark' => ['nullable', 'string'],
+
+            'items' => 'nullable|array',
+            'items.*.name' => 'nullable|string',
+            'items.*.quantity' => 'nullable|numeric',
+            'items.*.price' => 'nullable|numeric',
 
 
         ];

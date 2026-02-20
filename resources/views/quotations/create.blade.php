@@ -320,8 +320,14 @@
                     {{-- Editable Fields --}}
                     @php
                         $inputs = [
-                            ['label' => 'Date', 'name' => 'date', 'type' => 'date','id'=>'date'],
-                            ['label' => 'Quantity', 'name' => 'quantity', 'type' => 'number','step'=>'1','id'=>'quantity'],
+                            ['label' => 'Date', 'name' => 'date', 'type' => 'date', 'id' => 'date'],
+                            [
+                                'label' => 'Quantity',
+                                'name' => 'quantity',
+                                'type' => 'number',
+                                'step' => '1',
+                                'id' => 'quantity',
+                            ],
                         ];
                     @endphp
 
@@ -330,9 +336,7 @@
                             <label>{{ $input['label'] }}</label>
                             <input type="{{ $input['type'] ?? 'text' }}" name="{{ $input['name'] }}"
                                 class="form-control readonly-input" value="{{ $previewData[$input['name']] ?? '' }}"
-                                step={{$input['step']??'1'}}
-                                id={{$input['id']}}
-                                readonly>
+                                step={{ $input['step'] ?? '1' }} id={{ $input['id'] }} readonly>
                             <i class="fas fa-pencil-alt edit-icon"></i>
                         </div>
                     @endforeach
@@ -342,14 +346,6 @@
                         <label>Price(Unit)</label>
                         <input type="text" name="total_price" class="form-control readonly-input format-number"
                             value="{{ $previewData['total_price'] }}" id='total_price' readonly>
-                        <i class="fas fa-pencil-alt edit-icon"></i>
-                    </div>
-
-                    {{-- Editable Total Price --}}
-                    <div class="col-md-6 form-group form-group-position">
-                        <label>Total Amount</label>
-                        <input type="text" name="total" class="form-control readonly-input format-number"
-                            value="{{ $previewData['total_price']*$previewData['quantity'] }}" id='total_amount'   readonly>
                         <i class="fas fa-pencil-alt edit-icon"></i>
                     </div>
 
@@ -542,6 +538,24 @@
                     <div class="col-md-6">
                         <x-adminlte-textarea label="Remark" name="remark" class="form-group py-2"></x-adminlte-textarea>
                     </div>
+
+
+                    <div class="form-group row" id='itemParent'>
+                        <div class="col-12">
+                            <button type="button" class="btn btn-primary btn-sm" id="addItemBtn">
+                                <i class="fas fa-plus"></i> Add Item
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                {{-- Editable Total Price --}}
+                <div class="col-md-6 form-group form-group-position">
+                    <label>Total Amount</label>
+                    <input type="text" name="total" class="form-control readonly-input format-number"
+                        value="{{ $previewData['total_price'] * $previewData['quantity'] }}" id='total_amount' readonly>
+                    <i class="fas fa-pencil-alt edit-icon"></i>
                 </div>
 
                 <div class="mt-3 d-flex justify-content-end">
@@ -556,6 +570,7 @@
 @push('js')
     <script>
         $(document).ready(function() {
+            let itemCount = 1;
 
             $('.edit-icon').on('click', function() {
 
@@ -588,7 +603,7 @@
                 }
             });
 
-             $('#total_price, #quantity').on('input', function() {
+            $('#total_price, #quantity').on('input', function() {
                 updateTotal();
             });
 
@@ -597,14 +612,93 @@
                 $('input, select').prop('readonly', false).prop('disabled', false);
             });
 
+            $(document).on('click', '#addItemBtn', function() {
+
+                let html = `
+            <div class="form-group col-md-6 item-row">
+                <input type="hidden" name="items[${itemCount}][id]" value="">
+
+                <label>Item ${itemCount + 1}</label>
+
+                <input type="text"
+                       name="items[${itemCount}][name]"
+                       placeholder="Item Name"
+                       class="form-control mb-1">
+
+                <input type="text"
+                       name="items[${itemCount}][price]"
+                       placeholder="Item Price"
+                       class="form-control mb-1 format-number item-price">
+
+                <input type="number"
+                       name="items[${itemCount}][qty]"
+                       placeholder="Qty"
+                       value="1"
+                       class="form-control mb-1 item-qty">
+
+                <input type="text"
+                       placeholder="Item Total"
+                       class="form-control mb-1 item-total format-number"
+                       readonly>
+
+                <button type="button" class="btn btn-danger btn-xs mt-1 removeItem">
+                    Remove
+                </button>
+            </div>
+            `;
+
+                let newItem = $(html);
+
+                $("#itemParent").before(newItem);
+
+                // Apply number format
+                newItem.find('.format-number').each(function() {
+                    initFormatNumber(this);
+                });
+
+                itemCount++;
+            });
+
         });
 
-        function updateTotal(){
-         var price = parseFloat($('#total_price').val().replace(/,/g, '')) || 0;
-         var quantity = parseFloat($('#quantity').val().replace(/,/g, '')) || 1;
-         var total = price*quantity;
-         $('#total_amount').val(total.toFixed(2));
+        function updateTotal() {
+            var price = parseFloat($('#total_price').val().replace(/,/g, '')) || 0;
+            var quantity = parseFloat($('#quantity').val().replace(/,/g, '')) || 1;
+            var total = price * quantity;
+            var itemsTotal = 0;
+
+            $('.item-row').each(function() {
+
+                let price = parseFloat($(this).find('.item-price').val().replace(/,/g, '')) || 0;
+                let qty = parseFloat($(this).find('.item-qty').val()) || 0;
+
+                itemsTotal += price * qty;
+
+            });
+
+            total = total + itemsTotal;
+
+
+            $('#total_amount').val(total.toFixed(2));
         }
+
+        function calculateItemTotal(row) {
+
+            let price = parseFloat(row.find('.item-price').val().replace(/,/g, '')) || 0;
+            let qty = parseFloat(row.find('.item-qty').val()) || 0;
+
+            let total = price * qty;
+
+            row.find('.item-total').val(total.toFixed(2));
+
+            updateTotal();
+        }
+        $(document).on('input', '.item-price, .item-qty', function() {
+
+            let row = $(this).closest('.item-row');
+            calculateItemTotal(row);
+
+        });
     </script>
 @endpush
 

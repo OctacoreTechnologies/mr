@@ -180,9 +180,71 @@
         });
     </script>
     <script>
+        // Number format (Indian format)
+        function formatIndianNumber(value) {
+            if (!value) return '';
+
+            value = value.toString().replace(/,/g, '');
+
+            let parts = value.split('.');
+            let integerPart = parts[0];
+            let decimalPart = parts[1] ? parts[1].substring(0, 2) : '';
+
+            let lastThree = integerPart.slice(-3);
+            let otherNumbers = integerPart.slice(0, -3);
+
+            if (otherNumbers !== '') {
+                lastThree = ',' + lastThree;
+            }
+
+            let formatted = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+            return decimalPart ? formatted + '.' + decimalPart : formatted;
+        }
+
+
+        // Initialize formatting on input
+        function initFormatNumber(element) {
+
+            if (element.value) {
+                element.value = formatIndianNumber(element.value);
+            }
+
+            if (!element.hasAttribute('readonly')) {
+                element.addEventListener('input', function() {
+
+                    let cursorPosition = element.selectionStart;
+                    let originalLength = element.value.length;
+
+                    element.value = formatIndianNumber(element.value);
+
+                    let newLength = element.value.length;
+                    element.selectionEnd = cursorPosition + (newLength - originalLength);
+                });
+            }
+        }
+
+
+        // Contact number format
+        function formatContactNumber(value) {
+            if (!value) return '';
+
+            value = value.replace(/\D/g, '');
+
+            if (value.length <= 5) {
+                return value;
+            } else if (value.length <= 10) {
+                return value.slice(0, 5) + ' ' + value.slice(5);
+            } else {
+                return value.slice(0, value.length - 10) + ' ' +
+                    value.slice(-10, -5) + ' ' +
+                    value.slice(-5);
+            }
+        }
+
+
         document.addEventListener("DOMContentLoaded", function() {
 
-            // Aaj ki date YYYY-MM-DD format me
+            // Set today's date if empty
             let today = new Date();
             let yyyy = today.getFullYear();
             let mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -190,96 +252,20 @@
 
             let formattedDate = yyyy + '-' + mm + '-' + dd;
 
-            // Sare date inputs select karo
             document.querySelectorAll('input[type="date"]').forEach(function(input) {
-
-                // Agar already value nahi hai tabhi set karo
                 if (!input.value) {
                     input.value = formattedDate;
                 }
-
             });
 
 
-            function formatIndianNumber(value) {
-                if (!value) return '';
-
-                value = value.toString().replace(/,/g, '');
-
-                // Decimal handling
-                let parts = value.split('.');
-                let integerPart = parts[0];
-                let decimalPart = parts[1] ? parts[1].substring(0, 2) : '';
-
-                let lastThree = integerPart.slice(-3);
-                let otherNumbers = integerPart.slice(0, -3);
-
-                if (otherNumbers !== '') {
-                    lastThree = ',' + lastThree;
-                }
-
-                let formatted = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
-                return decimalPart ? formatted + '.' + decimalPart : formatted;
-            }
-
-
-            function formatContactNumber(value) {
-                if (!value) return '';
-
-                // Remove all spaces & non digits
-                value = value.replace(/\D/g, '');
-
-                // Indian mobile (10 digit) format: 5-5
-                if (value.length <= 5) {
-                    return value;
-                } else if (value.length <= 10) {
-                    return value.slice(0, 5) + ' ' + value.slice(5);
-                }
-                // If country code included (like 91XXXXXXXXXX)
-                else if (value.length > 10) {
-                    return value.slice(0, value.length - 10) + ' ' +
-                        value.slice(-10, -5) + ' ' +
-                        value.slice(-5);
-                }
-
-                return value;
-            }
-
-            // Apply to contact-number class
-            document.querySelectorAll('.contact-number').forEach(function(input) {
-
-                input.addEventListener('input', function() {
-                    let cursorPosition = input.selectionStart;
-                    let originalLength = input.value.length;
-
-                    input.value = formatContactNumber(input.value);
-
-                    let newLength = input.value.length;
-                    input.selectionEnd = cursorPosition + (newLength - originalLength);
-                });
-
-            });
-
-            // Format all fields with format-number class on page load
+            // Apply number formatting
             document.querySelectorAll('.format-number').forEach(function(input) {
-                if (input.value) {
-                    input.value = formatIndianNumber(input.value);
-                }
-
-                // Only attach input event if not readonly
-                if (!input.hasAttribute('readonly')) {
-                    input.addEventListener('input', function() {
-                        let cursorPosition = input.selectionStart;
-                        let originalLength = input.value.length;
-                        input.value = formatIndianNumber(input.value);
-                        let newLength = input.value.length;
-                        input.selectionEnd = cursorPosition + (newLength - originalLength);
-                    });
-                }
-
-
+                initFormatNumber(input);
             });
 
+
+            // Contact number formatting
             document.addEventListener('input', function(e) {
 
                 if (e.target.classList.contains('contact-number')) {
@@ -294,22 +280,20 @@
                     let newLength = input.value.length;
                     input.selectionEnd = cursorPosition + (newLength - originalLength);
                 }
-
             });
 
 
+            // Form submit cleanup
             document.addEventListener('submit', function(e) {
 
                 const form = e.target;
 
                 if (form.tagName === 'FORM') {
 
-                    // Remove spaces from contact numbers
                     form.querySelectorAll('.contact-number').forEach(function(input) {
                         input.value = input.value.replace(/\s/g, '');
                     });
 
-                    // Remove commas from formatted numbers
                     form.querySelectorAll('.format-number').forEach(function(input) {
                         input.value = input.value.replace(/,/g, '');
                     });
@@ -317,9 +301,6 @@
                 }
 
             });
-
-
-
 
         });
     </script>

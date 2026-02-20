@@ -198,9 +198,12 @@ class Quotation extends Model implements Auditable
 
   public function remarks()
   {
-     return $this->morphMany(Remark::class, 'remarkable');
+    return $this->morphMany(Remark::class, 'remarkable');
   }
-
+  public function items()
+  {
+    return $this->hasMany(QuotationItem::class);
+  }
   protected static function booted()
   {
     static::creating(function ($model) {

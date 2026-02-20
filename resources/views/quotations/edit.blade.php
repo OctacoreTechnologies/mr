@@ -90,9 +90,9 @@
                         </div>
 
                         <!-- <div class="form-group col-md-6">
-                                                                                                                            <label for="discount">Discount</label>
-                                                                                                                            <input type="number" class="form-control" name="discount" step="0.01" value="{{ old('discount', $quotation->discount) }}">
-                                                                                                                        </div> -->
+                                                                                                                                                                                        <label for="discount">Discount</label>
+                                                                                                                                                                                        <input type="number" class="form-control" name="discount" step="0.01" value="{{ old('discount', $quotation->discount) }}">
+                                                                                                                                                                                    </div> -->
                         <div class="form-group col-md-6">
                             <x-adminlte-select label="Discount Type" name="discount_type" id="discountType">
                                 <option value="none" {{ $quotation->discount_type == 'none' ? 'selected' : '' }}>None
@@ -113,6 +113,37 @@
                             <x-adminlte-input type="text" label="Discount Amount" id="discount_amount"
                                 name="discount_amount" value="{{ $quotation->discount_amount }}" class="format-number" />
                         </div>
+                        {{-- Quotation Item Added --}}
+                        @php $itemNo = 1; @endphp
+
+                        @foreach ($quotation->getRelation('items') ?? [] as $index => $item)
+                            <div class="form-group col-md-6 item-row">
+                                <input type="hidden" name="items[{{ $index }}][id]" value="{{ $item->id }}">
+
+                                <label>Item {{ $itemNo }}</label>
+
+                                <input type="text" name="items[{{ $index }}][name]"
+                                    value="{{ $item->item_name }}" placeholder="Item Name" class="form-control mb-1">
+
+                                <input type="text" name="items[{{ $index }}][price]"
+                                    value="{{ $item->item_price }}" placeholder="Item Price"
+                                    class="form-control item-price format-number">
+
+                                <input type="number" name="items[{{ $index }}][quantity]"
+                                    value="{{ $item->item_qty }}" placeholder="Item Quantity"
+                                    class="form-control item-qty ">
+
+                                <input type="text" name="items[{{ $index }}][quantity]"
+                                    value="{{ $item->item_price * $item->item_qty }}" placeholder="Item Price"
+                                    class="form-control item-total format-number item-total" readonly>
+
+                                <button type="button" class="btn btn-danger btn-xs mt-1 removeItem">
+                                    Remove
+                                </button>
+                            </div>
+
+                            @php $itemNo++; @endphp
+                        @endforeach
                         <div class="form-group col-md-6 mb-3" id="total">
                             <x-adminlte-input type="text" id="total_amount" label="Total" name="total"
                                 value="{{ $quotation->total }}" class="format-number" />
@@ -134,8 +165,15 @@
                                 </option>
                             </select>
                         </div>
-                        @php
-                            // $remarks = $quotation->remarks ?? collect();
+
+
+                        <div class="form-group col-md-12">
+                            <button type="button" class="btn btn-primary btn-sm" id="addItemBtn">
+                                <i class="fas fa-plus"></i> Add Item
+                            </button>
+                        </div>
+                        {{-- @php
+                         
                             $remarkNo = 1;
                         @endphp
 
@@ -155,16 +193,21 @@
                             </div>
 
                             @php $remarkNo++; @endphp
-                        @endforeach
+                        @endforeach --}}
+
+                        <div class="col-md-6">
+                            <x-adminlte-textarea label="Remark" name="remark"
+                                class="form-group py-2">{{ $quotation->remark ?? '' }}</x-adminlte-textarea>
+                        </div>
 
 
 
 
-                        <div class="form-group col-md-12">
+                        {{-- <div class="form-group col-md-12">
                             <button type="button" class="btn btn-primary btn-sm" id="addRemarkBtn">
                                 <i class="fas fa-plus"></i> Add Remark
                             </button>
-                        </div>
+                        </div> --}}
 
 
 
@@ -191,154 +234,7 @@
 @stop
 
 @push('js')
-    <script>
-        $(function() {
-            $('.select2').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: "Select an option",
-                allowClear: true
-            });
-        });
-
-        function toggleReminderField() {
-            var selectedValue = $('#status').val();
-
-            if (selectedValue === 'Draft') {
-                $('#reminder').show();
-                //   $('textarea[name="reminder_date"]').prop('required', true);
-            } else {
-                $('#reminder').hide();
-                //   $('textarea[name="reminder_date"]').prop('required', false);
-            }
-        }
-
-        toggleReminderField();
-
-        // Call on change as well
-        $('#status').change(function() {
-            toggleReminderField();
-        });
-
-        $(document).ready(function() {
-            // Initially hide both discount fields on page load
-            $('#discountPercentage').hide();
-            $('#discountAmount').hide();
-
-            // Function to update the total price
-            function updateTotal() {
-                // Remove commas and parse as float
-                var price = parseFloat($('#total_price').val().replace(/,/g, '')) || 0;
-                var quantity = parseFloat($('#quantity').val().replace(/,/g, '')) || 1;
-                var discountType = $('#discountType').val();
-                var discountPercentage = parseFloat($('#discount_percentage').val().replace(/,/g, '')) || 0;
-                var discountAmount = parseFloat($('#discount_amount').val().replace(/,/g, '')) || 0;
-                // var totalPirce = price*quantity;
-
-                var total = price * quantity;
-
-                if (discountType === 'percentage') {
-                    console.log('percentage')
-                    // Calculate percentage discount
-                    total = total - (total * discountPercentage / 100);
-                    $('#discount_amount').val(0); // Clear discount amount field if using percentage
-                } else if (discountType === 'amount') {
-                    // Deduct discount amount
-                    total = total - discountAmount;
-                    $('#discount_percentage').val(0); // Clear discount percentage field if using amount
-                }
-
-                // Update the total field (making sure it's properly formatted)
-                $('#total_amount').val(total.toFixed(2));
-            }
-
-            // Handle changes to the discount type
-            $('#discountType').on('change', function() {
-                var discountType = $(this).val();
-
-                // Show or hide discount fields based on selected type
-                if (discountType === 'percentage') {
-                    $('#discountPercentage').show();
-                    $('#discountAmount').hide();
-                } else if (discountType === 'amount') {
-                    $('#discountAmount').show();
-                    $('#discountPercentage').hide();
-                } else {
-                    $('#discountPercentage').hide();
-                    $('#discountAmount').hide();
-                }
-
-                // Update total price whenever discount type changes
-                updateTotal();
-            });
-
-            // Calculate total whenever discount, price, or amount changes
-            $('#total_price, #discount_percentage, #discount_amount').on('input', function() {
-                updateTotal();
-            });
-
-            // Initial load handling (in case of editing)
-            (function() {
-                var initialDiscountType = $('#discountType').val();
-
-                // If discount type is 'percentage', show discount_percentage field
-                if (initialDiscountType === 'percentage') {
-                    $('#discountPercentage').show();
-                    $('#discountAmount').hide();
-                }
-                // If discount type is 'amount', show discount_amount field
-                else if (initialDiscountType === 'amount') {
-                    $('#discountAmount').show();
-                    $('#discountPercentage').hide();
-                }
-                // If no discount, hide both discount fields
-                else {
-                    $('#discountPercentage').hide();
-                    $('#discountAmount').hide();
-                }
-
-                // Update total based on initial selection
-                updateTotal();
-            })();
-
-            let remarkCount = $('.remark-item').length;
-
-            $(document).on('click', '#addRemarkBtn', function() {
-
-                let html = `
-                              <div class="form-group col-md-6 remark-item">
-                                  <input type="hidden" name="remarks[${remarkCount}][id]" value="">
-                          
-                                  <label>Remark ${remarkCount + 1}</label>
-                                  <textarea name="remarks[${remarkCount}][remark]" rows="4" class="form-control"></textarea>
-                          
-                                  <button type="button" class="btn btn-danger btn-xs mt-1 removeRemark">
-                                      Remove
-                                  </button>
-                              </div>
-                              `;
-
-               $(this).closest('.form-group').before(html);
-
-                remarkCount++;
-            });
-
-        });
-
-        $(document).on('click', '.removeRemark', function() {
-            $(this).closest('.remark-item').remove();
-            updateRemarkNumbers();
-        });
-
-        function updateRemarkNumbers() {
-            remarkCount = 0;
-
-            $('.remark-item').each(function() {
-                remarkCount++;
-                $(this).find('label').text('Remark ' + remarkCount);
-            });
-        }
-    </script>
+<script src="{{asset('js/quotation_edit.js')}}"></script>
 @endpush
 
 @push('css')

@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('quotation_items', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('customer_id');
-            $table->text('remarks')->nullable();
-            $table->text('tentative_dispatch_date')->nullable();
-            $table->text('payment_term_days')->nullable();
-            $table->text('customer_po_number')->nullable();
-            $table->text('whatsapp_number')->nullable();
-            $table->text('employee_id')->nullable();
-            $table->text('status')->default('pending');
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        // Schema::create('quotation_items', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('customer_id');
+        //     $table->text('remarks')->nullable();
+        //     $table->text('tentative_dispatch_date')->nullable();
+        //     $table->text('payment_term_days')->nullable();
+        //     $table->text('customer_po_number')->nullable();
+        //     $table->text('whatsapp_number')->nullable();
+        //     $table->text('employee_id')->nullable();
+        //     $table->text('status')->default('pending');
+        //     $table->softDeletes();
+        //     $table->timestamps();
+        // });
     }
 
     /**
