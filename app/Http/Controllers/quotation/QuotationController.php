@@ -191,11 +191,13 @@ class QuotationController extends Controller
 
             $price = $item['price'] ?? 0;
             $qty = $item['qty'] ?? 1;
+            $qty_unit = $item['qty_unit'] ?? 'Nos';
             if (!empty($item['name'])) {
                 $quotation->items()->create([
                     'item_name' => $item['name'],
                     'item_price' => $price,
                     'item_qty' => $qty,
+                    'qty_unit' => $qty_unit,
                 ]);
             }
         }
@@ -323,6 +325,7 @@ class QuotationController extends Controller
 
             $price = $item['price'] ?? 0;
             $qty = $item['qty'] ?? 1;
+            $qty_unit = $item['qty_unit'] ?? 'Nos';
 
             // Update existing item
             if (!empty($item['id'])) {
@@ -332,6 +335,7 @@ class QuotationController extends Controller
                         'item_name' => $item['name'],
                         'item_price' => $price,
                         'item_qty' => $qty,
+                        'qty_unit' => $qty_unit
                     ]);
             }
             // Create new item
@@ -341,6 +345,7 @@ class QuotationController extends Controller
                         'item_name' => $item['name'],
                         'item_price' => $price,
                         'item_qty' => $qty,
+                        'qty_unit' => $qty_unit
                     ]);
                 }
             }

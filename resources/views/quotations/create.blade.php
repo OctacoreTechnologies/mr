@@ -635,6 +635,12 @@
                        placeholder="Qty"
                        value="1"
                        class="form-control mb-1 item-qty">
+                <select name='items[${itemCount}][qty_unit]'  class="form-control mb-1 p-2">
+                    <option value='Nos'>Nos</option>
+                    <option value='Meter'>Meter</option>
+                    <option value='Kg'>Kg</option>
+                    <option value='Shed'>Shed</option>
+                </select>
 
                 <input type="text"
                        placeholder="Item Total"

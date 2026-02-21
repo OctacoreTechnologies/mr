@@ -74,6 +74,7 @@ class StoreQuotationRequest extends FormRequest
             'items' => 'nullable|array',
             'items.*.name' => 'nullable|string',
             'items.*.qty' => 'nullable|numeric',
+            'items.*.qty_unit' => 'nullable|string',
             'items.*.price' => 'nullable|numeric',
 
         ];

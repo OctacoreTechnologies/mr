@@ -90,9 +90,9 @@
                         </div>
 
                         <!-- <div class="form-group col-md-6">
-                                                                                                                                                                                        <label for="discount">Discount</label>
-                                                                                                                                                                                        <input type="number" class="form-control" name="discount" step="0.01" value="{{ old('discount', $quotation->discount) }}">
-                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                            <label for="discount">Discount</label>
+                                                                                                                                                                                            <input type="number" class="form-control" name="discount" step="0.01" value="{{ old('discount', $quotation->discount) }}">
+                                                                                                                                                                                        </div> -->
                         <div class="form-group col-md-6">
                             <x-adminlte-select label="Discount Type" name="discount_type" id="discountType">
                                 <option value="none" {{ $quotation->discount_type == 'none' ? 'selected' : '' }}>None
@@ -132,6 +132,12 @@
                                 <input type="number" name="items[{{ $index }}][qty]"
                                     value="{{ $item->item_qty }}" placeholder="Item Quantity"
                                     class="form-control item-qty ">
+                                <select name="items[{{ $index }}][qty_unit]" class="form-control mb-1 p-2">
+                                    <option  value="Nos"  {{ $item->qty_unit=='Nos'?'selected':'' }}>Nos</option>
+                                    <option  value="Meter"  {{ $item->qty_unit=='Meter'?'selected':'' }}>Meter</option>
+                                    <option  value="Kg"  {{ $item->qty_unit=='Kg'?'selected':'' }}>Kg</option>
+                                    <option  value="Shed"  {{ $item->qty_unit=='Shed'?'selected':'' }}>Shed</option>
+                                </select>
 
                                 <input type="text" name="total_item_price"
                                     value="{{ $item->item_price * $item->item_qty }}" placeholder="Item Price"
@@ -234,7 +240,7 @@
 @stop
 
 @push('js')
-<script src="{{asset('js/quotation_edit.js')}}"></script>
+    <script src="{{ asset('js/quotation_edit.js') }}"></script>
 @endpush
 
 @push('css')

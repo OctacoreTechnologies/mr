@@ -738,7 +738,7 @@
                     <span>&#8226;&nbsp; Motor</span>
                 </td>
                 <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-                    :&nbsp;{{ $quotation->makeMotor->name ?? '' }} 
+                    :&nbsp;{{ $quotation->makeMotor->name ?? '' }}
                 </td>
             </tr>
             <tr>
@@ -860,8 +860,8 @@
                                 </td>
 
                                 <td
-                                    style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-top:none;border-bottom:none;">
-                                    {{ $item->item_qty }} Nos.</td>
+                                    style="text-align:center;padding:10px;border:1px solid black; border-top:none; border-bottom:none;white-space: nowrap;width:40px;">
+                                    {{ $item->item_qty }} {{ $item->qty_unit ?? 'Nos' }}.</td>
                                 <td
                                     style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-top:none;border-bottom:none;">
                                     {{ format_indian_number($item->item_price) }}</td>
@@ -933,25 +933,20 @@
                         </tr>
 
                         <tr>
-                            <td colspan="4" style="padding:14px; border:1px solid black; font-weight:bold;">
-
-                                <table style="width:100%; border-collapse:collapse;">
-                                    <tr>
-                                        <!-- Rupees Words -->
-                                        <td style="text-align:left; vertical-align:top; padding:0;">
-                                            RUPEES {{ strtoupper($words) }} ONLY
-                                        </td>
-
-                                        <!-- Net Payable Amount -->
-                                        <td style="text-align:right; white-space:nowrap; padding-left:20px;">
-                                            Net Payable Amount
-                                        </td>
-                                    </tr>
-                                </table>
-
+                            <!-- Rupees Words -->
+                            <td colspan="3"
+                                style="padding:14px;border:1px solid black; font-weight:bold; text-align:center; word-break:break-word;">
+                                RUPEES {{ strtoupper($words) }} ONLY
                             </td>
 
-                            <td style="text-align:right; padding:14px; border:1px solid black; font-weight:bold;">
+                            <!-- Net Payable Amount -->
+                            <td
+                                style=" padding:14px;border-top:1px solid black; border-bottom:1px solid black; border-left:1px solid black;font-weight:bold;text-align:right; white-space:nowrap; width:120px;">
+                                Net Payable Amount
+                            </td>
+
+                            <!-- Amount -->
+                            <td style="text-align:right; padding:14px;border:1px solid black;font-weight:bold;">
                                 {{ format_indian_number($quotation->total, 2) }}
                             </td>
                         </tr>
@@ -977,62 +972,50 @@
                                 {{ format_indian_number($amount * ($quotation->discount_percentage / 100), 2) }}
                             </td>
                         </tr>
-
                         <tr>
-                            <td colspan="4" style="padding:14px; border:1px solid black; font-weight:bold;">
-
-                                <table style="width:100%; border-collapse:collapse;">
-                                    <tr>
-                                        <!-- Rupees Words -->
-                                        <td style="text-align:left; vertical-align:top; padding:0;">
-                                            RUPEES {{ strtoupper($words) }} ONLY
-                                        </td>
-
-                                        <!-- Net Payable Amount -->
-                                        <td style="text-align:right; white-space:nowrap; padding-left:20px;">
-                                            Net Payable Amount
-                                        </td>
-                                    </tr>
-                                </table>
-
+                            <!-- Rupees Words -->
+                            <td colspan="3"
+                                style="border:1px solid black; padding:14px; font-weight:bold;text-align:center; word-break:break-word;">
+                                RUPEES {{ strtoupper($words) }} ONLY
                             </td>
 
-                            <td style="text-align:right; padding:14px; border:1px solid black; font-weight:bold;">
+                            <!-- Net Payable Amount label (Divider yahi banega) -->
+                            <td
+                                style="border-top:1px solid black; border-bottom:1px solid black; border-left:1px solid black; padding:14px; font-weight:bold; text-align:right; width:120px; white-space:nowrap;">
+                                Net Payable Amount
+                            </td>
+
+                            <!-- Amount -->
+                            <td style="border:1px solid black;padding:14px;font-weight:bold;text-align:right;">
                                 {{ format_indian_number($quotation->total, 2) }}
                             </td>
                         </tr>
-
                     @else
                         <tr>
-                            <td colspan="4" style="padding:14px; border:1px solid black; font-weight:bold;">
-
-                                <table style="width:100%; border-collapse:collapse;">
-                                    <tr>
-                                        <!-- Rupees Words -->
-                                        <td style="text-align:left; vertical-align:top; padding:0;">
-                                            RUPEES {{ strtoupper($words) }} ONLY
-                                        </td>
-
-                                        <!-- Net Payable Amount -->
-                                        <td style="text-align:right; white-space:nowrap; padding-left:20px;">
-                                            Total
-                                        </td>
-                                    </tr>
-                                </table>
-
+                            <!-- Rupees Words -->
+                            <td colspan="3"
+                                style="border:1px solid black;padding:14px;font-weight:bold;text-align:center;">
+                                RUPEES {{ strtoupper($words) }} ONLY
                             </td>
 
-                            <td style="text-align:right; padding:14px; border:1px solid black; font-weight:bold;">
+                            <!-- Total Label (Left Divider yahi banega) -->
+                            <td
+                                style="border:1px solid black; border-right:none;font-weight:bold;text-align:center;width:120px;">
+                                Total
+                            </td>
+
+                            <!-- Total Amount -->
+                            <td style="border:1px solid black;padding:14px;font-weight:bold;text-align:right;">
                                 {{ format_indian_number($quotation->total, 2) }}
                             </td>
                         </tr>
                     @endif
 
-                    @if($quotation->remark)
-                       <tr>
+                    @if ($quotation->remark)
+                        <tr>
                             <td colspan="5"
                                 style="text-align: center; padding: 16px 10px; font-weight: bold; border: 1px solid black;">
-                                 Note:{{ $quotation->remark }} 
+                                Note:{{ $quotation->remark }}
                             </td>
                         </tr>
                     @endif
