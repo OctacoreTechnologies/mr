@@ -307,7 +307,7 @@
         .offer-table {
             position: relative;
             top: 120px;
-            right: 15px;
+            right: 18px;
             margin-bottom: 390px;
         }
 
