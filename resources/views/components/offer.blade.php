@@ -1,4 +1,3 @@
-
 <div class="page-break" style="page-break-before: always; width: 100%; padding:0px 5px 0px 20px; margin-left:-12px;">
     <div class="offer" style="width: 90%;">
 
@@ -9,16 +8,16 @@
         </div>
 
         <table
-            style="border-collapse: collapse; width: 110%; font-size: 14px; border: 1px solid black; line-height: 1; font-family: 'Poppins';"
+            style="border-collapse: collapse; width: 110%; font-size: 14px; border: 1px solid black; line-height: 1; font-family: 'Poppins';table-layout: fixed;"
             class="offer-table">
 
             <thead style="border: 1px solid black;">
                 <tr style="font-weight: bold; text-align: center;">
                     <th style="width: 10%; padding: 10px; border: 1px solid black;">Sr.No.</th>
-                    <th style="width: 55%; padding: 10px; border: 1px solid black;">PARTICULAR</th>
+                    <th style="width: 45%; padding: 10px; border: 1px solid black;">PARTICULAR</th>
                     <th style="width: 15%; padding: 10px; border: 1px solid black;">Qty</th>
-                    <th style="width: 15%; padding: 10px; border: 1px solid black;">Unit Price</th>
-                    <th style="width: 15%; padding: 10px; border: 1px solid black;">Ex Work Price In Rs.</th>
+                    <th style="width: 20%; padding: 10px; border: 1px solid black;">Unit Price</th>
+                    <th style="width: 20%; padding: 10px; border: 1px solid black;">Ex Work Price In Rs.</th>
                 </tr>
             </thead>
 
@@ -165,8 +164,8 @@
 
                         <!-- Net Payable Amount -->
                         <td
-                            style=" padding:14px;border-top:1px solid black; border-bottom:1px solid black; border-left:1px solid black;font-weight:bold;text-align:right; white-space:nowrap; width:120px;">
-                            Net Payable Amount
+                            style="border-top:1px solid black; border-bottom:1px solid black; border-left:1px solid black; padding:14px; font-weight:bold; text-align:center; width:120px; line-height:1.2; word-break:break-word;">
+                            {{-- Net Payable<br>Amount --}} Total
                         </td>
 
                         <!-- Amount -->
@@ -210,8 +209,8 @@
 
                         <!-- Net Payable Amount label (Divider yahi banega) -->
                         <td
-                            style="border-top:1px solid black; border-bottom:1px solid black; border-left:1px solid black; padding:14px; font-weight:bold; text-align:right; width:120px; white-space:nowrap;">
-                            Net Payable Amount
+                            style="border-top:1px solid black;border-bottom:1px solid black;border-left:1px solid black;padding:14px;font-weight:bold;text-align:center;width:120px;line-height:1.2;word-break:break-word;">
+                            {{-- Net Payable<br>Amount --}} Total
                         </td>
 
                         <!-- Amount -->
