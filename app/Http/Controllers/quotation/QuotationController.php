@@ -198,6 +198,7 @@ class QuotationController extends Controller
                     'item_price' => $price,
                     'item_qty' => $qty,
                     'qty_unit' => $qty_unit,
+                    
                 ]);
             }
         }
@@ -387,7 +388,7 @@ class QuotationController extends Controller
         $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'items'])->findOrFail($id);
         $words = convertToIndianWords((int) ($quotation->total ?? 0) - (int) ($quotation->discount ?? 0));
         $viewName = null;
-        if ($quotation->machine->name == 'High Speed Heater Mixer') {
+        if ($quotation->machine->name == 'Heater Mixer') {
             $viewName = "quotations.new_pdf";
         } else if ($quotation->machine->name == 'Vertical Cooler Mixer') {
             $viewName = "quotations.pdfs.vertical_cooler_mixture";

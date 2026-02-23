@@ -1,852 +1,1112 @@
 <!DOCTYPE html>
 <html lang="en">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<head>
-  <meta charset="UTF-8">
-  <style>
-    @page {
-      margin:30px;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    /* @page {
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @page {
+            margin: 30px;
+            
+        }
+
+        /* @page {
       margin: 130px 60px 120px 60px;
     } */
-    @font-face {
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: 400;
-        src: url('{{ public_path('fonts/Poppins-Regular.ttf') }}') format('truetype');
-        /* src: url('{{ public_path('fonts/Poppins-ExtraBold.ttf.ttf') }}') format('truetype'); */
-    }
-    @font-face {
-        font-family: 'Poppins';
-        font-style: normal;
-        font-weight: 700;
-        /* src: url('{{ public_path('fonts/Poppins-Regular.ttf') }}') format('truetype'); */
-        src: url('{{ public_path('fonts/Poppins-Bold.ttf') }}') format('truetype');
-    }
-    
-    .bold-text {
-        font-weight:700; /* or 700 */
-    }
-    body {
-      margin-top: 0;
-      padding: 20px;
-      font-family:'Poppins',sans-serif ;
-      border: 2px solid black;
-      font-optical-sizing: auto;
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            src: url('{{ public_path('fonts/Poppins-Regular.ttf') }}') format('truetype');
+            /* src: url('{{ public_path('fonts/Poppins-ExtraBold.ttf.ttf') }}') format('truetype'); */
+        }
 
-    }
+        @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 700;
+            /* src: url('{{ public_path('fonts/Poppins-Regular.ttf') }}') format('truetype'); */
+            src: url('{{ public_path('fonts/Poppins-Bold.ttf') }}') format('truetype');
+        }
 
-    header {
-      position: fixed;
-  
-      right: 25px;
+        .bold-text {
+            font-weight: 700;
+            /* or 700 */
+        }
 
-      height: 100px;
-    
-      z-index: 15;
-  
-    }
+        body {
+            margin-top: 0;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid black;
+            font-optical-sizing: auto;
 
-    .client-info {
-      text-align: center;
-      position: absolute;
-      top: 40px;
-    }
+        }
 
-    .container {
-      background: #fff;
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
-    }
+        header {
+            position: fixed;
 
-    .page-break {
-      page-break-before: always;
-     
-    }
+            right: 25px;
 
-    .pagenum:before {
-      content: counter(page);
-    }
+            height: 100px;
 
-    .content-wrapper {
-     
-      position: absolute;
-      top:150px;
-      left: 100px;
-      height: auto;
-      object-fit: contain;
-    }
+            z-index: 15;
 
-     
+        }
 
-    .client-footer {
-      position: relative;
-      width: 142%;
-      border-top: 2px dashed black;
-    }
+        .client-info {
+            text-align: center;
+            position: absolute;
+            top: 40px;
+        }
 
-    .client-footer table {
+        .container {
+            background: #fff;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+        }
 
-      position: relative;
-      top: 20px;
-      font-size: 15px;
-      border-collapse: separate;
-      margin-top: 10px;
-      /* margin-bottom:20px;  */
-    }
+        .page-break {
+            page-break-before: always;
 
-    .client-footer table tr td {
-      /* margin-right: 200px; */
-    }
+        }
 
-    .dashed-border {
-      position: relative;
-      /* right: 50px; */
-    }
+        .pagenum:before {
+            content: counter(page);
+        }
+
+        .content-wrapper {
+
+            position: absolute;
+            top: 150px;
+            left: 100px;
+            height: auto;
+            object-fit: contain;
+        }
 
 
-    .table-index {
-      position: relative;
-      bottom: -150px;
-    }
 
-    .techincal-data {
-      position: absolute;
-      top: 115px;
-    }
+        .client-footer {
+            position: relative;
+            width: 142%;
+            border-top: 2px dashed black;
+        }
 
-    .technical-data-sub-head {}
+        .client-footer table {
 
-    .technical-data-sub-head h3 {
-      padding: 6px 0px 6px 15px;
-      /* background-color: #2daae3; */
-      /* border-radius: 15px; */
-      /* color: white; */
-      color:black;
-      font-size: small;
-      text-decoration: underline;
-    }
-    span{
-      /* display: inline-block; */
-    }
-    .tech-content{
-      padding-left: 5px;  
-     
-    }
+            position: relative;
+            top: 20px;
+            font-size: 15px;
+            border-collapse: separate;
+            margin-top: 10px;
+            /* margin-bottom:20px;  */
+        }
 
-    .offer {
-      position: relative;
-      top: 120px;
-     
-    }
+        .client-footer table tr td {
+            /* margin-right: 200px; */
+        }
 
-   .lastpage{
-    position: relative;
-    top:120px;
+        .dashed-border {
+            position: relative;
+            /* right: 50px; */
+        }
 
-   }
-    /* deepsiik */
 
-    .website {
-      margin-top: 5px;
-    }
+        .table-index {
+            position: relative;
+            bottom: -85px;
+            margin-left: 10px;
+        }
 
-    footer {
-      width: 85%;
-      /* font-family: Arial, sans-serif; */
-      font-size: 8px;
-      color: #000;
-      position: fixed;
-      left: 0;
-      background-color: #fff;
-    }
+        .techincal-data {
+            position: absolute;
+            top: 115px;
+        }
 
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start; 
-      border-top: 2px solid #000;
-  
+        .technical-data-sub-head {}
 
-    }
+        .technical-data-sub-head h3 {
+            padding: 6px 0px 6px 15px;
+            /* background-color: #2daae3; */
+            /* border-radius: 15px; */
+            /* color: white; */
+            color: black;
+            font-size: small;
+            text-decoration: underline;
+        }
 
-    .footer-content div {
-      float: left;
-      /* padding-top: 2px; */
-      /* padding-bottom: 2px; */
-      /* height: 80px; */
-      padding-left: 10px; 
-    }
+        span {
+            /* display: inline-block; */
+        }
 
-   
+        .tech-content {
+            padding-left: 5px;
 
-    .footer-content p {
-      /* margin: 2px 0; */
-    }
+        }
 
-    .footer-content::after {
-      content: "";
-      display: block;
-      clear: both;
-    }
+        .offer {
+            position: relative;
+            top: 85px;
 
-    .footer-content {
-      position: fixed;
-      bottom: 10px;
-      /* Adjust if needed */
-      left: 12px;
-      width: 95%;
-      /* font-family: Arial, sans-serif; */
-      font-size: 11px;
+        }
 
-      /* line-height: normal; */
-      color: #000;
-      border-top: 1px solid #2daae3;
-      padding:0 10px 0 0;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid #2daae3;
- 
-  
-    }
+        .lastpage {
+            position: relative;
+            top: 95px;
 
-    .footer-content div {
-      width: 34%;
-      /* border-right: 2px solid black; */
-      line-height: 1;
-      height: 6%;
-      margin-bottom:35px;
-      
-    }
+        }
 
-    .footer-content p {
-      /* margin: 2px 0; */
-      word-wrap:break-word;
-    }
+        /* deepsiik */
 
-    /* Decorative Image */
-   
-    .footer-page-number:after {
-     content: "" counter(page);
-     font-family: 'Poppins';
-     font-weight:bolder;
-     
-    }
-    .footer-page-number {
-       font-size: 14px;
+        .website {
+            margin-top: 5px;
+        }
 
-       font-weight: bolder;
-       position: relative;
-       top:32px;  
-       left: 22px;
-  }
-  .parameter-table {
-  /* border-collapse: collapse;
+        footer {
+            width: 85%;
+            /* font-family: Arial, sans-serif; */
+            font-size: 8px;
+            color: #000;
+            position: fixed;
+            left: 0;
+            background-color: #fff;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-top: 2px solid #000;
+
+
+        }
+
+        .footer-content div {
+            float: left;
+            /* padding-top: 2px; */
+            /* padding-bottom: 2px; */
+            /* height: 80px; */
+            padding-left: 10px;
+        }
+
+
+
+        .footer-content p {
+            /* margin: 2px 0; */
+        }
+
+        .footer-content::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .footer-content {
+            position: fixed;
+            bottom: 10px;
+            /* Adjust if needed */
+            left: 12px;
+            width: 95%;
+            /* font-family: Arial, sans-serif; */
+            font-size: 11px;
+
+            /* line-height: normal; */
+            color: #000;
+            border-top: 1px solid #2daae3;
+            padding: 0 10px 0 0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #2daae3;
+
+
+        }
+
+        .footer-content div {
+            width: 34%;
+            /* border-right: 2px solid black; */
+            line-height: 1;
+            height: 6%;
+            margin-bottom: 35px;
+
+        }
+
+        .footer-content p {
+            /* margin: 2px 0; */
+            word-wrap: break-word;
+        }
+
+        /* Decorative Image */
+
+        .footer-page-number:after {
+            content: "" counter(page);
+            font-family: 'Poppins';
+            font-weight: bolder;
+
+        }
+
+        .footer-page-number {
+            font-size: 14px;
+
+            font-weight: bolder;
+            position: relative;
+            top: 32px;
+            left: 22px;
+        }
+
+        .parameter-table {
+            /* border-collapse: collapse;
   font-family: 'Bookman Old Style', serif;
   font-size: 16px;
   position: relative;
   left: 40px; */
-  width: 90%;
-  table-layout: fixed; /* Ensures columns keep width */
-  page-break-inside: avoid; /* Prevent row from splitting */
-}
+            width: 90%;
+            table-layout: fixed;
+            /* Ensures columns keep width */
+            page-break-inside: avoid;
+            /* Prevent row from splitting */
+        }
 
-.parameter-table td {
-  padding: 8px;
-  vertical-align: top;
-  white-space: nowrap; /* Prevents wrapping */
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+        .parameter-table td {
+            padding: 8px;
+            vertical-align: top;
+            white-space: nowrap;
+            /* Prevents wrapping */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
-.parameter-table td:nth-child(1) {
-  width: 35%;
-}
+        .parameter-table td:nth-child(1) {
+            width: 35%;
+        }
 
-.parameter-table td:nth-child(2) {
-  width: 65%;
-  white-space: normal; /* For value column, allow wrapping */
-}
-.submitted{
-   position: relative;
-   top:270px;
-   /* font-family: 'Poppins',sans-serif !important; */
-   padding: 0;
-   margin: 0;
-   left: 23px;
- }
- .footer-col-border::after {
-    content: "";
-    position: absolute;
-    top: 10px; /* controls how far from top */
-    right: 0;
-    height: 100%; /* short vertical border */
-    border-right: 1px solid black;
-  }
-  .footer-col {
-    width: 33%;
-    position: relative;
-    padding-right: 2px;
-  }
-  .footer-col p {
-    margin: 0;
-    /* line-height: 0.8; */
-    
-  }
-  .img{
-    position: relative;
-    top: 200px;
-    left: 20px;
-  }
-  .table-index{
-    padding: 0 15px 0 15px;
-  }
-  .offer-table{
-    position:relative;
-    top:120px;
-    right: 20px;
-  }
-  </style>
+        .parameter-table td:nth-child(2) {
+            width: 65%;
+            white-space: normal;
+            /* For value column, allow wrapping */
+        }
+
+        .submitted {
+            position: relative;
+            top: 270px;
+            /* font-family: 'Poppins',sans-serif !important; */
+            padding: 0;
+            margin: 0;
+            left: 23px;
+        }
+
+        .footer-col-border::after {
+            content: "";
+            position: absolute;
+            top: 10px;
+            /* controls how far from top */
+            right: 0;
+            height: 100%;
+            /* short vertical border */
+            border-right: 1px solid black;
+        }
+
+        .footer-col {
+            width: 33%;
+            position: relative;
+            padding-right: 2px;
+        }
+
+        .footer-col p {
+            margin: 0;
+            /* line-height: 0.8; */
+
+        }
+
+        .img {
+            position: relative;
+            top: 200px;
+            left: 20px;
+        }
+
+        .table-index {
+            padding: 0 15px 0 15px;
+        }
+
+        .offer-table {
+            position: relative;
+            top: 120px;
+            right: 20px;
+        }
+    </style>
 </head>
-
 <body>
-  <!-- Header -->
-  <header>
-    <div style="text-align: right;">
-        <img src="{{ public_path('/image/mr_logo.png') }}" height="80px" >
+    <!-- Header -->
+    <header>
+        <div style="text-align: right;">
+            <img src="{{ asset('/image/mr_logo.png') }}" height="80px">
+        </div>
+    </header>
+
+    <div class="footer-content">
+        <div class="footer-col footer-col-border" style="word-wrap: break-word;">
+            <b>Register Office:</b>
+            <p> Room No. 16, 2nd Floor BhagawanNivas</p>
+            <p>Near Sub Register Office, Station Road</p>
+            <p>Goregaon West, Mumbai – 400 062</p>
+            <p>E-Mail: <span style="color: #2daae3;">info@mrengineers.co.in</span></p>
+        </div>
+        <div class="footer-col footer-col-border" style="padding-left: 25px; width: 40%;">
+            <b>Factory </b>
+            <p>351 /A & 351 /B, PSL Compound, Near EPL</p>
+            <p>Kachigam Char Rasta, Village Kachigam Nani</p>
+            <p>Daman (UT), Daman –396210</p>
+            <p>Website: <span style="color: #2daae3;">www.mrengineers.co.in</span></p>
+        </div>
+        <div class="footer-page-number" style="padding-left: 20px">
+            <span style="color: rgba(0, 0, 0, 0.301)">Page |</span>
+        </div>
     </div>
-  </header>
 
-  <div class="footer-content">
-    <div class="footer-col footer-col-border" style="word-wrap: break-word;">
-      <b>Register Office:</b>
-      <p> Room No. 16, 2nd Floor BhagawanNivas</p>
-      <p>Near Sub Register Office, Station Road</p>
-      <p>Goregaon West, Mumbai – 400 062</p>
-      <p>E-Mail: <span style="color: #2daae3;">info@mrengineers.co.in</span></p>
-    </div>
-    <div  class="footer-col footer-col-border" style="padding-left: 25px; width: 40%;">
-      <b>Factory </b>
-      <p>351 /A & 351 /B, PSL Compound, Near PLS Pipe</p>
-      <p>Kachigam Char Rasta, Village Kachigam Nani</p>
-      <p>Daman (UT), Daman –396210</p>
-      <p>Website: <span style="color: #2daae3;">www.mrengineers.co.in</span></p>
-    </div>
-    <div class="footer-page-number" style="padding-left: 20px">
-      <span style="color: rgba(0, 0, 0, 0.301)">Page |</span>
-    </div>
-  </div>
-
-  <!-- Decorative Footer Image -->
+    <!-- Decorative Footer Image -->
 
 
-  <!-- Page Number -->
+    <!-- Page Number -->
 
 
-  <div class=" "
-  style="font-size: 16px; padding: 170px 0px 0 10px; line-height: 1.2;">
+    <div style="font-size: 16px; padding: 170px 0px 10px 10px; line-height: 1.2;">
 
-  <!-- Title Section -->
-  <div style="padding:20px 0 0 0 0; padding-left: 0;">
-    <div style="text-align:center; font-size: 30px; font-weight: bold; color: #2daae3;  text-transform: uppercase; word-spacing: 3px; font-family:'Montserrat',sans-serif !important ; font-style:normal; text-decoration: underline;">
-      TECHNO-COMMERCIAL OFFER
-    </div>
-    <div style="font-size: 25px; margin-top: 5px; margin-left: 3px;" >
-      Proposal for High-Speed Mixer Model {{ $quotation->modele->name ?? '' }}–PM Ltr
-    </div>
-  </div>
-
-  <!-- Client Info Table -->
-  <table style="width: 100%; border-collapse: collapse; margin-top: 30px; margin-left: 25px; font-size: 16px;">
-    <tr>
-      <td style="width: 150px; padding: 2px 0; color: #032854;">Client Name</td>
-      <td style="padding: 2px 0;"> <span>:</span> <span style="padding-left: 5px;">{{ $quotation->customer->company_name ?? '' }}</span></td>
-    </tr>
-    <tr>
-      <td style="color: #032854; padding: 2px 0;">Address</td>
-      <td style="padding: 2px 0;"> <span>:</span> <span style="padding-left: 5px;">{{ $quotation->customer->address_line_1 ?? '' }},
-        {{ $quotation->customer->city ?? 'Valsad' }}, {{ $quotation->customer->state ?? 'Gujarat' }}
-        {{ $quotation->customer->pincode ?? '122345' }}
-      </span>
-      </td>
-    </tr>
-    <tr>
-      <td style="color: #032854; padding: 2px 0;">Ref. No</td>
-      <td style="padding: 2px 0;"> <span>:</span> <span style="padding-left:5px;">{{ $quotation->reference_no ?? '' }}</span></td>
-    </tr>
-    <tr>
-      <td style="color: #032854; padding: 2px 0;">Date</td>
-      <td style="padding: 2px 0;"> <span>:</span> <span style="padding-left: 5px;">{{ $quotation->date ?? '' }}</span></td>
-    </tr>
-    <tr>
-      <td style="color: #032854; padding: 2px 0;">Kind Attn</td>
-      <td style="padding: 4px 0;"> <span>:</span> <span style="padding-left: 5px;">{{ $quotation->customer->contact_person_1_name ?? '' }} </span></td>
-    </tr>
-    <tr>
-      <td style="color: #032854; padding: 4px 0;">Contact No</td>
-      <td style="padding: 4px 0;"> <span>:</span> <span style="padding-left: 5px;">{{ '+91 ' . substr($quotation->customer->contact_no ?? '8912929114', 0, 5) . ' ' . substr($quotation->customer->contact_no ?? '8912929114', 5) }}</span></td>
-    </tr>
-    <tr>
-      <td style="color: #032854; padding: 4px 0;">E–Mail ID</td>
-      <td style="padding: 4px 0;"> <span>:</span><span style="padding-left: 5px; color: #00AEEF;">{{ $quotation->customer->contact_person_1_email ?? 'demo1298@gmail.com' }}</span></td>
-    </tr>
-  </table>
-
-  <!-- Dashed Divider -->
-  {{-- <div style="border-top: 2px dashed #000; margin: 30px 0 25px 0;"></div> --}}
-
-  <!-- Submitted By Section (Styled Properly) -->
-  {{-- <table style="width: 100%; font-size: 15px;" class="submitted">
-    <thead>
-      <tr style="font-weight: bold;">
-        <th style="text-align:left">Submitted By</th>
-        <th style="padding: 5px 0; text-align:left;">Contact No.</th>
-        <th style="padding: 5px 0; text-align:left;">E–Mail ID</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="padding: 5px 2px; border-top: 1px solid ;">{{ $quotation->user->name ?? 'Yogesh Gajjar' }}</td>
-        <td style="padding: 5px 2px 0px 0px;">+91 89281 61634</td>
-        <td style="text-align:left color: #0066cc; text-decoration: underline;">
-          {{ $quotation->user->email ?? 'yogesh@mrengineers.co.in' }}
-        </td>
-      </tr>
-    </tbody>
-  </table> --}}
-  <table style="width: 100%; font-size: 15px; margin-top: 30px; font-family: 'Poppins'; line-height: 9px;" class="submitted">
-    <tr>
-      <!-- Submitted By: Left aligned -->
-      <td style="width: 33.33%; text-align: left;">
-        <div style="font-family: 'Poppins'; font-weight: bold; font-size: 16px; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px;">
-          <span class="bold-text">Submitted By<</span>
-        </div>
-        <div style="margin-top: 5px; margin-left: 8px;">
-          {{ $quotation->user->name ?? 'Yogesh Gajjar' }}
-        </div>
-      </td>
-  
-      <!-- Contact No.: Center aligned -->
-      <td style="width: 33.33%; text-align: center;">
-        <div style="width: 60%; font-weight: bold; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px; font-size: 16px;">
-          Contact No.
-        </div>
-        <div style="margin-top: 5px;">+91 89281 61634</div>
-      </td>
-  
-      <!-- E–Mail ID: Right aligned -->
-      <td style="width: 43.33%; text-align: center;">
-        <div style="width:60%; font-weight: bold; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px; font-size: 16px;">
-          E– Mail ID
-        </div>
-        <div style="margin-top: 2px; text-align: center;">
-          <span style="color: #00AEEF; ">
-            {{ $quotation->user->email ?? 'yogesh@mrengineers.co.' }}
-          </span>
-        </div>
-      </td>
-    </tr>
-  </table>
-  
-
-  
-</div>
-
-
-{{--  --}}
-<div class='img'>
-  <div class="border-box">
-    <img src="{{public_path('storage/' . $quotation->machine->image_url) ?? 'mixture.png'}}" class="main-image " />
-  </div>
-</div>
-
-{{--  --}}
-
-  <div class="page-break">
-    <div class="table-index">
-      <h1 style="text-align: left; display: flex; justify-content:center; align-self: center; margin-bottom: 50px;">
-        TABLE OF CONTENTS</h1>
-      <div class="content" style="font-size: 16px;">
-        <div
-          style="border-top: 1px solid black; padding:10px 0px 10px 0px; display: flex; justify-content: space-between; position: relative;">
-          <span>TECHNICAL DATA</span> <span style="position: absolute; right: 5px;">3</span>
-        </div>
-        <div
-          style="border-top: 1px solid black; padding:10px 0px 10px 0px; display: flex; justify-content: space-between; position: relative;">
-          <span>SPECIFICATION OF MIXER</span> <span style="position: absolute; right: 5px;">4</span>
-        </div>
-        <div
-          style="border-top: 1px solid black; padding:10px 0px 10px 0px; display: flex; justify-content: space-between; position: relative;">
-          <span>OFFER</span> <span style="position: absolute; right: 5px;">7</span>
-        </div>
-        <div
-          style="border-top: 1px solid black; padding:10px 0px 10px 0px; display: flex; justify-content: space-between; border-bottom:1px solid black; position: relative;">
-          <span>TERMS AND CONDITION</span> <span style="position: absolute; right: 5px;">8</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {{-- start --}}
-  <div class="page-break ">
-    <div class="techincal-data parameter-table" >
-      <h2 style="text-decoration: underline">1. TECHNICAL DATA</h2>
-      <!-- DESING PARAMETER OF HIGH-SPEED -->
-      <div class="technical-data-sub-head" style="text-align:left; width: 95%;">
-        {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3> --}}
-        <h3>1.1 <span style="">DESIGN PARAMETER OF {{strtoupper($quotation->machine->name)}}</span></h3>
-      </div>
-<table class="parameter-table" style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Model</td>
-        <td style="padding: 8px;">:&nbsp;{{ $quotation->modele->name ?? '' }}</td>
-    </tr>
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
-        <td style="padding: 8px;">:&nbsp;{{ $quotation->product->name ?? '' }}</td>
-    </tr>
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Material to Process</td>
-        <td style="padding: 8px;">:&nbsp;{{ $quotation->product->material_to_process ?? '' }}</td>
-    </tr>
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch</td>
-        <td style="padding: 8px;">:&nbsp;{{ $quotation->product->batch_capcity ?? '40 Kgs' }}</td>
-    </tr>
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</td>
-        <td style="padding: 8px;">:&nbsp;{{ $quotation->product->mixing_tool ?? '3 Tier Alloy Steel with Heat Treatment Process' }}</td>
-    </tr>
-</table>
-
-
-      <div class="technical-data-sub-head" style="text-align: left;width: 95%;">
-        <h3>1.2 <span style="">ELECTRICAL PARAMETERS</span></h3>
-      </div>
-      <table class="parameter-table" style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Requirement</td>
-        <td style="padding: 8px;">:&nbsp;15 KW/20 HP Single Speed Mixer – 1440 RPM</td>
-    </tr>
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
-        <td style="padding: 8px;">:&nbsp;415 V</td>
-    </tr>
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
-        <td style="padding: 8px;">:&nbsp;50Hz</td>
-    </tr>
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
-        <td style="padding: 8px;">
-            :&nbsp;Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
-        </td>
-    </tr>
-    <tr>
-        <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</strong></td>
-        <td style="padding: 8px;">:&nbsp;3 Tier Alloy Steel</td>
-    </tr>
-</table>
-
-      
-    </div>
-  </div>
-  {{--start--}}
-  <div class="page-break"
-    style="padding: 100px 20px 15px 10px;  font-size: 14px;  box-sizing: border-box;" >
-    <div class="technical-datayrt">
-    
-      <h2 style="margin-bottom: 10px; text-decoration: underline;">2.&nbsp; TECHNICAL SPECIFICATION OF MIXER</h2>
-    
-      <!-- 2.2 MIXING VESSEL LID -->
-      <table class="parameter-table"
-        style="border-collapse: collapse; line-height: 1.1; font-size: 14px; position: relative; left: 20px; width: 90%; top: 60px;">
-        <tr>
-          <td style="vertical-align: top; width: 30%; padding-bottom: 4px; white-space: nowrap;">
-            <span>&#8226;&nbsp; Mixing Vessel</span>
-          </td>
-          <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
-            :&nbsp;Inside Made from SS – 304 Grade Plate and Outside Jacketed by Mild Steel Plate. Jacketed Construction Provided
-            for Heating or Cooling with Suitable Media. Material Discharge Assembly is fitted at the Bottom, Operated by
-            Pneumatic Cylinder.
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top; padding-bottom: 4px; white-space: nowrap;">
-            <span>&#8226;&nbsp; Lid</span>
-          </td>
-          <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
-            :&nbsp;Stainless steel - 304 grades. Equipped with gasket, on lid edge and with lid locking arrangement. The lid is
-            fitted with the Followings flanged openings:<br>
-            <div>
-              1.&nbsp;One for fitting arrangements for Deflector and thermocouple.<br>
-              2.&nbsp;One for addition of chemicals.
+        <!-- Title Section -->
+        <div style="padding-top: 35px; text-align: center;">
+            <div
+                style="font-size: 30px; font-weight: bold; color: #2daae3; text-transform: uppercase; 
+                word-spacing: 3px; font-family: 'Montserrat', sans-serif; text-decoration: underline;">
+                TECHNO-COMMERCIAL {{ $quotation->reflect_in_pdf ? 'Revised' : '' }} OFFER
             </div>
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top; padding-bottom: 4px; white-space: nowrap;">
-            <span>&#8226;&nbsp; Deflector</span>
-          </td>
-          <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
-            :&nbsp;Made up of Stainless Steel – 304 grades or Alloy steel Equipped with Thermocouple Wire for Temperature
-            Measurement. Installed with provision of Varying Angle and Height to Ensure Maximum Material Circulation.
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top; padding-bottom: 4px; white-space: nowrap;">
-            <span>&#8226;&nbsp; Discharge Valve</span>
-          </td>
-          <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
-            :&nbsp;Made Up of SS 304 Provided with Gasket.
-          </td>
-        </tr>
-        <tr>
-          <td style="vertical-align: top; white-space: nowrap;padding-bottom: 4px;">
-            <span>&#8226;&nbsp; Shaft</span>
-          </td>
-          <td style="vertical-align: top; text-align: justify;padding-bottom: 4px;">
-            :&nbsp;Shaft is Specially Manufactured from Alloy Steel, Hardened and Ground.
-          </td>
-        </tr>
-        <tr>
-        <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
-            <span>&#8226;&nbsp; Mounting Structure</span>
-        </td>
-        <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;Sturdy MS Channel from Duly Covered with MS Sheet and Coated with Water resistant enamel Coating Painting.
-        </td>
-    </tr>
-      </table>
-    
-    
-    
-    
+            <div style="font-size: 25px; margin-top: 6px; word-break: break-word; white-space: normal;">
+                Proposal for Heater Mixer
+                <span style="white-space: nowrap;">
+                    Model {{ $quotation->modele->name ?? '' }}
+                </span>
+            </div>
+
+        </div>
+
+        <!-- Client Info Table -->
+        <!-- Client Info Table -->
+        <!-- Client Info Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px; margin-left: 25px; font-size: 16px;">
+            <tr>
+                <td style="width: 160px; color: #032854; padding: 3px 2px; vertical-align: top;">Client Name</td>
+                <td style="width: 10px; text-align: center; padding: 3px;">:</td>
+                <td style="padding: 3px 0; word-break: break-word; white-space: normal;">
+                    {{ $quotation->customer->company_name ?? '' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="color: #032854; padding: 3px 2px; vertical-align: top;">Address</td>
+                <td style="width: 10px; text-align: center; padding: 3px; vertical-align: top;">:</td>
+                <td
+                    style="padding: 3px 0;padding-right:15px; word-break: break-word; white-space:normal; line-height: 1; ">
+                    {{ $quotation->customer->address_line_1 ?? '' }},
+                    {{ $quotation->customer->city ?? 'Valsad' }},
+                    {{ $quotation->customer->state ?? 'Gujarat' }}
+                    {{ $quotation->customer->pincode ?? '122345' }}
+                </td>
+            </tr>
+
+            <tr>
+                <td style="color: #032854; padding: 3px 2px;">Ref. No</td>
+                <td style="text-align: center; padding: 3px;">:</td>
+                <td style="padding: 3px 0;">{{ $quotation->reference_no ?? '' }}</td>
+            </tr>
+
+            <tr>
+                <td style="color: #032854; padding: 3px 2px;">Date</td>
+                <td style="text-align: center; padding: 3px;">:</td>
+                <td style="padding: 3px 0;">{{ formatDate($quotation->date ?? '') }}</td>
+            </tr>
+
+            <tr>
+                <td style="color: #032854; padding: 3px 2px;">Kind Attn</td>
+                <td style="text-align: center; padding: 3px;">:</td>
+                <td style="padding: 3px 0;">{{ $quotation->customer->contact_person_1_name ?? '' }}</td>
+            </tr>
+
+            <tr>
+                <td style="color: #032854; padding: 3px 2px;">Contact No</td>
+                <td style="text-align: center; padding: 3px;">:</td>
+                <td style="padding: 3px 0;">
+                    @php
+                        $countryCode = $quotation->customer->country_code ?? '+91';
+                        $contactNo = $quotation->customer->contact_no ?? '8912929114';
+                    @endphp
+
+                    {{ $countryCode . '-' . substr($contactNo, 0, 5) . ' ' . substr($contactNo, 5) }}
+
+                </td>
+            </tr>
+
+            <tr>
+                <td style="color: #032854; padding: 3px 2px;">E–Mail ID</td>
+                <td style="text-align: center; padding: 3px;">:</td>
+                <td style="padding: 3px 0; color: #00AEEF; word-break: break-word; white-space: normal;">
+                    {{ $quotation->customer->contact_person_1_email ?? 'demo1298@gmail.com' }}
+                </td>
+            </tr>
+        </table>
+
+
+
+        <div style="position: absolute; bottom: 145px; left: 48px; right: 25px; width: calc(100% - 100px);">
+            <table style="width: 100%; font-size: 15px; font-family: 'Poppins'; line-height: 9px;">
+                <tr>
+                    <!-- Submitted By: Left aligned -->
+                    <td style="width: 33.33%; text-align: left;">
+                        <div
+                            style="font-weight: bold; font-size: 16px; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px;">
+                            Submitted By
+                        </div>
+                        <div style="margin-top: 5px; margin-left: 8px;">
+                            {{ $quotation->followedBy->name ?? 'Yogesh Gajjar' }}
+                        </div>
+                    </td>
+
+                    <!-- Contact No.: Center aligned -->
+                    <td style="width: 33.33%; text-align: center;">
+                        <div
+                            style="width: 50%; font-weight: bold; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px; font-size: 16px;">
+                            Contact No.
+                        </div>
+                        <div style="margin-top: 5px;">
+                            {{ '+91-' .
+                                substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 0, 5) .
+                                ' ' .
+                                substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 5) }}
+
+                        </div>
+                    </td>
+
+                    <!-- E–Mail ID: Right aligned -->
+                    <td style="width: 33.33%; text-align: center;">
+                        <div
+                            style="width: 60%; font-weight: bold; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px; font-size: 16px;">
+                            E– Mail ID
+                        </div>
+                        <div style="margin-top: 2px; text-align: center;">
+                            <span style="color: #00AEEF;">
+                                {{ $quotation->followedBy->email ?? 'yogesh@mrengineers.co.' }}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
-  </div>
 
-  {{--end of page break--}}
-  {{--2nd page-s--}}
-  <div class="page-break"
-    style="padding:60px 10px 0px 10px;  font-size: 14px; box-sizing: border-box;  page-break-inside:avoid">
 
-    {{-- <div class="technical-datayrt" style="page-break-inside: avoid;"> --}}
 
-   <table class="parameter-table"
-        style="border-collapse: collapse; line-height: 1.1; font-size: 14px; position: relative; left: 20px; width: 90%; top:110px; padding-bottom: 3px;">
-    <tr>
-        <td style="vertical-align: top; width: 30%; white-space: nowrap; padding-bottom: 4px;">
-            <span>&#8226;&nbsp; Mixing Tool</span>
-        </td>
-        <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;STAINLESS STEEL: 304 GRADES. OR ALLOY STEEL Consisting three blades – Bottom Scraper, Fluidizing blade and Horn Shaped Blade. Specially Designed Shape and Angle Suitable for your Compound with Height adjustment. Spacers with wear resistance treatment.
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
-            <span>&#8226;&nbsp; Bearing Housing</span>
-        </td>
-        <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;Mixing Vessel fitted on Steel Plates and Bearing Housing fitted on Steel Plates with Heavy Duty Bearings with Water Cooling and Greasing Arrangements. The resin Leakage to Bearings is Prevented by our Special Design.
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
-            <span>&#8226;&nbsp; Motor</span>
-        </td>
-        <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;HINDUSTAN Make 1440 R.P.M AC Motor Drive Transmission Through “V” – belt and Pulley Arrangement.
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
-            <span>&#8226;&nbsp; Driving System</span>
-        </td>
-        <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;The drive system incorporates with V-belt and taper lock pulley (SPC type) to give Efficient power drive transmission. The Belts Are Tightened by means of motor sliding screw.
-        </td>
-    </tr>
-
-    <tr>
-        <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
-            <span>&#8226;&nbsp; Electrical Control</span>
-        </td>
-        <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;ABB / L&T / SIEMENS Make
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
-            <span>&#8226;&nbsp; AC Frequency Drive</span>
-        </td>
-        <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;Yaskawa Make
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
-            <span>&#8226;&nbsp; Bearing</span>
-        </td>
-        <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
-            :&nbsp;ZKL / FAG / SKF Make
-        </td>
-    </tr>
-    <tr>
-        <td style="vertical-align: top; white-space: nowrap;">
-            <span>&#8226;&nbsp; Pneumatics</span>
-        </td>
-        <td style="vertical-align: top; text-align: justify;">
-            :&nbsp;JANATICS / SPAC Make
-        </td>
-    </tr>
-</table>
-
-  </div>
-
-  {{--2nd page -e--}}
-  <div class="page-break" style="page-break-before: always;  width: 100%; padding:10px 5px 0px 20px;">
-
-    <!-- Wrapper to center the content -->
-    <div class="offer" style="width: 90%;">
-
-      <!-- Section Title -->
-      <div class="technical-data">
-        <h2 style="text-decoration: underline">
-          3. OFFER
-        </h2>
-      </div>
-
-      <!-- Table -->
-      <table
-        style="border-collapse: collapse; width: 110%; font-size: 14px; border: 1px solid black; line-height: 1; font-family: 'Poppins';" class='offer-table'>
-        <thead style="border: 1px solid black;">
-          <tr style="font-weight: bold; text-align: center; border: 1px solid black;">
-            <th style="width: 10%; padding: 10px; border: 1px solid black;">Sr.No.</th>
-            <th style="width: 60%; padding: 10px; border: 1px solid black;">PARTICULAR</th>
-            <th style="width: 13%; padding: 10px; border: 1px solid black;">Qty</th>
-            <th style="width: 15%; padding: 10px; border: 1px solid black;">Unit Price</th>
-            <th style="width: 15%; padding: 10px; border: 1px solid black;">Ex Work Price In Rs.</th>
-          </tr>
-        </thead>
-        <tbody style="border: 1px solid black; ">
-          <tr style="border: 1px solid black; ">
-            <td style="text-align: center; vertical-align: top; padding: 80px 10px 80px 10px; border: 1px solid black;">1</td>
-            <td style="padding: 10px; line-height: 1; border: 1px solid black;">
-              {{-- HIGH SPEED MIXER MODEL CHM – 500 <br> --}}
-              {{strtoupper($quotation->machine->name)}}  Model {{$quotation->modele->name}}-R LTR <br>
-              ALONG WITH AC FREQUENCY DRIVE <br>
-              ELECTRICAL PANEL
-            </td>
-            <td style="text-align: center; vertical-align: top; padding:80px 10px 80px 10px; border: 1px solid black;">
-              {{ $quotation->quantity ?? '' }} Nos.
-            </td>
-            <td style="text-align: center; vertical-align: top; padding:80px 15px 80px 15px; border: 1px solid black;">
-              {{ $quotation->product->price }}
-            </td>
-            <td style="text-align: center; vertical-align: top; padding:80px 15px 80px 15px; border: 1px solid black;">
-              {{ number_format($quotation->quantity * $quotation->product->price, 2) }}
-            </td>
-          </tr>
-
-          <!-- Total Row -->
-          <tr style="border: 1px solid black;">
-            <td colspan="4" style="font-weight: bold; text-align: center; padding:20px 10px 20px 10px;">
-              <!-- RUPEES XXXXXXXXXXXXX ONLY -->
-              RUPEES {{ strtoupper($words) }} ONLY
-            </td>
-            <td style="font-weight: bold; text-align: center; padding:20px 15px 20px 15px; border: 1px solid black;">
-              {{ number_format($quotation->quantity * $quotation->product->price, 2) }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    {{-- --}}
+    <div class='img'>
+        <div class="border-box">
+            <img src="{{ asset('storage/' . $quotation->machine->image_url) ?? 'mixture.png' }}" class="main-image " />
+        </div>
+        <p
+            style="position: fixed;bottom: 360px; left: 45%;  transform: translateX(-50%); font-size: 13px; margin: 0;  text-align: center; font-weight:bolder;">
+            *The image shown above is for reference purposes only.
+        </p>
 
     </div>
-  </div>
 
-  <div class="page-break">
-  <div class="lastpage">
-    <div class="technical-data">
-      <h2 style="text-decoration:underline">4.&nbsp;<span>TERMS AND
-          CONDITION</span></h2>
+    {{-- --}}
+
+    <div class="page-break" style="padding: 110px 20px 10px 10px;">
+        <div class="table-index">
+            <h1
+                style="text-align: left; display: flex; justify-content:center; align-self: center; margin-bottom: 45px;">
+                TABLE OF CONTENTS</h1>
+            <div class="content" style="font-size: 16px; padding-top:20px">
+                <div
+                    style="border-top: 1px solid black; padding:10px 0px 10px 0px; display: flex; justify-content: space-between; position: relative;">
+                    <span>TECHNICAL DATA</span> <span style="position: absolute; right: 5px;">3</span>
+                </div>
+                <div
+                    style="border-top: 1px solid black; padding:10px 0px 10px 0px; display: flex; justify-content: space-between; position: relative;">
+                    <span>SPECIFICATION OF MIXER</span> <span style="position: absolute; right: 5px;">4</span>
+                </div>
+                <div
+                    style="border-top: 1px solid black; padding:10px 0px 10px 0px; display: flex; justify-content: space-between; position: relative;">
+                    <span>OFFER</span> <span style="position: absolute; right: 5px;">7</span>
+                </div>
+                <div
+                    style="border-top: 1px solid black; padding:10px 0px 10px 0px; display: flex; justify-content: space-between; border-bottom:1px solid black; position: relative;">
+                    <span>TERMS AND CONDITION</span> <span style="position: absolute; right: 5px;">8</span>
+                </div>
+            </div>
+        </div>
     </div>
-    <table border="1"
-      style="border-collapse: collapse; width: 100%;  font-size: 14px; line-height: 0.9;">
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Price</td>
-        <!-- <td style="padding: 8px;">Above prices are EX our works, Kachigam Daman</td> -->
-        <td style="padding: 8px;">{{ $termCondition->price }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Tax</td>
-        <!-- <td style="padding: 8px;">GST @18%, will be applicable</td> -->
-        <td style="padding: 8px;">{{ $termCondition->tax }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Delivery</td>
-        <td style="padding: 8px;">{{ $termCondition->delivery }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Payment</td>
-        <td style="padding: 8px;">{{ $termCondition->payment }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Packing</td>
-        <!-- <td style="padding: 8px;">Extra at actual.</td> -->
-        <td style="padding: 8px;">{{ $termCondition->packing }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Forwarding</td>
-        <!-- <td style="padding: 8px;">Extra at actual.</td> -->
-        <td style="padding: 8px;">{{ $termCondition->forwarding }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Validity</td>
-        <!-- <td style="padding: 8px;">30 days</td> -->
-        <td style="padding: 8px;">{{ $termCondition->validity }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Commissioning charges</td>
-        <!-- <td style="padding: 8px;">
+
+    {{-- start --}}
+    <div class="page-break ">
+        <div class="techincal-data parameter-table">
+            <h2 style="text-decoration: underline">1. TECHNICAL DATA</h2>
+            <!-- DESING PARAMETER OF HIGH-SPEED -->
+            <div class="technical-data-sub-head" style="text-align:left; width: 95%;">
+                {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3> --}}
+                <h3>1.1 <span style="">DESIGN PARAMETER OF {{ strtoupper($quotation->machine->name) }}</span>
+                </h3>
+            </div>
+            <table class="parameter-table"
+                style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Model</td>
+                    <td style="padding: 8px;">:&nbsp;{{ $quotation->modele->name ?? '' }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
+                    <td style="padding: 8px;">:&nbsp;{{ $quotation->application->name ?? '' }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Material to Process
+                    </td>
+                    <td style="padding: 8px;">:&nbsp;{{ $quotation->materialToProcess->material_to_process ?? '' }}
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch</td>
+                    <td style="padding: 8px;">:&nbsp;{{ $quotation->batch->batches ?? '' }} Kgs</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</td>
+                    <td style="padding: 8px;">:&nbsp;{{ $quotation->mixingTool->mixing_tool ?? 'N.A' }}</td>
+                </tr>
+            </table>
+
+
+            <div class="technical-data-sub-head" style="text-align: left;width: 95%;">
+                <h3>1.2 <span style="">ELECTRICAL PARAMETERS</span></h3>
+            </div>
+            <table class="parameter-table"
+                style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Requirement</td>
+                    {{-- <td style="padding: 8px;">:&nbsp;15 KW/20 HP Single Speed Mixer – 1440 RPM</td> --}}
+                    <td style="padding: 8px;">:&nbsp;{{ $quotation->motorRequirement->motor_requirement }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
+                    <td style="padding: 8px;">:&nbsp;415 V</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
+                    <td style="padding: 8px;">:&nbsp;50Hz</td>
+                </tr>
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
+                    <td style="padding: 8px;">
+                        :&nbsp;Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature
+                        Indicator with
+                        Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
+                    </td>
+                </tr>
+            </table>
+
+
+        </div>
+    </div>
+    {{-- start --}}
+    <div class="page-break" style="padding: 110px 20px 10px 10px;  font-size: 14px;  box-sizing: border-box;">
+        <div class="technical-datayrt">
+
+            <h2 style="margin-bottom: 10px; text-decoration: underline;">2.&nbsp; TECHNICAL SPECIFICATION OF MIXER</h2>
+
+            <!-- 2.2 MIXING VESSEL LID -->
+            <table class="parameter-table"
+                style="border-collapse: collapse; line-height: 1.1; font-size: 14px; position: relative; left: 20px; width: 90%; top: 60px;">
+                <tr>
+                    <td style="vertical-align: top; width: 30%; padding-bottom: 4px; white-space: nowrap;">
+                        <span>&#8226;&nbsp; Mixing Vessel</span>
+                    </td>
+                    <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
+                        :&nbsp;Inside Made from SS – 304 Grade Plate and Outside Jacketed by Mild Steel Plate. Jacketed
+                        Construction
+                        Provided
+                        for Heating or Cooling with Suitable Media. Material Discharge Assembly is fitted at the Bottom,
+                        Operated by
+                        Pneumatic Cylinder.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top; padding-bottom: 4px; white-space: nowrap;">
+                        <span>&#8226;&nbsp; Lid</span>
+                    </td>
+                    <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
+                        :&nbsp;Stainless steel - 304 grades. Equipped with gasket, on lid edge and with lid locking
+                        arrangement. The
+                        lid is
+                        fitted with the Followings flanged openings:<br>
+                        <div>
+                            1.&nbsp;One for fitting arrangements for Deflector and thermocouple.<br>
+                            2.&nbsp;One for addition of chemicals.
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top; padding-bottom: 4px; white-space: nowrap;">
+                        <span>&#8226;&nbsp; Deflector</span>
+                    </td>
+                    <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
+                        :&nbsp;Made up of Stainless Steel – 304 grades or Alloy steel Equipped with Thermocouple Wire
+                        for
+                        Temperature
+                        Measurement. Installed with provision of Varying Angle and Height to Ensure Maximum Material
+                        Circulation.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top; padding-bottom: 4px; white-space: nowrap;">
+                        <span>&#8226;&nbsp; Discharge Valve</span>
+                    </td>
+                    <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
+                        :&nbsp;Made Up of SS 304 Provided with Gasket.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top; white-space: nowrap;padding-bottom: 4px;">
+                        <span>&#8226;&nbsp; Shaft</span>
+                    </td>
+                    <td style="vertical-align: top; text-align: justify;padding-bottom: 4px;">
+                        :&nbsp;Shaft is Specially Manufactured from Alloy Steel, Hardened and Ground.
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
+                        <span>&#8226;&nbsp; Mounting Structure</span>
+                    </td>
+                    <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
+                        :&nbsp;Sturdy MS Channel from Duly Covered with MS Sheet and Coated with Water resistant enamel
+                        Coating
+                        Painting.
+                    </td>
+                </tr>
+            </table>
+
+
+
+
+        </div>
+    </div>
+
+    {{-- end of page break --}}
+    {{-- 2nd page-s --}}
+    <div class="page-break"
+        style="padding:110px 10px 0px 10px;  font-size: 14px; box-sizing: border-box;  page-break-inside:avoid">
+
+        {{-- <div class="technical-datayrt" style="page-break-inside: avoid;"> --}}
+
+        <table class="parameter-table"
+            style="border-collapse: collapse; line-height: 1.1; font-size: 14px; position: relative; left: 20px; width: 90%; top:110px; padding-bottom: 3px;">
+            <tr>
+                <td style="vertical-align: top; width: 30%; white-space: nowrap; padding-bottom: 4px;">
+                    <span>&#8226;&nbsp; Mixing Tool</span>
+                </td>
+                <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
+                    :&nbsp;STAINLESS STEEL: 304 GRADES. OR ALLOY STEEL. Specially Designed Shape and Angle Suitable for
+                    your Compound with Height
+                    adjustment. Spacers with wear resistance treatment.
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
+                    <span>&#8226;&nbsp; Bearing Housing</span>
+                </td>
+                <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
+                    :&nbsp;Mixing Vessel fitted on Steel Plates and Bearing Housing fitted on Steel Plates with Heavy
+                    Duty
+                    Bearings with Water Cooling and Greasing Arrangements. The resin Leakage to Bearings is Prevented by
+                    our
+                    Special Design.
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
+                    <span>&#8226;&nbsp; Driving System</span>
+                </td>
+                <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
+                    :&nbsp;The drive system incorporates with V-belt and taper lock pulley (SPC type) to give Efficient
+                    power
+                    drive transmission. The Belts Are Tightened by means of motor sliding screw.
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
+                    <span>&#8226;&nbsp; Motor</span>
+                </td>
+                <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
+                    :&nbsp;{{ $quotation->makeMotor->name ?? '' }}
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
+                    <span>&#8226;&nbsp; Electrical Control</span>
+                </td>
+                <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
+                    :&nbsp;{{ $quotation->electricalControl->electrical_control }}
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
+                    <span>&#8226;&nbsp; AC Frequency Drive</span>
+                </td>
+                <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
+                    :&nbsp;{{ $quotation->acFrequencyDrive->ac_fequency_drive }}
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; white-space: nowrap; padding-bottom: 4px;">
+                    <span>&#8226;&nbsp; Bearing</span>
+                </td>
+                <td style="vertical-align: top; text-align: justify; padding-bottom: 4px;">
+                    :&nbsp;{{ $quotation->bearinge->bearing ?? 'N.A' }}
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: top; white-space: nowrap;">
+                    <span>&#8226;&nbsp; Pneumatics</span>
+                </td>
+                <td style="vertical-align: top; text-align: justify;">
+                    :&nbsp;{{ $quotation->pneumatic->pneumatic ?? '' }}
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+    {{-- 2nd page -e --}}
+    <div class="page-break" style="page-break-before: always;  width: 100%; padding:10px 5px 0px 20px;">
+
+        <div class="offer" style="width: 90%;">
+
+            <div class="technical-data">
+                <h2 style="text-decoration: underline">
+                    3. OFFER
+                </h2>
+            </div>
+
+            <table
+                style="border-collapse: collapse; width: 110%; font-size: 14px; border: 1px solid black; line-height: 1; font-family: 'Poppins';"
+                class='offer-table'>
+
+                <thead style="border: 1px solid black;">
+                    <tr style="font-weight: bold; text-align: center;">
+                        <th style="width: 10%; padding: 10px; border: 1px solid black;">Sr.No.</th>
+                        <th style="width: 55%; padding: 10px; border: 1px solid black;">PARTICULAR</th>
+                        <th style="width: 15%; padding: 10px; border: 1px solid black;">Qty</th>
+                        <th style="width: 15%; padding: 10px; border: 1px solid black;">Unit Price</th>
+                        <th style="width: 15%; padding: 10px; border: 1px solid black;">Ex Work Price In Rs.</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @php
+                        $qty = $quotation->quantity ?? 0;
+                        $unitPrice = $quotation->total_price ?? 0;
+                        $discount = $quotation->discount_type;
+                        $amount = $qty * $unitPrice;
+                        $items = $quotation->getRelation('items') ?? [];
+                        $hasItems = count($items) > 0;
+                        $srNo = 2;
+                        $subTotal = 0;
+                    @endphp
+
+                    {{-- ================= REMARKS MODE ================= --}}
+                    @if ($hasItems)
+
+                        <tr style="border: 1px solid black;border-bottom:none;">
+                            <td
+                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black; border-bottom:none;">
+                                1
+                            </td>
+
+                            <td style="padding:10px; border:1px solid black; border-bottom:none;">
+                                {{ strtoupper($quotation->machine->name) }} Model {{ $quotation->modele->name }} <br>
+                                ALONG WITH AC FREQUENCY DRIVE <br>
+                                ELECTRICAL PANEL
+                            </td>
+
+                            <td
+                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
+                                {{ $qty }} Nos.
+                            </td>
+
+                            <td
+                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
+                                {{ format_indian_number($unitPrice) }}
+                            </td>
+
+                            <td
+                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
+                                {{ format_indian_number($amount) }}
+                            </td>
+                        </tr>
+
+                        @foreach ($items as $item)
+                            @php
+                                $subTotal = $item->item_qty * $item->item_price + $subTotal;
+                            @endphp
+                            <tr>
+                                <td
+                                    style="text-align:center; border:1px solid black;border-top:none;border-bottom:none;">
+                                    {{ $srNo++ }}
+                                </td>
+
+                                <td style="padding:8px; border:1px solid black;border-top:none;border-bottom:none;">
+                                    {{ $item->item_name }}
+                                </td>
+
+                                <td
+                                    style="text-align:center;padding:10px;border:1px solid black; border-top:none; border-bottom:none;white-space: nowrap;width:40px;">
+                                    {{ $item->item_qty }} {{ $item->qty_unit ?? 'Nos' }}.</td>
+                                <td
+                                    style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-top:none;border-bottom:none;">
+                                    {{ format_indian_number($item->item_price) }}</td>
+                                <td
+                                    style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-top:none;border-bottom:none;">
+                                    {{ format_indian_number($item->item_price * $item->item_qty) }}</td>
+                            </tr>
+                        @endforeach
+
+                        {{-- ================= OLD ORIGINAL VIEW ================= --}}
+                    @else
+                        <tr style="border: 1px solid black;">
+                            <td
+                                style="text-align: center; vertical-align: top; padding: 80px 10px; border: 1px solid black;">
+                                1
+                            </td>
+
+                            <td style="padding: 10px; line-height: 1; border: 1px solid black;">
+                                {{ strtoupper($quotation->machine->name) }} Model {{ $quotation->modele->name }} <br>
+                                ALONG WITH AC FREQUENCY DRIVE <br>
+                                ELECTRICAL PANEL
+
+                                {{-- @if ($quotation->remark != '')
+                                    <p>({{ $quotation->remark }})</p>
+                                @endif --}}
+                            </td>
+
+                            <td
+                                style="text-align:center;padding:10px;border:1px solid black; border-top:none; border-bottom:none;white-space: nowrap;width:40px;">
+                                {{ $qty }} Nos.
+                            </td>
+
+                            <td
+                                style="text-align: center; vertical-align: top; padding:80px 15px; border: 1px solid black;">
+                                {{ format_indian_number($unitPrice, 2) }}
+                            </td>
+
+                            <td
+                                style="text-align: center; vertical-align: top; padding:80px 15px; border: 1px solid black;">
+                                {{ format_indian_number($amount, 2) }}
+                            </td>
+                        </tr>
+
+                    @endif
+
+
+                    {{-- ================= TOTAL SECTION (UNCHANGED) ================= --}}
+                    @if ($discount == 'amount')
+                        <tr>
+                            <td colspan="4"
+                                style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
+                                Subtotal
+                            </td>
+                            <td
+                                style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
+                                {{ format_indian_number($amount + $subTotal, 2) }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4"
+                                style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
+                                Less: Discount
+                            </td>
+                            <td
+                                style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
+                                {{ format_indian_number($quotation->discount_amount, 2) }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <!-- Rupees Words -->
+                            <td colspan="3"
+                                style="padding:14px;border:1px solid black; font-weight:bold; text-align:center; word-break:break-word;">
+                                RUPEES {{ strtoupper($words) }} ONLY
+                            </td>
+
+                            <!-- Net Payable Amount -->
+                            <td
+                                style=" padding:14px;border-top:1px solid black; border-bottom:1px solid black; border-left:1px solid black;font-weight:bold;text-align:right; white-space:nowrap; width:120px;">
+                                Net Payable Amount
+                            </td>
+
+                            <!-- Amount -->
+                            <td style="text-align:right; padding:14px;border:1px solid black;font-weight:bold;">
+                                {{ format_indian_number($quotation->total, 2) }}
+                            </td>
+                        </tr>
+                    @elseif($discount == 'percentage')
+                        <tr>
+                            <td colspan="4"
+                                style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
+                                Subtotal
+                            </td>
+                            <td
+                                style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
+                                {{ format_indian_number($amount + $subTotal, 2) }}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4"
+                                style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
+                                Less: Discount ({{ format_indian_number($quotation->discount_percentage, 2) }}%)
+                            </td>
+                            <td
+                                style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
+                                {{ format_indian_number($amount * ($quotation->discount_percentage / 100), 2) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <!-- Rupees Words -->
+                            <td colspan="3"
+                                style="border:1px solid black; padding:14px; font-weight:bold;text-align:center; word-break:break-word;">
+                                RUPEES {{ strtoupper($words) }} ONLY
+                            </td>
+
+                            <!-- Net Payable Amount label (Divider yahi banega) -->
+                            <td
+                                style="border-top:1px solid black; border-bottom:1px solid black; border-left:1px solid black; padding:14px; font-weight:bold; text-align:right; width:120px; white-space:nowrap;">
+                                Net Payable Amount
+                            </td>
+
+                            <!-- Amount -->
+                            <td style="border:1px solid black;padding:14px;font-weight:bold;text-align:right;">
+                                {{ format_indian_number($quotation->total, 2) }}
+                            </td>
+                        </tr>
+                    @else
+                        <tr>
+                            <!-- Rupees Words -->
+                            <td colspan="3"
+                                style="border:1px solid black;padding:14px;font-weight:bold;text-align:center;">
+                                RUPEES {{ strtoupper($words) }} ONLY
+                            </td>
+
+                            <!-- Total Label (Left Divider yahi banega) -->
+                            <td
+                                style="border:1px solid black; border-right:none;font-weight:bold;text-align:center;width:120px;">
+                                Total
+                            </td>
+
+                            <!-- Total Amount -->
+                            <td style="border:1px solid black;padding:14px;font-weight:bold;text-align:right;">
+                                {{ format_indian_number($quotation->total, 2) }}
+                            </td>
+                        </tr>
+                    @endif
+
+                    @if ($quotation->remark)
+                        <tr>
+                            <td colspan="5"
+                                style="text-align: center; padding: 16px 10px; font-weight: bold; border: 1px solid black;">
+                                Note:{{ $quotation->remark }}
+                            </td>
+                        </tr>
+                    @endif
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+    <div class="page-break">
+        <div class="lastpage">
+            <div class="technical-data">
+                <h2 style="text-decoration:underline;margin-bottom:70px;">4.&nbsp;<span>TERMS AND
+                        CONDITION</span></h2>
+            </div>
+            <table border="1" style="border-collapse: collapse; width: 100%;  font-size: 14px; line-height: 0.9;">
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Price</td>
+                 
+                    <td style="padding: 8px;">{{ $termCondition->price }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Tax</td>
+                    
+                    <td style="padding: 8px;">{{ $termCondition->tax }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Delivery</td>
+                    <td style="padding: 8px;">{{ $termCondition->delivery }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Payment</td>
+                    <td style="padding: 8px;">{{ $termCondition->payment }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Packing</td>
+                    
+                    <td style="padding: 8px;">{{ $termCondition->packing }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Forwarding</td>
+                    
+                    <td style="padding: 8px;">{{ $termCondition->forwarding }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Validity</td>
+                  
+                    <td style="padding: 8px;">{{ $termCondition->validity }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Commissioning charges</td>
+                    <!-- <td style="padding: 8px;">
       Customer should provide food & accommodation & to & fro ticket Charges and local transportation.
       If commission is carried more than 2 Days, then the Customer has to pay the charges of Rs. 3,500.00 per day.
     </td> -->
-        <td style="padding: 8px;">{{ $termCondition->commissioning_charges }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Guarantee</td>
-        <!-- <td style="padding: 8px;">
+                    <td style="padding: 8px;">{{ $termCondition->commissioning_charges }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Guarantee</td>
+                    <!-- <td style="padding: 8px;">
       One calendar year from date of dispatch, if any manufacturing Defects.
       No Guarantee for Bought out Items as they are purchase from Standard make
     </td> -->
-        <td style="padding: 8px;">{{ $termCondition->guarantee }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Cancellation of Order</td>
-        <!-- <td style="padding: 8px;">
+                    <td style="padding: 8px;">{{ $termCondition->guarantee }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Cancellation of Order</td>
+                    <!-- <td style="padding: 8px;">
       Orders once placed will not be subsequently cancelled for any Reason whatsoever.
       In the case of orders being cancelled, the entire Amount of the advance will be forfeited
     </td> -->
-        <td style="padding: 8px;">{{ $termCondition->cancellation_of_order }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Judiciary</td>
-        <!-- <td style="padding: 8px;">Subject to Daman Judiciary only</td> -->
-        <td style="padding: 8px;">{{ $termCondition->judiciary }}</td>
-      </tr>
-      <tr>
-        <td style="font-weight: bold; padding: 8px;">Not in our Scope of Supply</td>
-        <!-- <td style="padding: 8px;">
+                    <td style="padding: 8px;">{{ $termCondition->cancellation_of_order }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Judiciary</td>
+                    <!-- <td style="padding: 8px;">Subject to Daman Judiciary only</td> -->
+                    <td style="padding: 8px;">{{ $termCondition->judiciary }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold; padding: 8px;">Not in our Scope of Supply</td>
+                    <!-- <td style="padding: 8px;">
       Civil Works Pipe and Pipe line works, Cabling Works, Installation of machine
     </td> -->
-        <td style="padding: 8px;">{{ $termCondition->not_in_our_scope_of_supply }}</td>
-      </tr>
-    </table>
-  </div>
+                    <td style="padding: 8px;">{{ $termCondition->not_in_our_scope_of_supply }}</td>
+                </tr>
+            </table>
+        </div>
 
-  </div>
+    </div>
 
 </body>
 

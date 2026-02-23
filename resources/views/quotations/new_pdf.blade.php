@@ -10,9 +10,6 @@
             margin: 30px;
         }
 
-        /* @page {
-      margin: 130px 60px 120px 60px;
-    } */
         @font-face {
             font-family: 'Poppins';
             font-style: normal;
@@ -31,7 +28,7 @@
 
         .bold-text {
             font-weight: 700;
-            /* or 700 */
+
         }
 
         body {
@@ -101,13 +98,11 @@
             /* margin-bottom:20px;  */
         }
 
-        .client-footer table tr td {
-            /* margin-right: 200px; */
-        }
+
 
         .dashed-border {
             position: relative;
-            /* right: 50px; */
+
         }
 
 
@@ -126,17 +121,11 @@
 
         .technical-data-sub-head h3 {
             padding: 6px 0px 6px 15px;
-            /* background-color: #2daae3; */
-            /* border-radius: 15px; */
-            /* color: white; */
             color: black;
             font-size: small;
             text-decoration: underline;
         }
 
-        span {
-            /* display: inline-block; */
-        }
 
         .tech-content {
             padding-left: 5px;
@@ -155,7 +144,6 @@
 
         }
 
-        /* deepsiik */
 
         .website {
             margin-top: 5px;
@@ -182,17 +170,12 @@
 
         .footer-content div {
             float: left;
-            /* padding-top: 2px; */
-            /* padding-bottom: 2px; */
-            /* height: 80px; */
+
             padding-left: 10px;
         }
 
 
 
-        .footer-content p {
-            /* margin: 2px 0; */
-        }
 
         .footer-content::after {
             content: "";
@@ -206,7 +189,7 @@
             /* Adjust if needed */
             left: 12px;
             width: 95%;
-            /* font-family: Arial, sans-serif; */
+
             font-size: 11px;
 
             /* line-height: normal; */
@@ -222,7 +205,7 @@
 
         .footer-content div {
             width: 34%;
-            /* border-right: 2px solid black; */
+
             line-height: 1;
             height: 6%;
             margin-bottom: 35px;
@@ -230,7 +213,7 @@
         }
 
         .footer-content p {
-            /* margin: 2px 0; */
+
             word-wrap: break-word;
         }
 
@@ -253,11 +236,6 @@
         }
 
         .parameter-table {
-            /* border-collapse: collapse;
-  font-family: 'Bookman Old Style', serif;
-  font-size: 16px;
-  position: relative;
-  left: 40px; */
             width: 90%;
             table-layout: fixed;
             /* Ensures columns keep width */
@@ -329,7 +307,37 @@
         .offer-table {
             position: relative;
             top: 120px;
-            right: 20px;
+            right: 15px;
+            margin-bottom: 390px;
+        }
+
+        .offer-table tr {
+            page-break-inside: avoid;
+        }
+
+        .offer-table thead {
+            display: table-header-group;
+        }
+
+        .offer-table tbody {
+            page-break-inside: auto;
+        }
+
+        .offer-table {
+
+            page-break-inside: auto;
+        }
+
+        .offer-table tr {
+            page-break-inside: avoid;
+        }
+
+        .offer-table thead {
+            display: table-header-group;
+        }
+
+        .offer-table tbody {
+            page-break-inside: auto;
         }
     </style>
 </head>
@@ -884,13 +892,13 @@
                                 ALONG WITH AC FREQUENCY DRIVE <br>
                                 ELECTRICAL PANEL
 
-                                @if ($quotation->remark != '')
+                                {{-- @if ($quotation->remark != '')
                                     <p>({{ $quotation->remark }})</p>
-                                @endif
+                                @endif --}}
                             </td>
 
                             <td
-                                style="text-align: center; vertical-align: top; padding:80px 10px; border: 1px solid black;">
+                                style="text-align:center;padding:10px;border:1px solid black; border-top:none; border-bottom:none;white-space: nowrap;width:40px;">
                                 {{ $qty }} Nos.
                             </td>
 

@@ -8,22 +8,17 @@
     @page {
       margin:30px;
     }
-
-    /* @page {
-      margin: 130px 60px 120px 60px;
-    } */
+ 
     @font-face {
         font-family: 'Poppins';
         font-style: normal;
         font-weight: 400;
-        src: url('{{ public_path('fonts/Poppins-Regular.ttf') }}') format('truetype');
-        /* src: url('{{ public_path('fonts/Poppins-ExtraBold.ttf.ttf') }}') format('truetype'); */
+        src: url('{{ public_path('fonts/Poppins-Regular.ttf') }}') format('truetype'); 
     }
     @font-face {
         font-family: 'Poppins';
         font-style: normal;
         font-weight: 700;
-        /* src: url('{{ public_path('fonts/Poppins-Regular.ttf') }}') format('truetype'); */
         src: url('{{ public_path('fonts/Poppins-Bold.ttf') }}') format('truetype');
     }
     
@@ -94,14 +89,12 @@
       font-size: 15px;
       border-collapse: separate;
       margin-top: 10px;
-      /* margin-bottom:20px;  */
     }
 
 
 
     .dashed-border {
       position: relative;
-      /* right: 50px; */
     }
 
 
@@ -112,15 +105,11 @@
 
     .techincal-data {
       position: absolute;
-      /* top: 100px; */
     }
 
 
     .technical-data-sub-head h3 {
       padding: 6px 0px 6px 15px;
-      /* background-color: #2daae3; */
-      /* border-radius: 15px; */
-      /* color: white; */
       color:black;
       font-size: small;
       text-decoration: underline;
@@ -142,7 +131,6 @@
     top:120px;
 
    }
-    /* deepsiik */
 
     .website {
       margin-top: 5px;
@@ -150,7 +138,6 @@
 
     footer {
       width: 85%;
-      /* font-family: Arial, sans-serif; */
       font-size: 8px;
       color: #000;
       position: fixed;
@@ -186,7 +173,6 @@
       /* Adjust if needed */
       left: 12px;
       width: 95%;
-      /* font-family: Arial, sans-serif; */
       font-size: 11px;
 
       /* line-height: normal; */
@@ -210,7 +196,7 @@
     }
 
     .footer-content p {
-      /* margin: 2px 0; */
+    
       word-wrap:break-word;
     }
 
@@ -239,7 +225,7 @@
 .parameter-table td {
   padding: 8px;
   vertical-align: top;
-  white-space: nowrap; /* Prevents wrapping */
+  white-space: nowrap; 
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -250,12 +236,11 @@
 
 .parameter-table td:nth-child(2) {
   width: 65%;
-  white-space: normal; /* For value column, allow wrapping */
+  white-space: normal; 
 }
 .submitted{
    position: relative;
    top:270px;
-   /* font-family: 'Poppins',sans-serif !important; */
    padding: 0;
    margin: 0;
    left: 23px;
@@ -263,9 +248,9 @@
  .footer-col-border::after {
     content: "";
     position: absolute;
-    top: 10px; /* controls how far from top */
+    top: 10px;
     right: 0;
-    height: 100%; /* short vertical border */
+    height: 100%; 
     border-right: 1px solid black;
   }
   .footer-col {
@@ -275,7 +260,6 @@
   }
   .footer-col p {
     margin: 0;
-    /* line-height: 0.8; */
     
   }
   .img{
@@ -289,9 +273,36 @@
   .offer-table{
     position:relative;
     top:120px;
-    right: 20px;
+    right: 10px;
+    margin-bottom: 390px;
   }
-  </style>
+
+.offer-table tr{
+  page-break-inside: avoid;
+}
+
+.offer-table thead{
+  display: table-header-group;
+}
+
+.offer-table tbody{
+  page-break-inside:auto;
+}.offer-table{
+
+  page-break-inside:auto;
+}
+.offer-table tr{
+  page-break-inside: avoid;
+}
+
+.offer-table thead{
+  display: table-header-group;
+}
+
+.offer-table tbody{
+  page-break-inside:auto;
+}
+</style>
 </head>
 
 <body>
