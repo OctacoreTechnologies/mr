@@ -52,7 +52,8 @@ class MixingToolController extends Controller
     public function edit(string $id)
     {
         $mixingTool=MixingTool::with('model', 'model.machine')->findOrFail($id);
-        return response()->view('categories.mixing_tool.update',compact('mixingTool'));
+        $machines = Machine::all();
+        return response()->view('categories.mixing_tool.update',compact('mixingTool','machines'));
 
     }
 
