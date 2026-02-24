@@ -18,6 +18,11 @@ class MixingTool extends Model
     return $this->hasMany(Quotation::class, 'mixing_tool_id');
   }
 
+  public function model()
+  {
+    return $this->belongsTo(Modele::class, 'model_id');
+  }
+
   protected static function booted()
   {
     static::addGlobalScope('order', function ($query) {

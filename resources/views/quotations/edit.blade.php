@@ -136,7 +136,7 @@
                                     <option  value="Nos"  {{ $item->qty_unit=='Nos'?'selected':'' }}>Nos</option>
                                     <option  value="Meter"  {{ $item->qty_unit=='Meter'?'selected':'' }}>Meter</option>
                                     <option  value="Kg"  {{ $item->qty_unit=='Kg'?'selected':'' }}>Kg</option>
-                                    <option  value="Shed"  {{ $item->qty_unit=='Shed'?'selected':'' }}>Shed</option>
+                                    <option  value="Set"  {{ $item->qty_unit=='Set'?'selected':'' }}>Set</option>
                                 </select>
 
                                 <input type="text" name="total_item_price"

@@ -58,6 +58,12 @@ class Modele extends Model
         return $this->belongsTo(Application::class, 'model_id');
     }
 
+    public function mixingTools()
+    {
+        return $this->hasMany(MixingTool::class, 'model_id');
+    }
+
+
     public function blowers()
     {
         return $this->hasMany(Blower::class, 'model_id');

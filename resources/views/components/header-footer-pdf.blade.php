@@ -104,7 +104,8 @@
     }
 
     .techincal-data {
-      position: absolute;
+     position: relative;
+      
     }
 
 
@@ -268,12 +269,12 @@
     left: 0;
   }
   .table-index{
-    padding: 0 15px 0 15px;
+    padding: 0 10px 0 15px;
   }
   .offer-table{
     position:relative;
-    top:120px;
-    right: 10px;
+    top:105px;
+    right: 28px;
     margin-bottom: 390px;
   }
 
@@ -301,6 +302,10 @@
 
 .offer-table tbody{
   page-break-inside:auto;
+}
+.offer-heading{
+  position: relative;
+  right: 20px;
 }
 </style>
 </head>

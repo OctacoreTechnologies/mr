@@ -5,8 +5,10 @@ use App\Http\Controllers\Categories\AcFrequencyDriveController;
 use App\Http\Controllers\Categories\BatchController;
 use App\Http\Controllers\Categories\BearingController;
 use App\Http\Controllers\Categories\BladeController;
+use App\Http\Controllers\Categories\BlowerController;
 use App\Http\Controllers\Categories\CapacityController;
 use App\Http\Controllers\Categories\ElectricalController;
+use App\Http\Controllers\Categories\FeedingHooperCapacityController;
 use App\Http\Controllers\Categories\MachineController;
 use App\Http\Controllers\Categories\MachineTypeController;
 use App\Http\Controllers\Categories\MakeMotorController;
@@ -15,6 +17,7 @@ use App\Http\Controllers\Categories\MixingToolController;
 use App\Http\Controllers\Categories\ModeleController;
 use App\Http\Controllers\Categories\MotorRequirementController;
 use App\Http\Controllers\Categories\PneumaticController;
+use App\Http\Controllers\Categories\RotaryAirLockValveController;
 use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\customer\CustomerFollowUpController;
 use App\Http\Controllers\dashboard\DashBoardController;
@@ -49,6 +52,7 @@ use App\Models\Customer;
 use App\Models\MakeMotor;
 use App\Models\MixingTool;
 use App\Models\OrderAcceptanceLetter;
+use App\Models\RotaryAirLockValve;
 use App\Notifications\QuotationReminderNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -222,8 +226,8 @@ Route::middleware(['auth'])->group(function () {
   Route::resource('email-templates', EmailTemplateController::class);
   Route::post('email-templates/{emailTemplate}/preview', [EmailTemplateController::class, 'preview'])->name('email-templates.preview');
   Route::post('email-templates/{emailTemplate}/send-test', [EmailTemplateController::class, 'sendTest'])->name('email-templates.sendTest');
-});
-Route::resource('email-template', EmailTemplateController_2::class);
+
+  Route::resource('email-template', EmailTemplateController_2::class);
 
 Route::get('/get-states/{region_id}', [RegionController::class, 'getStates']);
 
@@ -236,3 +240,9 @@ Route::get('/emails/send', [EmailController_2::class, 'create'])->name('emails.c
 Route::post('/emails/send', [EmailController_2::class, 'send'])->name('emails.send');
 Route::post('/emails/fetch-recipients', [EmailController_2::class, 'fetchRecipients'])->name('emails.fetchRecipients');
 Route::get('/emails/get-template/{id}', [EmailController_2::class, 'getTemplate'])->name('emails.getTemplate');
+
+Route::resource('/blowers',BlowerController::class);
+Route::resource('/feeding_hooper_capacities',FeedingHooperCapacityController::class);
+Route::resource('/rotary-air-lock-valves',RotaryAirLockValveController::class);
+
+});

@@ -85,7 +85,7 @@ class QuotationController extends Controller
         $customer = Customer::findOrFail($previewData['customer_id']);
         $materialToProcess = MaterialToProcess::where('model_id', $previewData['model_id'])->get();
         $batchs = Batch::all();
-        $mixingTools = MixingTool::all();
+        $mixingTools = MixingTool::where('model_id', $previewData['model_id'])->get();
         $modeles = Modele::where('name', 'LIKE', '%' . $model->name . '%')->where('machine_id', $previewData['machine_id'])->with(['motorRequirement', 'motorRequirement2'])->get();
 
         $motorRequirements = $modeles->pluck('motorRequirement')->unique('id');
@@ -169,7 +169,7 @@ class QuotationController extends Controller
         // );
         $finalData = array_merge(
             collect($validated)
-                ->except(array_merge(array_keys($relationfields),['items']))
+                ->except(array_merge(array_keys($relationfields), ['items']))
                 ->toArray(),
             $foreignKeys
         );
@@ -198,7 +198,7 @@ class QuotationController extends Controller
                     'item_price' => $price,
                     'item_qty' => $qty,
                     'qty_unit' => $qty_unit,
-                    
+
                 ]);
             }
         }
@@ -513,6 +513,7 @@ class QuotationController extends Controller
             'pneumatic',
             'motorRequirement',  // Ensure motorRequirement is loaded
             'motorRequirement2', // Ensure motorRequirement2 is loaded
+            'items',
         ])->findOrFail($id);
 
         // Get the data for the form
@@ -594,10 +595,10 @@ class QuotationController extends Controller
 
     public function full_update(FullUpdateQuotationRequest $request, $id)
     {
-        // Retrieve the quotation to update
+
         $quotation = Quotation::findOrFail($id);
 
-        // Validate the incoming request
+
         $validated = $request->validated();
 
         $referenceNo = $quotation->reference_no;
@@ -607,7 +608,7 @@ class QuotationController extends Controller
         }
         $validated['reference_no'] = $referenceNo;
 
-        // Define relation fields for the quotation
+
         $relationfields = [
             'material_to_process' => [MaterialToProcess::class, 'material_to_process'],
             'motor_requirement' => [MototRequirement::class, 'motor_requirement'],
@@ -622,52 +623,111 @@ class QuotationController extends Controller
             'pneumatic' => [Pneumatic::class, 'pneumatic'],
         ];
 
-        // Initialize foreign keys array
+
         $foreignKeys = [];
 
-        // Iterate over each field and handle relation creation or update
+
         foreach ($relationfields as $field => [$modelClass, $columnName]) {
             if (isset($validated[$field]) && $validated[$field] != null) {
-                // Update the existing record if it exists, otherwise create a new one
+
                 $record = $modelClass::firstOrCreate([$columnName => $validated[$field]]);
                 $foreignKeys[$field . '_id'] = $record->id;
             } else {
-                // If the field is not provided, set it to null
+
                 $foreignKeys[$field . '_id'] = null;
             }
         }
 
-        // Handle the model_id specifically
+
         if (isset($validated['model_id']) && $validated['model_id'] != null) {
             $model = Modele::find($validated['model_id']);
         } else {
-            // If model_id is not provided, fallback to the first available model
-            $model = Modele::first(); // Fallback to the first model
+
+            $model = Modele::first();
         }
 
         if ($model) {
             $foreignKeys['model_id'] = $model->id;
         } else {
-            // If no model is found or provided, set to null or handle as necessary
+
             $foreignKeys['model_id'] = null;
         }
 
-        // Combine the validated fields and the foreign key fields
-        $finalData = array_merge(
-            // Regular fields (excluding relations)
-            collect($validated)->except(array_keys($relationfields))->toArray(),
 
-            // Foreign key fields
+
+        // $finalData = array_merge(
+
+        //     collect($validated)->except(array_keys($relationfields))->toArray(),
+
+
+        //     $foreignKeys
+        // );
+
+        $finalData = array_merge(
+            collect($validated)
+                ->except(array_merge(array_keys($relationfields), ['items']))
+                ->toArray(),
             $foreignKeys
         );
 
-        // Update the existing quotation with the final data
+
+
         $quotation->update($finalData);
 
-        // Flash success message
+
+        $itemsInput = $validated['items'] ?? [];
+
+
+        $existingIds = $quotation->items()->pluck('id')->toArray();
+
+
+        $submittedIds = collect($itemsInput)
+            ->pluck('id')
+            ->filter()
+            ->toArray();
+
+        // Delete removed items
+        $deleteIds = array_diff($existingIds, $submittedIds);
+        $quotation->items()->whereIn('id', $deleteIds)->delete();
+
+        foreach ($itemsInput as $item) {
+
+            // Agar sirf string aaye (rare case safety)
+            if (is_string($item)) {
+                continue;
+            }
+
+            $price = $item['price'] ?? 0;
+            $qty = $item['qty'] ?? 1;
+            $qty_unit = $item['qty_unit'] ?? 'Nos';
+
+            // Update existing item
+            if (!empty($item['id'])) {
+                $quotation->items()
+                    ->where('id', $item['id'])
+                    ->update([
+                        'item_name' => $item['name'],
+                        'item_price' => $price,
+                        'item_qty' => $qty,
+                        'qty_unit' => $qty_unit
+                    ]);
+            }
+            // Create new item
+            else {
+                if (!empty($item['name'])) {
+                    $quotation->items()->create([
+                        'item_name' => $item['name'],
+                        'item_price' => $price,
+                        'item_qty' => $qty,
+                        'qty_unit' => $qty_unit
+                    ]);
+                }
+            }
+        }
+
+
         session()->flash('success', 'Quotation is updated successfully');
 
-        // Redirect to the quotations index page
         return response()->redirectToRoute('quotation.index');
     }
 

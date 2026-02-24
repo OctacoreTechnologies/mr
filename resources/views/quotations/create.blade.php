@@ -639,7 +639,7 @@
                     <option value='Nos'>Nos</option>
                     <option value='Meter'>Meter</option>
                     <option value='Kg'>Kg</option>
-                    <option value='Shed'>Shed</option>
+                    <option value='Set'>Set</option>
                 </select>
 
                 <input type="text"

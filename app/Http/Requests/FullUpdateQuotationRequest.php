@@ -12,7 +12,7 @@ class FullUpdateQuotationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check()?true:false;
+        return Auth::check() ? true : false;
     }
 
     /**
@@ -20,14 +20,14 @@ class FullUpdateQuotationRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-      public function rules(): array
+    public function rules(): array
     {
         // Assuming you have the quotation ID in the route (e.g. /quotations/{quotation})
-        $quotationId = $this->route('quotation'); 
+        $quotationId = $this->route('quotation');
 
         return [
-            'revise' =>'nullable',
-            'reflect_in_pdf'=> 'nullable',
+            'revise' => 'nullable',
+            'reflect_in_pdf' => 'nullable',
             'customer_id' => 'required|exists:customers,id',
             'machine_id' => 'required|exists:machines,id',
             'model_id' => 'required',
@@ -61,7 +61,13 @@ class FullUpdateQuotationRequest extends FormRequest
             'useful_volume' => 'nullable',
             'compress_air_consumption' => 'nullable',
             'total_capacity' => 'nullable',
-            'remark'=>'nullable',
+            'remark' => 'nullable',
+
+            'items' => 'nullable|array',
+            'items.*.name' => 'nullable|string',
+            'items.*.qty' => 'nullable|numeric',
+            'items.*.qty_unit' => 'nullable|string',
+            'items.*.price' => 'nullable|numeric',
         ];
     }
 }

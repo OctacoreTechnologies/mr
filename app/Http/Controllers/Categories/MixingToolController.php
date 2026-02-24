@@ -4,6 +4,7 @@ namespace App\Http\Controllers\categories;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMixingToolRequest;
+use App\Models\Machine;
 use App\Models\MixingTool;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,8 @@ class MixingToolController extends Controller
     public function index()
     {
         $mixingTools=MixingTool::orderByDesc('created_at')->get();
-        return view('categories.mixing_tool.index',compact('mixingTools'));
+        $machines = Machine::all();
+        return view('categories.mixing_tool.index',compact('mixingTools','machines'));
     }
 
     /**
@@ -49,7 +51,7 @@ class MixingToolController extends Controller
      */
     public function edit(string $id)
     {
-        $mixingTool=MixingTool::findOrFail($id);
+        $mixingTool=MixingTool::with('model', 'model.machine')->findOrFail($id);
         return response()->view('categories.mixing_tool.update',compact('mixingTool'));
 
     }

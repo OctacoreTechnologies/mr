@@ -2,17 +2,18 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Container\Attributes\Auth;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
 
-class StoreMixingToolRequest extends FormRequest
+class RotaryAirLockValveRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::check()?true:false;
+        return FacadesAuth::check()?true:false;
     }
 
     /**
@@ -22,8 +23,9 @@ class StoreMixingToolRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'mixing_tool'=>'required',
+     return [
+            'rotary_air_lock_valve'=>'required',
+
             'model_id'=>'required|integer|exists:modeles,id',
         ];
     }

@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class StoreMixingToolRequest extends FormRequest
+class StoreBlowerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::check()?true:false;
+       return Auth::check()?true:false;
     }
 
     /**
@@ -22,8 +22,8 @@ class StoreMixingToolRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'mixing_tool'=>'required',
+          return [
+            'blower'=>'required',
             'model_id'=>'required|integer|exists:modeles,id',
         ];
     }

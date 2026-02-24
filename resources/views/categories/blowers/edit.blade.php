@@ -1,6 +1,5 @@
 {{-- resources/views/term_conditions/edit.blade.php --}}
 @extends('layouts.app')
-
 @section('title', 'Edit Term Condition')
 
 @section('content_header')
@@ -10,7 +9,7 @@
 @section('content')
     <div class="card">
         <div class="card-body">
-            <form action="{{ route('mixing-tool.update', $mixingTool->id) }}" method="POST">
+            <form action="{{ route('blowers.update', $blower->id) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="row">
@@ -19,7 +18,7 @@
                             <option disabled selected>Select Machine</option>
                             @foreach ($machines as $machine)
                                 <option value="{{ $machine->id }}"
-                                    {{ $machine->id === ($mixingTool->model->machine->id ?? null) ? 'selected' : '' }}>
+                                    {{ $machine->id === ($blower->model->machine->id ?? null) ? 'selected' : '' }}>
                                     {{ $machine->name }}</option>
                             @endforeach
                         </x-adminlte-select>
@@ -28,20 +27,20 @@
                         <label for="model" class="form-label font-weight-bold">Model</label>
                         <select id="model_id" name="model_id" class="form-control select2 form-control-lg"
                             style="width: 100%;" required>
-                            <option selected value={{ $mixingTool->model_id }}>
-                                {{ $mixingTool->model->name ?? '' }}</option>
+                            <option  selected value={{$blower->model_id}}>{{ $blower->model->name ?? '' }}</option>
 
                         </select>
                     </div>
                     <div class="col-md-6">
-                        <x-adminlte-input type="text" name="mixing_tool" value="{{ $mixingTool->mixing_tool }}"
-                            label="Mixing Tool" fgroup-class="mb-3" required />
+                        <x-adminlte-input type="text" name="blower"
+                            value="{{ $blower->blower }}" label="Blower"
+                            fgroup-class="mb-3" required />
                     </div>
                     <!-- Submit and Cancel Buttons -->
                     <div class="col-md-12">
                         <x-adminlte-button label="Submit" type="submit" theme="primary" class="mx-2 my-2" />
                         <button type="button" class="btn btn-danger my-2"
-                            onclick="window.location.href='{{ route('mixing-tool.index') }}'">Cancel</button>
+                            onclick="window.location.href='{{ route('blowers.index') }}'">Cancel</button>
                     </div>
                 </div>
 
@@ -49,3 +48,6 @@
         </div>
     </div>
 @stop
+@push('js')
+    <script src="{{ asset('js/selection.js') }}"></script>
+@endpush

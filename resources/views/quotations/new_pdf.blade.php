@@ -138,6 +138,11 @@
 
         }
 
+        .offer-heading {
+            position: relative;
+            right: 20px;
+        }
+
         .lastpage {
             position: relative;
             top: 95px;
@@ -790,7 +795,7 @@
 
         <div class="offer" style="width: 90%;">
 
-            <div class="technical-data">
+            <div class="offer-heading">
                 <h2 style="text-decoration: underline">
                     3. OFFER
                 </h2>
@@ -827,28 +832,28 @@
 
                         <tr style="border: 1px solid black;border-bottom:none;">
                             <td
-                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black; border-bottom:none;">
+                                style="text-align:center; vertical-align: top; padding:80px 10px 10px; border:1px solid black; border-bottom:none;">
                                 1
                             </td>
 
-                            <td style="padding:10px; border:1px solid black; border-bottom:none;">
+                            <td style="padding:55px 10px 10px; border:1px solid black; border-bottom:none;">
                                 {{ strtoupper($quotation->machine->name) }} Model {{ $quotation->modele->name }} <br>
                                 ALONG WITH AC FREQUENCY DRIVE <br>
                                 ELECTRICAL PANEL
                             </td>
 
                             <td
-                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
+                                style="padding:55px 10px 10px; text-align:center; vertical-align: top; border:1px solid black;border-bottom:none;">
                                 {{ $qty }} Nos.
                             </td>
 
                             <td
-                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
+                                style="padding:55px 10px 10px; text-align:center; vertical-align: top; border:1px solid black;border-bottom:none;">
                                 {{ format_indian_number($unitPrice) }}
                             </td>
 
                             <td
-                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-bottom:none;">
+                                style="padding:55px 10px 10px; text-align:center; vertical-align: top;  border:1px solid black;border-bottom:none;">
                                 {{ format_indian_number($amount) }}
                             </td>
                         </tr>
