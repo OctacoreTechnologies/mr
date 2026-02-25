@@ -84,6 +84,11 @@ class QuotationController extends Controller
         // $cleints = Customer::all();
         $customer = Customer::findOrFail($previewData['customer_id']);
         $materialToProcess = MaterialToProcess::where('model_id', $previewData['model_id'])->get();
+        $materialToProcess = MaterialToProcess::where('model_id', $previewData['model_id'])->get();
+
+        if ($materialToProcess->isEmpty()) {
+            $materialToProcess = MaterialToProcess::whereNull('model_id')->get();
+        }
         $batchs = Batch::all();
         $mixingTools = MixingTool::where('model_id', $previewData['model_id'])->get();
         $modeles = Modele::where('name', 'LIKE', '%' . $model->name . '%')->where('machine_id', $previewData['machine_id'])->with(['motorRequirement', 'motorRequirement2'])->get();

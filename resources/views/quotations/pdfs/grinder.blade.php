@@ -2,8 +2,8 @@
 <x-client-pdf-template :quotation="$quotation" />
 <x-table-content :specification="'GRINDER'" :pageTechnicalData="4" :pageSpecification="5" :pageOffer="6" :pageTerms="7" />
 <!-- Technical Data -->
-<div class="page-break" style="margin-top: -30px">
-    <div class="techincal-data parameter-table" style="margin-left:-12px;">
+<div class="page-break">
+    <div class="techincal-data parameter-table techincal-specification">
         <h2 style="text-decoration: underline">1. TECHNICAL DATA</h2>
         <!-- DESING PARAMETER OF HIGH-SPEED -->
         <div class="technical-data-sub-head"
@@ -82,13 +82,13 @@
 </div>
 
 <!-- Technical Specification of Grinder -->
-<div class="page-break" style="padding: 100px 20px 15px 10px;  font-size: 14px;  box-sizing: border-box;">
-    <div class="technical-datayrt">
+<div class="page-break" style="padding: 27px 20px 15px 10px;  font-size: 14px;  box-sizing: border-box;">
+    <div class="specification">
 
         <h2 style="margin-bottom: 10px; text-decoration: underline;">2.&nbsp; TECHNICAL SPECIFICATION OF GRINDER</h2>
 
         <!-- 2.2 MIXING VESSEL LID -->
-        <div style="font-size: 11pt; line-height: 1.5; padding-left: 10px;">
+        <div style="font-size: 11pt; line-height: 1.5; padding-left: 10px; padding-top:40px">
             <ul style="margin: 0; padding-left: 18px; list-style-type: disc;">
                 <li style="margin-bottom: 6px; text-align: justify;">
                     Grinder’s Body and Rotor fabricated from thick steel plates. It is designed to cut any types of

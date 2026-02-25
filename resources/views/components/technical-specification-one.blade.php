@@ -5,7 +5,7 @@
     </h2>
 
     <table class="parameter-table"
-      style="border-collapse: collapse; line-height: 1.1; font-size: 14px; position: relative; width: 90%; top: 10px; padding-top:50px;">
+      style="border-collapse: collapse; line-height: 1.1; font-size: 14px; position: relative; width: 90%; top: 10px; padding-top:50px;margin-left:20px;">
       @foreach ($items as $item)
         <tr>
           <td style="vertical-align: top; width: 30%; padding-bottom: 4px; white-space: nowrap;">

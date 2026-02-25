@@ -1,9 +1,9 @@
 <x-header-footer-pdf />
 <x-client-pdf-template :quotation="$quotation" />
 
-<x-table-content :specification="'GRINDER'" :pageTechnicalData="4" :pageSpecification="5" :pageOffer="6" :pageTerms="7" />
+<x-table-content :specification="'Agglomerator'" :pageTechnicalData="4" :pageSpecification="5" :pageOffer="6" :pageTerms="7" />
 <style>
-    .parameter-table-t {
+    /* .parameter-table-t {
         border-collapse: collapse;
         font-size: 14px;
         width: 90%;
@@ -16,18 +16,18 @@
         padding: 4px;
         vertical-align: top;
         word-wrap: break-word;
-        /* Allow long words to break and wrap onto the next line */
+      
         word-break: break-word;
-        /* Prevent overflow of long words */
+       
     }
 
     .parameter-table-t .value-cell::before {
         content: ": ";
-    }
+    } */
 </style>
 <!-- Technical Data -->
-<div class="page-break" style="margin-left:-12px;">
-    <div class="techincal-data parameter-table-t">
+<div class="page-break">
+    <div class="techincal-data parameter-table-tf techincal-specification">
         <h2 style="text-decoration: underline">1. TECHNICAL DATA</h2>
         <!-- DESING PARAMETER OF HIGH-SPEED -->
         <div class="technical-data-sub-head"
@@ -84,7 +84,7 @@
     </div>
 </div>
 
-<div class="page-break" style="margin-left:-12px;">
+<div class="page-break">
     <div class="techincal-data parameter-table-t" style="text-align: left;width: 95%;">
         <h3 style="text-decoration: underline;">1.2 <span style="">ELECTRICAL PARAMETERS</span></h3>
 
@@ -148,25 +148,17 @@
 
         [
             'title' => 'Motor',
-            'description' => ($quotation->makeMotor?->name ?? '') . '.'
-        ],
-
-        [
-            'title' => 'Mounting Structure',
-            'description' =>
-                'Sturdy MS Channel from Duly Covered with MS Sheet and Coated with Water resistant enamel   Coating Painting.',
+            'description' => ($quotation->makeMotor?->name ?? '') . '.',
         ],
     ];
 
     $mixerSpecs2 = [
         [
-            'title' => 'Electrical Control',
-            'description' => 'ABB / L&amp; T / SIEMENS Make',
+            'title' => 'Mounting Structure',
+            'description' =>
+                'Sturdy MS Channel from Duly Covered with MS Sheet and Coated with Water resistant enamel   Coating Painting.',
         ],
-        [
-            'title' => 'Bearing',
-            'description' => 'ZKL / FAG / SKF Make',
-        ],
+
         [
             'title' => 'Electrical Control',
             'description' => 'ABB / L&amp; T / SIEMENS Make',
@@ -174,7 +166,7 @@
 
         [
             'title' => 'Bearing',
-            'description' => 'ZKL / FAG / SKF Make',
+            'description' =>  ($quotation->bearing?->bearing ?? '') . '.',
         ],
     ];
 

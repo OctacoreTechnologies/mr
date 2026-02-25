@@ -3,7 +3,7 @@
 <x-table-content :specification="'GRINDER'" :pageTechnicalData="4" :pageSpecification="5" :pageOffer="6" :pageTerms="7" />
 <!-- Technical Data -->
 <div class="page-break ">
-    <div class="techincal-data parameter-table">
+    <div class="techincal-data parameter-table techincal-specification">
         <h2 style="text-decoration: underline">1. TECHNICAL DATA</h2>
         <!-- DESING PARAMETER OF HIGH-SPEED -->
         <div class="technical-data-sub-head"

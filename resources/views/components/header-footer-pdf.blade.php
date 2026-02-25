@@ -123,7 +123,7 @@
 
     .offer {
       position: relative;
-      top: 110px;
+      top: 95px;
      
     }
 
@@ -217,10 +217,21 @@
        top:32px;  
        left: 22px;
   }
+  .techincal-specification{
+    position: relative;
+    top:93px;
+    right:10px;
+  }
+   .specification{
+    position: relative;
+    top:83px;
+    right:18px;
+  }
   .parameter-table {
      width: 90%;
-     table-layout: fixed; /* Ensures columns keep width */
-     page-break-inside: avoid; /* Prevent row from splitting */
+     table-layout: fixed;
+     page-break-inside: avoid; 
+    
   }
 
 .parameter-table td {
@@ -273,7 +284,7 @@
   }
   .offer-table{
     position:relative;
-    top:105px;
+    top:120px;
     right: 28px;
     margin-bottom: 390px;
   }
@@ -305,7 +316,12 @@
 }
 .offer-heading{
   position: relative;
-  right: 20px;
+  right: 30px;
+}
+.term{
+  position: relative;
+  top:95px;
+  right:10px;
 }
 </style>
 </head>
