@@ -166,7 +166,7 @@
 
         [
             'title' => 'Bearing',
-            'description' =>  ($quotation->bearing?->bearing ?? '') . '.',
+            'description' =>  $quotation->bearinge->bearing ??'',
         ],
     ];
 

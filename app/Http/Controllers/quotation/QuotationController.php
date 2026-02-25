@@ -84,7 +84,6 @@ class QuotationController extends Controller
         // $cleints = Customer::all();
         $customer = Customer::findOrFail($previewData['customer_id']);
         $materialToProcess = MaterialToProcess::where('model_id', $previewData['model_id'])->get();
-        $materialToProcess = MaterialToProcess::where('model_id', $previewData['model_id'])->get();
 
         if ($materialToProcess->isEmpty()) {
             $materialToProcess = MaterialToProcess::whereNull('model_id')->get();
@@ -95,7 +94,6 @@ class QuotationController extends Controller
 
         $motorRequirements = $modeles->pluck('motorRequirement')->unique('id');
         $motorRequirements2 = $modeles->pluck('motorRequirement2')->unique('id');
-        $machineTypes = MachineType::all();
 
         return response()->view('quotations.create', [
             // 'opportunities'=>$opportunities,

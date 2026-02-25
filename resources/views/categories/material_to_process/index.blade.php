@@ -1,7 +1,7 @@
 @php
     $heads = [
         ['label' => 'SR NO', 'width' => '7%'],
-        'Name',
+        'Machine','Model','Material To Process',
         ['label' => 'Actions', 'no-export' => true, 'width' => 5],
     ];
     $n = 1;
@@ -57,6 +57,8 @@
             @foreach ($mateiralToProcess as $mateiralToProces)
                 <tr>
                     <td>{{ $n++ }}</td>
+                    <td>{{ $mateiralToProces->model->machine->name ?? '' }}</td>
+                    <td>{{ $mateiralToProces->model->name ?? '' }}</td>
                     <td>{{ $mateiralToProces->material_to_process ?? '' }}</td>
                     <td>
                         <nobr>

@@ -15,7 +15,7 @@ class MaterialToProcessController extends Controller
      */
     public function index()
     {
-        $mateiralToProcess=MaterialToProcess::orderByDesc('created_at')->get();
+        $mateiralToProcess=MaterialToProcess::with(['model','model.machine'])->orderByDesc('created_at')->get();
         $machines = Machine::all();
         return view('categories.material_to_process.index', compact('mateiralToProcess','machines'));
     }

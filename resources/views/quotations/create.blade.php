@@ -510,10 +510,10 @@
                             <i class="fas fa-pencil-alt edit-icon"></i>
                         </div>
                     @endif
-                    @if (isset($product->rotary))
+                    @if (isset($product->rotor))
                         <div class="col-md-6">
-                            <label>Rotary</label>
-                            <input name="rotary" value="{{ $product->rotary }}" class="form-control readonly-input"
+                            <label>Rotor</label>
+                            <input name="rotor" value="{{ $product->rotor }}" class="form-control readonly-input"
                                 required />
                             <i class="fas fa-pencil-alt edit-icon"></i>
                         </div>

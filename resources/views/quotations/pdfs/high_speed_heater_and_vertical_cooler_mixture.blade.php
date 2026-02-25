@@ -368,7 +368,7 @@ $secondPart = trim($parts[1]);
          'title'=>'Motor',
           'description' => ($quotation->makeMotor?->name ?? '') . '.'
         ],
-        ],
+        
         [
          'title'=>'Driving System',
          'description'=>'The drive system incorporates with V-belt and tapper lock pulley (SPC type) to give Efficient power drive transmission. The Belts  Are Tightened by means of motor sliding screw.'
