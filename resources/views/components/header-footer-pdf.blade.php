@@ -323,6 +323,10 @@
   top:95px;
   right:10px;
 }
+.app-image{
+  position: relative;
+  right:20px;
+}
 </style>
 </head>
 

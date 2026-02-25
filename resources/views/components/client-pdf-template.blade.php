@@ -123,9 +123,9 @@
     </div>
 
     <div class='img'>
-        <div class="border-box">
+        <div class="border-box app-image">
             <img src="{{ asset('storage/' . $quotation->machine->image_url) ?? 'mixture.png' }}" class="main-image "
-                style="z-index: 0;">
+                style="z-index: -1;">
         </div>
         <p
             style="position: fixed;bottom: 360px; left: 45%;  transform: translateX(-50%); font-size: 16px; margin: 0;  text-align: center; font-weight:bolder;width:100%">
