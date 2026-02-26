@@ -117,7 +117,7 @@ class CustomerController extends Controller
     {
         $customer = Customer::findOrFail($id);
         $customer->delete();
-        return response()->redirectToRoute('customers.index');
+        return response()->redirectToRoute('customer.index');
     }
 
     public function import(Request $request)

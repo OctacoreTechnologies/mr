@@ -227,10 +227,10 @@
                                 </div>
                             </div>
                                 <div class="col-md-6">
-                                    <x-adminlte-input type="email" name="contact_person_{{ $i }}_eamil"
+                                    <x-adminlte-input type="email" name="contact_person_{{ $i }}_email"
                                         value="{{ $lead->{'contact_person_' . $i . '_email'} ?? '' }}"
                                         label="Contact Person {{ $i }} email"
-                                        placeholder="Enter Contact Person 2 Email" fgroup-class="mb-3" disable-feedback />
+                                        placeholder="Enter Contact Person {{ $i }} Email" fgroup-class="mb-3" disable-feedback />
                                 </div>
                         @endfor
                     </div>

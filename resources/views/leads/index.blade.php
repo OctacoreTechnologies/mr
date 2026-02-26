@@ -52,16 +52,16 @@
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <!-- Delete Button -->
-                                <form action="{{ route('lead.destroy', $lead->id) }}" method="POST" class="d-inline-block">
+                                <form action="{{ route('customer.destroy', $lead->id) }}" method="POST" class="d-inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger mx-1 shadow delete-project" title="Delete"
-                                        data-url="{{ route('lead.destroy', $lead->id) }}">
+                                        data-url="{{ route('customer.destroy', $lead->id) }}">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
                                 <!-- View Details Button -->
-                                <a href="{{ route('lead.show', $lead->id) }}"
+                                <a href="{{ route('customer.show', $lead->id) }}"
                                     class="btn btn-sm btn-outline-teal mx-1 shadow" title="Details">
                                     <i class="fas fa-eye"></i>
                                 </a>
