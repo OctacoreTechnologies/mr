@@ -26,8 +26,7 @@
                     ['label' => 'New', 'value' => (clone $leads)->where('status', 'new')->count()],
                     ['label' => 'Contacted', 'value' => (clone $leads)->where('status', 'contacted')->count()],
                     ['label' => 'Qualified', 'value' => (clone $leads)->where('status', 'qualified')->count()],
-                    ['label' => 'Delivered', 'value' => (clone $leads)->where('status', 'delivered')->count()],
-                    ['label' => 'Disqualified', 'value' => (clone $leads)->where('status', 'disqualifies')->count()],
+                    ['label' => 'Disqualified', 'value' => (clone $leads)->where('status', 'disqualified')->count()],
                 ]
             ],
             [
