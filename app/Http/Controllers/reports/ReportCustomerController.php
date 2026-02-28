@@ -42,14 +42,14 @@ class ReportCustomerController extends Controller
         }
 
         if($request->has('status') && $request->status!=''){
-             $customers->whereIn('status',(array)$request->status);
+             $customers->whereIn('customer_status',(array)$request->status);
         }
 
         if($request->has('followed_by') && $request->followed_by!=''){
              $customers->whereIn('followed_by',(array)$request->followed_by);
         }
 
-        $customers=$customers->get();
+        $customers=$customers->where('type','customer')->get();
 
        return response()->view('reports.customers.report',[
             'customers'=>$customers,

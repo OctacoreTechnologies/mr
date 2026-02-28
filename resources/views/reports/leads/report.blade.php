@@ -137,7 +137,8 @@
                     <td>{{ $lead->created_at->format('d-m-Y') }}</td>
 
                     <td>
-                        <span class="badge badge-warning">
+                        {{-- change color based on status new,contacted,qualified or disqualified--}}
+                        <span class="badge badge-{{ $lead->status === 'qualified' ? 'success' : ($lead->status === 'contacted' ? 'primary' : ($lead->status === 'disqualified' ? 'danger' : 'warning')) }}">
                             {{ ucfirst($lead->status) }}
                         </span>
                     </td>

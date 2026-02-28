@@ -38,11 +38,15 @@ class ReportLeadController extends Controller
         $leads->whereIn('lead_source', (array)$request->lead_source);
        }
 
+       if ($request->has('status') && !empty($request->status)) {
+        $leads->whereIn('status', (array)$request->status);
+       }
+
        if ($request->has('assigned_user') && !empty($request->assigned_user)) {
            $leads->whereIn('followed_by', (array) $request->assigned_user);
        }
 
-       $leads = $leads->get();
+       $leads = $leads->where('type', 'lead')->get();
 
         return response()->view('reports.leads.report',[
             'leads'=>$leads,

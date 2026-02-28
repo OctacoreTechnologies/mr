@@ -62,12 +62,11 @@
                 <div class="col-md-3">
                     <label for="status" class="font-weight-bold text-muted">Status</label>
                     <select name="status[]" id="status" class="form-control select2 rounded-pill" multiple="multiple">
-                        <option value="new" {{ in_array('new', request('status', [])) ? 'selected' : '' }}>New</option>
-                        <option value="contacted" {{ in_array('contacted', request('status', [])) ? 'selected' : '' }}>
-                            Contacted</option>
-                        <option value="qualified" {{ in_array('qualified', request('status', [])) ? 'selected' : '' }}>
-                            Qualified</option>
-                        <option value="disqualified" {{ in_array('disqualified', request('status', [])) ? 'selected' : '' }}>Disqualified</option>
+                        <option value="lead" {{ in_array('lead', request('status', [])) ? 'selected' : '' }}>Lead</option>
+                        <option value="quoted" {{ in_array('quoted', request('status', [])) ? 'selected' : '' }}>
+                            Quoted</option>
+                        <option value="existing" {{ in_array('existing', request('status', [])) ? 'selected' : '' }}>
+                            Existing</option>
                     </select>
                 </div>
 
@@ -169,9 +168,10 @@
                         </a></td>
                     <td>{{date($customer->created_at ?? 'N.A')}}</td>
                     <td>
+                        {{-- customer status color change  --}}
                         <span
-                            class="badge badge-{{ $customer->status === 'accepted' ? 'success' : ($customer->status === 'rejected' ? 'danger' : 'warning') }}">
-                            {{ ucfirst($customer->status) }}
+                            class="badge badge-{{ $customer->customer_status === 'existing' ? 'success' : ($customer->customer_status === 'quoted' ? 'primary' : 'warning') }}">
+                            {{ ucfirst($customer->customer_status) }}
                         </span>
                     </td>
                     <td>

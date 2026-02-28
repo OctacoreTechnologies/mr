@@ -211,12 +211,41 @@ class Quotation extends Model implements Auditable
         $model->user_id = Auth::id();
       }
     });
-    static::created(function ($model) {
-      $customer = Customer::findOrFail($model->customer_id);
-      if ($customer->status != 'existing') {
-        $customer->status = 'quotated';
-      }
-      $customer->save();
+    static::created(function ($quotation) {
+      $quotation->updateCustomerStatus();
     });
+
+    static::updated(function ($quotation) {
+      $quotation->updateCustomerStatus();
+    });
+
+    static::deleted(function ($quotation) {
+      $quotation->updateCustomerStatus();
+    });
+  }
+
+
+  public function updateCustomerStatus()
+  {
+    $customer = $this->customer;
+
+    if (!$customer) {
+      return;
+    }
+
+    $hasQuotation = $customer->quotations()->exists();
+    $hasApproved = $customer->quotations()
+      ->where('status', 'approved') // agar column name alag hai to change karo
+      ->exists();
+
+    if (!$hasQuotation) {
+      $customer->customer_status = 'lead';
+    } elseif ($hasApproved) {
+      $customer->customer_status = 'existing';
+    } else {
+      $customer->customer_status = 'quoted';
+    }
+
+    $customer->save();
   }
 }
