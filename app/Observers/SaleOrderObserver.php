@@ -73,7 +73,7 @@ class SaleOrderObserver
 
     protected function setWorkOrderNoBasedOnMachineName(SaleOrder $saleOrder): void{
        
-        if($saleOrder->quotation->machine->name=='High Speed Heater Mixer'){
+        if($saleOrder->quotation->machine->name=='Heater Mixer'){
                 $saleOrder->work_order_no = SaleOrder::countWorkOrdersByWorkOrderNo('MR/M-056/');
                 // $total=SaleOrder::countWorkOrdersByWorkOrderNo('M-056');
             }
