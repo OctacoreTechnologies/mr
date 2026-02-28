@@ -87,7 +87,8 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
 
                     @if($key == 'material_to_process')
                     @if($quotation->machine->name == 'Heater Mixer' || $quotation->machine->name == 'High Speed Heater Mixer Vessel' || $quotation->machine->name == 'High Speed Heater Mixer Blade')
-                    <option value="Rigid PVC" selected>Rigid PVC</option>
+                    <option value="{{ $quotation->materialToProcess->material_to_process ?? '' }}" selected>{{ $quotation->materialToProcess->material_to_process ?? '' }}</option>
+                    {{-- <option value="Rigid PVC" selected>Rigid PVC</option>
                     <option value="Soft PVC">Soft PVC</option>
                     <option value="WPC">WPC</option>
                     <option value="Natural Raw Material Compounds">Natural Raw Material Compounds</option>
@@ -97,7 +98,7 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     <option value="Masterbatch ">Masterbatch </option>
                     <option value="Colour concentrates">Colour concentrates</option>
                     <option value="Pre Heating">Pre Heating</option>
-                    <option value="Pre Mixing">Pre Mixing</option>
+                    <option value="Pre Mixing">Pre Mixing</option> --}}
                     @elseif($quotation->machine->name == 'Grinder')
                     <option value="Molding" selected>Molding</option>
                     <option value="Pipe">Pipe</option>

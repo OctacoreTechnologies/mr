@@ -78,6 +78,7 @@ class StoreCustomerRequest extends FormRequest
             // 'email5' =>'nullable|email',
             // 'email6' =>'nullable|email',
             'remark2' => 'nullable|string',
+            'customer_status' => 'nullable|string|in:lead,quoted,existing',
 
         ];
     }

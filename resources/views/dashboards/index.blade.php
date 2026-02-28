@@ -55,7 +55,7 @@
                 'sub' => [
                     ['label' => 'Draft', 'value' => (clone $quotations)->where('status', 'Draft')->count()],
                     ['label' => 'Send', 'value' => (clone $quotations)->where('status', 'Sent')->count()],
-                    ['label' => 'Approved', 'value' => (clone $quotations)->where('status', 'Accepted')->count()],
+                    ['label' => 'Approved', 'value' => (clone $quotations)->where('status', 'Approved')->count()],
                     ['label' => 'Reject', 'value' => (clone $quotations)->where('status', 'Rejected')->count()],
                 ]
 

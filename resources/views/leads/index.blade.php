@@ -34,8 +34,19 @@
                         <td>{{$srno++}}</td>
                         <td>{{$lead->company_name}}</td>
                         <td>{{ $lead->contact_person_1_email }}</td>
-                        <td>{{ ucwords($lead->status) }}</td>
-                        <td>{{$lead->contact_person_1_contact}}</td>
+                        <td>
+                            @php
+                                $statusClass = match($lead->status) {
+                                    'new' => 'badge badge-warning',
+                                    'contacted' => 'badge badge-info',
+                                    'qualified' => 'badge badge-success',
+                                    'disqualified' => 'badge badge-danger',
+                                    default => 'badge badge-secondary',
+                                };
+                            @endphp
+                            <span class="{{ $statusClass }}">{{ ucfirst($lead->status) }}</span>
+                        </td>
+                        <td class="format-number">{{$lead->contact_person_1_contact}}</td>
                         <td>
                              <a href="{{ route('followup.edit', $lead->id) }}"
                                    class="btn btn-sm btn-outline-info shadow-sm btn-round"

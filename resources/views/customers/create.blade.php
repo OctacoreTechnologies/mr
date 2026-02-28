@@ -167,14 +167,11 @@
                     </div>
                     <!-- Status and Followed By -->
                     <div class="col-md-4">
-                        <x-adminlte-select name="status" label="Status" fgroup-class="mb-3">
-                            <option value="new" {{ old('status') == 'new' ? 'selected' : '' }}>New</option>
-                            <option value="contacted" {{ old('status') == 'contacted' ? 'selected' : '' }}>Contacted
+                        <x-adminlte-select name="customer_status" label="Customer Status" fgroup-class="mb-3">
+                            <option value="lead" {{ old('customer_status') == 'lead' ? 'selected' : '' }}>Lead</option>
+                            <option value="quoted" {{ old('customer_status') == 'quoted' ? 'selected' : '' }}>Quoted
                             </option>
-                            <option value="qualified" {{ old('status') == 'qualified' ? 'selected' : '' }}>Qualified
-                            </option>
-                            <option value="disqualified" {{ old('status') == 'disqualified' ? 'selected' : '' }}>
-                                Disqualified
+                            <option value="existing" {{ old('customer_status') == 'existing' ? 'selected' : '' }}>Existing
                             </option>
                         </x-adminlte-select>
                     </div>

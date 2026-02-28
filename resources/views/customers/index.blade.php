@@ -3,6 +3,7 @@
         'SR.No',
         'Company Name',
         'Country',
+        'status',
         'Followed By',
         'Track Followup',
         'Followup',
@@ -45,6 +46,17 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $customer->company_name }}</td>
                             <td>{{strtoupper($customer->country) }}</td>
+                            <td>
+                                @php
+                                    $statusClass = match($customer->customer_status) {
+                                        'lead' => 'badge badge-warning',
+                                        'quoted' => 'badge badge-info',
+                                        'existing' => 'badge badge-success',
+                                        default => 'badge badge-secondary',
+                                    };
+                                @endphp
+                                <span class="{{ $statusClass }}">{{ ucfirst($customer->customer_status) }}</span>
+                            </td>
                             <td>{{ $customer->user->name ??'N.A' }}</td>
                             <td> <a href="{{ route('followup.customers.show', $customer->id) }}" class="btn btn-sm btn-outline-success mx-1 shadow" title="Edit">
                                         Track

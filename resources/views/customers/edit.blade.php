@@ -201,14 +201,12 @@
                     </div>
                     <!-- Status -->
                     <div class="col-md-6">
-                        <x-adminlte-select name="status" label="Status" fgroup-class="mb-3">
-                            <option value="new" {{ $customer->status == 'new' ? 'selected' : '' }}>New</option>
-                            <option value="contacted" {{ $customer->status == 'contacted' ? 'selected' : '' }}>Contacted
+                        <x-adminlte-select name="customer_status" label="Customer Status" fgroup-class="mb-3">
+                            <option value="lead" {{ $customer->customer_status == 'lead' ? 'selected' : '' }}>Lead</option>
+                            <option value="quoted" {{ $customer->customer_status == 'quoted' ? 'selected' : '' }}>Quoted
                             </option>
-                            <option value="qualified" {{ $customer->status == 'qualified' ? 'selected' : '' }}>Qualified
+                            <option value="existing" {{ $customer->customer_status == 'existing' ? 'selected' : '' }}>Existing
                             </option>
-                            <option value="disqualified" {{ $customer->status == 'disqualified' ? 'selected' : '' }}>
-                                Disqualified</option>
                         </x-adminlte-select>
                     </div>
 

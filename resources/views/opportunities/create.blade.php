@@ -377,9 +377,10 @@
                     var application = (quotation.application) ? quotation.application.name : 'N/A';
                     var createdDate = quotation.created_at ? new Date(quotation.created_at).toLocaleDateString('en-IN') : '-';
                     var status = quotation.status || 'pending';
-                    var showUrl = '/quotation/' + quotation.id;
+                    var showUrl = '/quotaion/pdf/' + quotation.id;
                     var customerId = $('#customerId').val();
-                    var reorderUrl = '{{ route("opportunity.create") }}?customer_id=' + customerId;
+                    // reorder url http://mr.test/quotation/149/edit?reorder=1
+                    var reorderUrl = '/quotation/' + quotation.id + '/edit?reorder=1&customer_id=' + customerId;
 
                     var statusBadge = '<span class="badge badge-secondary">' + status + '</span>';
 
