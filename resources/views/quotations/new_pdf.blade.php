@@ -416,10 +416,10 @@
                 <td style="width: 10px; text-align: center; padding: 3px; vertical-align: top;">:</td>
                 <td
                     style="padding: 3px 0;padding-right:15px; word-break: break-word; white-space:normal; line-height: 1; ">
-                    {{ $quotation->customer->address_line_1 ?? '' }},
-                    {{ $quotation->customer->city ?? 'Valsad' }},
-                    {{ $quotation->customer->state ?? 'Gujarat' }}
-                    {{ $quotation->customer->pincode ?? '122345' }}
+                    {{ str_replace(['‐','–','—'], '-', $quotation->customer->address_line_1 ?? '') }},
+                    {{ $quotation->customer->city ?? '' }},
+                    {{ $quotation->customer->state ?? '' }}
+                    {{ preg_replace('/\s+/', '', $quotation->customer->pincode ?? '') }}
                 </td>
             </tr>
 

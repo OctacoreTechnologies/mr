@@ -33,10 +33,10 @@
             <td style="color: #032854; padding: 3px 2px; vertical-align: top;">Address</td>
             <td style="width: 10px; text-align: center; padding: 3px; vertical-align: top;">:</td>
             <td style="padding: 3px 0;padding-right:15px; word-break: break-word; white-space: normal; line-height:1;">
-                {{ $quotation->customer->address_line_1 ?? '' }},
-                {{ $quotation->customer->city ?? 'Valsad' }},
-                {{ $quotation->customer->state ?? 'Gujarat' }}
-                {{ $quotation->customer->pincode ?? '122345' }}
+                {{ str_replace(['‐', '–', '—'], '-', $quotation->customer->address_line_1 ?? '') }},
+                {{ $quotation->customer->city ?? '' }},
+                {{ $quotation->customer->state ?? '' }}
+                {{ preg_replace('/\s+/', '', $quotation->customer->pincode ?? '') }}
             </td>
         </tr>
 
@@ -100,10 +100,12 @@
                         style="width: 60%; font-weight: bold; border-bottom: 1px solid black; display: inline-block; padding-bottom: 3px; font-size: 16px;">
                         Contact No.
                     </div>
-                    <div style="margin-top: 5px;">  {{ '+91-' .
-                                substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 0, 5) .
-                                ' ' .
-                                substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 5) }}</div>
+                    <div style="margin-top: 5px;">
+                        {{ '+91-' .
+                            substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 0, 5) .
+                            ' ' .
+                            substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 5) }}
+                    </div>
                 </td>
 
                 <!-- E–Mail ID: Right aligned -->
