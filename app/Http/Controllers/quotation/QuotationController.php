@@ -82,7 +82,7 @@ class QuotationController extends Controller
         $machine = Machine::findOrFail($previewData['machine_id']);
         $model = Modele::findOrFail($previewData['model_id']);
         // $cleints = Customer::all();
-        $customer = Customer::findOrFail($previewData['customer_id']);
+        $customer = Customer::where('type','customer')->where('id',$previewData['customer_id'])->first();
         $materialToProcess = MaterialToProcess::where('model_id', $previewData['model_id'])->get();
 
         if ($materialToProcess->isEmpty()) {
@@ -427,7 +427,7 @@ class QuotationController extends Controller
         $products = Application::all();
         $machineTypes = MachineType::all();
         $models = Modele::all();
-        $cleints = Customer::all();
+        $cleints = Customer::where('type', 'customer')->get();
         //  $referenceNO = Quotation::count() + 1;
         $referenceNO = Quotation::withTrashed()->count() + 1;
         $today = now(); // Or Carbon::now()

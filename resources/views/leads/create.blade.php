@@ -21,7 +21,7 @@
                 <div class="row">
                     <input type="hidden" name="type" value="lead">
                     <div class="col-md-6">
-                        <x-adminlte-select name="lead_source" label="Lead Source" fgroup-class="mb-3">
+                        <x-adminlte-select name="lead_source" id="lead_source" label="Lead Source" fgroup-class="mb-3">
                             <option value="web" {{ old('lead_source') == 'web' ? 'selected' : '' }}>Web</option>
                             <option value="referral" {{ old('lead_source') == 'referral' ? 'selected' : '' }}>Referral
                             </option>
@@ -35,6 +35,13 @@
                             <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <div class="col-md-6" id="lead_source_remark_div" style="display: {{ old('lead_source') == 'other' ? 'block' : 'none' }};">
+                        <x-adminlte-textarea name="lead_source_remark" label="Lead Source Remark"
+                            placeholder="Enter any remarks regarding the lead source"
+                            fgroup-class="mb-3">{{ old('lead_source_remark') }}</x-adminlte-textarea>
+                    </div>
+
                     <!-- Location Type -->
                     <div class="col-md-6">
                         <x-adminlte-select name="location_type" label="Location Type" fgroup-class="mb-3">
@@ -59,9 +66,10 @@
 
                     <!-- Country -->
                     <div class="col-md-6">
-                        <x-adminlte-select name="country" label="Select Country"  class="country-select">
+                        <x-adminlte-select name="country" label="Select Country" class="country-select">
                             @foreach ($countries as $country)
-                                <option value="{{ strtolower($country->country) }}" data-code="{{ $country->country_code }}">{{ $country->country }}</option>
+                                <option value="{{ strtolower($country->country) }}"
+                                    data-code="{{ $country->country_code }}">{{ $country->country }}</option>
                             @endforeach
                         </x-adminlte-select>
                     </div>
@@ -71,7 +79,8 @@
                         <label for="region" class="font-weight-bold text-muted">Region</label>
                         <select name="region" id="region" class="form-control select2 rounded-pill">
                             @foreach ($regions as $region)
-                               <option value="{{ old('region', $region->name) }}" data-region-id={{$region->id}}>{{ $region->name }}</option>
+                                <option value="{{ old('region', $region->name) }}" data-region-id={{ $region->id }}>
+                                    {{ $region->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -164,7 +173,7 @@
                         <div class="col-md-6">
                             <x-adminlte-input name="contact_person_1_contact"
                                 value="{{ old('contact_person_1_contact') }}" label="Contact Person 1 Contact"
-                                placeholder="Enter contact" fgroup-class="mb-3" class="contact-number"/>
+                                placeholder="Enter contact" fgroup-class="mb-3" class="contact-number" />
                         </div>
                         <div class="col-md-6">
                             <x-adminlte-input name="contact_person_1_email" value="{{ old('contact_person_1_email') }}"
@@ -255,7 +264,7 @@
 
             function renderContactPersons() {
                 const numberOfPersons = parseInt((noOfPersonsSelect && noOfPersonsSelect.value) || 1);
-                 var code = $(this).find(':selected').data('code');
+                var code = $(this).find(':selected').data('code');
                 if (!contactPersonFieldsContainer) return;
                 contactPersonFieldsContainer.innerHTML = '';
                 for (let i = 1; i <= numberOfPersons; i++) {
@@ -308,6 +317,20 @@
             if (noOfPersonsSelect && contactPersonFieldsContainer) {
                 noOfPersonsSelect.addEventListener('change', renderContactPersons);
                 renderContactPersons();
+            }
+
+        });
+
+        const leadSource = document.getElementById('lead_source');
+        const remarkDiv = document.getElementById('lead_source_remark_div');
+
+        leadSource.addEventListener('change', function() {
+           
+            if (this.value === 'other') {
+                remarkDiv.style.display = 'block';
+            } else {
+                remarkDiv.style.display = 'none';
+                document.getElementById('lead_source_remark').value = ''; 
             }
         });
     </script>

@@ -22,7 +22,7 @@
                 <div class="row">
                     <input type="hidden" name="type" value="lead">
                     <div class="col-md-6">
-                        <x-adminlte-select name="lead_source" label="Lead Source" fgroup-class="mb-3">
+                        <x-adminlte-select name="lead_source" id="lead_source" label="Lead Source" fgroup-class="mb-3">
                             <option value="web" {{ old('lead_source', $lead->lead_source) == 'web' ? 'selected' : '' }}>
                                 Web
                             </option>
@@ -43,6 +43,12 @@
                             <p class="text-danger">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div class="col-md-6" id="lead_source_remark_div" style="display: {{ old('lead_source', $lead->lead_source) == 'other' ? 'block' : 'none' }};">
+                        <x-adminlte-textarea name="lead_source_remark" label="Lead Source Remark"
+                            placeholder="Enter any remarks regarding the lead source"
+                            fgroup-class="mb-3">{{ old('lead_source_remark', $lead->lead_source_remark) }}</x-adminlte-textarea>
+                    </div>
+
                     <!-- Location Type -->
                     <div class="col-md-6">
                         <x-adminlte-select name="location_type" label="Location Type" fgroup-class="mb-3">
@@ -86,7 +92,8 @@
                         <x-adminlte-select name="country" label="Select Country" class="country-select">
                             <option value="">--Please choose an option--</option>
                             @foreach ($countries as $country)
-                                <option value="{{ strtolower($country->country) }}" data-code="{{ $country->country_code }}"
+                                <option value="{{ strtolower($country->country) }}"
+                                    data-code="{{ $country->country_code }}"
                                     {{ old('country', $lead->country) == strtolower($country->country) ? 'selected' : '' }}>
                                     {{ $country->country }}
                                 </option>
@@ -100,7 +107,8 @@
                         <select name="region" id="region" class="form-control select2 rounded-pill">
                             {{-- <option {{ $customer->region }}>{{ $customer->region }}</option> --}}
                             @foreach ($regions as $region)
-                                 <option value="{{ old('region', $region->name) }}" data-region-id={{$region->id}} {{$lead->region == $region->name?'selected':''}}>{{ $region->name }}</option>
+                                <option value="{{ old('region', $region->name) }}" data-region-id={{ $region->id }}
+                                    {{ $lead->region == $region->name ? 'selected' : '' }}>{{ $region->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -155,7 +163,7 @@
                                     value="{{ $lead->country_code ?? +91 }}">
                             </div>
 
-                            <input type="text" name="contact_no" value="{{ $lead->contact_no }}" 
+                            <input type="text" name="contact_no" value="{{ $lead->contact_no }}"
                                 class="form-control contact-number" placeholder="Enter Contact No">
 
                         </div>
@@ -183,7 +191,7 @@
                     </div> --}}
 
                     <!-- Contact Persons -->
-                     <div class="row col-12">
+                    <div class="row col-12">
                         @for ($i = 1; $i <= 6; $i++)
                             <div class="col-md-6">
                                 <x-adminlte-input name="contact_person_{{ $i }}_name"
@@ -218,20 +226,22 @@
                                         <span class="input-group-text country-code">
                                             {{ $lead->country_code ?? +91 }}
                                         </span>
-                                        <input type="hidden" name="country_code" id="countryCodeField" class="country_code_field"
-                                            value="{{ $lead->country_code ?? +91 }}">
+                                        <input type="hidden" name="country_code" id="countryCodeField"
+                                            class="country_code_field" value="{{ $lead->country_code ?? +91 }}">
                                     </div>
 
-                                    <input type="text" name="contact_person_{{ $i }}_contact"   value="{{ $lead->{'contact_person_' . $i . '_contact'} ?? '' }}"
+                                    <input type="text" name="contact_person_{{ $i }}_contact"
+                                        value="{{ $lead->{'contact_person_' . $i . '_contact'} ?? '' }}"
                                         class="form-control contact-number" placeholder="Enter Contact No">
                                 </div>
                             </div>
-                                <div class="col-md-6">
-                                    <x-adminlte-input type="email" name="contact_person_{{ $i }}_email"
-                                        value="{{ $lead->{'contact_person_' . $i . '_email'} ?? '' }}"
-                                        label="Contact Person {{ $i }} email"
-                                        placeholder="Enter Contact Person {{ $i }} Email" fgroup-class="mb-3" disable-feedback />
-                                </div>
+                            <div class="col-md-6">
+                                <x-adminlte-input type="email" name="contact_person_{{ $i }}_email"
+                                    value="{{ $lead->{'contact_person_' . $i . '_email'} ?? '' }}"
+                                    label="Contact Person {{ $i }} email"
+                                    placeholder="Enter Contact Person {{ $i }} Email" fgroup-class="mb-3"
+                                    disable-feedback />
+                            </div>
                         @endfor
                     </div>
 
@@ -291,7 +301,7 @@
 @endpush
 
 @push('js')
- <script src={{ asset('js/country.js') }}></script>
+    <script src={{ asset('js/country.js') }}></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const noOfPersonsSelect = document.getElementById('no_of_persons') || document.querySelector(
@@ -324,7 +334,7 @@
                 const numberOfPersons = parseInt((noOfPersonsSelect && noOfPersonsSelect.value) || 1);
                 if (!contactPersonFieldsContainer) return;
                 contactPersonFieldsContainer.innerHTML = '';
-                var countryCode = $("#countryCode").val()??+91;
+                var countryCode = $("#countryCode").val() ?? +91;
                 for (let i = 1; i <= numberOfPersons; i++) {
                     const data = existingContacts[i] || {
                         name: '',
@@ -375,6 +385,16 @@
             if (noOfPersonsSelect && contactPersonFieldsContainer) {
                 noOfPersonsSelect.addEventListener('change', renderContactPersons);
                 renderContactPersons();
+            }
+        });
+        // show/hide lead source remark based on lead source selection
+        document.getElementById('lead_source').addEventListener('change', function() {
+            const remarkDiv = document.getElementById('lead_source_remark_div');
+            if (this.value === 'other') {
+                remarkDiv.style.display = 'block';
+            } else {
+                remarkDiv.style.display = 'none';
+                document.querySelector('textarea[name="lead_source_remark"]').value = '';
             }
         });
     </script>

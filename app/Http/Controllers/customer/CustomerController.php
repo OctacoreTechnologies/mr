@@ -97,9 +97,15 @@ class CustomerController extends Controller
     {
 
         $customer = Customer::findOrFail($id);
-        $customer->update($request->validated());
+        $data = $request->validated();
+        if($customer->status === 'qualified') {
+             $data['type'] = 'customer';
+        }
+        $customer->update($data);
+
         // Redirect based on submitted type (customer vs lead)
         $type = $request->input('type', 'customer');
+
         if ($type === 'customer') {
             session()->flash('success', 'Customer updated successfully');
             return response()->redirectToRoute('customer.index');
