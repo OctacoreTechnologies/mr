@@ -86,7 +86,7 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     <option value="">Select {{ ucwords(str_replace('_', ' ', $key)) }}</option>
 
                     @if($key == 'material_to_process')
-                    @if($quotation->machine->name == 'High Speed Heater Mixer' || $quotation->machine->name == 'High Speed Heater Mixer Vessel' || $quotation->machine->name == 'High Speed Heater Mixer Blade')
+                    @if($quotation->machine->name == 'Heater Mixer' || $quotation->machine->name == 'High Speed Heater Mixer Vessel' || $quotation->machine->name == 'High Speed Heater Mixer Blade')
                     <option value="Rigid PVC" selected>Rigid PVC</option>
                     <option value="Soft PVC">Soft PVC</option>
                     <option value="WPC">WPC</option>
@@ -136,7 +136,7 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     @endif
                     @if($key == 'batch_capacity')
                     @foreach ($batches as $batche)
-                    <option value="{{$batche->batches}}">{{ $batche->batches }}</option>
+                    <option value="{{$batche->batches}}"  {{ $quotation->batch->batches == $batche->batches ? 'selected' : '' }}>{{ $batche->batches }}</option>
                     @endforeach
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
                     <option value="{{ $orderAcceptanceLetter->$key }}" selected>
