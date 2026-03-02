@@ -614,55 +614,53 @@
 
             $(document).on('click', '#addItemBtn', function() {
 
+                let index = $('.item-row').length; // 👈 always current count
+
                 let html = `
-            <div class="form-group col-md-6 item-row">
-                <input type="hidden" name="items[${itemCount}][id]" value="">
+        <div class="form-group col-md-6 item-row">
 
-                <label>Item ${itemCount + 1}</label>
+            <input type="hidden" name="items[${index}][id]" value="">
 
-                <input type="text"
-                       name="items[${itemCount}][name]"
-                       placeholder="Item Name"
-                       class="form-control mb-1">
+            <label>Item ${index + 1}</label>
 
-                <input type="text"
-                       name="items[${itemCount}][price]"
-                       placeholder="Item Price"
-                       class="form-control mb-1 format-number item-price">
+            <input type="text"
+                   name="items[${index}][name]"
+                   placeholder="Item Name"
+                   class="form-control mb-1">
 
-                <input type="number"
-                       name="items[${itemCount}][qty]"
-                       placeholder="Qty"
-                       value="1"
-                       class="form-control mb-1 item-qty">
-                <select name='items[${itemCount}][qty_unit]'  class="form-control mb-1 p-2">
-                    <option value='Nos'>Nos</option>
-                    <option value='Meter'>Meter</option>
-                    <option value='Kg'>Kg</option>
-                    <option value='Set'>Set</option>
-                </select>
+            <input type="text"
+                   name="items[${index}][price]"
+                   placeholder="Item Price"
+                   class="form-control mb-1 format-number item-price">
 
-                <input type="text"
-                       placeholder="Item Total"
-                       class="form-control mb-1 item-total format-number"
-                       readonly>
+            <input type="number"
+                   name="items[${index}][qty]"
+                   value="1"
+                   class="form-control mb-1 item-qty">
 
-                <button type="button" class="btn btn-danger btn-xs mt-1 removeItem">
-                    Remove
-                </button>
-            </div>
-            `;
+            <select name="items[${index}][qty_unit]" class="form-control mb-1 p-2">
+                <option value="Nos">Nos</option>
+                <option value="Meter">Meter</option>
+                <option value="Kg">Kg</option>
+                <option value="Set">Set</option>
+            </select>
+
+            <input type="text"
+                   class="form-control mb-1 item-total format-number"
+                   readonly>
+
+            <button type="button"
+                    class="btn btn-danger btn-xs mt-1 removeItem">
+                Remove
+            </button>
+
+        </div>
+    `;
 
                 let newItem = $(html);
-
                 $("#itemParent").before(newItem);
 
-                // Apply number format
-                newItem.find('.format-number').each(function() {
-                    initFormatNumber(this);
-                });
-
-                itemCount++;
+                updateItemNumbers();
             });
 
         });
@@ -705,6 +703,29 @@
             calculateItemTotal(row);
 
         });
+        $(document).on('click', '.removeItem', function() {
+            $(this).closest('.item-row').remove();
+            updateItemNumbers();
+        });
+
+        function updateItemNumbers() {
+
+            $('.item-row').each(function(index) {
+
+                $(this).find('label').text('Item ' + (index + 1));
+
+                $(this).find('input, select').each(function() {
+
+                    let name = $(this).attr('name');
+                    if (name) {
+                        let newName = name.replace(/items\[\d+\]/, 'items[' + index + ']');
+                        $(this).attr('name', newName);
+                    }
+
+                });
+
+            });
+        }
     </script>
 @endpush
 

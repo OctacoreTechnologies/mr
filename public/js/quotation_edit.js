@@ -1,135 +1,139 @@
-   
-        $(function() {
-            $('.select2').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: "Select an option",
-                allowClear: true
-            });
-        });
 
-        // Reminder toggle
-        function toggleReminderField() {
-            var selectedValue = $('#status').val();
+$(function () {
+    $('.select2').select2({
+        theme: 'bootstrap4',
+        width: '100%',
+        placeholder: "Select an option",
+        allowClear: true
+    });
+});
 
-            if (selectedValue === 'Draft') {
-                $('#reminder').show();
-            } else {
-                $('#reminder').hide();
-            }
-        }
+// Reminder toggle
+function toggleReminderField() {
+    var selectedValue = $('#status').val();
 
-        toggleReminderField();
+    if (selectedValue === 'Draft') {
+        $('#reminder').show();
+    } else {
+        $('#reminder').hide();
+    }
+}
 
-        $('#status').change(function() {
-            toggleReminderField();
-        });
+toggleReminderField();
+
+$('#status').change(function () {
+    toggleReminderField();
+});
 
 
-        // GLOBAL COUNTS
-        // let remarkCount = $('.remark-item').length;
-        // let itemCount = {{ $quotation->items->count() ?? 0 }};
-        // let itemCount =0;
-        let itemCount = $('.item-row').length;
+// GLOBAL COUNTS
+// let remarkCount = $('.remark-item').length;
+// let itemCount = {{ $quotation->items->count() ?? 0 }};
+// let itemCount =0;
+let itemCount = $('.item-row').length;
 
-        function updateTotal() {
+function updateTotal() {
 
-            var price = parseFloat($('#total_price').val().replace(/,/g, '')) || 0;
-            var quantity = parseFloat($('#quantity').val().replace(/,/g, '')) || 1;
-            var discountType = $('#discountType').val();
-            var discountPercentage = parseFloat($('#discount_percentage').val().replace(/,/g, '')) || 0;
-            var discountAmount = parseFloat($('#discount_amount').val().replace(/,/g, '')) || 0;
+    var price = parseFloat($('#total_price').val().replace(/,/g, '')) || 0;
+    var quantity = parseFloat($('#quantity').val().replace(/,/g, '')) || 1;
+    var discountType = $('#discountType').val();
+    var discountPercentage = parseFloat($('#discount_percentage').val().replace(/,/g, '')) || 0;
+    var discountAmount = parseFloat($('#discount_amount').val().replace(/,/g, '')) || 0;
 
-            var total = price * quantity;
+    var total = price * quantity;
 
-            if (discountType === 'percentage') {
-                total = total - (total * discountPercentage / 100);
-                $('#discount_amount').val(0);
-            } else if (discountType === 'amount') {
-                total = total - discountAmount;
-                $('#discount_percentage').val(0);
-            }
 
-            // Items total
-            var itemsTotal = 0;
+    // Items total
+    var itemsTotal = 0;
 
-            $('.item-row').each(function() {
+    $('.item-row').each(function () {
 
-                let price = parseFloat($(this).find('.item-price').val().replace(/,/g, '')) || 0;
-                let qty = parseFloat($(this).find('.item-qty').val()) || 0;
+        let price = parseFloat($(this).find('.item-price').val().replace(/,/g, '')) || 0;
+        let qty = parseFloat($(this).find('.item-qty').val()) || 0;
 
-                itemsTotal += price * qty;
+        itemsTotal += price * qty;
 
-            });
+    });
 
-            total = total + itemsTotal;
+    total = total + itemsTotal;
 
-            $('#total_amount').val(total.toFixed(2));
-        }
-        $(document).ready(function() {
 
-            // Hide discount fields initially
+    if (discountType === 'percentage') {
+        total = total - (total * discountPercentage / 100);
+        $('#discount_amount').val(0);
+    } else if (discountType === 'amount') {
+        total = total - discountAmount;
+        $('#discount_percentage').val(0);
+    }
+
+    // total = total + itemsTotal;
+
+    $('#total_amount').val(total.toFixed(2));
+}
+$(document).ready(function () {
+
+    // Hide discount fields initially
+    $('#discountPercentage').hide();
+    $('#discountAmount').hide();
+
+    // ==============================
+    // TOTAL CALCULATION
+    // ==============================
+
+    // Discount type change
+    $('#discountType').on('change', function () {
+
+        var discountType = $(this).val();
+
+        if (discountType === 'percentage') {
+            $('#discountPercentage').show();
+            $('#discountAmount').hide();
+        } else if (discountType === 'amount') {
+            $('#discountAmount').show();
+            $('#discountPercentage').hide();
+        } else {
             $('#discountPercentage').hide();
             $('#discountAmount').hide();
+        }
 
-            // ==============================
-            // TOTAL CALCULATION
-            // ==============================
+        updateTotal();
+    });
 
-            // Discount type change
-            $('#discountType').on('change', function() {
+    // Input change
+    $(document).on(
+        'input',
+        '#total_price, #quantity, #discount_percentage, #discount_amount',
+        function () {
+            updateTotal();
+        }
+    );
 
-                var discountType = $(this).val();
+    // Initial load
+    (function () {
 
-                if (discountType === 'percentage') {
-                    $('#discountPercentage').show();
-                    $('#discountAmount').hide();
-                } else if (discountType === 'amount') {
-                    $('#discountAmount').show();
-                    $('#discountPercentage').hide();
-                } else {
-                    $('#discountPercentage').hide();
-                    $('#discountAmount').hide();
-                }
+        var initialDiscountType = $('#discountType').val();
 
-                updateTotal();
-            });
+        if (initialDiscountType === 'percentage') {
+            $('#discountPercentage').show();
+            $('#discountAmount').hide();
+        } else if (initialDiscountType === 'amount') {
+            $('#discountAmount').show();
+            $('#discountPercentage').hide();
+        } else {
+            $('#discountPercentage').hide();
+            $('#discountAmount').hide();
+        }
 
-            // Input change
-            $(document).on(
-                'input',
-                '#total_price, #quantity, #discount_percentage, #discount_amount',
-                function() {
-                    updateTotal();
-                }
-            );
-
-            // Initial load
-            (function() {
-
-                var initialDiscountType = $('#discountType').val();
-
-                if (initialDiscountType === 'percentage') {
-                    $('#discountPercentage').show();
-                    $('#discountAmount').hide();
-                } else if (initialDiscountType === 'amount') {
-                    $('#discountAmount').show();
-                    $('#discountPercentage').hide();
-                } else {
-                    $('#discountPercentage').hide();
-                    $('#discountAmount').hide();
-                }
-
-                updateTotal();
-            })();
+        updateTotal();
+    })();
 
 
-            // ==============================
-            // ADD REMARK
-            // ==============================
-            $(document).on('click', '#addRemarkBtn', function() {
+    // ==============================
+    // ADD REMARK
+    // ==============================
+    $(document).on('click', '#addRemarkBtn', function () {
 
-                let html = `
+        let html = `
             <div class="form-group col-md-6 remark-item">
                 <input type="hidden" name="remarks[${remarkCount}][id]" value="">
 
@@ -142,18 +146,18 @@
             </div>
             `;
 
-                $(this).closest('.form-group').before(html);
+        $(this).closest('.form-group').before(html);
 
-                remarkCount++;
-            });
+        remarkCount++;
+    });
 
 
-            // ==============================
-            // ADD ITEM
-            // ==============================
-            $(document).on('click', '#addItemBtn', function() {
+    // ==============================
+    // ADD ITEM
+    // ==============================
+    $(document).on('click', '#addItemBtn', function () {
 
-                let html = `
+        let html = `
             <div class="form-group col-md-6 item-row">
                 <input type="hidden" name="items[${itemCount}][id]" value="">
 
@@ -194,75 +198,116 @@
             </div>
             `;
 
-                let newItem = $(html);
+        let newItem = $(html);
 
-                $('#total').before(newItem);
+        $('#total').before(newItem);
 
-                // Apply number format
-                newItem.find('.format-number').each(function() {
-                    initFormatNumber(this);
-                });
+        // Apply number format
+        newItem.find('.format-number').each(function () {
+            initFormatNumber(this);
+        });
 
-                itemCount++;
-            });
+        // itemCount++;
+        updateItemNumbers();
+    });
+
+});
+
+
+// ==============================
+// REMOVE REMARK
+// ==============================
+$(document).on('click', '.removeRemark', function () {
+    $(this).closest('.remark-item').remove();
+    updateRemarkNumbers();
+});
+
+function updateRemarkNumbers() {
+    remarkCount = 0;
+
+    $('.remark-item').each(function () {
+        remarkCount++;
+        $(this).find('label').text('Remark ' + remarkCount);
+    });
+}
+
+
+// ==============================
+// REMOVE ITEM
+// ==============================
+$(document).on('click', '.removeItem', function () {
+    $(this).closest('.item-row').remove();
+    updateItemNumbers();
+});
+
+
+// function updateItemNumbers() {
+//     let  count = 1;
+//     $('.item-row').each(function () {
+//         $(this).find('label').text('Item ' + count);
+//         count++;
+//     });
+// }
+function updateItemNumbers() {
+
+    $('.item-row').each(function (index) {
+
+        $(this).find('label').text('Item ' + (index + 1));
+
+        $(this).find('input, select').each(function () {
+
+            let name = $(this).attr('name');
+            if (name) {
+                let newName = name.replace(/items\[\d+\]/, 'items[' + index + ']');
+                $(this).attr('name', newName);
+            }
 
         });
 
+    });
+}
 
-        // ==============================
-        // REMOVE REMARK
-        // ==============================
-        $(document).on('click', '.removeRemark', function() {
-            $(this).closest('.remark-item').remove();
-            updateRemarkNumbers();
-        });
+// ==============================
+// ITEM TOTAL CALCULATION
+// ==============================
+function calculateItemTotal(row) {
 
-        function updateRemarkNumbers() {
-            remarkCount = 0;
+    let price = parseFloat(row.find('.item-price').val().replace(/,/g, '')) || 0;
+    let qty = parseFloat(row.find('.item-qty').val()) || 0;
 
-            $('.remark-item').each(function() {
-                remarkCount++;
-                $(this).find('label').text('Remark ' + remarkCount);
-            });
+    let total = price * qty;
+
+    row.find('.item-total').val(total.toFixed(2));
+
+    updateTotal();
+}
+
+$(document).on('input', '.item-price, .item-qty', function () {
+
+    let row = $(this).closest('.item-row');
+    calculateItemTotal(row);
+
+});
+
+document.getElementById('remark').addEventListener('keydown', function(e) {
+
+    // Ctrl + B press hone par
+    if (e.ctrlKey && e.key === 'b') {
+        e.preventDefault();
+
+        let textarea = this;
+        let start = textarea.selectionStart;
+        let value = textarea.value;
+
+        // Agar empty hai to sirf bullet add karo
+        if (value.trim() === "") {
+            textarea.value = "• ";
+        } else {
+            textarea.value += "\n• ";
         }
 
+        // Cursor end me set karna
+        textarea.selectionStart = textarea.selectionEnd = textarea.value.length;
+    }
 
-        // ==============================
-        // REMOVE ITEM
-        // ==============================
-        $(document).on('click', '.removeItem', function() {
-            $(this).closest('.item-row').remove();
-            updateItemNumbers();
-        });
-
-        function updateItemNumbers() {
-            let count = 1;
-
-            $('.item-row').each(function() {
-                $(this).find('label').text('Item ' + count);
-                count++;
-            });
-        }
-
-
-        // ==============================
-        // ITEM TOTAL CALCULATION
-        // ==============================
-        function calculateItemTotal(row) {
-
-            let price = parseFloat(row.find('.item-price').val().replace(/,/g, '')) || 0;
-            let qty = parseFloat(row.find('.item-qty').val()) || 0;
-
-            let total = price * qty;
-
-            row.find('.item-total').val(total.toFixed(2));
-
-            updateTotal();
-        }
-
-        $(document).on('input', '.item-price, .item-qty', function() {
-
-            let row = $(this).closest('.item-row');
-            calculateItemTotal(row);
-
-        });
+});

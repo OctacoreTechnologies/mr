@@ -42,6 +42,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 
 use function PHPUnit\Framework\isEmpty;
@@ -82,7 +83,7 @@ class QuotationController extends Controller
         $machine = Machine::findOrFail($previewData['machine_id']);
         $model = Modele::findOrFail($previewData['model_id']);
         // $cleints = Customer::all();
-        $customer = Customer::where('type','customer')->where('id',$previewData['customer_id'])->first();
+        $customer = Customer::where('type', 'customer')->where('id', $previewData['customer_id'])->first();
         $materialToProcess = MaterialToProcess::where('model_id', $previewData['model_id'])->get();
 
         if ($materialToProcess->isEmpty()) {
@@ -770,24 +771,42 @@ class QuotationController extends Controller
         $quotation = Quotation::findOrFail($id);
         $quotation->status = $status;
         $quotation->save();
+
         if ($quotation->status == 'Approved') {
             $saleOrder = SaleOrder::where('quotation_id', $quotation->id)->latest()->first();
+
+            $totalAmount = $quotation->items()->sum(DB::raw('item_price * item_qty')) + ($quotation->total_price * $quotation->quantity);
+
             if (is_null($saleOrder)) {
-                $saleOrder =  SaleOrder::create([
-                    'quotation_id'          =>        $quotation->id,
-                    'status'                =>        'pending',
-                    'total_amount'          =>        $quotation->quantity * $quotation->total_price,
-                    'order_date'            =>        Carbon::today()->toDateString(), // Correct and safe
-                    'discount'              =>        $quotation->discount ?? '0',
-                    'followed_by'           =>        $quotation->followed_by,
-                    'payment_term'          =>        0,
-                    'discount_type'         =>        $quotation->discount_type,
-                    'discount_amount'       =>        $quotation->discount_amount,
-                    'discount_percentage'   =>        $quotation->discount_percentage,
-                    'grand_total'           =>        $quotation->grand_total,
+                // Create new SaleOrder
+                $saleOrder = SaleOrder::create([
+                    'quotation_id'          => $quotation->id,
+                    'status'                => 'pending',
+                    'total_amount'          => $totalAmount,
+                    'order_date'            => Carbon::today()->toDateString(),
+                    'discount'              => $quotation->discount ?? '0',
+                    'followed_by'           => $quotation->followed_by,
+                    'payment_term'          => 0,
+                    'discount_type'         => $quotation->discount_type,
+                    'discount_amount'       => $quotation->discount_amount,
+                    'discount_percentage'   => $quotation->discount_percentage,
+                    'grand_total'           => $quotation->total,
+                ]);
+            } else {
+                // Update existing SaleOrder
+                $saleOrder->update([
+                    'total_amount'          => $totalAmount,
+                    'discount'              => $quotation->discount ?? '0',
+                    'followed_by'           => $quotation->followed_by,
+                    'discount_type'         => $quotation->discount_type,
+                    'discount_amount'       => $quotation->discount_amount,
+                    'discount_percentage'   => $quotation->discount_percentage,
+                    'grand_total'           => $quotation->total,
+                    // Agar aur fields update karne ho, add kar sakte ho yahan
                 ]);
             }
         }
+
         return $saleOrder;
     }
 

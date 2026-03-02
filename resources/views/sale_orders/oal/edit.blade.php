@@ -101,34 +101,34 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     <option value="Pre Mixing">Pre Mixing</option> --}}
                     @elseif($quotation->machine->name == 'Grinder')
                     <option value="Molding" selected>Molding</option>
-                    <option value="Pipe">Pipe</option>
-                    <option value="Cable Lump">Cable Lump</option>
-                    <option value="Molding Scrap">Molding Scrap</option>
-                    <option value="Extrusion Scrap">Extrusion Scrap</option>
-                    <option value="PVC Profile">PVC Profile</option>
+                    <option value="Pipe" {{ old('material_to_process') == 'Pipe' ? 'selected' : '' }}>Pipe</option>
+                    <option value="Cable Lump"  {{ old('material_to_process') == 'Cable Lump' ? 'selected' : '' }}>Cable Lump</option>
+                    <option value="Molding Scrap"   {{ old('material_to_process') == 'Molding Scrap' ? 'selected' : '' }}>Molding Scrap</option>
+                    <option value="Extrusion Scrap" {{ old('material_to_process') == 'Extrusion Scrap' ? 'selected' : '' }}>Extrusion Scrap</option>
+                    <option value="PVC Profile"    {{ old('material_to_process') == 'PVC Profile' ? 'selected' : '' }}>PVC Profile</option>
                     @elseif($quotation->machine->name == 'Vertical Cooler Mixer' || $quotation->machine->name == 'Horizontal Cooler Mixer')
                     <option value="Rigid PVC" selected>Rigid PVC</option>
-                    <option value="Soft PVC">Soft PVC</option>
+                    <option value="Soft PVC" {{ old('material_to_process') == 'Soft PVC' ? 'selected' : '' }}>Soft PVC</option>
                     <option value="WPC">WPC</option>
-                    <option value="Natural Raw Material Compounds">Natural Raw Material Compounds</option>
-                    <option value="Pololefines">Pololefines</option>
-                    <option value="Coating of Minrals">Coating of Minrals</option>
+                    <option value="Natural Raw Material Compounds" {{ old('material_to_process') == 'Natural Raw Material Compounds' ? 'selected' : '' }}>Natural Raw Material Compounds</option>
+                    <option value="Pololefines" {{ old('material_to_process') == 'Pololefines' ? 'selected' : '' }}>Pololefines</option>
+                    <option value="Coating of Minrals" {{ old('material_to_process') == 'Coating of Minrals' ? 'selected' : '' }}>Coating of Minrals</option>
                     @elseif($quotation->machine->name == 'Agglomerator')
                     <option value="POY" selected>POY</option>
-                    <option value="Wiry">Wiry</option>
-                    <option value="Polyester Film">Polyester Film</option>
-                    <option value=" LD Film">LD Film</option>
-                    <option value=" HD Film"> HD Film</option>
-                    <option value="PP Film">PP Film</option>
+                    <option value="Wiry" {{ old('material_to_process') == 'Wiry' ? 'selected' : '' }}>Wiry</option>
+                    <option value="Polyester Film" {{ old('material_to_process') == 'Polyester Film' ? 'selected' : '' }}>Polyester Film</option>
+                    <option value=" LD Film" {{ old('material_to_process') == ' LD Film' ? 'selected' : '' }}>LD Film</option>
+                    <option value=" HD Film" {{ old('material_to_process') == ' HD Film' ? 'selected' : '' }}> HD Film</option>
+                    <option value="PP Film" {{ old('material_to_process') == 'PP Film' ? 'selected' : '' }}>PP Film</option>
                     @elseif($quotation->machine->name == 'Agglomerator Bottom Vessel')
                     <option value="PVC" selected>PVC</option>
-                    <option value="LD">LD</option>
-                    <option value=" LDE">LDE</option>
+                    <option value="LD" {{ old('material_to_process') == 'LD' ? 'selected' : '' }}>LD</option>
+                    <option value=" LDE" {{ old('material_to_process') == ' LDE' ? 'selected' : '' }}>LDE</option>
 
                     @endif
 
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
@@ -140,7 +140,7 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     <option value="{{$batche->batches}}"  {{ $quotation->batch->batches == $batche->batches ? 'selected' : '' }}>{{ $batche->batches }}</option>
                     @endforeach
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
@@ -170,11 +170,11 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     @endif
                     @endif
                     @if($key == 'discharge_operated')
-                    <option value="Pneumatic Box" selected>Pneumatic Box</option>
-                    <option value="Hand Lever">Hand Lever</option>
-                    <option value="Screw Type Model">Screw Type Model</option>
+                    <option value="Pneumatic Box" selected {{ old('discharge_operated') == 'Pneumatic Box' ? 'selected' : '' }}>Pneumatic Box</option>
+                    <option value="Hand Lever" {{ old('discharge_operated') == 'Hand Lever' ? 'selected' : '' }}>Hand Lever</option>
+                    <option value="Screw Type Model" {{ old('discharge_operated') == 'Screw Type Model' ? 'selected' : '' }}>Screw Type Model</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
@@ -182,120 +182,119 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     @if($key == 'top_dish_cylinder_operation')
                     <option value="Pneumatic ( Standard )"> Pneumatic ( Standard )</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'cylinder_make')
-                    <option value="SPAC">SPAC
-                    </option>
-                    <option value="JANATICS">JANATICS</option>
-                    <option value="Festo">Festo</option>
+                    <option value="SPAC" {{ old('cylinder_make') == 'SPAC' ? 'selected' : '' }}>SPAC</option>
+                    <option value="JANATICS" {{ old('cylinder_make') == 'JANATICS' ? 'selected' : '' }}>JANATICS</option>
+                    <option value="Festo" {{ old('cylinder_make') == 'Festo' ? 'selected' : '' }}>Festo</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'top_dish_opening_type')
-                    <option value="Arm Type">Arm Type</option>
-                    <option value="Sliding Type">Sliding Type</option>
+                    <option value="Arm Type" {{ old('top_dish_opening_type') == 'Arm Type' ? 'selected' : '' }}>Arm Type</option>
+                    <option value="Sliding Type" {{ old('top_dish_opening_type') == 'Sliding Type' ? 'selected' : '' }}>Sliding Type</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'blade_tier')
-                    <option value="2" {{ $orderAcceptanceLetter->blade_tier == '2' ? 'selected' : '' }}>2</option>
-                    <option value="3" {{ $orderAcceptanceLetter->blade_tier == '3' ? 'selected' : '' }}>3</option>
-                    <option value="4" {{ $orderAcceptanceLetter->blade_tier == '4' ? 'selected' : '' }}>4</option>
+                    <option value="2" {{ $orderAcceptanceLetter->blade_tier == '2' ? 'selected' : '' }} {{ old('blade_tier') == '2' ? 'selected' : '' }}>2</option>
+                    <option value="3" {{ $orderAcceptanceLetter->blade_tier == '3' ? 'selected' : '' }} {{ old('blade_tier') == '3' ? 'selected' : '' }}>3</option>
+                    <option value="4" {{ $orderAcceptanceLetter->blade_tier == '4' ? 'selected' : '' }} {{ old('blade_tier') == '4' ? 'selected' : '' }}>4</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'mixing_container')
-                    <option value="Jacketed" selected>Jacketed</option>
+                    <option value="Jacketed" selected {{ old('mixing_container') == 'Jacketed' ? 'selected' : '' }}>Jacketed</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
 
                     @endif
                     @if($key == 'top_dish_thickness')
-                    <option value="4" selected>4</option>
+                    <option value="4" selected {{ old('top_dish_thickness') == '4' ? 'selected' : '' }}>4</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'ms_shell_thickness')
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="8">8</option>
-                    <option value="10">10</option>
-                    <option value="12">12</option>
+                    <option value="5" {{ old('ms_shell_thickness') == '5' ? 'selected' : '' }}>5</option>
+                    <option value="6" {{ old('ms_shell_thickness') == '6' ? 'selected' : '' }}>6</option>
+                    <option value="8" {{ old('ms_shell_thickness') == '8' ? 'selected' : '' }}>8</option>
+                    <option value="10" {{ old('ms_shell_thickness') == '10' ? 'selected' : '' }}>10</option>
+                    <option value="12" {{ old('ms_shell_thickness') == '12' ? 'selected' : '' }}>12</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'ms_bottom_dish_thickness')
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="8">8</option>
-                    <option value="10">10</option>
-                    <option value="12">12</option>
-                    <option value="14">14</option>
-                    <option value="16">16</option>
+                    <option value="5" {{ old('ms_bottom_dish_thickness') == '5' ? 'selected' : '' }}>5</option>
+                    <option value="6" {{ old('ms_bottom_dish_thickness') == '6' ? 'selected' : '' }}>6</option>
+                    <option value="8" {{ old('ms_bottom_dish_thickness') == '8' ? 'selected' : '' }}>8</option>
+                    <option value="10" {{ old('ms_bottom_dish_thickness') == '10' ? 'selected' : '' }}>10</option>
+                    <option value="12" {{ old('ms_bottom_dish_thickness') == '12' ? 'selected' : '' }}>12</option>
+                    <option value="14" {{ old('ms_bottom_dish_thickness') == '14' ? 'selected' : '' }}>14</option>
+                    <option value="16" {{ old('ms_bottom_dish_thickness') == '16' ? 'selected' : '' }}>16</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'ss_shell_thickness')
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="8">8</option>
-                    <option value="10">10</option>
-                    <option value="12">12</option>
-                    <option value="14">14</option>
-                    <option value="16">16</option>
+                    <option value="5" {{ old('ss_shell_thickness') == '5' ? 'selected' : '' }}>5</option>
+                    <option value="6" {{ old('ss_shell_thickness') == '6' ? 'selected' : '' }}>6</option>
+                    <option value="8" {{ old('ss_shell_thickness') == '8' ? 'selected' : '' }}>8</option>
+                    <option value="10" {{ old('ss_shell_thickness') == '10' ? 'selected' : '' }}>10</option>
+                    <option value="12" {{ old('ss_shell_thickness') == '12' ? 'selected' : '' }}>12</option>
+                    <option value="14" {{ old('ss_shell_thickness') == '14' ? 'selected' : '' }}>14</option>
+                    <option value="16" {{ old('ss_shell_thickness') == '16' ? 'selected' : '' }}>16</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'ss_bottom_dish_thickness')
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="8">8</option>
-                    <option value="10">10</option>
-                    <option value="12">12</option>
-                    <option value="14">14</option>
-                    <option value="16">16</option>
+                    <option value="5" {{ old('ss_bottom_dish_thickness') == '5' ? 'selected' : '' }}>5</option>
+                    <option value="6" {{ old('ss_bottom_dish_thickness') == '6' ? 'selected' : '' }}>6</option>
+                    <option value="8" {{ old('ss_bottom_dish_thickness') == '8' ? 'selected' : '' }}>8</option>
+                    <option value="10" {{ old('ss_bottom_dish_thickness') == '10' ? 'selected' : '' }}>10</option>
+                    <option value="12" {{ old('ss_bottom_dish_thickness') == '12' ? 'selected' : '' }}>12</option>
+                    <option value="14" {{ old('ss_bottom_dish_thickness') == '14' ? 'selected' : '' }}>14</option>
+                    <option value="16" {{ old('ss_bottom_dish_thickness') == '16' ? 'selected' : '' }}>16</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'nos_of_opening_in_mixer_lid')
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="4">4</option>
+                    <option value="1" {{ old('nos_of_opening_in_mixer_lid') == '1' ? 'selected' : '' }}>1</option>
+                    <option value="2" {{ old('nos_of_opening_in_mixer_lid') == '2' ? 'selected' : '' }}>2</option>
+                    <option value="4" {{ old('nos_of_opening_in_mixer_lid') == '4' ? 'selected' : '' }}>4</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
@@ -303,17 +302,17 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     @if($key == 'pulley_type')
                     <option value="Taper Lock ( Standard )" selected>Taper Lock ( Standard )</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'top_bearing_make')
                     @foreach ($bearings as $bearinge)
-                    <option value="{{ $bearinge->bearing }}">{{ $bearinge->bearing }}</option>
+                    <option value="{{ $bearinge->bearing }}" {{ old('top_bearing_make') == $bearinge->bearing ? 'selected' : '' }}>{{ $bearinge->bearing }}</option>
                     @endforeach
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
@@ -321,20 +320,20 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
 
                     @if($key == 'bottom_bearing_make')
                     @foreach ($bearings as $bearinge)
-                    <option value="{{ $bearinge->bearing }}">{{ $bearinge->bearing }}</option>
+                    <option value="{{ $bearinge->bearing }}" {{ old('bottom_bearing_make') == $bearinge->bearing ? 'selected' : '' }}>{{ $bearinge->bearing }}</option>
                     @endforeach
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'tool_speed_selection')
-                    <option value="Pot Type">Pot Type</option>
-                    <option value="Push Button Type" selected>Push Button Type</option>
+                    <option value="Pot Type"    {{ old('tool_speed_selection') == 'Pot Type' ? 'selected' : '' }}>Pot Type</option>
+                    <option value="Push Button Type" {{ old('tool_speed_selection') == 'Push Button Type' ? 'selected' : '' }}>Push Button Type</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
@@ -344,35 +343,35 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     <option value="1">Yes</option>
                     <option value="0" selected>No</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'platform_railing_ladder')
-                    <option value="1">Yes</option>
-                    <option value="0" selected>No</option>
+                    <option value="1" {{ old('platform_railing_ladder') == 1 ? 'selected' : '' }}   >Yes</option>
+                    <option value="0" {{ old('platform_railing_ladder') == 0 ? 'selected' : '' }}>No</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'electrical_panel')
-                    <option value="1">Yes</option>
-                    <option value="0" selected>No</option>
+                    <option value="1" {{ old('electrical_panel') == 1 ? 'selected' : '' }}   >Yes</option>
+                    <option value="0" {{ old('electrical_panel') == 0 ? 'selected' : '' }}>No</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'remote_electrical_panel')
-                    <option value="1">Yes</option>
-                    <option value="0" selected>No</option>
+                    <option value="1" {{ old('remote_electrical_panel') == 1 ? 'selected' : '' }}>Yes</option>
+                    <option value="0" {{ old('remote_electrical_panel') == 0 ? 'selected' : '' }}>No</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
@@ -380,10 +379,10 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
 
                     @if($key == 'ac_frequency_drive_make')
                     @foreach ($acFrequencyDrives as $ac):
-                    <option value="{{ $ac->ac_fequency_drive }}">{{ $ac->ac_fequency_drive }}</option>
+                    <option value="{{ $ac->ac_fequency_drive }}" {{ old('ac_frequency_drive_make') == $ac->ac_fequency_drive ? 'selected' : '' }}>{{ $ac->ac_fequency_drive }}</option>
                     @endforeach
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
@@ -392,273 +391,273 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
                     @if($key == 'gasket_type')
                     <option value="Standard" selected>M R Engineers - Standard</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'elevation_stand')
-                    <option value="1">Yes</option>
-                    <option value="0" selected>No</option>
+                    <option value="1" {{ old('elevation_stand') == 1 ? 'selected' : '' }}>Yes</option>
+                    <option value="0" {{ old('elevation_stand') == 0 ? 'selected' : '' }}>No</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'pneumatic_operation')
-                    <option value="Pneumatic Box">Pneumatic Box</option>
-                    <option value="Hand Lever Valve" selected>Hand Lever Valve</option>
+                    <option value="Pneumatic Box"   {{ old('pneumatic_operation') == 'Pneumatic Box' ? 'selected' : '' }}>Pneumatic Box</option>
+                    <option value="Hand Lever Valve" {{ old('pneumatic_operation') == 'Hand Lever Valve' ? 'selected' : '' }}>Hand Lever Valve</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'paint')
-                    <option value="PU Paint" selected>PU Paint</option>
-                    <option value="Oil Paint">Oil Paint</option>
+                    <option value="PU Paint" selected  {{ old('paint') == 'PU Paint' ? 'selected' : '' }}>PU Paint</option>
+                    <option value="Oil Paint" {{ old('paint') == 'Oil Paint' ? 'selected' : '' }}>Oil Paint</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'layout_drawing')
-                    <option value="Layout-A" selected>Layout-A</option>
-                    <option value="Layout-B">Layout-B</option>
-                    <option value="Layout-C">Layout-C</option>
-                    <option value="Layout-D">Layout-D</option>
+                    <option value="Layout-A" selected {{ old('layout_drawing') == 'Layout-A' ? 'selected' : '' }}>Layout-A</option>
+                    <option value="Layout-B" {{ old('layout_drawing') == 'Layout-B' ? 'selected' : '' }}>Layout-B</option>
+                    <option value="Layout-C" {{ old('layout_drawing') == 'Layout-C' ? 'selected' : '' }}>Layout-C</option>
+                    <option value="Layout-D" {{ old('layout_drawing') == 'Layout-D' ? 'selected' : '' }}>Layout-D</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'cooling_ring')
-                    <option value="1">Yes</option>
-                    <option value="0" selected>No</option>
+                    <option value="1" {{ old('cooling_ring') == 1 ? 'selected' : '' }}>Yes</option>
+                    <option value="0" {{ old('cooling_ring') == 0 ? 'selected' : '' }}>No</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'gear_box_make')
-                    <option value="Elecon Make" selected>Elecon Make</option>
+                    <option value="Elecon Make" selected {{ old('gear_box_make') == 'Elecon Make' ? 'selected' : '' }}>Elecon Make</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'coupling')
-                    <option value="Pin Bush Type - Standard" selected>Pin Bush Type - Standard</option>
+                    <option value="Pin Bush Type - Standard" selected {{ old('coupling') == 'Pin Bush Type - Standard' ? 'selected' : '' }}>Pin Bush Type - Standard</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'coupling_make')
-                    <option value="Local" selected> Local</option>
-                    <option value="Elecon"> Elecon</option>
+                    <option value="Local" selected {{ old('coupling_make') == 'Local' ? 'selected' : '' }}> Local</option>
+                    <option value="Elecon" {{ old('coupling_make') == 'Elecon' ? 'selected' : '' }}> Elecon</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'motor_rpm')
-                    <option value="Single Speed 1440 RPM" selected> Single Speed 1440 RPM</option>
+                    <option value="Single Speed 1440 RPM" selected {{ old('motor_rpm') == 'Single Speed 1440 RPM' ? 'selected' : '' }}> Single Speed 1440 RPM</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'panel_type')
-                    <option value="DOL" selected>DOL</option>
+                    <option value="DOL" selected {{ old('panel_type') == 'DOL' ? 'selected' : '' }}>DOL</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'panel_kw/hp')
-                    <option value="As Per Motor" selected>As Per Motor</option>
+                    <option value="As Per Motor" selected {{ old('panel_kw/hp') == 'As Per Motor' ? 'selected' : '' }}>As Per Motor</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'remote_box')
                     <option value="1">Yes</option>
-                    <option value="0" selected>No</option>
+                    <option value="0" selected {{ old('remote_box') == 0 ? 'selected' : '' }}>No</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'limit_switch')
-                    <option value="1" selected>Yes</option>
-                    <option value="0">No</option>
+                    <option value="1" selected {{ old('limit_switch') == 1 ? 'selected' : '' }}>Yes</option>
+                    <option value="0" {{ old('limit_switch') == 0 ? 'selected' : '' }}>No</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}   >
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'mesh_hole_dia')
-                    <option value="8" selected>8</option>
-                    <option value="10">10</option>
-                    <option value="12">12</option>
+                    <option value="8" selected {{ old('mesh_hole_dia') == 8 ? 'selected' : '' }}>8</option>
+                    <option value="10" {{ old('mesh_hole_dia') == 10 ? 'selected' : '' }}>10</option>
+                    <option value="12" {{ old('mesh_hole_dia') == 12 ? 'selected' : '' }}>12</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'hopper_type')
-                    <option value="Article Type" selected>Article Tyoe</option>
-                    <option value="Pipe Type">Pipe Type</option>
-                    <option value="Profie Type">Profile Type</option>
+                    <option value="Article Type" selected {{ old('hopper_type') == 'Article Type' ? 'selected' : '' }}>Article Type</option>
+                    <option value="Pipe Type" {{ old('hopper_type') == 'Pipe Type' ? 'selected' : '' }}>Pipe Type</option>
+                    <option value="Profile Type" {{ old('hopper_type') == 'Profile Type' ? 'selected' : '' }}>Profile Type</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'hopper_opening_type')
-                    <option value="Manual Type" selected>Manual Type</option>
-                    <option value="Screw Type">Screw Type</option>
-                    <option value="Hydraulic Type">Hydraulic Type</option>
+                    <option value="Manual Type" selected {{ old('hopper_opening_type') == 'Manual Type' ? 'selected' : '' }}>Manual Type</option>
+                    <option value="Screw Type" {{ old('hopper_opening_type') == 'Screw Type' ? 'selected' : '' }}>Screw Type</option>
+                    <option value="Hydraulic Type" {{ old('hopper_opening_type') == 'Hydraulic Type' ? 'selected' : '' }}>Hydraulic Type</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'collecting_container')
-                    <option value="Standard Container" selected>Standard Container</option>
-                    <option value="Cyclone Container">Cyclone Container</option>
+                    <option value="Standard Container" selected {{ old('collecting_container') == 'Standard Container' ? 'selected' : '' }}>Standard Container</option>
+                    <option value="Cyclone Container" {{ old('collecting_container') == 'Cyclone Container' ? 'selected' : '' }}>Cyclone Container</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'fix_blade')
-                    <option value="2" selected>2</option>
-                    <option value="4">4</option>
+                    <option value="2" selected {{ old('fix_blade') == '2' ? 'selected' : '' }}>2</option>
+                    <option value="4" {{ old('fix_blade') == '4' ? 'selected' : '' }}>4</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}  >
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
 
                     @if($key == 'rotating_balde')
-                    <option value="3" selected>3</option>
-                    <option value="6">6</option>
-                    <option value="8">8</option>
+                    <option value="3" selected {{ old('rotating_balde') == '3' ? 'selected' : '' }}>3</option>
+                    <option value="6" {{ old('rotating_balde') == '6' ? 'selected' : '' }}>6</option>
+                    <option value="8" {{ old('rotating_balde') == '8' ? 'selected' : '' }}>8</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'pulley_make')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'pnuematic_operations')
-                    <option value="Pneumatic Box" selected>Pneumatic Box</option>
-                    <option value="Hand Lever Valve">Hand Lever Valve</option>
+                    <option value="Pneumatic Box" selected {{ old('pnuematic_operations') == 'Pneumatic Box' ? 'selected' : '' }}>Pneumatic Box</option>
+                    <option value="Hand Lever Valve" {{ old('pnuematic_operations') == 'Hand Lever Valve' ? 'selected' : '' }}>Hand Lever Valve</option>
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'model_no')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'work_order_no_for_name_plate')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'blade')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'dishcharge_valve_hieght_from_ground')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'remote_for_electrical_panel')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'discharge_cover')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'deflector')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'ac_frequency_drive_model')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
                     @endif
                     @if($key == 'year')
                     @if (isset($orderAcceptanceLetter->$key) && $orderAcceptanceLetter->$key)
-                    <option value="{{ $orderAcceptanceLetter->$key }}" selected>
+                    <option value="{{ $orderAcceptanceLetter->$key }}" selected {{ old($key) == $orderAcceptanceLetter->$key ? 'selected' : '' }}>
                         {{ $orderAcceptanceLetter->$key }}
                     </option>
                     @endif
@@ -672,13 +671,13 @@ $dropdownFields = collect($fields)->filter(function ($value, $key) {
         <div class="form-group row align-items-center col-12">
             <label class="col-md-4 col-form-label text-right">Delivery Date</label>
             <div class="col-md-6">
-                <x-adminlte-input type="date" name="delivery_date" value="{{ $orderAcceptanceLetter->delivery_date}}" />
+                <x-adminlte-input type="date" name="delivery_date" value="{{ old('delivery_date', $orderAcceptanceLetter->delivery_date) }}" />
             </div>
         </div>
         @for ($i = 1; $i <= 5; $i++)
             <div class="col-md-6">
             <x-adminlte-textarea name="remark_{{ $i }}" label="Remark {{ $i }}" id="remark_{{ $i }}_id">
-                {{ $orderAcceptanceLetter->{'remark_' . $i} }}
+                {{ old('remark_' . $i, $orderAcceptanceLetter->{'remark_' . $i}) }}
             </x-adminlte-textarea>
     </div>
     @endfor

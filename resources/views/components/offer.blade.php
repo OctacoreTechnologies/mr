@@ -45,25 +45,25 @@
                             1
                         </td>
 
-                        <td style="padding:55px 10px 10px; border:1px solid black;border-bottom:none;">
+                        <td style="padding:57px 10px 30px 10px; border:1px solid black;border-bottom:none;">
                             {{ strtoupper($quotation->machine->name) }} Model {{ $quotation->modele->name }} <br>
                             ALONG WITH AC FREQUENCY DRIVE <br>
                             ELECTRICAL PANEL
                         </td>
 
                         <td
-                            style="padding:55px 10px 10px;text-align:center; vertical-align: top;  border:1px solid black;border-bottom:none;">
+                            style="padding:80px 10px 30px 10px;text-align:center; vertical-align: top;  border:1px solid black;border-bottom:none;">
                             {{ $qty }} Nos.
                         </td>
 
                         <td
-                            style="padding:55px 10px 10px; text-align:center; vertical-align: top;  border:1px solid black;border-bottom:none;">
-                            {{ format_indian_number($unitPrice, 2) }}
+                            style="padding:80px 10px 30px 10px; text-align:center; vertical-align: top;  border:1px solid black;border-bottom:none;">
+                            {{ format_indian_number($unitPrice) }}
                         </td>
 
                         <td
-                            style="padding:55px 10px 10px; text-align:center; vertical-align: top;  border:1px solid black;border-bottom:none;">
-                            {{ format_indian_number($amount, 2) }}
+                            style="padding:80px 10px 30px 10px; text-align:center; vertical-align: top;  border:1px solid black;border-bottom:none;">
+                            {{ format_indian_number($amount) }}
                         </td>
                     </tr>
 
@@ -73,22 +73,24 @@
                             $subTotal = $item->item_qty * $item->item_price + $subTotal;
                         @endphp
                         <tr>
-                            <td style="text-align:center; border:1px solid black;border-top:none;border-bottom:none;">
+                            <td
+                                style="padding:5px 10px 30px 10px;text-align:center; border:1px solid black;border-top:none;border-bottom:none;">
                                 {{ $srNo++ }}
                             </td>
 
-                            <td style="padding:8px; border:1px solid black;border-top:none;border-bottom:none;">
+                            <td
+                                style="padding:5px 10px 30px 10px; border:1px solid black;border-top:none;border-bottom:none;">
                                 {{ $item->item_name }}
                             </td>
 
                             <td
-                                style="text-align:center;padding:10px;border:1px solid black; border-top:none; border-bottom:none;white-space: nowrap;width:40px;">
+                                style="text-align:center;padding:5px 10px 30px 10px;border:1px solid black; border-top:none; border-bottom:none;white-space: nowrap;width:40px;">
                                 {{ $item->item_qty }} {{ $item->qty_unit ?? 'Nos' }}.</td>
                             <td
-                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-top:none;border-bottom:none;">
+                                style="text-align:center; vertical-align: top; padding:5px 10px 30px 10px; border:1px solid black;border-top:none;border-bottom:none;">
                                 {{ format_indian_number($item->item_price) }}</td>
                             <td
-                                style="text-align:center; vertical-align: top; padding:10px; border:1px solid black;border-top:none;border-bottom:none;">
+                                style="text-align:center; vertical-align: top;padding:5px 10px 30px 10px; border:1px solid black;border-top:none;border-bottom:none;">
                                 {{ format_indian_number($item->item_price * $item->item_qty) }}</td>
                         </tr>
                     @endforeach
@@ -120,12 +122,12 @@
 
                         <td
                             style="text-align: center; vertical-align: top; padding:80px 15px; border: 1px solid black;">
-                            {{ format_indian_number($unitPrice, 2) }}
+                            {{ format_indian_number($unitPrice) }}
                         </td>
 
                         <td
                             style="text-align: center; vertical-align: top; padding:80px 15px; border: 1px solid black;">
-                            {{ format_indian_number($amount, 2) }}
+                            {{ format_indian_number($amount) }}
                         </td>
                     </tr>
 
@@ -142,7 +144,7 @@
                             Subtotal
                         </td>
                         <td style="text-align:right; padding:12px; border:1px solid black; font-weight:600;">
-                            {{ format_indian_number($amount + $subTotal, 2) }}
+                            {{ format_indian_number($amount + $subTotal) }}
                         </td>
                     </tr>
 
@@ -152,7 +154,7 @@
                             Less: Discount
                         </td>
                         <td style="text-align:right; padding:12px; border:1px solid black; font-weight:600;">
-                            {{ format_indian_number($quotation->discount_amount, 2) }}
+                            {{ format_indian_number($quotation->discount_amount) }}
                         </td>
                     </tr>
                     <tr>
@@ -170,7 +172,7 @@
 
                         <!-- Amount -->
                         <td style="text-align:right; padding:14px;border:1px solid black;font-weight:bold;">
-                            {{ format_indian_number($quotation->total, 2) }}
+                            {{ format_indian_number($quotation->total) }}
                         </td>
                     </tr>
 
@@ -187,17 +189,17 @@
                             Subtotal
                         </td>
                         <td style="text-align:right; padding:12px; border:1px solid black; font-weight:600;">
-                            {{ format_indian_number($amount + $subTotal, 2) }}
+                            {{ format_indian_number($amount + $subTotal) }}
                         </td>
                     </tr>
 
                     <tr>
                         <td colspan="4"
                             style="text-align:right; padding:12px; border:1px solid black; font-weight:600;">
-                            Less: Discount ({{ format_indian_number($quotation->discount_percentage, 2) }}%)
+                            Less: Discount ({{ format_indian_number($quotation->discount_percentage) }}%)
                         </td>
                         <td style="text-align:right; padding:12px; border:1px solid black; font-weight:600;">
-                            {{ format_indian_number($amount * ($quotation->discount_percentage / 100), 2) }}
+                            {{ format_indian_number($amount * ($quotation->discount_percentage / 100)) }}
                         </td>
                     </tr>
                     <tr>
@@ -215,7 +217,7 @@
 
                         <!-- Amount -->
                         <td style="border:1px solid black;padding:14px;font-weight:bold;text-align:right;">
-                            {{ format_indian_number($quotation->total, 2) }}
+                            {{ format_indian_number($quotation->total) }}
                         </td>
                     </tr>
 
@@ -241,7 +243,7 @@
 
                         <!-- Total Amount -->
                         <td style="border:1px solid black;padding:14px;font-weight:bold;text-align:right;">
-                            {{ format_indian_number($quotation->total, 2) }}
+                            {{ format_indian_number($quotation->total) }}
                         </td>
                     </tr>
 
@@ -254,9 +256,23 @@
                 @endif
                 @if ($quotation->remark)
                     <tr>
-                        <td colspan="5"
-                            style="text-align: center; padding: 16px 10px; font-weight: bold; border: 1px solid black;">
-                            Note:{{ $quotation->remark }}
+                        @php
+                            $remarkText = $quotation->remark ?? ''; // Null ho to empty string
+                            $lines = explode("\n", $remarkText);
+                        @endphp
+
+                        <td colspan="5" style="padding:10px 10px 5px; border:1px solid black;">
+
+                            <strong>Note:</strong> {{ array_shift($lines) }} <!-- First line Note ke baad -->
+
+                            <ul style="margin-top:10px; padding-left: 25px; font-weight: normal;">
+                                @foreach ($lines as $line)
+                                    @if (trim($line))
+                                        <li>{{ trim(str_replace('•', '', $line)) }}</li>
+                                    @endif
+                                @endforeach
+                            </ul>
+
                         </td>
                     </tr>
                 @endif

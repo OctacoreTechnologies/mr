@@ -205,9 +205,6 @@ class SaleOrderController extends Controller
 
 
 
-        // return response()->view('sale_orders.pdf',[
-        //     'saleOrder' => $saleOrder,
-        // ]);
         $pdf = Pdf::loadView('sale_orders.pdf', [
             'saleOrder' => $saleOrder,
         ])
@@ -237,7 +234,9 @@ class SaleOrderController extends Controller
 
     public function downloadAdvancePaymentPdf($id)
     {
-        $saleOrder = SaleOrder::with(['quotation.customer', 'quotation.machine', 'quotation.modele'])->findOrFail($id);
+        $saleOrder = SaleOrder::with(['quotation','quotation.customer', 'quotation.machine', 'quotation.modele','quotation.items'])->findOrFail($id);
+        
+        // return $saleOrder;
         $pdf = PDF::loadView('sale_orders.advance_payment', [
             'saleOrder' => $saleOrder,
         ])
@@ -247,6 +246,7 @@ class SaleOrderController extends Controller
                 'defaultFont' => 'Poppins',
                 'isFontSubsettingEnabled' => false,
                 'isHtml5ParserEnabled' => true,
+                'isRemoteEnabled' => true
             ]);
         
 
