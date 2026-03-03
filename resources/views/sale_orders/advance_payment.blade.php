@@ -104,7 +104,7 @@
 
     <header>
         <div style="text-align: right;">
-            <img src="{{ asset('/image/mr_logo.png') }}" height="70px">
+            <img src="{{ asset('/image/mr_logo.png') }}" height="50px">
         </div>
     </header>
 

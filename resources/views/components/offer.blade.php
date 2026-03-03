@@ -199,7 +199,7 @@
                             Less: Discount ({{ format_indian_number($quotation->discount_percentage) }}%)
                         </td>
                         <td style="text-align:right; padding:12px; border:1px solid black; font-weight:600;">
-                            {{ format_indian_number($amount * ($quotation->discount_percentage / 100)) }}
+                            {{ format_indian_number(($amount + $subTotal) * ($quotation->discount_percentage / 100)) }}
                         </td>
                     </tr>
                     <tr>
