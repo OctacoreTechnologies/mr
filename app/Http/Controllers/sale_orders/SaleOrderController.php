@@ -5,6 +5,7 @@ namespace App\Http\Controllers\sale_orders;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleOrderStoreRequest;
 use App\Http\Requests\SaleOrderUpdateRequest;
+use App\Models\BankDetail;
 use App\Models\Customer;
 use App\Models\Quotation;
 use App\Models\SaleLedger;
@@ -235,10 +236,11 @@ class SaleOrderController extends Controller
     public function downloadAdvancePaymentPdf($id)
     {
         $saleOrder = SaleOrder::with(['quotation','quotation.customer', 'quotation.machine', 'quotation.modele','quotation.items'])->findOrFail($id);
-        
+        $bankDetail = BankDetail::first(); // Assuming you have only one set of bank details. Adjust as necessary.
         // return $saleOrder;
         $pdf = PDF::loadView('sale_orders.advance_payment', [
             'saleOrder' => $saleOrder,
+            'bankDetail'=> $bankDetail,
         ])
             ->setOptions([
                 'fontDir' => public_path('/fonts'),

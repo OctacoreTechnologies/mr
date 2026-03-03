@@ -445,6 +445,11 @@ return [
                              'icon'=>'fas fa-file-signature',
                             //  'can'=>'view roles'
                            ],
+                           [
+                            'text'=> 'Bank Detail',
+                            'url' => '/bank/details',
+                            'icon'=>'fas fa-university',
+                           ],
                             [
                               'text' => 'Email',
                               'url' => '/mail',

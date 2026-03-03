@@ -245,4 +245,11 @@ Route::resource('/blowers',BlowerController::class);
 Route::resource('/feeding_hooper_capacities',FeedingHooperCapacityController::class);
 Route::resource('/rotary-air-lock-valves',RotaryAirLockValveController::class);
 
+Route::prefix('/bank')->group(function () {
+    Route::controller(App\Http\Controllers\Bank\BankDetailController::class)->group(function () {
+        Route::get('/details', 'index')->name('bank.details');
+        Route::post('/details/update', 'update')->name('bank.details.update');
+    }); 
+});
+
 });

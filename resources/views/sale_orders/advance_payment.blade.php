@@ -88,23 +88,22 @@
         height: 100px;
 
         z-index: 15;
-        top:5px;
+        top: 5px;
 
     }
 
-    .heading{
+    .heading {
 
         position: relative;
-        right:50px
+        right: 50px
     }
-   
 </style>
 
 <body>
 
     <header>
         <div style="text-align: right;">
-            <img src="{{ asset('/image/mr_logo.png') }}" height="50px">
+            <img src="{{ asset('/image/mr_logo.png') }}" height="60px">
         </div>
     </header>
 
@@ -113,12 +112,12 @@
         <tr>
             <td colspan="2" class="header">
                 <div class="heading">
-                   <p class="company_heading">M. R. ENGINEERS</p>
-                   SNO.: 351/2-A, PSL COMPOUND, CHAR RASTA,<br>
-                   KACHIGAM, NANI DAMAN: 396 210<br>
-                   EMAIL: <span style="text-transform: lowercase;">sales@mrengineers.co.in, mihir@mrengineers.co.in</span>
+                    <p class="company_heading">M. R. ENGINEERS</p>
+                    SNO.: 351/2-A, PSL COMPOUND, CHAR RASTA,<br>
+                    KACHIGAM, NANI DAMAN: 396 210<br>
+                    EMAIL: <span style="text-transform: lowercase;">sales1@mrengineers.co.in</span>
                 </div>
-                </td>
+            </td>
         </tr>
 
         <tr class="advncTitle" style="border-top:1px solid black;border-bottom:1px solid black;">
@@ -347,9 +346,18 @@
 
         <!-- Amount in Words -->
         <tr style="border-bottom: hidden;">
-            <td style="border: 1px solid black; padding: 5px; border-bottom:none;"><b><i>Amount in
-                        Words:</i></b>{{ strtoupper(convertToIndianWords($totalTax + $saleOrder->total_amount)) }}
-                RUPEES</td>
+            <td style="border: 1px solid black; padding: 2px; border-bottom:none;">
+                <table width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td style="width:120px; vertical-align:top;">
+                            <b>Amount in Words:</b>
+                        </td>
+                        <td>
+                            {{ strtoupper(convertToIndianWords($totalTax + $saleOrder->total_amount)) }} RUPEES
+                        </td>
+                    </tr>
+                </table>
+            </td>
             <td style="border: 1px solid black; border-bottom: 2px; text-align: center; border-bottom:none;">
                 <b>TOTAL<br>VALUE</b>
             </td>
@@ -393,11 +401,11 @@
                     <td class="bordered" style="border-left: none; border-bottom:none;">
                         <i>
                             Our Bank details:<br>
-                            Company Name: <b>M. R. Engineers</b><br>
-                            Bank: HDFC Bank<br>
-                            A/c No.: <b>50200029265243</b><br>
-                            IFCS Code: <b>HDFC0000170</b><br>
-                            Branch: Chala, Vapi
+                            Company Name: <b>{{ $bankDetail->company_name  }}</b><br>
+                            Bank: {{ $bankDetail->bank_name }}<br>
+                            A/c No.: <b>{{ $bankDetail->account_number }}</b><br>
+                            IFCS Code: <b>{{ $bankDetail->ifsc_code }}</b><br>
+                           {{ $bankDetail->branch_name }} Branch 
                         </i>
                     </td>
                     <!-- GST / Division / Commissionerate -->
