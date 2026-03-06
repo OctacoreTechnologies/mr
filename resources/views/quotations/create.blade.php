@@ -391,9 +391,10 @@
 
                     @if (isset($product->total_capacity))
                         @php
-                            // Example $model->name: "CHM 350-P/HCM 1200 Ltr" or "CHM 350-P/HCM 1200"
-                            preg_match('/HCM\s*([\d]+(?:\s*Ltr)?)/i', $model->name, $matches);
-                            // Extracted capacity
+                            // Example: "CHM 350-P/HCM 1200 Ltr" or "CHM 350-P/HCM 1200"
+                            preg_match('/HCM\s*(\d+)/i', $model->name, $matches);
+
+                            // Extracted numeric capacity
                             $product->total_capacity = $matches[1] ?? $product->total_capacity;
                         @endphp
 
