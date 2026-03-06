@@ -16,7 +16,7 @@ class CapacityController extends Controller
      */
     public function index()
     {
-        $capacities = Capacity::with('model')->get();
+        $capacities = Capacity::with(['model', 'model.machine'])->get();
         $models=Modele::all();
         $machines=Machine::all();
         return view('categories.capacity.index', compact('capacities', 'models', 'machines'));

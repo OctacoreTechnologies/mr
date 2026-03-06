@@ -1,7 +1,8 @@
 @php
     $heads = [
        ['label' => 'SR NO', 'width' => '7%'],
-        'Name',
+        'Machine',
+        'Capacity',
         'Model',
         ['label' => 'Actions', 'no-export' => true, 'width' => 5],
     ];
@@ -58,6 +59,7 @@
             @foreach ($capacities as $capacity)
                 <tr>
                     <td>{{ $n++ }}</td>
+                    <td>{{ $capacity->model->machine->name ?? 'N.A.' }}</td>
                     <td>{{ $capacity->capacity ?? '' }}</td>
                     <td>{{ $capacity->model->name ?? '' }}</td>
                     <td>
