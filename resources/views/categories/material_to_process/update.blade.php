@@ -27,7 +27,7 @@
                         <label for="model" class="form-label font-weight-bold">Model</label>
                         <select id="model_id" name="model_id" class="form-control select2 form-control-lg"
                             style="width: 100%;" required>
-                            <option disabled selected>{{ $materialToProcess->model->name ?? '' }}</option>
+                            <option value="{{ $materialToProcess->model->id }}" selected>{{ $materialToProcess->model->name ?? '' }}</option>
 
                         </select>
                     </div>
