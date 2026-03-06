@@ -674,6 +674,8 @@ class QuotationController extends Controller
             $foreignKeys
         );
 
+        return $finalData;
+
 
 
         $quotation->update($finalData);
