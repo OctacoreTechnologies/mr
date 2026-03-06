@@ -390,9 +390,17 @@
                     @endif
 
                     @if (isset($product->total_capacity))
+                        @php
+                            // Example $model->name: "CHM 350-P/HCM 1200 Ltr" or "CHM 350-P/HCM 1200"
+                            preg_match('/HCM\s*([\d]+(?:\s*Ltr)?)/i', $model->name, $matches);
+
+                            // Extracted capacity
+                            $product->total_capacity = $matches[1] ?? $product->total_capacity;
+                        @endphp
+
                         <div class="col-md-6">
                             <label>Total Capacity</label>
-                            <input name="total_capacity" label="Total Capacity" value="{{ $product->total_capacity }}"
+                            <input name="total_capacity" value="{{ $product->total_capacity }}"
                                 class="form-control readonly-input" required />
                             <i class="fas fa-pencil-alt edit-icon"></i>
                         </div>
