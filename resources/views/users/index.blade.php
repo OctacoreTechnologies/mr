@@ -61,9 +61,9 @@
                                     </a>
 
                                     {{-- Show --}}
-                                  {{-- <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-teal text-white mx-1 shadow-sm" title="Details">
+                                  <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-sm btn-success text-white mx-1 shadow-sm" title="Details">
                                         <i class="fa fa-eye"></i>
-                                    </a>--}}
+                                    </a>
 
                                     {{-- Delete --}}
                                     <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display: inline-block;">

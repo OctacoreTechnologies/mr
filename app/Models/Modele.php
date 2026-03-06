@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\LogsUserActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class Modele extends Model
 {
+    use LogsUserActivity;
     protected $table = "modeles";
     protected $guarded = [];
 

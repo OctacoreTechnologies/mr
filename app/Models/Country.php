@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\LogsUserActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
+    use LogsUserActivity;
     protected $table="countries";
 
     protected $guarded=[];

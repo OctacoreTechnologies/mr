@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\LogsUserActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class Machine extends Model
 {
+    use LogsUserActivity;
     protected $guarded=["id"];
 
     public function machineType(){

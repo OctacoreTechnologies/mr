@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\LogsUserActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Customer extends Model
 {
+    use LogsUserActivity;
     protected $guarded=[];
 
     public function quotations(){

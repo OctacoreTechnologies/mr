@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\LogsUserActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class Bearing extends Model
 {
+  use LogsUserActivity;
   protected $guarded = [];
   public function quotations()
   {

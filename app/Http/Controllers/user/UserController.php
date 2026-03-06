@@ -8,6 +8,7 @@ use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Activitylog\Models\Activity;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -19,8 +20,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users=User::orderByDesc('created_at')->paginate(5);
-        return response()->view('users.index',compact('users'));
+        $users = User::orderByDesc('created_at')->paginate(5);
+        return response()->view('users.index', compact('users'));
     }
 
     /**
@@ -37,13 +38,13 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+
      */
     public function store(UserRequest $request)
     {
         // return $request->validated();
         User::create($request->validated());
-        session()->flash('success','user is added successfully');
+        session()->flash('success', 'user is added successfully');
         return response()->redirectTo(route('admin.users.index'));
     }
 
@@ -55,7 +56,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $activities = Activity::where('causer_id', $user->id)
+            ->latest()
+            ->paginate(20);
+
+        return response()->view('users.show', compact('user', 'activities'));
     }
 
     /**
@@ -66,13 +73,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user=User::findOrFail($id);
-        $roles=Role::orderByDesc('created_at')->get();
-        $userRole=$user->roles->pluck('id');
-        return response()->view('users.edit',[
-            'user'=>$user,
-            'roles'=>$roles,
-            'userRole'=>$userRole
+        $user = User::findOrFail($id);
+        $roles = Role::orderByDesc('created_at')->get();
+        $userRole = $user->roles->pluck('id');
+        return response()->view('users.edit', [
+            'user' => $user,
+            'roles' => $roles,
+            'userRole' => $userRole
         ]);
     }
 
@@ -85,27 +92,27 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-      $user = User::findOrFail($id);
+        $user = User::findOrFail($id);
 
-    $data = $request->validated();
+        $data = $request->validated();
 
-    // Handle password only if provided
-    if (!empty($data['password'])) {
-        $data['password'] = Hash::make($data['password']);
-    } else {
-        // Remove password from update data if empty
-        unset($data['password']);
-    }
+        // Handle password only if provided
+        if (!empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            // Remove password from update data if empty
+            unset($data['password']);
+        }
 
-    // Update user basic info
-    $user->update($data);
+        // Update user basic info
+        $user->update($data);
 
-    // Sync roles (default to empty array if not provided)
-    $user->syncRoles($request->input('role', []));
+        // Sync roles (default to empty array if not provided)
+        $user->syncRoles($request->input('role', []));
 
-    session()->flash('success', 'User updated successfully.');
+        session()->flash('success', 'User updated successfully.');
 
-    return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.index');
     }
 
     /**

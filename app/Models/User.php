@@ -3,16 +3,20 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\LogsUserActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable,HasRoles,HasPermissions;
+    use HasFactory, Notifiable, HasRoles, HasPermissions,LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +28,7 @@ class User extends Authenticatable
         'email',
         'password',
         'contact_no',
+        'last_login_at',
     ];
 
     /**
@@ -49,32 +54,48 @@ class User extends Authenticatable
         ];
     }
 
-    public function quotations(){
-        return $this->hasMany(Quotation::class,'user_id');
+    public function quotations()
+    {
+        return $this->hasMany(Quotation::class, 'user_id');
     }
 
-    public function customers(){
-        return $this->hasMany(Customer::class,'customer_id');
-
+    public function customers()
+    {
+        return $this->hasMany(Customer::class, 'customer_id');
     }
 
-    public function leads(){
-        return $this->hasMany(Lead::class,'user_id');
+    public function leads()
+    {
+        return $this->hasMany(Lead::class, 'user_id');
     }
 
-    public function leadFollows(){
-        return $this->hasMany(Lead::class,'followed_by');
+    public function leadFollows()
+    {
+        return $this->hasMany(Lead::class, 'followed_by');
     }
 
-    public function saleOrderFollows(){
-        return $this->hasMany(SaleOrder::class,'followed_by');
+    public function saleOrderFollows()
+    {
+        return $this->hasMany(SaleOrder::class, 'followed_by');
     }
 
-    public function customerFollows(){
-        return $this->hasMany(Customer::class,'followed_by');
+    public function customerFollows()
+    {
+        return $this->hasMany(Customer::class, 'followed_by');
     }
 
-    public function quotationFollows(){
-        return $this->hasMany(Quotation::class,'followed_by');
+    public function quotationFollows()
+    {
+        return $this->hasMany(Quotation::class, 'followed_by');
     }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'email'])
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(fn(string $eventName) => "User {$eventName}");
+    }
+
+    
 }

@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\LogsUserActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class FeedingHooperCapacity extends Model
 {
+    use LogsUserActivity;
     protected $table='feeding_hooper_capacities';
     protected $guarded = [];
 

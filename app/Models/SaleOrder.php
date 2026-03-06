@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\LogsUserActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 class SaleOrder extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes,LogsUserActivity;
     protected $guarded=[];
 
     public function quotation(){
