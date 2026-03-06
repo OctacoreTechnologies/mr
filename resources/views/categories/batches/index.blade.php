@@ -64,7 +64,7 @@
                     <td>{{ $batch->batches ?? '' }}</td>
                     {{--<td>{{ $batch->batch2 ?? 'N.A' }}</td>--}}
                     <td>{{ $batch->machine->name ?? '' }}</td>
-                    <td>{{ $batch->modele->name ?? '' }}</td>
+                    <td>{{ $batch->model->name ?? '' }}</td>
                     <td>
                         <nobr>
                             <a href="{{ route('batch.edit', $batch->id) }}" class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">

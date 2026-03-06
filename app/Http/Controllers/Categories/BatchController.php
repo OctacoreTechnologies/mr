@@ -16,7 +16,7 @@ class BatchController extends Controller
      */
     public function index()
     {
-        $batches=Batch::with(['machine','modele'])->orderByDesc('created_at')->get();
+        $batches=Batch::with(['machine','model'])->orderByDesc('created_at')->get();
         $machines=Machine::orderByDesc('created_at')->get();
         
         return response()->view('categories.batches.index',compact('batches','machines'));
@@ -54,8 +54,9 @@ class BatchController extends Controller
      */
     public function edit(string $id)
     {
-        $batch=Batch::findOrFail($id);
-        return response()->view('categories.batches.update',compact('batch'));
+        $batch=Batch::with(['machine','model'])->findOrFail($id);
+        $machines=Machine::orderByDesc('created_at')->get();
+        return response()->view('categories.batches.update',compact('batch','machines'));
     }
 
     /**

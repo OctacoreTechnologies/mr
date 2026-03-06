@@ -26,7 +26,7 @@ class Batch extends Model
   {
     return $this->belongsTo(Machine::class, 'machine_id');
   }
-  public function modele()
+  public function model()
   {
     return $this->belongsTo(Modele::class, 'model_id');
   }
@@ -43,6 +43,4 @@ class Batch extends Model
         ");
     });
   }
-
-
 }
