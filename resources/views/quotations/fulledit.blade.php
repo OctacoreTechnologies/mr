@@ -384,7 +384,7 @@
                     @if (!empty($quotation->water_pressure))
                         <div class="col-md-6 form-group">
                             <label>Water Pressure</label>
-                            <input type="text" name="compress_air_consumption" value="{{ $quotation->water_pressure }}"
+                            <input type="text" name="water_pressure" value="{{ $quotation->water_pressure }}"
                                 class="form-control readonly-input" readonly />
                             <i class="fas fa-pencil-alt edit-icon"></i>
                         </div>
