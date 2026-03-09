@@ -1,6 +1,6 @@
 @php
     $heads = [
-        'ID',
+        'Sr.No',
         'Quotation Ref.No',
         'Customer Name',
         'Machine',
@@ -95,7 +95,7 @@
                             </a>
                         </td>
                         <td>
-                            <a class="btn btn-link text-info" href="{{ route('followup.edit', $quotation->customer_id) }}">
+                            <a class="btn btn-link text-info" href="{{ route('followup.edit', $quotation->customer_id) }}?quotation_id={{ $quotation->id }}">
                                 <i class="fas fa-calendar-check"></i> Follow Up
                             </a>
                         </td>

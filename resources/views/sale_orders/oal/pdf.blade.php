@@ -1,184 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Acceptance Letter</title>
-    <style>
-        /* General Body Styles */
+<meta charset="UTF-8">
+<title>Order Acceptance Letter</title>
 
-        @page {
-          margin: 20px 70px 0px 40px;
-       }
-        body { 
-            font-family: 'DejaVu Sans', sans-serif; 
-            font-size: 12px; 
-            margin: 0;
-            padding: 0;
-            line-height: 1.5;
-        }
+<style>
 
-        /* Page Layout */
-        .container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            margin-top: 45px;
-            margin-bottom: 25px;
-        }
+@page {
+    margin: 110px 40px 70px 40px;
+}
 
-        /* Header Styling */
-        /* header {
-            position: fixed;
-            text-align: right;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-        } */
+body{
+    font-family: DejaVu Sans, sans-serif;
+    font-size:12px;
+}
 
-  header {
+/* Header */
+
+header{
     position: fixed;
-    top: -5px;
-    left: 0;
-    right: 0;
-    /* height: 100px; */
-    text-align: right;
-    /* padding-bottom: 50px; */
-    /* margin-bottom: 20px;
-    padding-bottom: 10px; */
-    /* border-bottom: 1px solid #ccc; */
-   }
-    
-        header img {
-            height: 80px;
-        }
+    top:-90px;
+    left:0;
+    right:0;
+    text-align:right;
+}
 
-        /* Title Section */
-        h2 {
-            text-align: center;
-            font-size: 16px;
-            margin-bottom: 30px;
-            font-weight: 700;
-        }
+header img{
+    height:80px;
+}
 
-        /* Table Styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+/* Footer */
 
-        th, td {
-            padding: 10px 20px;
-            text-align: center;
-            border: 1px solid #000;
-        }
+footer{
+    position: fixed;
+    bottom:-50px;
+    left:0;
+    right:0;
+    text-align:center;
+    font-size:11px;
+}
 
-        th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-            width: 30%;
-        }
+.page-number:before{
+    content:"Page " counter(page);
+}
 
-        td {
-            width: 70%;
-            word-wrap: break-word;
-        }
+/* Heading */
 
-        /* Footer Section */
-        .footer {
-            /* margin-top: 40px; */
-            /* border-top: 1px solid #ccc; */
-            padding-top: 10px;
-        }
+.heading{
+    text-align:center;
+    font-weight:bold;
+    margin-bottom:20px;
+}
 
-        .footer table {
-            width: 100%;
-            border: none;
-            margin-top: 40px;
-        }
+/* Table */
 
-        .footer td {
-            border: none;
-            text-align: center;
-            padding-top: 20px;
-        }
+table{
+    width:100%;
+    border-collapse:collapse;
+}
 
-        .footer p {
-            font-weight: bold;
-            text-decoration: underline;
-        }
+th,td{
+    border:1px solid black;
+    padding:10px;
+}
 
-    </style>
+th{
+    background:#f2f2f2;
+    width:30%;
+}
+
+td{
+    width:70%;
+}
+
+/* Prevent row break */
+
+tr{
+    page-break-inside: avoid;
+}
+
+/* Footer Sign */
+
+.signature{
+    margin-top:40px;
+}
+
+.signature table{
+    border:none;
+}
+
+.signature td{
+    border:none;
+    text-align:center;
+}
+
+</style>
+
 </head>
+
 <body>
 
-<!-- Header Section -->
-    <header>
-       {{-- <img src="{{ asset('./image/mr_logo.png') }}" alt="Logo"> --}}
-        <img src="{{ public_path('./image/mr_logo.png') }}" alt="Logo">
-    </header>
-<!-- Main Container -->
+<header>
+    <img src="{{ public_path('./image/mr_logo.png') }}">
+</header>
+
+<footer>
+    <span class="page-number"></span>
+</footer>
+
+
 <div class="container">
 
-    <!-- Title Section -->
-    <h2>Order Acceptance Letter</h2>
+<div class="heading">
+<h2>Order Acceptance Letters</h2>
+</div>
 
-    @php
-    function printValue($value){
-       if($value == '0'){
-         return 'Yes';
-       } elseif($value == '1'){
+
+@php
+function printValue($value){
+    if($value == '0'){
+        return 'Yes';
+    }elseif($value == '1'){
         return 'No';
-       } else {
-         return $value;
-       }
+    }else{
+        return $value;
     }
-    @endphp
+}
+@endphp
 
-    <!-- Table for Order Details -->
-    <table>
-        <tbody>
-            @php
-            $attributes = $oal->getAttributes();
-            @endphp
 
-            @foreach($attributes as $field => $value)
-                @if(!is_null($value) && $value !== '' && !in_array($field, ['created_at','updated_at','sale_order_id','id','machine_id']))
-                    <tr>
-                        <th>{{ ucwords(str_replace('_', ' ', $field)) }}</th>
-                        <td>{{ printValue($value) }}</td>
-                    </tr>
-                @endif
+<table>
 
-                @if($field == 'machine_id')
-                    <tr>
-                        <th>Machine Name</th>
-                        <td>{{ $oal->saleOrder->quotation->machine->name ?? '' }}</td>
-                    </tr>
-                @endif
-            @endforeach
-        </tbody>
-    </table>
+<tbody>
 
-    <!-- Signature Section -->
-    <div class="footer">
-        <table>
-            <tr>
-                <td>
-                    <p>Prepared By</p>
-                    <br><br>
-                    <p></p>
-                </td>
-                <td>
-                    <p>Approved By</p>
-                    <br><br>
-                    <p></p>
-                </td>
-            </tr>
-        </table>
-    </div>
+@php
+$attributes = $oal->getAttributes();
+@endphp
+
+
+@foreach ($attributes as $field => $value)
+
+@if(
+!is_null($value) &&
+$value !== '' &&
+!in_array($field,['created_at','updated_at','sale_order_id','id','machine_id'])
+)
+
+<tr>
+<th>{{ ucwords(str_replace('_',' ',$field)) }}</th>
+<td>{{ printValue($value) }}</td>
+</tr>
+
+@endif
+
+
+@if($field == 'machine_id')
+
+<tr>
+<th>Machine Name</th>
+<td>{{ $oal->saleOrder->quotation->machine->name ?? '' }}</td>
+</tr>
+
+@endif
+
+
+@endforeach
+
+</tbody>
+
+</table>
+
+
+<div class="signature">
+
+<table width="100%">
+
+<tr>
+
+<td>
+<p><b><u>Prepared By</u></b></p>
+<br><br>
+</td>
+
+<td>
+<p><b><u>Approved By</u></b></p>
+<br><br>
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
 
 </div>
 

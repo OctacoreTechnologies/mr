@@ -133,24 +133,26 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            M/s. {{ $saleOrder->quotation->customer->contact_person_1_name ?? '' }}<br>
-                            {{ $saleOrder->quotation->customer->address_line_1 ?? '' }}
+                            <div style="min-height:40px; line-height:14px;">
+                                M/s. {{ $saleOrder->quotation->customer->contact_person_1_name ?? '' }}<br>
+                                {{ $saleOrder->quotation->customer->address_line_1 ?? '' }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td width="40%"><b><i>GST NO.:</i></b></td>
+                        <td width="40%"><b>GST NO.:</b></td>
                         <td width="60%">{{ $saleOrder->quotation->customer->gst ?? '' }}</td>
                     </tr>
                     <tr style="border-top:1px solid black;">
-                        <td><b><i>LAP NO.:</i></b></td>
+                        <td><b>LAP NO.:</b></td>
                         <td>{{ $saleOrder->lap_no ?? '0' }}/{{ $saleOrder->financial_year ?? '2025-26' }}</td>
                     </tr>
                     <tr>
-                        <td><b><i>Quotation No.:</i></b></td>
+                        <td><b>Quotation No.:</b></td>
                         <td>{{ $saleOrder->quotation->reference_no ?? '' }}</td>
                     </tr>
                     <tr>
-                        <td><b><i>Date:</i></b></td>
+                        <td><b>Date:</b></td>
                         <td>{{ formatDate($saleOrder->order_date ?? '') }}</td>
                     </tr>
                 </table>
@@ -163,13 +165,15 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            M/s.
-                            {{ $saleOrder->quotation->customer->contact_person_2_name ?? $saleOrder->quotation->customer->contact_person_1_name }}<br>
-                            {{ $saleOrder->quotation->customer->address_line_2 ?? $saleOrder->quotation->customer->address_line_1 }}
+                            <div style="min-height:40px; line-height:14px;">
+                                M/s.
+                                {{ $saleOrder->quotation->customer->contact_person_2_name ?? $saleOrder->quotation->customer->contact_person_1_name }}<br>
+                                {{ $saleOrder->quotation->customer->address_line_2 ?? $saleOrder->quotation->customer->address_line_1 }}
+                            </div>
                         </td>
                     </tr>
                     <tr>
-                        <td width="40%"><b><i>Kind Attn.:</i></b></td>
+                        <td width="40%"><b>Kind Attn.:</b></td>
                         <td width="60%">{{ $saleOrder->followedBy->name ?? '' }}</td>
                     </tr>
                     <tr style="border-top:1px solid black;">
@@ -181,11 +185,11 @@
                         <td>{{ $saleOrder->quotation->customer->contact_person_1_email ?? '' }}</td>
                     </tr>
                     <tr>
-                        <td><b><i>Customer P.O No.:</i></b></td>
+                        <td><b>Customer P.O No.:</b></td>
                         <td>{{ $saleOrder->quotation->customer->po_no ?? '' }}</td>
                     </tr>
                     <tr>
-                        <td><b><i>Date:</i></b></td>
+                        <td><b>Date:</b></td>
                         <td>{{ formatDate($saleOrder->quotation->customer->po_date ?? '') }}</td>
                     </tr>
                 </table>
@@ -401,11 +405,11 @@
                     <td class="bordered" style="border-left: none; border-bottom:none;">
                         <i>
                             Our Bank details:<br>
-                            Company Name: <b>{{ $bankDetail->company_name  }}</b><br>
+                            Company Name: <b>{{ $bankDetail->company_name }}</b><br>
                             Bank: {{ $bankDetail->bank_name }}<br>
                             A/c No.: <b>{{ $bankDetail->account_number }}</b><br>
                             IFCS Code: <b>{{ $bankDetail->ifsc_code }}</b><br>
-                           {{ $bankDetail->branch_name }} Branch 
+                            {{ $bankDetail->branch_name }} Branch
                         </i>
                     </td>
                     <!-- GST / Division / Commissionerate -->

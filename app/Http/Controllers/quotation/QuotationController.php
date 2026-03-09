@@ -388,8 +388,16 @@ class QuotationController extends Controller
     {
         $numberWords = new NumberToWords();
         $numberTransformer = $numberWords->getNumberTransformer('en');
-        $termCondition = TearmCondition::findOrFail(1);
+
+
+        $termCondition = null;
         $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'items'])->findOrFail($id);
+        if($quotation->customer->location_type == 'international'){
+            $termCondition = TearmCondition::findOrFail(2);
+        }
+        else{
+               $termCondition = TearmCondition::findOrFail(1);
+        }
         $words = convertToIndianWords((int) ($quotation->total ?? 0) - (int) ($quotation->discount ?? 0));
         $viewName = null;
         if ($quotation->machine->name == 'Heater Mixer') {

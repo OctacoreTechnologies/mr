@@ -2,6 +2,10 @@
 
 @section('title', 'Edit Lead')
 
+@php
+$quotation_id = request()->query('quotation_id')??null;
+@endphp
+
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center">
         <h1>Edit Quotation Follow-ups</h1>
@@ -67,6 +71,7 @@
                 {{-- Blank input for new follow-up --}}
                 <div class="followup-row border rounded p-3 mb-3 bg-light position-relative shadow-sm">
                     <x-adminlte-input type="hidden" name="follow_up_id[]" />
+                    <x-adminlte-input type="hidden" name="quotation_id" value="{{ $quotation_id }}" />
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <x-adminlte-input type="date" name="follow_up_date[]" label="Follow-Up Date" />
@@ -86,6 +91,7 @@
                 @foreach ($ofollowups as $followup)
                   <div class="followup-row border rounded p-3 mb-3 bg-light position-relative shadow-sm">
                         <x-adminlte-input type="hidden" name="follow_up_id[]" value="{{ $followup->id }}"/>
+                        <x-adminlte-input type="hidden" name="quotation_id" value="{{ $quotation_id }}" />
 
                         <div class="row">
                             <div class="col-md-6 mb-3">

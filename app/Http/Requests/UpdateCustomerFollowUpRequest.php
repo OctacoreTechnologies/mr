@@ -24,6 +24,7 @@ class UpdateCustomerFollowUpRequest extends FormRequest
     {
        return [
             'id'=>'nullable|exists:customers,id',
+            'quotation_id'=>'nullable|exists:quotations,id',
             'follow_up_id'=>'nullable|array',
             'follow_up_id.*'=>'nullable',
             'follow_up_date'=>'required|array',

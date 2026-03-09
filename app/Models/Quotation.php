@@ -164,7 +164,7 @@ class Quotation extends Model implements Auditable
 
   public function quotationFollowUps()
   {
-    return $this->hasMany(QuotationFolloUp::class, 'quotation_id');
+    return $this->hasMany(CustomerFollowUp::class, 'quotation_id');
   }
 
   public function quotationNotifications()
