@@ -98,7 +98,7 @@ class CustomerController extends Controller
 
         $customer = Customer::findOrFail($id);
         $data = $request->validated();
-        if($customer->status === 'qualified') {
+        if($data['status'] === 'qualified') {
              $data['type'] = 'customer';
         }
         $customer->update($data);

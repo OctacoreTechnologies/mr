@@ -19,7 +19,7 @@
                     $fields = [
                         'Full Name'     => $lead->full_name ?? '',
                         'Email'         => $lead->email ?? '',
-                        'Phone'         => $lead->phone ?? '',
+                        'Phone'         => $lead->contact_person_1_contact ?? '',
                         'Company'       => $lead->company ?? '',
                         'Lead Source'   => $lead->lead_source ?? '',
                         'Status'        => ucfirst($lead->status ?? ''),

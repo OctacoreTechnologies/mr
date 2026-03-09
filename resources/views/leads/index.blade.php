@@ -33,7 +33,7 @@
                     <tr class="{{$lead->status}}">
                         <td>{{$srno++}}</td>
                         <td>{{$lead->company_name}}</td>
-                        <td>{{ $lead->contact_person_1_email }}</td>
+                        <td>{{ $lead->contact_person_1_contact }}</td>
                         <td>
                             @php
                                 $statusClass = match($lead->status) {
