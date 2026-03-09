@@ -136,6 +136,9 @@
                             <div style="min-height:40px; line-height:14px;">
                                 M/s. {{ $saleOrder->quotation->customer->contact_person_1_name ?? '' }}<br>
                                 {{ $saleOrder->quotation->customer->address_line_1 ?? '' }}
+                                {{ $saleOrder->quotation->customer->city ?? '' }},
+                                {{ $saleOrder->quotation->customer->state ?? '' }}
+                                {{ preg_replace('/\s+/', '', $saleOrder->quotation->customer->pincode ?? '') }}
                             </div>
                         </td>
                     </tr>

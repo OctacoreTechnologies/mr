@@ -149,7 +149,7 @@
                     </div>
 
                     <!-- Contact No -->
-                    <div class="col-md-6">
+                    {{-- <div class="col-md-6">
 
                         <label>Contact No</label>
 
@@ -167,15 +167,15 @@
                                 class="form-control contact-number" placeholder="Enter Contact No">
 
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- Address Lines -->
                     <div class="col-md-6">
-                        <x-adminlte-textarea name="address_line_1" label="Address Line 1 (Bill To)"
+                        <x-adminlte-textarea name="address_line_1" label="Address  (Bill To)"
                             placeholder="Enter Address Line 1"
                             fgroup-class="mb-3">{{ old('address_line_1', $lead->address_line_1) }}</x-adminlte-textarea>
                     </div>
                     <div class="col-md-6">
-                        <x-adminlte-textarea name="address_line_2" label="Address Line 2 (Ship To)"
+                        <x-adminlte-textarea name="address_line_2" label="Address  (Ship To)"
                             placeholder="Enter Address Line 2"
                             fgroup-class="mb-3">{{ old('address_line_2', $lead->address_line_2) }}</x-adminlte-textarea>
                     </div>

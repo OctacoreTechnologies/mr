@@ -24,7 +24,7 @@
                         'Area' => $customer->area ?? '',
                         'Pincode' => $customer->pincode ?? '',
                         'Company Name' => $customer->company_name ?? '',
-                        'Contact No' => $customer->contact_no ?? '',
+                        // 'Contact No' => $customer->contact_no ?? '',
                         'Status' => $customer->status ?? '',
                         'Contact Person 1 name'         => $customer->contact_person_1_name,
                         'Contact Person 1 designation'  => $customer->contact_person_1_designation,

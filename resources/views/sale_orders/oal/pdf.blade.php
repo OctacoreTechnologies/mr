@@ -8,7 +8,7 @@
 <style>
 
 @page {
-    margin: 110px 40px 70px 40px;
+    margin: 130px 40px 70px 40px;
 }
 
 body{
@@ -20,7 +20,7 @@ body{
 
 header{
     position: fixed;
-    top:-90px;
+    top:-110px;
     left:0;
     right:0;
     text-align:right;
