@@ -265,6 +265,7 @@ $secondPart = trim($parts[1]);
             <tr><td>• &nbsp; Batch Size</td><td class="value-cell">{{ $quotation->batche2->batches??'' }}Kg  </td></tr>
             <tr><td>• &nbsp; Contact Part</td><td class="value-cell">{{ $quotation->contact_part??' ' }}  </td></tr>
             <tr><td>• &nbsp; Water Pressure</td><td class="value-cell">{{ $quotation->water_pressure??' ' }} Bar </td></tr>
+            <tr><td>• &nbsp; Operating Pressure</td><td class="value-cell">{{ $quotation->operating_pressure??' ' }} Bar </td></tr>
             <tr><td>• &nbsp; Cooling Water Inlet Temperature</td><td class="value-cell">{{ $quotation->cooling_water_inlet_temperature??'' }}  </td></tr>
             <tr><td>• &nbsp; Cooling Water Flow Rate</td><td class="value-cell">{{ $quotation->cooling_water_flow_rate??'' }} m3/h  </td></tr>
             <tr><td>• &nbsp; Feeding Air Pressure</td><td class="value-cell">{{ $quotation->feeding_air_pressure??'' }} Bar </td></tr>
