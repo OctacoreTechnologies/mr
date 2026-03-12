@@ -115,19 +115,19 @@
         ],
         [
             'title' => 'Electrical Control',
-            'description' => 'ABB / L&amp; T / SIEMENS Make',
+            'description' =>  $quotation->electricalControl->electrical_control ?? 'N.A' ,
         ],
         [
             'title' => 'AC Frequency Drive',
-            'description' => 'Yaskawa Make',
+            'description' =>  $quotation->acFrequencyDrive->ac_frequency_drive ?? 'N.A' ,
         ],
         [
             'title' => 'Bearing',
-            'description' => 'ZKL / FAG / SKF Make',
+            'description' =>  $quotation->bearinge->bearing ?? 'N.A' ,
         ],
         [
             'title' => 'Pneumatic Control',
-            'description' => 'JANATICS / SPAC Make',
+            'description' =>  $quotation->pneumaticControl->pneumatic_control ?? 'N.A' ,
         ],
     ];
 @endphp

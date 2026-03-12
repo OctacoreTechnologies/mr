@@ -161,7 +161,7 @@
 
         [
             'title' => 'Electrical Control',
-            'description' => 'ABB / L&amp; T / SIEMENS Make',
+            'description' => $quotation->electricalControl->electrical_control ?? '',
         ],
 
         [

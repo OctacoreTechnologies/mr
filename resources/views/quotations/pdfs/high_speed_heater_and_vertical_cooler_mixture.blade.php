@@ -385,7 +385,7 @@ $secondPart = trim($parts[1]);
         ],
         [
          'title'=>'AC Frequency Drive',
-         'description'=>'Yaskawa Make',
+         'description'=> $quotation->acFrequencyDrive->ac_frequency_drive??''
         ],
         [
             'title' => 'Bearing',
