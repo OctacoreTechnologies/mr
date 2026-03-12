@@ -115,19 +115,19 @@
         ],
         [
             'title' => 'Electrical Control',
-            'description' =>  $quotation->electricalControl->electrical_control ?? 'N.A' ,
+            'description' =>  $quotation->electricalControl->electrical_control ?? '' ,
         ],
         [
             'title' => 'AC Frequency Drive',
-            'description' =>  $quotation->acFrequencyDrive->ac_frequency_drive ?? 'N.A' ,
+            'description' =>  $quotation->acFrequencyDrive->ac_fequency_drive  ?? '' ,
         ],
         [
             'title' => 'Bearing',
-            'description' =>  $quotation->bearinge->bearing ?? 'N.A' ,
+            'description' =>  $quotation->bearinge->bearing ?? '' ,
         ],
         [
             'title' => 'Pneumatic Control',
-            'description' =>  $quotation->pneumaticControl->pneumatic_control ?? 'N.A' ,
+            'description' =>   $quotation->pneumatic->pneumatic ?? '' ,
         ],
     ];
 @endphp

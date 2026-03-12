@@ -94,7 +94,7 @@ $capacity=implode(' ',$capacity);
             <tr><td>• &nbsp; Model</td><td class="value-cell">{{ $firstPart }}</td></tr>
             <tr><td>• &nbsp; Product</td><td class="value-cell">{{ $quotation->application->name ?? '' }} </td></tr>
 
-            @if(isset($quotation->material_to_process))
+            @if(isset($quotation->material_to_process_id))
                 <tr><td>• &nbsp; Material to Process</td><td class="value-cell">{{ $quotation->materialToProcess->material_to_process ?? '' }}</td></tr>
             @endif
             <tr><td>• &nbsp; Batch</td><td class="value-cell">{{ $quotation->batch->batches ?? '' }} Kgs</td></tr>   
