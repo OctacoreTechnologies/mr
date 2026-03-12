@@ -142,4 +142,4 @@
 
 @push('css')
     <link rel="stylesheet" href="{{asset('style/customer.css')}}">
-@endpush
+@endpush   
