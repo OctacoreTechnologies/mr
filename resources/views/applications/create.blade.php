@@ -90,8 +90,8 @@
                     fgroup-class="mb-3" />
             </div>
             <div class="col-md-6">
-                <x-adminlte-input name="cooling_water_inlet" label="Cooling Water Inlet Temp."
-                    value="{{ old('cooling_water_inlet') }}" placeholder="Enter Cooling Temp." fgroup-class="mb-3" />
+                <x-adminlte-input name="cooling_water_inlet_temperature" label="Cooling Water Inlet Temp."
+                    value="{{ old('cooling_water_inlet_temperature') }}" placeholder="Enter Cooling Temp." fgroup-class="mb-3" />
             </div>
             <div class="col-md-6">
                 <x-adminlte-input name="cooling_water_flow_rate" label="Cooling Water Flow Rate"

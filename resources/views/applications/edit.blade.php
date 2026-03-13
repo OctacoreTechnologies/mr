@@ -87,7 +87,7 @@
                     placeholder="Enter Operating Pressure" fgroup-class="mb-3" />
             </div>
             <div class="col-md-6">
-                <x-adminlte-input name="cooling_water_inlet" label="Cooling Water Inlet Temp." value="{{ old('cooling_water_inlet', $product->cooling_water_inlet_temperature) }}"
+                <x-adminlte-input name="cooling_water_inlet_temperature" label="Cooling Water Inlet Temp." value="{{ old('cooling_water_inlet_temperature', $product->cooling_water_inlet_temperature) }}"
                     placeholder="Enter Cooling Temp." fgroup-class="mb-3" />
             </div>
             <div class="col-md-6">
@@ -101,7 +101,7 @@
             <div class="col-md-6">
                 <x-adminlte-input name="contact_part" label="Contact Part" value="{{ old('contact_part', $product->contact_part) }}"
                     placeholder="Enter Contact Part" fgroup-class="mb-3" />
-            </div>
+            </div>  
             <div class="col-md-6">
                 <x-adminlte-input name="size_of_input_material" label="Size of Input Material" value="{{ old('size_of_input_material',$product->size_of_input_material) }}"
                     placeholder="Enter Size of Input Material(e.g 2,4)" fgroup-class="mb-3" />

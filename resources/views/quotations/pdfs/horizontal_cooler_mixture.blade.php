@@ -87,10 +87,9 @@
     $parts = explode('/', $modelName);
 
     $firstPart = trim($parts[0] ?? '');
-    $secondPart = trim($parts[1] ?? '');
 
     // Extract numeric capacity safely
-    preg_match('/(\d+)/', $secondPart, $matches);
+    preg_match('/(\d+)/', $firstPart, $matches);
     $capacity = isset($matches[1]) ? (int) $matches[1] : 0;
 
     // Useful volume calculation (70%)
@@ -145,7 +144,7 @@
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch Size</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->batche2->batches ?? '' }}Kg( 4 Batch/Hr )</td>
+                <td class="value-cell">:&nbsp;{{ $quotation->batch->batches ?? '' }} Kg( 4 Batch/Hr )</td>
             </tr>
 
             <tr>
@@ -161,7 +160,7 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet
                     Temperature</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->cooling_water_inlet_temperature ?? '' }} </td>
+                <td class="value-cell">:&nbsp;{{ $quotation->cooling_water_inlet_temperature??'' }} </td>
             </tr>
 
             <tr>
