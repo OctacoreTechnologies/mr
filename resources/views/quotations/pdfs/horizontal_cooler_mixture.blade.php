@@ -296,7 +296,7 @@
     }
 </style>
 
-<x-technical-specification-one heading-number="3." heading-text="TECHNICAL SPECIFICATION OF MIXER" :items="$mixerSpecs" />
+<x-technical-specification-one heading-number="2." heading-text="TECHNICAL SPECIFICATION OF MIXER" :items="$mixerSpecs" />
 <x-technical-specification-two :items="$mixerSpecs2" />
 <x-technical-specification-two :items="$mixerSpecs3" />
 
