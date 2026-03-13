@@ -135,25 +135,51 @@
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
                 <td class="value-cell">:&nbsp;{{ $quotation->application->name ?? '' }} </td>
             </tr>
-
-            @if (isset($quotation->material_to_process_id))
-                <tr>
-                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Material to Process
-                    </td>
-                    <td class="value-cell">:&nbsp;{{ $quotation->materialToProcess->material_to_process ?? '' }}</td>
-                </tr>
-            @endif
+             
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->batch->batches ?? '' }} Kgs</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;  Total Capacity</td>
+                <td class="value-cell">:&nbsp;{{ $capacity }} Ltr</td>
             </tr>
-
-            @if (isset($quotation->mixing_tool_id))
-                <tr>
-                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</td>
-                    <td class="value-cell">:&nbsp;{{ $quotation->mixingTool->mixing_tool ?? '' }}</td>
-                </tr>
-            @endif
+             
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Useful Volume</td>
+                <td class="value-cell">:&nbsp;{{ $usefulVolume }} Ltr</td>
+            </tr>
+             
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch Size</td>
+                <td class="value-cell">:&nbsp;{{ $quotation->batche2->batches??'' }}Kg( 4 Batch/Hr )</td>
+            </tr>
+             
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;  Contact Part</td>
+                <td class="value-cell">:&nbsp;{{ $quotation->contact_part??' ' }}</td>
+            </tr>
+             
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;  Water Pressure</td>
+                <td class="value-cell">:&nbsp;{{ $quotation->water_pressure??' ' }} Bar</td>
+            </tr>
+             
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet Temperature</td>
+                <td class="value-cell">:&nbsp;{{ $quotation->cooling_water_inlet_temperature??'' }} </td>
+            </tr>
+             
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Flow Rate</td>
+                <td class="value-cell">:&nbsp;{{ $quotation->cooling_water_flow_rate??'' }} m3/h</td>
+            </tr>
+             
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Feeding Air Pressure</td>
+                <td class="value-cell">:&nbsp;{{ $quotation->feeding_air_pressure??' ' }} Bar</td>
+            </tr>
+             
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;  Compressed Air Consumption</td>
+                <td class="value-cell">:&nbsp;{{ $quotation->compress_air_consumption??'' }} Nm3/h</td>
+            </tr>
         </table>
 
 
