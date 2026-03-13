@@ -392,11 +392,10 @@ class QuotationController extends Controller
 
         $termCondition = null;
         $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'items'])->findOrFail($id);
-        if($quotation->customer->location_type == 'international'){
+        if ($quotation->customer->location_type == 'international') {
             $termCondition = TearmCondition::findOrFail(2);
-        }
-        else{
-               $termCondition = TearmCondition::findOrFail(1);
+        } else {
+            $termCondition = TearmCondition::findOrFail(1);
         }
         $words = convertToIndianWords((int) ($quotation->total ?? 0) - (int) ($quotation->discount ?? 0));
         $viewName = null;
@@ -404,6 +403,8 @@ class QuotationController extends Controller
             $viewName = "quotations.new_pdf";
         } else if ($quotation->machine->name == 'Vertical Cooler Mixer') {
             $viewName = "quotations.pdfs.vertical_cooler_mixture";
+        } else if ($quotation->machine->name == 'Horizontal Cooler Mixter') {
+            $viewName = "quotations.pdfs.horizontal_cooler_mixture";
         } else if ($quotation->machine->name == 'Grinder') {
             $viewName = "quotations.pdfs.grinder";
         } else if ($quotation->machine->name == 'Heater and Vertical Cooler Mixer') {
