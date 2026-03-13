@@ -403,7 +403,7 @@ class QuotationController extends Controller
             $viewName = "quotations.new_pdf";
         } else if ($quotation->machine->name == 'Vertical Cooler Mixer') {
             $viewName = "quotations.pdfs.vertical_cooler_mixture";
-        } else if ($quotation->machine->name == 'Horizontal Cooler Mixter') {
+        } else if ($quotation->machine->name == 'Horizontal Cooler Mixer') {
             $viewName = "quotations.pdfs.horizontal_cooler_mixture";
         } else if ($quotation->machine->name == 'Grinder') {
             $viewName = "quotations.pdfs.grinder";
