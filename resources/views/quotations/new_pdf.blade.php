@@ -344,6 +344,12 @@
         .offer-table tbody {
             page-break-inside: auto;
         }
+
+        .specification {
+            position: relative;
+            top: 66px;
+            right: 20px;
+        }
     </style>
 </head>
 
@@ -623,10 +629,10 @@
         </div>
     </div>
     {{-- start --}}
-    <div class="page-break" style="padding: 110px 20px 10px 10px;  font-size: 14px;  box-sizing: border-box;">
-        <div class="technical-datayrt">
+    <div class="page-break" style="padding: 27px 20px 15px 20px;  font-size: 14px;  box-sizing: border-box;">
+        <div class="specification">
 
-            <h2 style="margin-bottom: 10px; text-decoration: underline;">2.&nbsp; TECHNICAL SPECIFICATION OF MIXER</h2>
+            <h2 style="margin-bottom: 10px; text-decoration: underline;font-size:24px;">2.&nbsp; TECHNICAL SPECIFICATION OF MIXER</h2>
 
             <!-- 2.2 MIXING VESSEL LID -->
             <table class="parameter-table"
@@ -983,7 +989,7 @@
                             </td>
                             <td
                                 style="text-align: right; padding: 12px 15px; font-weight: 600; border: 1px solid black;">
-                                {{ format_indian_number(($amount+$subTotal) * ($quotation->discount_percentage / 100)) }}
+                                {{ format_indian_number(($amount + $subTotal) * ($quotation->discount_percentage / 100)) }}
                             </td>
                         </tr>
                         <tr>

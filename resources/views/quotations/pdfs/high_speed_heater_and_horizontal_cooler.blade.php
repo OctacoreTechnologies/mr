@@ -5,53 +5,6 @@
 
 <x-technical-data-s-a :quotation="$quotation" />
 
-<!-- Technical Specifification -->
-<style>
-    /* General Table Styling */
-    .parameter-table-t {
-        border-collapse: collapse;
-        font-size: 14px;
-        width: 90%;
-        line-height: 1;
-        margin: 0 5px 15px 2px;
-        padding-bottom: 25px;
-    }
-
-    .parameter-table-t td {
-        padding: 4px;
-        vertical-align: top;
-        word-wrap: break-word;
-        /* Allow long words to break and wrap onto the next line */
-        word-break: break-word;
-        /* Prevent overflow of long words */
-    }
-
-
-
-    .parameter-heading h3 {
-        padding: 6px 0px 6px 15px;
-        /* background-color: #2daae3; */
-        /* border-radius: 15px; */
-        /* color: white; */
-        color: black;
-        font-size: small;
-        text-decoration: underline;
-    }
-
-    /* Make the table layout auto to allow dynamic width for content */
-    .parameter-table {
-        width: 100%;
-        table-layout: auto;
-        /* Allow cells to adjust according to content */
-        margin-left: 20px;
-    }
-
-    /* Optional: Improve readability by increasing row height for better spacing */
-    .parameter-table td {
-        height: 30px;
-        /* Adjust row height */
-    }
-</style>
 
 @php
     $mixerSpecs = [
@@ -131,7 +84,7 @@
         ],
     ];
 @endphp
-<x-technical-specification-one :headingText="'TECHNICAL SPECIFICATIONS OF HIGH-SPEED HEATER MIXER'" :items="$mixerSpecs" />
+<x-technical-specification-one :headingText="'TECHNICAL SPECIFICATIONS OF HEATER MIXER'" :items="$mixerSpecs" />
 <x-technical-specification-two :items="$mixerSpecs2" />
 
 @php
@@ -167,7 +120,7 @@
     ];
     $mixerSpecs2 = [
           [
-            'title' => 'LID &amp; SAFETY ARRANGEMENT',
+            'title' => 'LID & SAFETY ARRANGEMENT',
             'description' => 'Lid MOC: SS 304
                         Pneumatically Operated with Cylinders. Two-Hand-Operation
                         Operating Angle &gt; 50°
@@ -177,7 +130,7 @@
                         Circuit',
         ],
         [
-            'title' => 'BEARING HOUSING &amp; SHAFTING',
+            'title' => 'BEARING HOUSING & SHAFTING',
             'description' => 'Mixing Shaft Material Mild Steel with SS 304 Thick Pipe Jacketing.Power Transfer Directly from the Gear Box with Heavy Duty Bearings, Bearing Housings Fixed on the Shaft with Eccentric Clamping Rings for a Comfortable Maintenance and an Easy Access, the Bearings Are Installed in a Separate Housing Outside the Cooling Mixer Vessel. 
                           Seal Elements: Radial Shaft Seal Rings &amp; Lubrication: Grease Air Purge
                           Seal Rings with Air-heterodyne Reliably Keeps the Seat of the Seals
@@ -219,7 +172,7 @@
         ],
  ];
 @endphp
-<x-technical-specification-one heading-number="3." heading-text="TECHNICAL SPECIFICATION OF MIXER" :items="$mixerSpecs" />
+<x-technical-specification-one heading-number="3." heading-text="TECHNICAL SPECIFICATION OF HORIZONTAL COOLER MIXER" :items="$mixerSpecs" />
 <x-technical-specification-two :items="$mixerSpecs2" />
 <x-technical-specification-two :items="$mixerSpecs3" />
 

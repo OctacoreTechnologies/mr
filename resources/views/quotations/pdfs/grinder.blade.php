@@ -85,7 +85,7 @@
 <div class="page-break" style="padding: 27px 20px 15px 10px;  font-size: 14px;  box-sizing: border-box;">
     <div class="specification">
 
-        <h2 style="margin-bottom: 10px; text-decoration: underline;">2.&nbsp; TECHNICAL SPECIFICATION OF GRINDER</h2>
+        <h2 style="margin-bottom: 10px; text-decoration: underline;font-size:24px;">2.&nbsp; TECHNICAL SPECIFICATION OF GRINDER</h2>
 
         <!-- 2.2 MIXING VESSEL LID -->
         <div style="font-size: 11pt; line-height: 1.5; padding-left: 10px; padding-top:40px">

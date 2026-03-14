@@ -112,207 +112,193 @@
         </table>
 
     </div>
-</div>--}}
+</div> --}}
 <!-- start  -->
-  <style>
-/* General Table Styling */
-        .parameter-table-t {
-            border-collapse: collapse;
-            font-size: 14px;
-            width: 90%;
-            line-height: 1;
-            margin: 0 5px 15px 2px;
-            padding-bottom:25px; 
-        }
+<style>
+    .value-cell {
+        padding: 8px;
+    }
 
-        .parameter-table-t td {
-            padding: 4px;
-            vertical-align: top;
-            word-wrap: break-word; /* Allow long words to break and wrap onto the next line */
-            word-break: break-word; /* Prevent overflow of long words */
-        }
-
-        .parameter-table-t .value-cell::before {
-            content: ": ";
-        }
-
-        .parameter-heading {
-            /* text-align: left;
-            width: 95%;
-            margin-bottom: 10px;
-            margin-top: 20px;
-            margin-left:20px;  */
-            /* text-decoration: underline; */
-        }
-        .parameter-heading h3{
-            padding: 6px 0px 6px 15px;
-            /* background-color: #2daae3; */
-            /* border-radius: 15px; */
-            /* color: white; */
-            color: black;
-            font-size: small;
-            text-decoration: underline;
-        }
-
-        /* Make the table layout auto to allow dynamic width for content */
-        .parameter-table {
-            width: 100%;
-            table-layout: auto;  /* Allow cells to adjust according to content */
-            margin-left: 20px;
-        }
-
-        /* Optional: Improve readability by increasing row height for better spacing */
-        .parameter-table td {
-            height: 30px;  /* Adjust row height */
-        }
-
-        /* Page Break Styling */
-        .page-break {
-            page-break-before: always;
-        }
-
-        /* Heading Style */
-        h2, h3 {
-            margin: 0;
-            /* font-size: 16px; */
-            font-weight: normal;
-        }
-
-        h2 {
-            text-decoration: underline;
-        }
-
-        /* Optional: Ensure long words and large texts wrap properly */
-        .value-cell {
-            white-space: normal; /* Allow text to break and wrap properly */
-        }
-   /* .techincal-data {
-      position: absolute;
-      top: 115px;
-    } */
+    .value-cell::before {
+        content: ": ";
+    }
 </style>
 <x-table-content :specification="'MIXER'" :pageTechnicalData="4" :pageSpecification="6" :pageOffer="8" :pageTerms="9" />
 @php
-$modelName=$quotation->modele->name;
-$parts = explode('/', $modelName);
+    $modelName = $quotation->modele->name;
+    $parts = explode('/', $modelName);
 
-// Trim each part to remove extra whitespace
-$firstPart = trim($parts[0]);
-$secondPart = trim($parts[1]);
+    // Trim each part to remove extra whitespace
+    $firstPart = trim($parts[0]);
+    $secondPart = trim($parts[1]);
 @endphp
 
+<div class="page-break">
+    <div class="techincal-data parameter-table techincal-specification">
+        <h2 style="text-decoration: underline">1. TECHNICAL DATA</h2>
 
-<div class="page-break" style="margin-left:-12px;">
-    <div class="techincal-data parameter-table-t" style="padding-top:4px; ">
-        <h2 style="font-weight: bolder; font-size: 24px;" >1. TECHNICAL DATA</h2>
-
-        <!-- DESIGN PARAMETER -->
-        <div class="parameter-heading"  style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
-            <h3 style="font-weight: bold;">1.1 <span> DESIGN PARAMETER OF HIGH SPEED HEATER </h3>
+        <div class="technical-data-sub-head"
+            style="text-align:left; width: 95%; font-family: bolder; text-decoration: underline;">
+            <h3 style="font-weight: bold;">1.1 <span> DESIGN PARAMETER OF HEATER </h3>
         </div>
+        <table class="parameter-table"
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Model</td>
+                <td class="value-cell">{{ $firstPart }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
+                <td class="value-cell">{{ $quotation->application->name ?? '' }} </td>
+            </tr>
 
-        <table class="parameter-table" style="padding:5px 0 0 25px">
-            <tr><td>• &nbsp; Model</td><td class="value-cell">{{ $firstPart }}</td></tr>
-            <tr><td>• &nbsp; Product</td><td class="value-cell">{{ $quotation->application->name ?? '' }} </td></tr>
-
-            @if(isset($quotation->material_to_process_id))
-                <tr><td>• &nbsp; Material to Process</td><td class="value-cell">{{ $quotation->materialToProcess->material_to_process ?? '' }}</td></tr>
+            @if (isset($quotation->material_to_process_id))
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Material to Process
+                    </td>
+                    <td class="value-cell">{{ $quotation->materialToProcess->material_to_process ?? '' }}</td>
+                </tr>
             @endif
-            <tr><td>• &nbsp; Batch</td><td class="value-cell">{{ $quotation->batch->batches ?? '' }} Kgs</td></tr>   
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch</td>
+                <td class="value-cell">{{ $quotation->batch->batches ?? '' }} Kgs</td>
+            </tr>
 
-            @if(isset($quotation->mixing_tool_id))
-                <tr><td>• &nbsp; Mixing Tool</td><td class="value-cell">{{ $quotation->mixingTool->mixing_tool ?? '' }}</td></tr>
+            @if (isset($quotation->mixing_tool_id))
+                <tr>
+                    <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</td>
+                    <td class="value-cell">{{ $quotation->mixingTool->mixing_tool ?? '' }}</td>
+                </tr>
             @endif
         </table>
 
         <!-- ELECTRICAL PARAMETERS -->
-        <div class="parameter-heading" style="text-align:left; width: 95%;">
-            <h3 style="font-weight: bolder;">1.2 ELECTRICAL PARAMETERS</h3>
+        <div class="technical-data-sub-head" style="text-align: left;width: 95%;">
+            <h3 style="text-decoration: underline;">1.2 ELECTRICAL PARAMETERS</h3>
         </div>
 
-        <table class="parameter-table"  style="padding:5px 0 0 25px">
+        <table class="parameter-table"
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
             <tr>
-                <td>• &nbsp; Motor Requirement</td>
-                <td class="value-cell">{{ $quotation->motorRequirement->motor_requirement ?? '' }}</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Requirement</td>
+                <td style="padding: 8px;  text-align: justify;" class="value-cell">
+                    {{ $quotation->motorRequirement->motor_requirement ?? '' }}</td>
             </tr>
             <tr>
-                <td>• &nbsp; Voltage</td>
-                <td class="value-cell">415 V</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
+                <td style="padding: 8px;  text-align: justify;" class="value-cell">415 V</td>
             </tr>
             <tr>
-                <td>• &nbsp; Frequency</td>
-                <td class="value-cell">50Hz</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
+                <td style="padding: 8px;  text-align: justify;" class="value-cell">50Hz</td>
             </tr>
             <tr>
-                <td>• &nbsp; Control Panel</td>
-                <td class="value-cell">
-                    Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
+                <td style="padding: 8px;  text-align: justify;" class="value-cell">Complete Electrical Control Panel
+                    comprising of Thermocouple Wire, Digital Temperature Indicator with Ammeter & Voltmeter, Limit
+                    Switch & MCCB provided for safety precaution.
                 </td>
             </tr>
         </table>
     </div>
 </div>
 
-<div class="page-break" style="margin-left:-12px;">
-    <div class="techincal-data parameter-table-t">
-        <div class="parameter-heading" style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
+<div class="page-break" style="page-break-before: always; width: 100%;">
+    <div class="techincal-data parameter-table techincal-specification">
+        <h2></h2>
+        <div class="technical-data-sub-head" style="text-align: left;width: 95%;">
             <h3 style="font-weight: bolder;">1.3 DESIGN PARAMETER OF VERTICAL COOLER MIXER</h3>
         </div>
 
-        <table class="parameter-table"  style="padding:5px 0 0 25px">
-            <tr><td>• &nbsp; Model</td><td class="value-cell">{{ $secondPart }}</td></tr>
-            <tr><td>• &nbsp; Product</td><td class="value-cell">{{ $quotation->application->name ?? '' }} Compound</td></tr>
-            <tr><td>• &nbsp; Batch Size</td><td class="value-cell">{{ $quotation->batche2->batches??'' }}Kg  </td></tr>
-            <tr><td>• &nbsp; Contact Part</td><td class="value-cell">{{ $quotation->contact_part??' ' }}  </td></tr>
-            <tr><td>• &nbsp; Water Pressure</td><td class="value-cell">{{ $quotation->water_pressure??' ' }} Bar </td></tr>
-            <tr><td>• &nbsp; Operating Pressure</td><td class="value-cell">{{ $quotation->operating_pressure??' ' }} Bar </td></tr>
-            <tr><td>• &nbsp; Cooling Water Inlet Temperature</td><td class="value-cell">{{ $quotation->cooling_water_inlet_temperature??'' }}  </td></tr>
-            <tr><td>• &nbsp; Cooling Water Flow Rate</td><td class="value-cell">{{ $quotation->cooling_water_flow_rate??'' }} m3/h  </td></tr>
-            <tr><td>• &nbsp; Feeding Air Pressure</td><td class="value-cell">{{ $quotation->feeding_air_pressure??'' }} Bar </td></tr>
+        <table class="parameter-table"
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width:60%;">• &nbsp; Model</td>
+                <td class="value-cell">{{ $secondPart }}</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
+                <td class="value-cell">{{ $quotation->application->name ?? '' }} Compound</td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch Size</td>
+                <td class="value-cell">{{ $quotation->batche2->batches ?? '' }}Kg </td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Contact Part</td>
+                <td class="value-cell">{{ $quotation->contact_part ?? ' ' }} </td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Water Pressure</td>
+                <td class="value-cell">{{ $quotation->water_pressure ?? ' ' }} Bar </td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Operating Pressure</td>
+                <td class="value-cell">{{ $quotation->operating_pressure ?? ' ' }} Bar </td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet
+                    Temperature</td>
+                <td class="value-cell">{{ $quotation->cooling_water_inlet_temperature ?? '' }} </td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Flow Rate
+                </td>
+                <td class="value-cell">{{ $quotation->cooling_water_flow_rate ?? '' }} m3/h </td>
+            </tr>
+            <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Feeding Air Pressure</td>
+                <td class="value-cell">{{ $quotation->feeding_air_pressure ?? '' }} Bar </td>
+            </tr>
         </table>
 
         <!-- ELECTRICAL PARAMETERS -->
-        <div class="parameter-heading" style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
+        <div class="technical-data-sub-head"
+            style="text-align:left; width: 95%; font-family: bolder; text-decoration: underline;">
             <h3 style="font-weight: bolder;">1.4 ELECTRICAL PARAMETERS</h3>
         </div>
 
-        <table class="parameter-table"  style="padding:5px 0 0 25px">
+        <table class="parameter-table"
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
             <tr>
-                <td>• &nbsp; Motor Requirement</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Requirement</td>
                 <td class="value-cell">{{ $quotation->motorRequirement2->motor_requirement ?? '' }}</td>
             </tr>
             <tr>
-                <td>• &nbsp; Voltage</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
                 <td class="value-cell">415 V</td>
             </tr>
             <tr>
-                <td>• &nbsp; Frequency</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
                 <td class="value-cell">50Hz</td>
             </tr>
             <tr>
-                <td>• &nbsp; Control Panel</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
                 <td class="value-cell">
-                    Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
+                    Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
+                    with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
                 </td>
             </tr>
         </table>
     </div>
 </div>
 
-<div class="page-break" style="margin-left:-12px;">
-    <div class="techincal-data parameter-table-t" style="text-align:left; width: 95%; padding:40px 0 15px 0; text-size:16px">
-        <div class="parameter-heading">
+<div class="page-break" style="page-break-before: always; width: 100%;">
+    <div class="techincal-data parameter-table techincal-specification">
+        <h2></h2>
+        <div class="technical-data-sub-head" style="text-align: left;width: 95%;">
             <h3 style="font-weight: bolder;">1.5 TRANSMISSION</h3>
         </div>
 
-        <table class="parameter-table"  style="padding:5px 0 0 25px">
+      <table class="parameter-table"
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
             <tr>
-                <td>• &nbsp; Gear Box</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Gear Box</td>
                 <td class="value-cell">Speed reduction Gear box is provided Heli Bevel Type</td>
             </tr>
-      
+
             <tr>
-                <td>• &nbsp; Coupling </td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Coupling </td>
                 <td class="value-cell">Coupling is used for Higher Torque for Gear Box Safety</td>
             </tr>
         </table>
@@ -324,7 +310,8 @@ $secondPart = trim($parts[1]);
     $mixerSpecs = [
         [
             'title' => 'Vessel (Heater & Cooler)',
-            'description' => ' Inside Made from SS – 304 Grade Plate and Outside Jacketed by Mild Steel Plate.   Jacketed Construction Provided for Heating or Cooling with Suitable Media. Material Discharge Assembly is fitted at the Bottom, Operated by Pneumatic Cylinder. Cooling Ring MOC – 304 Grade.'
+            'description' =>
+                ' Inside Made from SS – 304 Grade Plate and Outside Jacketed by Mild Steel Plate.   Jacketed Construction Provided for Heating or Cooling with Suitable Media. Material Discharge Assembly is fitted at the Bottom, Operated by Pneumatic Cylinder. Cooling Ring MOC – 304 Grade.',
         ],
         [
             'title' => 'Lid',
@@ -332,75 +319,76 @@ $secondPart = trim($parts[1]);
                              Equipped with gasket, on lid edge and with lid locking arrangement. The lid is fitted with the Followings flanged openings <br/>
                              1. One for fitting arrangements for  Deflector and thermocouple .<br />
                              2. One for addition of chemicals . <br />
-                             '
-                             //3. Two for viewing glasses, operated pneumatically.  <br />
+                             ',
+            //3. Two for viewing glasses, operated pneumatically.  <br />
         ],
         [
             'title' => 'Defelector',
-            'description' => 'Made up of Stainless Steel – 304 grades or Alloy steel Equipped with Thermocouple Wire for    Temperature Measurement. Installed with provision of Varying Angle and Height to Ensure Maximum Material Circulation '
+            'description' =>
+                'Made up of Stainless Steel – 304 grades or Alloy steel Equipped with Thermocouple Wire for    Temperature Measurement. Installed with provision of Varying Angle and Height to Ensure Maximum Material Circulation ',
         ],
         [
             'title' => 'Discharge Valve',
-            'description' => 'Made Up of SS 304 Provided with Gasket   & Operated Pneumatically'
+            'description' => 'Made Up of SS 304 Provided with Gasket   & Operated Pneumatically',
         ],
         [
-          'title'=>'Shaft',
-          'description'=>'Shaft is Specially Manufactured from Alloy Steel, Hardened and Ground.'
+            'title' => 'Shaft',
+            'description' => 'Shaft is Specially Manufactured from Alloy Steel, Hardened and Ground.',
         ],
-
 
         // Add more items as needed
     ];
 
-
-
-     $mixerSpecs2 = [
+    $mixerSpecs2 = [
         [
-         'title'=>'Mixing Tool',
-         'description'=>'Specially Designed Shape and Angle Suitable for your Compound with Height adjustment. Spacers with wear resistance treatment. Cooler Mixer Blade Made from STAINLESSSTEEL: 304 specially designed shovel type'
+            'title' => 'Mixing Tool',
+            'description' =>
+                'Specially Designed Shape and Angle Suitable for your Compound with Height adjustment. Spacers with wear resistance treatment. Cooler Mixer Blade Made from STAINLESSSTEEL: 304 specially designed shovel type',
         ],
 
         [
-         'title'=>'Bearing Housing',
-         'description'=>'Mixing Vessel fitted on Steel Plates and Bearing Housing fitted on Steel Plates with Heavy Duty Bearings with Water Cooling and Greasing Arrangements. The resin Leakage to Bearings is Prevented by our Special Design.'
+            'title' => 'Bearing Housing',
+            'description' =>
+                'Mixing Vessel fitted on Steel Plates and Bearing Housing fitted on Steel Plates with Heavy Duty Bearings with Water Cooling and Greasing Arrangements. The resin Leakage to Bearings is Prevented by our Special Design.',
         ],
 
         [
-         'title'=>'Motor',
-          'description' => ($quotation->makeMotor?->name ?? '') . '.'
-        ],
-        
-        [
-         'title'=>'Driving System',
-         'description'=>'The drive system incorporates with V-belt and tapper lock pulley (SPC type) to give Efficient power drive transmission. The Belts  Are Tightened by means of motor sliding screw.'
+            'title' => 'Motor',
+            'description' => ($quotation->makeMotor?->name ?? '') . '.',
         ],
 
         [
-         'title'=>'Mounting Structure',
-         'description'=>' Sturdy MS Channel from Duly Covered with MS Sheet and Coated with Water resistant enamel   Coating Painting.'
+            'title' => 'Driving System',
+            'description' =>
+                'The drive system incorporates with V-belt and tapper lock pulley (SPC type) to give Efficient power drive transmission. The Belts  Are Tightened by means of motor sliding screw.',
+        ],
+
+        [
+            'title' => 'Mounting Structure',
+            'description' =>
+                ' Sturdy MS Channel from Duly Covered with MS Sheet and Coated with Water resistant enamel   Coating Painting.',
         ],
         [
-         'title'=>'Electrical Control',
-         'description'=> $quotation->electricalControl->electrical_control??''
+            'title' => 'Electrical Control',
+            'description' => $quotation->electricalControl->electrical_control ?? '',
         ],
         [
-         'title'=>'AC Frequency Drive',
-         'description'=> $quotation->acFrequencyDrive->ac_fequency_drive  ?? ''
+            'title' => 'AC Frequency Drive',
+            'description' => $quotation->acFrequencyDrive->ac_fequency_drive ?? '',
         ],
         [
             'title' => 'Bearing',
-            'description' =>  $quotation->bearinge->bearing ??''
+            'description' => $quotation->bearinge->bearing ?? '',
         ],
         [
             'title' => 'Pneumatic Control',
-            'description' =>$quotation->pneumatic->pneumatic??''
+            'description' => $quotation->pneumatic->pneumatic ?? '',
         ],
-    
     ];
 @endphp
 
-<x-technical-specification-one   :items="$mixerSpecs" />
-<x-technical-specification-two  :items="$mixerSpecs2" />
+<x-technical-specification-one :items="$mixerSpecs" />
+<x-technical-specification-two :items="$mixerSpecs2" />
 
 
 

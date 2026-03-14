@@ -3,50 +3,50 @@
         [
             'title' => 'Cooling Vessel',
             'description' => 'Inside Made from Stainless Steel with
-        Cooling Ring MOC – 304 Grade. Outside
-        Jacketed by Mild Steel Plates. Jacketed
-        Construction Provided for Cooling with
-        Suitable Media. Material Discharge Opening
-        Assembly is Fitted at the Bottom Operated by
-        Pneumatic Cylinder.',
+                            Cooling Ring MOC – 304 Grade. Outside
+                            Jacketed by Mild Steel Plates. Jacketed
+                            Construction Provided for Cooling with
+                            Suitable Media. Material Discharge Opening
+                            Assembly is Fitted at the Bottom Operated by
+                            Pneumatic Cylinder.',
         ],
         [
             'title' => 'DISCHARGE VALVE',
             'description' => 'Material Discharge Opening Assembly is Fitted at the Bottom Operated
-                         by Butterfly Valve. Butterfly Valve Wafer MOC: SS 304 &amp; Seal: EPDM,
-                         A generously dimensioned discharge outlet ensures rapid product
-                         emptying and minimizes residue, even for materials with low flowability.
-                         ',
+                                             by Butterfly Valve. Butterfly Valve Wafer MOC: SS 304 &amp; Seal: EPDM,
+                                             A generously dimensioned discharge outlet ensures rapid product
+                                             emptying and minimizes residue, even for materials with low flowability.
+                                             ',
         ],
         [
             'title' => 'Mixing Tool',
             'description' => 'MOC: Paddle and Paddle Carrier are SS 304 Shaft Fastening is Achieved Using Axially Adjustable Clamping Devices.
-                              The Cooling Mixer Paddles Are Engineered for Intensive Axial and
-                              Radial Circulation, Enhancing Both Mixing Efficiency and Cooling
-                              Capacity While Ensuring Optimal Heat Transfer. Even Minimal
-                              Quantities of Fine Components Are Homogeneously Blended During
-                              the Short Cooling Phase',
+                                                  The Cooling Mixer Paddles Are Engineered for Intensive Axial and
+                                                  Radial Circulation, Enhancing Both Mixing Efficiency and Cooling
+                                                  Capacity While Ensuring Optimal Heat Transfer. Even Minimal
+                                                  Quantities of Fine Components Are Homogeneously Blended During
+                                                  the Short Cooling Phase',
         ],
         // Add more items as needed
     ];
     $mixerSpecs2 = [
         [
-            'title' => 'LID &amp; SAFETY ARRANGEMENT',
+            'title' => 'LID & SAFETY ARRANGEMENT',
             'description' => 'Lid MOC: SS 304
-                        Pneumatically Operated with Cylinders. Two-Hand-Operation
-                        Operating Angle &gt; 50°
-                        Lid Safety: According to Specification System: Solenoid Safety Sensor
-                        (Limit Switch)
-. The Cooling Mixer Lid is Integrated into the Safety
-                        Circuit',
+                                            Pneumatically Operated with Cylinders. Two-Hand-Operation
+                                            Operating Angle &gt; 50°
+                                            Lid Safety: According to Specification System: Solenoid Safety Sensor
+                                            (Limit Switch)
+                    . The Cooling Mixer Lid is Integrated into the Safety
+                                            Circuit',
         ],
         [
-            'title' => 'BEARING HOUSING &amp; SHAFTING',
+            'title' => 'BEARING HOUSING SHAFTING',
             'description' => 'Mixing Shaft Material Mild Steel with SS 304 Thick Pipe Jacketing.Power Transfer Directly from the Gear Box with Heavy Duty Bearings, Bearing Housings Fixed on the Shaft with Eccentric Clamping Rings for a Comfortable Maintenance and an Easy Access, the Bearings Are Installed in a Separate Housing Outside the Cooling Mixer Vessel. 
-                          Seal Elements: Radial Shaft Seal Rings &amp; Lubrication: Grease Air Purge
-                          Seal Rings with Air-heterodyne Reliably Keeps the Seat of the Seals
-                          Free from Mixing Material.
-                         ',
+                                              Seal Elements: Radial Shaft Seal Rings &amp; Lubrication: Grease Air Purge
+                                              Seal Rings with Air-heterodyne Reliably Keeps the Seat of the Seals
+                                              Free from Mixing Material.
+                                             ',
         ],
         [
             'title' => 'Mounting Structure',
@@ -99,7 +99,8 @@
 
 <x-header-footer-pdf />
 <x-client-pdf-template :quotation="$quotation" />
-<x-table-content :specification="'Horizontal Cooler Mixture'" :pageTechnicalData="4" :pageSpecification="6" :pageOffer="9" :pageTerms="10" />
+<x-table-content :specification="'Horizontal Cooler Mixture'" :pageTechnicalData="4" :pageSpecification="6"
+    :pageOffer="9" :pageTerms="10" />
 <style>
     /* .value-cell::before {
         content: ": ";
@@ -117,7 +118,8 @@
         <!-- DESING PARAMETER OF HIGH-SPEED -->
         <div class="technical-data-sub-head"
             style="text-align:left; width: 95%; font-family: bolder; text-decoration: underline;">
-            {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3> --}}
+            {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3>
+            --}}
             <h3 style="text-decoration: underline;">1.1 <span>DESIGN PARAMETER OF
                     {{ strtoupper($quotation->machine->name) }}</span></h3>
         </div>
@@ -160,7 +162,7 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet
                     Temperature</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->cooling_water_inlet_temperature??'' }} </td>
+                <td class="value-cell">:&nbsp;{{ $quotation->cooling_water_inlet_temperature ?? '' }} </td>
             </tr>
 
             <tr>
@@ -190,7 +192,8 @@
         <h2></h2>
         <div class="technical-data-sub-head"
             style="text-align:left; width: 95%; font-family: bolder; text-decoration: underline;">
-            {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3> --}}
+            {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3>
+            --}}
             <h3 style="text-decoration: underline;">1.2 <span style="">ELECTRICAL PARAMETERS</span></h3>
 
         </div>
@@ -221,7 +224,8 @@
 
         <div class="technical-data-sub-head"
             style="text-align:left; width: 95%; font-family: bolder; text-decoration: underline;">
-            {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3> --}}
+            {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3>
+            --}}
             <h3 style="text-decoration: underline;">1.3 <span style="">TRANSMISSION</span></h3>
 
         </div>
@@ -249,54 +253,9 @@
     </div>
 </div>
 
-<style>
-    /* General Table Styling */
-    .parameter-table-t {
-        border-collapse: collapse;
-        font-size: 14px;
-        width: 90%;
-        line-height: 1;
-        margin: 0 5px 15px 2px;
-        padding-bottom: 25px;
-    }
 
-    .parameter-table-t td {
-        padding: 4px;
-        vertical-align: top;
-        word-wrap: break-word;
-        /* Allow long words to break and wrap onto the next line */
-        word-break: break-word;
-        /* Prevent overflow of long words */
-    }
-
-
-
-    .parameter-heading h3 {
-        padding: 6px 0px 6px 15px;
-        /* background-color: #2daae3; */
-        /* border-radius: 15px; */
-        /* color: white; */
-        color: black;
-        font-size: small;
-        text-decoration: underline;
-    }
-
-    /* Make the table layout auto to allow dynamic width for content */
-    .parameter-table {
-        width: 100%;
-        table-layout: auto;
-        /* Allow cells to adjust according to content */
-        /* margin-left: 20px; */
-    }
-
-    /* Optional: Improve readability by increasing row height for better spacing */
-    .parameter-table td {
-        height: 30px;
-        /* Adjust row height */
-    }
-</style>
-
-<x-technical-specification-one heading-number="2." heading-text="TECHNICAL SPECIFICATION OF MIXER" :items="$mixerSpecs" />
+<x-technical-specification-one heading-number="2." heading-text="TECHNICAL SPECIFICATION OF Horizontal Cooler Mixer"
+    :items="$mixerSpecs" />
 <x-technical-specification-two :items="$mixerSpecs2" />
 <x-technical-specification-two :items="$mixerSpecs3" />
 

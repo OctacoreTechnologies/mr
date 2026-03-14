@@ -132,7 +132,7 @@
         // Add more items as needed
     ];
 @endphp
-<x-technical-specification-one heading-number="2." heading-text="TECHNICAL SPECIFICATION OF MIXER" :items="$mixerSpecs" />
+<x-technical-specification-one heading-number="2." heading-text="TECHNICAL SPECIFICATION OF PULVERIZER" :items="$mixerSpecs" />
 
 <x-offer :quotation="$quotation" :words="$words" />
 <x-term-and-condition-pdf :termCondition="$termCondition" />

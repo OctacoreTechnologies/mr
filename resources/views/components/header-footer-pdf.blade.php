@@ -221,11 +221,12 @@
     position: relative;
     top:93px;
     right:10px;
+    margin-bottom: 30px;
   }
    .specification{
     position: relative;
-    top:83px;
-    right:18px;
+    top:66px;
+    right:20px;
   }
   .parameter-table {
      width: 90%;
@@ -327,6 +328,12 @@
   position: relative;
   right:20px;
 }
+.techincal-specification{
+    position:relative;
+    /* top:120px;
+    right: 28px; */
+    margin-bottom: 30px;
+  }
 </style>
 </head>
 
