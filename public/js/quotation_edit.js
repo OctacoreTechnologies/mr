@@ -238,6 +238,8 @@ function updateRemarkNumbers() {
 $(document).on('click', '.removeItem', function () {
     $(this).closest('.item-row').remove();
     updateItemNumbers();
+    updateTotal();
+
 });
 
 
@@ -265,6 +267,7 @@ function updateItemNumbers() {
         });
 
     });
+   
 }
 
 // ==============================
