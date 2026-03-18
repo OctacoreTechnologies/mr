@@ -102,7 +102,7 @@
         [
             'title' => 'DISCHARGE VALVE',
             'description' => 'Material Discharge Opening Assembly is Fitted at the Bottom Operated
-                         by Butterfly Valve. Butterfly Valve Wafer MOC: SS 304 &amp; Seal: EPDM,
+                         by Butterfly Valve. Butterfly Valve Wafer MOC: SS 304 & Seal: EPDM,
                          A generously dimensioned discharge outlet ensures rapid product
                          emptying and minimizes residue, even for materials with low flowability.
                          ',
@@ -132,7 +132,7 @@
         [
             'title' => 'BEARING HOUSING & SHAFTING',
             'description' => 'Mixing Shaft Material Mild Steel with SS 304 Thick Pipe Jacketing.Power Transfer Directly from the Gear Box with Heavy Duty Bearings, Bearing Housings Fixed on the Shaft with Eccentric Clamping Rings for a Comfortable Maintenance and an Easy Access, the Bearings Are Installed in a Separate Housing Outside the Cooling Mixer Vessel. 
-                          Seal Elements: Radial Shaft Seal Rings &amp; Lubrication: Grease Air Purge
+                          Seal Elements: Radial Shaft Seal Rings & Lubrication: Grease Air Purge
                           Seal Rings with Air-heterodyne Reliably Keeps the Seat of the Seals
                           Free from Mixing Material.
                          ',
@@ -144,7 +144,7 @@
         ],
         [
             'title' => 'Electrical Control',
-            'description' => 'ABB / SIEMENS / L &amp; T',
+            'description' => 'ABB / SIEMENS / L&T',
         ],
         [
             'title' => 'Bearing',

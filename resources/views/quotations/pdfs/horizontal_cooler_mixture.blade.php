@@ -11,9 +11,9 @@
                             Pneumatic Cylinder.',
         ],
         [
-            'title' => 'DISCHARGE VALVE',
+            'title' => 'Discharge Valve',
             'description' => 'Material Discharge Opening Assembly is Fitted at the Bottom Operated
-                                             by Butterfly Valve. Butterfly Valve Wafer MOC: SS 304 &amp; Seal: EPDM,
+                                             by Butterfly Valve. Butterfly Valve Wafer MOC: SS 304 & Seal: EPDM,
                                              A generously dimensioned discharge outlet ensures rapid product
                                              emptying and minimizes residue, even for materials with low flowability.
                                              ',
@@ -31,7 +31,7 @@
     ];
     $mixerSpecs2 = [
         [
-            'title' => 'LID & SAFETY ARRANGEMENT',
+            'title' => 'Lid & Safety Arrangement',
             'description' => 'Lid MOC: SS 304
                                             Pneumatically Operated with Cylinders. Two-Hand-Operation
                                             Operating Angle &gt; 50°
@@ -41,9 +41,9 @@
                                             Circuit',
         ],
         [
-            'title' => 'BEARING HOUSING SHAFTING',
+            'title' => 'Bearing Housing Shafting',
             'description' => 'Mixing Shaft Material Mild Steel with SS 304 Thick Pipe Jacketing.Power Transfer Directly from the Gear Box with Heavy Duty Bearings, Bearing Housings Fixed on the Shaft with Eccentric Clamping Rings for a Comfortable Maintenance and an Easy Access, the Bearings Are Installed in a Separate Housing Outside the Cooling Mixer Vessel. 
-                                              Seal Elements: Radial Shaft Seal Rings &amp; Lubrication: Grease Air Purge
+                                              Seal Elements: Radial Shaft Seal Rings & Lubrication: Grease Air Purge
                                               Seal Rings with Air-heterodyne Reliably Keeps the Seat of the Seals
                                               Free from Mixing Material.
                                              ',
@@ -55,7 +55,7 @@
         ],
         [
             'title' => 'Electrical Control',
-            'description' => 'ABB / SIEMENS / L &amp; T',
+            'description' => 'ABB / SIEMENS / L&T',
         ],
         [
             'title' => 'Bearing',
@@ -78,7 +78,7 @@
         ],
         [
             'title' => 'Driving System',
-            'description' => 'The drive system incorporates Direct Motor and Gear Box assembly driven.',
+            'description' => 'The drive system incorporates Direct Motor and Gear  Box assembly driven.',
         ],
     ];
 
@@ -124,9 +124,9 @@
                     {{ strtoupper($quotation->machine->name) }}</span></h3>
         </div>
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1.1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Model</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp; Model</td>
                 <td class="value-cell">:&nbsp;{{ $firstPart }}</td>
             </tr>
             <tr>
@@ -198,9 +198,9 @@
 
         </div>
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1.1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;Motor Requirement</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp;Motor Requirement</td>
                 {{-- <td style="padding: 8px;">:&nbsp;15 KW/20 HP Single Speed Mixer – 1440 RPM</td> --}}
                 <td style="padding: 8px;">:&nbsp;{{ $quotation->motorRequirement->motor_requirement }}</td>
             </tr>
@@ -230,9 +230,9 @@
 
         </div>
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1.1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;Gear Box</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp;Gear Box</td>
                 <td style="padding: 8px;">:&nbsp;Speed reduction Gear box is provided Heli Bevel Type</td>
             </tr>
             <tr>

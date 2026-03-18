@@ -371,9 +371,14 @@
                     <!-- conditional Besed Input fields -->
 
                     @if (isset($product->useful_volume))
+                    @php 
+                          preg_match('/\d+/', $model->name, $matches);
+                          $capacity = $matches[0] ?? null;
+                          $capacity = $capacity/100
+                    @endphp
                         <div class="col-md-6">
                             <label>Useful Volume</label>
-                            <input name="useful_volume" label="Useful Volume" value="{{ $product->useful_volume }}"
+                            <input name="useful_volume" label="Useful Volume" value="{{ $capacity*70 }}"
                                 class="form-control readonly-input" required />
                             <i class="fas fa-pencil-alt edit-icon"></i>
                         </div>

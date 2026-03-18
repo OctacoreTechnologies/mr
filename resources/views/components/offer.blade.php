@@ -14,8 +14,8 @@
             <thead style="border: 1px solid black;">
                 <tr style="font-weight: bold; text-align: center;">
                     <th style="width: 10%; padding: 10px; border: 1px solid black;">Sr.No.</th>
-                    <th style="width: 50%; padding: 10px; border: 1px solid black;">PARTICULAR</th>
-                    <th style="width: 15%; padding: 10px; border: 1px solid black;">Qty</th>
+                    <th style="width: 55%; padding: 10px; border: 1px solid black;">PARTICULAR</th>
+                    <th style="width: 12%; padding: 10px; border: 1px solid black;">Qty</th>
                     <th style="width: 15%; padding: 10px; border: 1px solid black;">Unit Price</th>
                     <th style="width: 20%; padding: 10px; border: 1px solid black;">Ex Work Price In Rs.</th>
                 </tr>
@@ -45,7 +45,7 @@
                             1
                         </td>
 
-                        <td style="padding:57px 10px 30px 10px; border:1px solid black;border-bottom:none;">
+                        <td style="padding:57px 5px 30px 10px; border:1px solid black;border-bottom:none;">
                             {{ strtoupper($quotation->machine->name) }} Model {{ $quotation->modele->name }} <br>
                             ALONG WITH AC FREQUENCY DRIVE <br>
                             ELECTRICAL PANEL
