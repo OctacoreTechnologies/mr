@@ -45,7 +45,7 @@
             @endif
 
             @if(isset($quotation->cooling_water_flow_rate))
-                <tr><td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Flow Rate</td><td class="value-cell">{{ $quotation->cooling_water_flow_rate }} LPM</td></tr>
+                <tr><td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Flow Rate</td><td class="value-cell">{{ $quotation->cooling_water_flow_rate }} m3/hr</td></tr>
             @endif
 
             @if(isset($quotation->feeding_air_pressure))

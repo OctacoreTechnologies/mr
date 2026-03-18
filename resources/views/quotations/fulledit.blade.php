@@ -422,7 +422,7 @@
                     @if (!empty($quotation->feeding_air_pressure))
                         <div class="col-md-6 form-group">
                             <label>Feeding Air Pressure</label>
-                            <input type="text" name="cooling_water_flow_rate"
+                            <input type="text" name="feeding_air_pressure"
                                 value="{{ $quotation->feeding_air_pressure }}" class="form-control readonly-input"
                                 readonly />
                             <i class="fas fa-pencil-alt edit-icon"></i>
