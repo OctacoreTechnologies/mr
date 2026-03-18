@@ -145,7 +145,8 @@
 
             </div>
 
-            <p style="margin-top: 10px; font-size: 14px; font-weight: bold;">
+            <p style="position: relative; top:100px;
+             font-size: 14px; font-weight: bold;">
                 *The image shown above is for reference purposes only.
             </p>
 
