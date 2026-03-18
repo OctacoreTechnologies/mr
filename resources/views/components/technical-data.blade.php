@@ -41,7 +41,7 @@
             @endif
 
             @if(isset($quotation->cooling_water_inlet_temperature))
-                <tr><td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet Temperature</td><td class="value-cell">{{ $quotation->cooling_water_inlet_temperature }} °C</td></tr>
+                <tr><td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet Temperature</td><td class="value-cell">{{ $quotation->cooling_water_inlet_temperature }} Max</td></tr>
             @endif
 
             @if(isset($quotation->cooling_water_flow_rate))
