@@ -102,9 +102,9 @@
                     </div>
                     <div style="margin-top: 5px;">
                         {{ '+91-' .
-                            substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 0, 5) .
-                            ' ' .
-                            substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 5) }}
+    substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 0, 5) .
+    ' ' .
+    substr(optional($quotation->followedBy)->contact_no ?? '8912929114', 5) }}
                     </div>
                 </td>
 
@@ -124,7 +124,7 @@
         </table>
     </div>
 
-    <div class='img'>
+    {{-- <div class='img'>
         <div class="border-box app-image">
             <img src="{{ asset('storage/' . $quotation->machine->image_url) ?? 'mixture.png' }}" class="main-image "
                 style="z-index: -1;">
@@ -134,4 +134,20 @@
             *The image shown above is for reference purposes only.
         </p>
 
+    </div> --}}
+    <div class="page-break" style="page-break-before: always; width: 100%;">
+        <div class="img" style="position: relative; top: 150px; left: 0; width: 100%; text-align: center;">
+
+            <div class="border-box app-image" style="width: 600px; height: 550px; margin: 0 auto; overflow: hidden;">
+
+                <img src="{{ $quotation->machine->image_url ? asset('storage/' . $quotation->machine->image_url) : public_path('mixture.png') }}"
+                    style="width: 100%; height: 100%; object-fit: contain;">
+
+            </div>
+
+            <p style="margin-top: 10px; font-size: 14px; font-weight: bold;">
+                *The image shown above is for reference purposes only.
+            </p>
+
+        </div>
     </div>

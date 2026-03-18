@@ -24,7 +24,7 @@ class StoreMachineRequest extends FormRequest
         return [
             'machine_type_id'=>'required|exists:machine_types,id',
             'name'=>'required|string',
-            'image_url' => 'nullable|image|mimes:jpg,jpeg,png,gif',
+           'image_url' => 'sometimes|image|mimes:jpg,jpeg,png,gif|max:2048',
         ];
     }
 }
