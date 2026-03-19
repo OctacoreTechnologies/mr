@@ -13,23 +13,23 @@
     text-decoration: underline;
     font-weight:bolder;
     font-size:24px;
-    text-align:left;">
+    text-align:left; text-transform: uppercase;">
 
             {{ $headingNumber ?? '2.' }}
             {{ $firstPart }}
-            <span style="white-space: nowrap;">{{ $lastWords }}</span>
+            <span style="white-space: nowrap; text-transform: uppercase;">{{ $lastWords }}</span>
 
         </h2>
 
         <table class="parameter-table"
-            style="border-collapse: collapse; line-height: 1.1; font-size: 14px; position: relative; width: 95%; top: 10px; padding-top:50px;margin-left:20px;">
+            style="border-collapse: collapse; line-height: 1; font-size: 14px; position: relative; width: 98%; top: 10px; padding-top:50px;margin-left:20px;">
             @foreach ($items as $item)
-                <tr>
+                <tr style="margin-top:0; ">
                     <td style="vertical-align: top; width: 40%; padding-bottom: 4px;word-break: break-word;">
                         <span>&#8226;&nbsp; {{ $item['title'] }}</span>
                     </td>
-                    <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
-                        :&nbsp;{!! $item['description'] !!}
+                    <td style="vertical-align: top; text-align: justify;">
+                        :<span style="position: relative;left:6px;">{!! $item['description'] !!}</span>
                     </td>
                 </tr>
             @endforeach

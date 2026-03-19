@@ -89,32 +89,32 @@
         </div>
 
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Model</td>
-                <td class="value-cell">{{ $firstPart }}</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp; Model</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $firstPart }}</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
-                <td class="value-cell">{{ $quotation->application->name ?? '' }} </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->application->name ?? '' }}</span> </td>
             </tr>
 
             @if (isset($quotation->material_to_process_id))
                 <tr>
                     <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Material to Process
                     </td>
-                    <td class="value-cell">{{ $quotation->materialToProcess->material_to_process ?? '' }}</td>
+                    <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->materialToProcess->material_to_process ?? '' }}</span></td>
                 </tr>
             @endif
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch</td>
-                <td class="value-cell">{{ $quotation->batch->batches ?? '' }} Kgs</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->batch->batches ?? '' }} Kgs</span></td>
             </tr>
 
             @if (isset($quotation->mixing_tool_id))
                 <tr>
                     <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</td>
-                    <td class="value-cell">{{ $quotation->mixingTool->mixing_tool ?? '' }}</td>
+                    <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->mixingTool->mixing_tool ?? '' }}</span></td>
                 </tr>
             @endif
         </table>
@@ -126,24 +126,25 @@
 
 
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Requirement</td>
-                <td style="padding: 8px;  text-align: justify;">{{ $quotation->motorRequirement->motor_requirement ?? '' }}</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp; Motor Requirement</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->motorRequirement->motor_requirement ?? '' }}</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
-                <td style="padding: 8px;  text-align: justify;">415 V</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">415 V</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
-                <td style="padding: 8px;  text-align: justify;">50Hz</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">50 Hz</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
-                <td style="padding: 8px;  text-align: justify;">
-                    Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
-                    with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
+                <td class="value-cell">
+                    <span style="position: relative;left:4px;">Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
+                    with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.</span>
+                    
                 </td>
             </tr>
         </table>
@@ -158,50 +159,50 @@
         </div>
 
       <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 98%; line-height:1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width:60%;">• &nbsp; Model</td>
-                <td class="value-cell">{{ $secondPart }} </td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;  width: 55%;">• &nbsp; Model</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $secondPart }}</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
-                <td class="value-cell">{{ $quotation->application->name ?? '' }} Compound</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->application->name ?? '' }} Compound</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Total Capacity</td>
-                <td class="value-cell">{{ $capacity }} Ltr </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $capacity }} Ltr</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Useful Volume</td>
-                <td class="value-cell">{{ $capacity - ($capacity * 3) / 10 }} Ltr </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $capacity - ($capacity * 3) / 10 }} Ltr</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch Size</td>
-                <td class="value-cell">{{ $quotation->batche2->batches ?? '' }}Kg( 4 Batch/Hr ) </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->batche2->batches ?? '' }}Kg( 4 Batch/Hr )</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Contact Part</td>
-                <td class="value-cell">{{ $quotation->contact_part ?? ' ' }} </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->contact_part ?? ' ' }}</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Water Pressure</td>
-                <td class="value-cell">{{ $quotation->water_pressure ?? ' ' }} Bar </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->water_pressure ?? ' ' }} Bar</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet Temperature</td>
-                <td class="value-cell">{{ $quotation->cooling_water_inlet_temperature ?? '' }} </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->cooling_water_inlet_temperature ?? '' }}</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Flow Rate</td>
-                <td class="value-cell">{{ $quotation->cooling_water_flow_rate ?? '' }} m3/h </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->cooling_water_flow_rate ?? '' }} m3/h</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Feeding Air Pressure</td>
-                <td class="value-cell">{{ $quotation->feeding_air_pressure ?? '' }} Bar </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->feeding_air_pressure ?? '' }} Bar </span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Compressed Air Consumption</td>
-                <td class="value-cell"> {{ $quotation->compress_air_consumption ?? '' }} Nm3/h</td>
+                <td class="value-cell"><span style="position: relative;left:4px;"> {{ $quotation->compress_air_consumption ?? '' }} Nm3/h</span></td>
             </tr>
         </table>
 
@@ -212,31 +213,31 @@
         </div>
 
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Requirement</td>
-                <td class="value-cell">{{ $quotation->motorRequirement2->motor_requirement ?? '' }}</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp; Motor Requirement</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->motorRequirement2->motor_requirement ?? '' }}</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
-                <td class="value-cell">415 V</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">415 V</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
-                <td class="value-cell">50Hz</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">50 Hz</span></td>
             </tr>
         </table>
     </div>
 </div>
-<div class="page-break"  style="page-break-before: always; width: 100%;" >
+<div class="page-break"  style="page-break-before: always;" >
     <div class="techincal-data parameter-table techincal-specification">
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px;top:60px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px;top:60px; width: 100%; line-height: 1;">
          <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
-                <td class="value-cell">
-                    Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
-                    with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp; Control Panel</td>
+                <td class="value-cell"><span style="position: relative;left:4px;"> Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
+                    with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.</span>
+                  
                 </td>
             </tr>
     </table>
@@ -246,22 +247,22 @@
         </div>
 
        <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 98%; line-height: 1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Gear Box</td>
-                <td class="value-cell">Speed reduction Gear box is provided Heli Bevel Type</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;width:55%;">• &nbsp; Gear Box</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Speed reduction Gear box is provided Heli Bevel Type</span></td>
             </tr>
             <tr style="padding: 8px; vertical-align: top; white-space: nowrap;">
                 <td>• &nbsp; Gear Box Make</td>
-                <td class="value-cell">Elecon (PBL)</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Elecon (PBL)</span></td>
             </tr>
             <tr style="padding: 8px; vertical-align: top; white-space: nowrap;">
                 <td>• &nbsp; Coupling </td>
-                <td class="value-cell">Coupling is used for Higher Torque for Gear Box Safety</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Coupling is used for Higher Torque for Gear Box Safety</span></td>
             </tr>
             <tr style="padding: 8px; vertical-align: top; white-space: nowrap;">
                 <td>• &nbsp; Coupling Make</td>
-                <td class="value-cell">Fenner</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Fenner</span></td>
             </tr>
         </table>
     </div>

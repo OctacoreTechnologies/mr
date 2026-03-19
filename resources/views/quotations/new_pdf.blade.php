@@ -632,11 +632,11 @@
     <div class="page-break" style="padding: 27px 20px 15px 20px;  font-size: 14px;  box-sizing: border-box;">
         <div class="specification">
 
-            <h2 style="margin-bottom: 10px; text-decoration: underline;font-size:24px;">2.&nbsp; TECHNICAL SPECIFICATION OF MIXER</h2>
+            <h2 style="margin-bottom: 10px; text-decoration: underline;font-size:24px;">2.&nbsp; TECHNICAL SPECIFICATION OF HEATER MIXER</h2>
 
             <!-- 2.2 MIXING VESSEL LID -->
             <table class="parameter-table"
-                style="border-collapse: collapse; line-height: 1.1; font-size: 14px; position: relative; left: 20px; width: 90%; top: 60px;">
+                style="border-collapse: collapse; line-height: 1.1; font-size: 14px; position: relative; left: 20px; width: 95%; top: 60px;">
                 <tr>
                     <td style="vertical-align: top; width: 30%; padding-bottom: 4px; white-space: nowrap;">
                         <span>&#8226;&nbsp; Mixing Vessel</span>

@@ -74,11 +74,11 @@
         ],
         [
             'title' => 'Motor',
-            'description' => 'T Hindustan / ABB / SIEMENS 1440 RPM AC ',
+            'description' => 'Hindustan / ABB / SIEMENS 1440 RPM AC ',
         ],
         [
             'title' => 'Driving System',
-            'description' => 'The drive system incorporates Direct Motor and Gear  Box assembly driven.',
+            'description' => 'The drive system incorporates Direct Motor and Gear Box assembly driven.',
         ],
     ];
 
@@ -102,9 +102,9 @@
 <x-table-content :specification="'Horizontal Cooler Mixture'" :pageTechnicalData="4" :pageSpecification="6"
     :pageOffer="9" :pageTerms="10" />
 <style>
-    /* .value-cell::before {
+    .value-cell::before {
         content: ": ";
-    } */
+    }
     /* .value-cell {
         padding: 8px;
     } */
@@ -127,59 +127,59 @@
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1.1;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp; Model</td>
-                <td class="value-cell">:&nbsp;{{ $firstPart }}</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $firstPart }}</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->application->name ?? '' }} </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->application->name ?? '' }}</span> </td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Total Capacity</td>
-                <td class="value-cell">:&nbsp;{{ $capacity }} Ltr</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $capacity }} Ltr</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Useful Volume</td>
-                <td class="value-cell">:&nbsp;{{ $usefulVolume }} Ltr</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $usefulVolume }} Ltr</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch Size</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->batch->batches ?? '' }} Kg( 4 Batch/Hr )</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->batch->batches ?? '' }} Kg( 4 Batch/Hr )</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Contact Part</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->contact_part ?? ' ' }}</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->contact_part ?? ' ' }}</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Water Pressure</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->water_pressure ?? ' ' }} Bar</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->water_pressure ?? ' ' }} Bar</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet
                     Temperature</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->cooling_water_inlet_temperature ?? '' }} </td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->cooling_water_inlet_temperature ?? '' }}</span> </td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Flow Rate
                 </td>
-                <td class="value-cell">:&nbsp;{{ $quotation->cooling_water_flow_rate ?? '' }} m3/h</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->cooling_water_flow_rate ?? '' }} m3/h</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Feeding Air Pressure</td>
-                <td class="value-cell">:&nbsp;{{ $quotation->feeding_air_pressure ?? ' ' }} Bar</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->feeding_air_pressure ?? ' ' }} Bar</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Compressed Air Consumption
                 </td>
-                <td class="value-cell">:&nbsp;{{ $quotation->compress_air_consumption ?? '' }} Nm3/h</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->compress_air_consumption ?? '' }} Nm3/h</span></td>
             </tr>
         </table>
 
@@ -202,22 +202,22 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp;Motor Requirement</td>
                 {{-- <td style="padding: 8px;">:&nbsp;15 KW/20 HP Single Speed Mixer – 1440 RPM</td> --}}
-                <td style="padding: 8px;">:&nbsp;{{ $quotation->motorRequirement->motor_requirement }}</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->motorRequirement->motor_requirement }}</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
-                <td style="padding: 8px;">:&nbsp;415 V</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">415 V</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
-                <td style="padding: 8px;">:&nbsp;50Hz</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">50Hz</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
-                <td style="padding: 8px; word-spacing: normal;">:&nbsp;Complete Electrical Control Panel Comprising of
+                <td style="word-spacing: normal;"class="value-cell"><span style="position: relative;left:4px;">omplete Electrical Control Panel Comprising of
                     Thermocouple Wire Digital Temperature Indicator
                     With Ammeter & Voltmeter, Limit Switch & MCCB
-                    Provided for Safety Precaution.
+                    Provided for Safety Precaution.</span>
                 </td>
             </tr>
         </table>
@@ -233,20 +233,20 @@
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1.1;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp;Gear Box</td>
-                <td style="padding: 8px;">:&nbsp;Speed reduction Gear box is provided Heli Bevel Type</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Speed reduction Gear box is provided Heli Bevel Type</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Gear Box Make</td>
-                <td style="padding: 8px;">:&nbsp;Elecon (PBL)</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Elecon (PBL)</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Coupling</td>
-                <td style="padding: 8px;">:&nbsp;Coupling is used for Higher Torque for Gear Box Safety</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Coupling is used for Higher Torque for Gear Box Safety</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Coupling Make</td>
-                <td style="padding: 8px;">
-                    :&nbsp;Fenner
+                <td class="value-cell">
+                    <span style="position: relative;left:4px;">Fenner</span>
                 </td>
             </tr>
         </table>
