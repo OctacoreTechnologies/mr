@@ -3,23 +3,23 @@
     $words = explode(' ', $text);
 
     // Last 3 words ko alag karo (adjust kar sakte ho 2 ya 3)
-    $lastWords = implode(' ', array_slice($words, -3));
-    $firstPart = implode(' ', array_slice($words, 0, -3));
+    $lastWords = implode(' ', array_slice($words, -1));
+    $firstPart = implode(' ', array_slice($words, 0, -1));
 @endphp
 
 <div class="page-break" style="padding: 27px 0px 15px 8px; font-size: 14px; box-sizing: border-box;">
     <div class="specification">
-        <h2 style="margin-bottom:10px;
+        <h3 style="margin-bottom:10px;
     text-decoration: underline;
     font-weight:bolder;
-    font-size:24px;
-    text-align:left; text-transform: uppercase;">
+    font-size:22px;
+    text-align:left; text-transform: uppercase; width: 102%;">
 
             {{ $headingNumber ?? '2.' }}
-            {{ $firstPart }}
+            {{ $firstPart }} 
             <span style="white-space: nowrap; text-transform: uppercase;">{{ $lastWords }}</span>
 
-        </h2>
+        </h3>
 
         <table class="parameter-table"
             style="border-collapse: collapse; line-height: 1; font-size: 14px; position: relative; width: 98%; top: 10px; padding-top:50px;margin-left:20px;">

@@ -242,7 +242,7 @@
                         </td>
 
                         <!-- Total Amount -->
-                        <td style="border:1px solid black;padding:14px;font-weight:bold;text-align:right;">
+                        <td style="border:1px solid black;padding:14px;font-weight:bold;text-align:center;">
                             {{ format_indian_number($quotation->total) }}
                         </td>
                     </tr>

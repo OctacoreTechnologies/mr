@@ -1,10 +1,11 @@
 <style>
-        /* .value-cell {
-        padding: 8px;
-    } */
+        .value-cell {
+       vertical-align: top; 
+      text-align: justify;
+    }
 
     .value-cell::before {
-        content: ": ";
+        content: ":";
     }
 </style>
 <div class="page-break" >
@@ -54,11 +55,11 @@
         </table>
 
         <!-- ELECTRICAL PARAMETERS -->
-       <div class="technical-data-sub-head" style="text-align: left;width: 95%;">
+       {{-- <div class="technical-data-sub-head" style="text-align: left;width: 95%;">
             <h3 style="font-weight: bold;">1.2 ELECTRICAL PARAMETERS</h3>
-        </div>
+        </div> --}}
 
-    <table class="parameter-table"
+    {{-- <table class="parameter-table"
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 95%; line-height: 1;">
             <tr>
                 <td  style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp; Motor Requirement</td>
@@ -70,8 +71,18 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
-                <td class="value-cell"> span style="position: relative;left:4px;">50 Hz</span></td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">50 Hz</span></td>
             </tr>
+             <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;width:45%">• &nbsp; Control Panel</td>
+                <td class="value-cell">
+                     <span style="position: relative;left:4px;"></span>Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
+                </td>
+            </tr> --}}
+            {{-- <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</td>
+                <td class="value-cell"><span style="position: relative;left:4px;"></span>3 Tier Alloy Steel</td>
+            </tr> --}}
         </table>
     </div>
 </div>
@@ -81,33 +92,42 @@
 
 <div class="page-break"  style="page-break-before: always; width: 100%;" >
     <div class="technical-data-sub-head">
+        <div class="technical-data-sub-head" style="text-align: left;width: 95%; position: relative; top:130px; right: 10px;">
+            <h3 style="font-weight: bold;">1.2 ELECTRICAL PARAMETERS</h3>
+        </div>
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 30px; top:160px; width: 95%; line-height: 1; margin-bottom: 20px;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 30px; top:130px; width: 95%; line-height: 1; margin-bottom: 20px;">
            <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;width:45%">• &nbsp; Control Panel</td>
-                <td class="value-cell">
-                     <span style="position: relative;left:4px;"></span>Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.
-                </td>
+                <td  style="vertical-align: top; white-space: nowrap;">• &nbsp; Motor Requirement</td>
+                <td  class="value-cell"><span style="position: relative;left:6px;">{!! $quotation->motorRequirement->motor_requirement ?? '' !!}</span></td>
             </tr>
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</td>
-                <td class="value-cell"><span style="position: relative;left:4px;"></span>3 Tier Alloy Steel</td>
+                <td  style="vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
+                <td  class="value-cell"><span style="position: relative;left:6px;">415 V</span></td>
             </tr>
+            <tr>
+                <td style="vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
+                <td class="value-cell"><span style="position: relative;left:6px;">50 Hz</span></td>
+            </tr>
+             <tr>
+                <td style="vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
+                <td class="value-cell"><span style="position: relative;left:6px;">Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.</span></td>
+            </tr>
+
         </table>
-        <h2></h2>
-         <div class="technical-data-sub-head" style="text-align: left;width: 95%; margin-top:140px;position: relative;right:10px;">
+         <div class="technical-data-sub-head" style="text-align: left;width: 95%; margin-top:120px;position: relative;right:10px;">
             <h3 style="font-weight: bold;">1.3  TRANSMISSION </h3>
          </div>
 
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 30px; top:10px; width: 95%; line-height: 1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 30px; top:5px; width: 95%; line-height: 1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 45%;">• &nbsp; Gear Box</td>
-                <td class="value-cell"> <span style="position: relative;left:4px;"></span>Heli Bevel Gear Box of Elecon Make</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Gear Box</td>
+                <td class="value-cell"><span style="position: relative;left:4px; width: 55%;">Heli Bevel Gear Box of Elecon Make</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;"> • &nbsp; Coupling</td>
-                <td class="value-cell"> <span style="position: relative;left:4px;"></span>Coupling is used for Higher Torque and for Gear Box Safety</td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Coupling is used for Higher Torque and for Gear Box Safety</span></td>
             </tr>
         </table>
     </div>

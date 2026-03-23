@@ -48,6 +48,6 @@
     ];
 @endphp
 
-<x-technical-specification-one  heading-number="2."  heading-text="TECHNICAL SPECIFICATION OF VERTICAL COOLERT MIXER" :items="$mixerSpecs" />
+<x-technical-specification-one  heading-number="2."  heading-text="TECHNICAL SPECIFICATION OF VERTICAL COOLER MIXER" :items="$mixerSpecs" />
 <x-offer :quotation="$quotation" :words="$words"/>
 <x-term-and-condition-pdf :termCondition="$termCondition" />

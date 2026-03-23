@@ -217,7 +217,7 @@
         /* Adjust row height */
     }
 </style>
-<x-technical-specification-one heading-number="2." heading-text="TECHNICAL SPECIFICATION OF MIXER" :items="$mixerSpecs" />
+<x-technical-specification-one heading-number="2." heading-text="TECHNICAL SPECIFICATION OF Agglomerator MIXER" :items="$mixerSpecs" />
 <x-technical-specification-two :items="$mixerSpecs2" />
 <x-offer :quotation="$quotation" :words="$words" />
 <x-term-and-condition-pdf :termCondition="$termCondition" />
