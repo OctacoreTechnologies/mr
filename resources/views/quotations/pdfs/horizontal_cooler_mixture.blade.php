@@ -214,7 +214,7 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
-                <td style="word-spacing: normal;"class="value-cell"><span style="position: relative;left:4px;">omplete Electrical Control Panel Comprising of
+                <td style="word-spacing: normal;"class="value-cell"><span style="position: relative;left:4px;">Complete Electrical Control Panel Comprising of
                     Thermocouple Wire Digital Temperature Indicator
                     With Ammeter & Voltmeter, Limit Switch & MCCB
                     Provided for Safety Precaution.</span>
