@@ -12,10 +12,12 @@ class TermAndConditionPdf extends Component
      * Create a new component instance.
      */
     
-   public $termCondition;
-   public function __construct(object $termCondition)
+   public $termCondition,$headingNumber;
+
+   public function __construct(object $termCondition,$headingNumber=4)
     {
         $this->termCondition=$termCondition;
+        $this->headingNumber=$headingNumber;
     }
 
 

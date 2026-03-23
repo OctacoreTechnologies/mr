@@ -124,7 +124,7 @@
         content: ":";
     }
 </style>
-<x-table-content :specification="'MIXER'" :pageTechnicalData="4" :pageSpecification="6" :pageOffer="8" :pageTerms="9" />
+<x-table-content :specification="'MIXER'" :pageTechnicalData="4" :pageSpecification="7" :pageOffer="9" :pageTerms="10" />
 @php
     $modelName = $quotation->modele->name;
     $parts = explode('/', $modelName);

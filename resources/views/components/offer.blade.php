@@ -3,7 +3,7 @@
 
         <div class="offer-heading">
             <h2 style="text-decoration: underline; font-weight: bold;">
-                3. OFFER
+                {{ $headingNumber??'3' }}. OFFER
             </h2>
         </div>
 

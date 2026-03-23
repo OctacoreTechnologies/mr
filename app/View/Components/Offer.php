@@ -13,10 +13,13 @@ class Offer extends Component
      */
    public $quotation;
    public $words;
-    public function __construct(object $quotation,$words)
+
+   public $headingNumber;
+    public function __construct(object $quotation,$words,$headingNumber='3')
     {
         $this->quotation=$quotation;
         $this->words=$words;
+        $this->headingNumber=$headingNumber;
     }
 
 

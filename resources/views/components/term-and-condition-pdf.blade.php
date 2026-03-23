@@ -8,7 +8,7 @@
   <div class="page-break">
   <div class="term">
     <div class="technical-data" style="margin-bottom: 70px;">
-      <h2 style="text-decoration:underline; font-weight: bold;" >4.&nbsp;<span>TERMS AND
+      <h2 style="text-decoration:underline; font-weight: bold;" >{{ $headingNumber??'4' }}.&nbsp;<span>TERMS AND
           CONDITION</span></h2>
     </div>
     <table border="1"

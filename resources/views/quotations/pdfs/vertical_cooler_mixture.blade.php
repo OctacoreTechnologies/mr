@@ -1,6 +1,6 @@
 <x-header-footer-pdf />
 <x-client-pdf-template :quotation="$quotation" />
-<x-table-content :specification="'VERTICAL COOLER'" :pageTechnicalData="4" :pageSpecification="6" :pageOffer="6" :pageTerms="7"/>
+<x-table-content :specification="'VERTICAL COOLER'" :pageTechnicalData="4" :pageSpecification="6" :pageOffer="7" :pageTerms="8"/>
 <x-technical-data :quotation="$quotation" />
 
 @php

@@ -1,7 +1,7 @@
 <x-header-footer-pdf />
 <x-client-pdf-template :quotation="$quotation" />
 
-<x-table-content :specification="'Agglomerator'" :pageTechnicalData="4" :pageSpecification="5" :pageOffer="6" :pageTerms="7" />
+<x-table-content :specification="'Agglomerator'" :pageTechnicalData="4" :pageSpecification="6" :pageOffer="8" :pageTerms="9" />
 <style>
     /* .parameter-table-t {
         border-collapse: collapse;

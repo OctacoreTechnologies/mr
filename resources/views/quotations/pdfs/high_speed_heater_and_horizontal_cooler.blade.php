@@ -176,6 +176,6 @@
 <x-technical-specification-two :items="$mixerSpecs2" />
 <x-technical-specification-two :items="$mixerSpecs3" />
 
-<x-offer :quotation="$quotation" :words="$words" />
+<x-offer :quotation="$quotation" :words="$words" :headingNumber="4" />
 
-<x-term-and-condition-pdf :termCondition="$termCondition" />
+<x-term-and-condition-pdf :termCondition="$termCondition" :headingNumber="5"/>

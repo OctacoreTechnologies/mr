@@ -1,6 +1,6 @@
 <x-header-footer-pdf />
 <x-client-pdf-template :quotation="$quotation" />
-<x-table-content :specification="'GRINDER'" :pageTechnicalData="4" :pageSpecification="5" :pageOffer="6" :pageTerms="7" />
+<x-table-content :specification="'PULVERIZER'" :pageTechnicalData="4" :pageSpecification="6" :pageOffer="7" :pageTerms="8" />
 <!-- Technical Data -->
 <div class="page-break ">
     <div class="techincal-data parameter-table techincal-specification">
@@ -13,7 +13,7 @@
                     {{ strtoupper($quotation->machine->name) }}</span></h3>
         </div>
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 105%; line-height: 1.1;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Model</td>
                 <td style="padding: 8px;">:&nbsp;{{ $quotation->modele->name ?? '' }}</td>
