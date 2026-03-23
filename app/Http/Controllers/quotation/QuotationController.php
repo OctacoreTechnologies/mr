@@ -409,7 +409,7 @@ class QuotationController extends Controller
             $viewName = "quotations.pdfs.grinder";
         } else if ($quotation->machine->name == 'Heater and Vertical Cooler Mixer') {
             $viewName = "quotations.pdfs.high_speed_heater_and_vertical_cooler_mixture";
-        } else if ($quotation->machine->name == 'Heater and Horizontal Cooler') {
+        } else if ($quotation->machine->name == 'Heater and Horizontal Cooler Mixer') {
             $viewName = "quotations.pdfs.high_speed_heater_and_horizontal_cooler";
         } else if ($quotation->machine->name == 'Pulverizer') {
             $viewName = "quotations.pdfs.pulverizer";

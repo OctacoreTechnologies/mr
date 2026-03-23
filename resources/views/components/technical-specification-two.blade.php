@@ -9,7 +9,7 @@
             <span>&#8226;&nbsp; {{ $item['title'] }}</span>
           </td>
           <td style="vertical-align: top; padding-bottom: 4px; text-align: justify;">
-            :<span style="position: relative;left:6px;">{{ $item['description'] }}</span>
+            :<span style="position: relative;left:6px;">{!! $item['description'] !!}</span>
           </td>
         </tr>
       @endforeach

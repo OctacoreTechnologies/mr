@@ -146,29 +146,29 @@
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 105%; line-height: 1.1;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;width:50%;">• &nbsp; Model</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $firstPart }}</span></td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $firstPart }}</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->application->name ?? '' }}</span> </td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->application->name ?? '' }}</span> </td>
             </tr>
 
             @if (isset($quotation->material_to_process_id))
                 <tr>
                     <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Material to Process
                     </td>
-                    <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->materialToProcess->material_to_process ?? '' }}</span></td>
+                    <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->materialToProcess->material_to_process ?? '' }}</span></td>
                 </tr>
             @endif
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch</td>
-                <td class="value-cell"><span style="position: relative;left:4px;"></span><span style="position: relative;left:4px;">{{ $quotation->batch->batches ?? '' }} Kgs</span></td>
+                <td class="value-cell"> <span style="position: relative;left:4px;"></span><span style="position: relative;left:4px;">{{ $quotation->batch->batches ?? '' }} Kgs</span></td>
             </tr>
 
             @if (isset($quotation->mixing_tool_id))
                 <tr>
                     <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</td>
-                    <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->mixingTool->mixing_tool ?? '' }}</span></td>
+                    <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->mixingTool->mixing_tool ?? '' }}</span></td>
                 </tr>
             @endif
         </table>
@@ -189,15 +189,15 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
-                <td style="padding: 8px;  text-align: justify;" class="value-cell"><span style="position: relative;left:4px;">415 V</span></td>
+                <td style="padding: 8px;  text-align: justify;" class="value-cell"> <span style="position: relative;left:4px;">415 V</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Frequency</td>
-                <td style="padding: 8px;  text-align: justify;" class="value-cell"><span style="position: relative;left:4px;">50 Hz</span></td>
+                <td style="padding: 8px;  text-align: justify;" class="value-cell"> <span style="position: relative;left:4px;">50 Hz</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
-                <td style="padding: 8px;  text-align: justify;" class="value-cell"><span style="position: relative;left:4px;">Complete Electrical Control Panel
+                <td style="padding: 8px;  text-align: justify;" class="value-cell"> <span style="position: relative;left:4px;">Complete Electrical Control Panel
                     comprising of Thermocouple Wire, Digital Temperature Indicator with Ammeter & Voltmeter, Limit
                     Switch & MCCB provided for safety precaution.</span>
                 </td>
@@ -217,41 +217,41 @@
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 105%; line-height: 1.1;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap; width:50%;">• &nbsp; Model</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $secondPart }}</span></td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $secondPart }}</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->application->name ?? '' }} Compound</span></td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->application->name ?? '' }} Compound</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch Size</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->batche2->batches ?? '' }} Kg</span> </td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->batche2->batches ?? '' }} Kg</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Contact Part</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->contact_part ?? ' ' }}</span> </td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->contact_part ?? ' ' }}</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Water Pressure</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->water_pressure ?? ' ' }} Bar</span> </td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->water_pressure ?? ' ' }} Bar</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Operating Pressure</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->operating_pressure ?? ' ' }} Bar</span> </td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->operating_pressure ?? ' ' }} Bar</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet
                     Temperature</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->cooling_water_inlet_temperature ?? '' }}</span> </td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->cooling_water_inlet_temperature ?? '' }}</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Flow Rate
                 </td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->cooling_water_flow_rate ?? '' }} m3/h</span> </td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->cooling_water_flow_rate ?? '' }} m3/h</span> </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Feeding Air Pressure</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->feeding_air_pressure ?? '' }} Bar </span></td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->feeding_air_pressure ?? '' }} Bar </span></td>
             </tr>
         </table>
 
@@ -266,7 +266,7 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;width:50%">• &nbsp; Motor Requirement
                 </td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->motorRequirement2->motor_requirement ?? '' }}</span></td>
+                <td class="value-cell"> <span style="position: relative;left:4px;">{{ $quotation->motorRequirement2->motor_requirement ?? '' }}</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
@@ -278,8 +278,7 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
-                <td class="value-cell">
-                    <span style="position: relative;left:4px;">Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
+                <td class="value-cell"> <span style="position: relative;left:4px;">Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
                     with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.</span>
                 </td>
             </tr>
@@ -319,10 +318,10 @@
         ],
         [
             'title' => 'Lid',
-            'description' => 'Stainless steel - 304 grades. 
-                                 Equipped with gasket, on lid edge and with lid locking arrangement. The lid is fitted with the Followings flanged openings 
-                                 1. One for fitting arrangements for  Deflector and thermocouple (Heater Mixer).
-                                 2. One for addition of chemicals (Heater Mixer). 
+            'description' => 'Stainless steel - 304 grades. <br /> 
+                                 Equipped with gasket, on lid edge and with lid locking arrangement. The lid is fitted with the Followings flanged openings.<br/>
+                                 1. One for fitting arrangements for  Deflector and thermocouple (Heater Mixer). <br/>
+                                 2. One for addition of chemicals (Heater Mixer). <br />
                                  ',
             //3. Two for viewing glasses, operated pneumatically.  <br />
         ],
@@ -351,7 +350,7 @@
         [
             'title' => 'Mixing Tool',
             'description' =>
-                'Specially Designed Shape and Angle Suitable for your Compound with Height adjustment. Spacers with wear resistance treatment. Cooler Mixer Blade Made from STAINLESSSTEEL: 304 specially designed shovel type',
+                'STAINLESSSTEEL: 304 GRADES. OR ALLOY STEEL In Heater Mixer Consisting three blades – Bottom   Scraper, Fluidizing blade and Horn Shaped Blade. Specially Designed Shape and Angle Suitable for your Compound with Height adjustment. Spacers with wear resistance treatment. Cooler Mixer Blade Made from STAINLESSSTEEL: 304 specially designed shovel type.',
         ],
 
         [
@@ -371,11 +370,11 @@
                 'The drive system incorporates with V-belt and tapper lock pulley (SPC type) to give Efficient power drive transmission. The Belts  Are Tightened by means of motor sliding screw.',
         ],
 
-        [
-            'title' => 'Mounting Structure',
-            'description' =>
-                ' Sturdy MS Channel from Duly Covered with MS Sheet and Coated with Water resistant enamel   Coating Painting.',
-        ],
+        // [
+        //     'title' => 'Mounting Structure',
+        //     'description' =>
+        //         ' Sturdy MS Channel from Duly Covered with MS Sheet and Coated with Water resistant enamel   Coating Painting.',
+        // ],
         [
             'title' => 'Electrical Control',
             'description' => $quotation->electricalControl->electrical_control ?? '',

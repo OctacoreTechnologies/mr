@@ -55,12 +55,16 @@
 
         
     */
-    .value-cell {
+    /* .value-cell {
         padding: 8px;
+    } */
+      .value-cell {
+       vertical-align: top; 
+      text-align: justify;
     }
 
     .value-cell::before {
-        content: ": ";
+        content: ":";
     }
 </style>
 @php
@@ -114,7 +118,7 @@
             @if (isset($quotation->mixing_tool_id))
                 <tr>
                     <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Mixing Tool</td>
-                    <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->mixingTool->mixing_tool ?? '' }}</span></td>
+                    <td class="value-cell"><span style="position: relative;left:4px;">{!! $quotation->mixingTool->mixing_tool ?? '' !!}</span></td>
                 </tr>
             @endif
         </table>
@@ -141,8 +145,7 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
-                <td class="value-cell">
-                    <span style="position: relative;left:4px;">Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
+                <td class="value-cell"><span style="position: relative;left:4px;">Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
                     with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.</span>
                     
                 </td>
@@ -235,7 +238,7 @@
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px;top:60px; width: 100%; line-height: 1;">
          <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp; Control Panel</td>
-                <td class="value-cell"><span style="position: relative;left:4px;"> Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
+                <td class="value-cell"><span style="position: relative;left:4px;">Complete Electrical Control Panel comprising of Thermocouple Wire, Digital Temperature Indicator
                     with Ammeter & Voltmeter, Limit Switch & MCCB provided for safety precaution.</span>
                   
                 </td>

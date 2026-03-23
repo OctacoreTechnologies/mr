@@ -2,51 +2,47 @@
     $mixerSpecs = [
         [
             'title' => 'Cooling Vessel',
-            'description' => 'Inside Made from Stainless Steel with
-                            Cooling Ring MOC – 304 Grade. Outside
-                            Jacketed by Mild Steel Plates. Jacketed
-                            Construction Provided for Cooling with
-                            Suitable Media. Material Discharge Opening
-                            Assembly is Fitted at the Bottom Operated by
-                            Pneumatic Cylinder.',
+            'description' => 'Inside Made from Stainless Steel SS 304 & Outside Jacketed by Mild Steel Plates. A High Flow Rate of the Operating Medium Creates a
+                               Turbulent Flow for an Optimum Heat Exchange with the Product to Realize Shortest Cooling Times. For Fast & Easy Cleaning and Maintenance of the Inside Vessel, the Cooler Mixer Lid can be Opened Across the Total Length of the Vessel. Lid and Vessel are Connected by Adjustable Hinges and Toggle Clamps. 
+    .',
         ],
         [
             'title' => 'Discharge Valve',
             'description' => 'Material Discharge Opening Assembly is Fitted at the Bottom Operated
-                                             by Butterfly Valve. Butterfly Valve Wafer MOC: SS 304 & Seal: EPDM,
-                                             A generously dimensioned discharge outlet ensures rapid product
-                                             emptying and minimizes residue, even for materials with low flowability.
-                                             ',
+                                                 by Butterfly Valve. Butterfly Valve Wafer MOC: SS 304 & Seal: EPDM. <br />
+                                                 A generously dimensioned discharge outlet ensures rapid product
+                                                 emptying and minimizes residue, even for materials with low flowability.
+                                                 ',
         ],
         [
             'title' => 'Mixing Tool',
-            'description' => 'MOC: Paddle and Paddle Carrier are SS 304 Shaft Fastening is Achieved Using Axially Adjustable Clamping Devices.
-                                                  The Cooling Mixer Paddles Are Engineered for Intensive Axial and
-                                                  Radial Circulation, Enhancing Both Mixing Efficiency and Cooling
-                                                  Capacity While Ensuring Optimal Heat Transfer. Even Minimal
-                                                  Quantities of Fine Components Are Homogeneously Blended During
-                                                  the Short Cooling Phase',
+            'description' => 'MOC: Paddle and Paddle Carrier are SS 304. <br/> Shaft Fastening is Achieved Using Axially Adjustable Clamping Devices. <br/>
+                                                      The Cooling Mixer Paddles Are Engineered for Intensive Axial and
+                                                      Radial Circulation, Enhancing Both Mixing Efficiency and Cooling
+                                                      Capacity While Ensuring Optimal Heat Transfer. Even Minimal
+                                                      Quantities of Fine Components Are Homogeneously Blended During
+                                                      the Short Cooling Phase',
         ],
         // Add more items as needed
     ];
     $mixerSpecs2 = [
         [
             'title' => 'Lid & Safety Arrangement',
-            'description' => 'Lid MOC: SS 304
-                                            Pneumatically Operated with Cylinders. Two-Hand-Operation
-                                            Operating Angle &gt; 50°
-                                            Lid Safety: According to Specification System: Solenoid Safety Sensor
-                                            (Limit Switch)
-                    . The Cooling Mixer Lid is Integrated into the Safety
-                                            Circuit',
+            'description' => 'Lid MOC: SS 304 <br/>
+                                                Pneumatically Operated with Cylinders. Two-Hand-Operation
+                                                Operating Angle &gt; 50° <br/>
+                                                Lid Safety: According to Specification System: Solenoid Safety Sensor
+                                                (Limit Switch)
+                        . The Cooling Mixer Lid is Integrated into the Safety
+                                                Circuit',
         ],
         [
             'title' => 'Bearing Housing Shafting',
-            'description' => 'Mixing Shaft Material Mild Steel with SS 304 Thick Pipe Jacketing.Power Transfer Directly from the Gear Box with Heavy Duty Bearings, Bearing Housings Fixed on the Shaft with Eccentric Clamping Rings for a Comfortable Maintenance and an Easy Access, the Bearings Are Installed in a Separate Housing Outside the Cooling Mixer Vessel. 
-                                              Seal Elements: Radial Shaft Seal Rings & Lubrication: Grease Air Purge
-                                              Seal Rings with Air-heterodyne Reliably Keeps the Seat of the Seals
-                                              Free from Mixing Material.
-                                             ',
+            'description' => 'Mixing Shaft Material Mild Steel with SS 304 Thick Pipe Jacketing.<br/> Power Transfer Directly from the Gear Box with Heavy Duty Bearings, Bearing Housings Fixed on the Shaft with Eccentric Clamping Rings for a Comfortable Maintenance and an Easy Access, the Bearings Are Installed in a Separate Housing Outside the Cooling Mixer Vessel.<br/> 
+                                                  Seal Elements: Radial Shaft Seal Rings & Lubrication: Grease Air Purge <br/>
+                                                  Seal Rings with Air-heterodyne Reliably Keeps the Seat of the Seals
+                                                  Free from Mixing Material.
+                                                 ',
         ],
         [
             'title' => 'Mounting Structure',
@@ -103,11 +99,16 @@
     :pageOffer="9" :pageTerms="10" />
 <style>
     .value-cell::before {
-        content: ": ";
+        content: ":";
     }
+
     /* .value-cell {
         padding: 8px;
     } */
+    .value-cell {
+        vertical-align: top;
+        text-align: justify;
+    }
 </style>
 
 
@@ -131,7 +132,8 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Product</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->application->name ?? '' }}</span> </td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->application->name ?? '' }}</span> </td>
             </tr>
 
             <tr>
@@ -146,40 +148,51 @@
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch Size</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->batch->batches ?? '' }} Kg( 4 Batch/Hr )</span></td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->batch->batches ?? '' }}
+                        Kg( 4 Batch/Hr )</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Contact Part</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->contact_part ?? ' ' }}</span></td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->contact_part ?? ' ' }}</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Water Pressure</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->water_pressure ?? ' ' }} Bar</span></td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->water_pressure ?? ' ' }} Bar</span></td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Inlet
                     Temperature</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->cooling_water_inlet_temperature ?? '' }}</span> </td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->cooling_water_inlet_temperature ?? '' }}</span>
+                </td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Cooling Water Flow Rate
                 </td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->cooling_water_flow_rate ?? '' }} m3/h</span></td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->cooling_water_flow_rate ?? '' }} m3/h</span>
+                </td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Feeding Air Pressure</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->feeding_air_pressure ?? ' ' }} Bar</span></td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->feeding_air_pressure ?? ' ' }} Bar</span>
+                </td>
             </tr>
 
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Compressed Air Consumption
                 </td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->compress_air_consumption ?? '' }} Nm3/h</span></td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->compress_air_consumption ?? '' }}
+                        Nm3/h</span></td>
             </tr>
         </table>
 
@@ -200,9 +213,12 @@
         <table class="parameter-table"
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1.1;">
             <tr>
-                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp;Motor Requirement</td>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp;Motor
+                    Requirement</td>
                 {{-- <td style="padding: 8px;">:&nbsp;15 KW/20 HP Single Speed Mixer – 1440 RPM</td> --}}
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->motorRequirement->motor_requirement }}</span></td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->motorRequirement->motor_requirement }}</span>
+                </td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Voltage</td>
@@ -214,10 +230,11 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Control Panel</td>
-                <td style="word-spacing: normal;"class="value-cell"><span style="position: relative;left:4px;">Complete Electrical Control Panel Comprising of
-                    Thermocouple Wire Digital Temperature Indicator
-                    With Ammeter & Voltmeter, Limit Switch & MCCB
-                    Provided for Safety Precaution.</span>
+                <td style="word-spacing: normal;" class="value-cell"><span style="position: relative;left:4px;">Complete
+                        Eelectrical Control Panel Comprising of
+                        Thermocouple Wire Digital Temperature Indicator
+                        With Ammeter & Voltmeter, Limit Switch & MCCB
+                        Provided for Safety Precaution.</span>
                 </td>
             </tr>
         </table>
@@ -233,7 +250,8 @@
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 100%; line-height: 1.1;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp;Gear Box</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">Speed reduction Gear box is provided Heli Bevel Type</span></td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Speed reduction Gear box is provided
+                        Heli Bevel Type</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Gear Box Make</td>
@@ -241,7 +259,8 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Coupling</td>
-                <td class="value-cell"><span style="position: relative;left:4px;">Coupling is used for Higher Torque for Gear Box Safety</span></td>
+                <td class="value-cell"><span style="position: relative;left:4px;">Coupling is used for Higher Torque for
+                        Gear Box Safety</span></td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Coupling Make</td>
