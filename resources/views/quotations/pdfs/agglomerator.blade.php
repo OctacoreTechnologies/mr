@@ -58,11 +58,11 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Number of Rotaing Blades
                 </td>
-                <td style="padding: 8px;">:&nbsp;{{ $quotation->no_of_rotating_blades ?? 'N.A' }}Nos</td>
+                <td style="padding: 8px;">:&nbsp;{{ $quotation->no_of_rotating_blades ?? 'N.A' }} Nos</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Number of Fix Blades</td>
-                <td style="padding: 8px;">:&nbsp;{{ $quotation->no_of_fixes_blades ?? 'N.A' }}Nos</td>
+                <td style="padding: 8px;">:&nbsp;{{ $quotation->no_of_fixes_blades ?? 'N.A' }} Nos</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;Material</td>
@@ -78,7 +78,7 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;Batch</td>
-                <td style="padding: 8px;">:&nbsp;{{ $quotation->batch->batches ?? '' }}Kgs</td>
+                <td style="padding: 8px;">:&nbsp;{{ $quotation->batch->batches ?? '' }} Kgs</td>
             </tr>
         </table>
     </div>
