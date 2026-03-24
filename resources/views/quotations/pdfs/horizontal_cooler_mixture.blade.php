@@ -51,18 +51,18 @@
         ],
         [
             'title' => 'Electrical Control',
-            'description' => 'ABB / SIEMENS / L&T',
+            'description' => $quotation->electricalControl->electrical_control ?? '',
         ],
         [
             'title' => 'Bearing',
-            'description' => 'ZKL / FAG / SKF',
+            'description' => $quotation->bearinge->bearing ?? '',
         ],
     ];
 
     $mixerSpecs3 = [
         [
             'title' => 'Pneumatic Control',
-            'description' => 'SPAC / JANATICS',
+            'description' =>  $quotation->pneumatic->pneumatic ?? '',
         ],
         [
             'title' => 'Gear Box',
