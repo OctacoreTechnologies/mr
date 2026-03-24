@@ -8,7 +8,7 @@
      [
         'title' => 'Cooling Vessel',
         'description' => 'Inside Made from Stainless Steel with
-        Cooling Ring MOC – 304 Grade. Outside
+        Cooling Ring <br/> MOC – 304 Grade. Outside
         Jacketed by Mild Steel Plates. Jacketed
         Construction Provided for Cooling with
         Suitable Media. Material Discharge Opening
