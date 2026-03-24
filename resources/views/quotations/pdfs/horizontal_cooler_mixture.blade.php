@@ -70,7 +70,7 @@
         ],
         [
             'title' => 'Motor',
-            'description' => 'Hindustan / ABB / SIEMENS 1440 RPM AC ',
+            'description' =>  ($quotation->makeMotor?->name ?? 'Hindustan / ABB / SIEMENS 1440 RPM AC ') . '.',
         ],
         [
             'title' => 'Driving System',
@@ -264,8 +264,7 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Coupling Make</td>
-                <td class="value-cell">
-                    <span style="position: relative;left:4px;">Fenner</span>
+                <td class="value-cell"><span style="position: relative;left:4px;">Fenner</span>
                 </td>
             </tr>
         </table>
