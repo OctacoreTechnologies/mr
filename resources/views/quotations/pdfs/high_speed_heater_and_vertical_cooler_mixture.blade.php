@@ -319,9 +319,9 @@
         [
             'title' => 'Lid',
             'description' => 'Stainless steel - 304 grades. <br /> 
-                                 Equipped with gasket, on lid edge and with lid locking arrangement. The lid is fitted with the Followings flanged openings.<br/>
-                                 1. One for fitting arrangements for  Deflector and thermocouple (Heater Mixer). <br/>
-                                 2. One for addition of chemicals (Heater Mixer). <br />
+                                 • Equipped with gasket, on lid edge and with lid locking arrangement. The lid is fitted with the Followings flanged openings.<br/>
+                                  1. One for fitting arrangements for  Deflector and thermocouple (Heater Mixer). <br/>
+                                  2. One for addition of chemicals (Heater Mixer). <br />
                                  ',
             //3. Two for viewing glasses, operated pneumatically.  <br />
         ],

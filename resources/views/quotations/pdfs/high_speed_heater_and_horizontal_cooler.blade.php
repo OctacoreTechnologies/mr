@@ -18,9 +18,9 @@
         [
             'title' => 'Lid',
             'description' => 'Stainless steel - 304 grades. <br/> 
-                                 Equipped with gasket, on lid edge and with lid locking arrangement. The lid is fitted with the Followings flanged openings <br/>
-                                 1. One for fitting arrangements for  Deflector and thermocouple .<br />
-                                 2. One for addition of chemicals . <br />',
+                                 • Equipped with gasket, on lid edge and with lid locking arrangement. The lid is fitted with the Followings flanged openings <br/>
+                                 • 1. One for fitting arrangements for  Deflector and thermocouple .<br />
+                                 • 2. One for addition of chemicals . <br />',
 
         ],
         [
@@ -100,14 +100,14 @@
             'title' => 'DISCHARGE VALVE',
             'description' => 'Material Discharge Opening Assembly is Fitted at the Bottom Operated
                              by Butterfly Valve. Butterfly Valve Wafer MOC: SS 304 & Seal: EPDM.<br />
-                             A generously dimensioned discharge outlet ensures rapid product
+                             • A generously dimensioned discharge outlet ensures rapid product
                              emptying and minimizes residue, even for materials with low flowability.
                              ',
         ],
         [
             'title' => 'Mixing Tool',
-            'description' => 'MOC: Paddle and Paddle Carrier are SS 304.<br/>Shaft Fastening is Achieved Using Axially Adjustable Clamping Devices. <br/>
-                                  The Cooling Mixer Paddles Are Engineered for Intensive Axial and
+            'description' => 'MOC: Paddle and Paddle Carrier are SS 304.<br/>• Shaft Fastening is Achieved Using Axially Adjustable Clamping Devices. <br/>
+                                  • The Cooling Mixer Paddles Are Engineered for Intensive Axial and
                                   Radial Circulation, Enhancing Both Mixing Efficiency and Cooling
                                   Capacity While Ensuring Optimal Heat Transfer. Even Minimal
                                   Quantities of Fine Components Are Homogeneously Blended During
@@ -119,16 +119,16 @@
         [
             'title' => 'LID & SAFETY ARRANGEMENT',
             'description' => 'Lid MOC: SS 304. <br/>
-                            Pneumatically Operated with Cylinders. Two-Hand-Operation
+                            • Pneumatically Operated with Cylinders. Two-Hand-Operation
                             Operating Angle > 50°. <br/>
-                            Lid Safety: According to Specification System: Solenoid Safety Sensor
+                            • Lid Safety: According to Specification System: Solenoid Safety Sensor
                             (Limit Switch).<br/>The Cooling Mixer Lid is Integrated into the Safety
                             Circuit.',
         ],
         [
             'title' => 'BEARING HOUSING & SHAFTING',
-            'description' => 'Mixing Shaft Material Mild Steel with SS 304 Thick Pipe Jacketing.<br/>Power Transfer Directly from the Gear Box with Heavy Duty Bearings, Bearing Housings Fixed on the Shaft with Eccentric Clamping Rings for a Comfortable Maintenance and an Easy Access, the Bearings Are Installed in a Separate Housing Outside the Cooling Mixer Vessel. <br/>Seal Elements: Radial Shaft Seal Rings & Lubrication: Grease Air Purge.</br>
-                              Seal Rings with Air-heterodyne Reliably Keeps the Seat of the Seals
+            'description' => 'Mixing Shaft Material Mild Steel with SS 304 Thick Pipe Jacketing.<br/>• Power Transfer Directly from the Gear Box with Heavy Duty Bearings, Bearing Housings Fixed on the Shaft with Eccentric Clamping Rings for a Comfortable Maintenance and an Easy Access, the Bearings Are Installed in a Separate Housing Outside the Cooling Mixer Vessel. <br/>Seal Elements: Radial Shaft Seal Rings & Lubrication: Grease Air Purge.</br>
+                             • Seal Rings with Air-heterodyne Reliably Keeps the Seat of the Seals
                               Free from Mixing Material.
                              ',
         ],
