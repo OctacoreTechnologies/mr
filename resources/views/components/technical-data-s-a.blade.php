@@ -231,8 +231,7 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Compressed Air Consumption
                 </td>
-                <td class="value-cell"><span style="position: relative;left:4px;">
-                        {{ $quotation->compress_air_consumption ?? '' }} Nm3/h</span></td>
+                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->compress_air_consumption ?? '' }} Nm3/h</span></td>
             </tr>
         </table>
 
