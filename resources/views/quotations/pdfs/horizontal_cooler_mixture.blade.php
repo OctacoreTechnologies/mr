@@ -95,7 +95,7 @@
 
 <x-header-footer-pdf />
 <x-client-pdf-template :quotation="$quotation" />
-<x-table-content :specification="'Horizontal Cooler Mixture'" :pageTechnicalData="4" :pageSpecification="6"
+<x-table-content :specification="'HORIZONTAL COOLER MIXER'" :pageTechnicalData="4" :pageSpecification="6"
     :pageOffer="9" :pageTerms="10" />
 <style>
     .value-cell::before {

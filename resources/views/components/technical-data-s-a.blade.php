@@ -231,7 +231,9 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Compressed Air Consumption
                 </td>
-                <td class="value-cell"><span style="position: relative;left:4px;">{{ $quotation->compress_air_consumption ?? '' }} Nm3/h</span></td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->compress_air_consumption ?? '' }}
+                        Nm3/h</span></td>
             </tr>
         </table>
 
@@ -266,7 +268,7 @@
             style="text-align: left;width: 95%; position: relative; top:178px; right: 10px;">
             <h3 style="font-weight: bold;">1.4 ELECTRICAL PARAMETERS</h3>
         </div>
-            <table class="parameter-table"
+        <table class="parameter-table"
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 30px; top:185px; width: 95%; line-height: 1; margin-bottom: 20px;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap; width: 55%;">• &nbsp; Motor
@@ -295,11 +297,12 @@
             </tr>
         </table>
         <h2></h2>
-            <div class="technical-data-sub-head" style="text-align: left;width: 95%; margin-top:140px;position: relative;right:10px;">
+        <div class="technical-data-sub-head"
+            style="text-align: left;width: 95%; margin-top:140px;position: relative;right:10px;">
             <h3 style="font-weight: bolder;">1.5 TRANSMISSION</h3>
         </div>
 
-       <table class="parameter-table"
+        <table class="parameter-table"
             style="border-collapse: collapse; font-size: 14px; position: relative; left: 30px; top:10px; width: 95%; line-height: 1;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;width:55%;">• &nbsp; Gear Box</td>

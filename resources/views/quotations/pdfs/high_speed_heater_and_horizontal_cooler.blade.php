@@ -1,6 +1,6 @@
 <x-header-footer-pdf />
 <x-client-pdf-template :quotation="$quotation" />
-<x-table-content :specification="'MIXER'" :pageTechnicalData="4" :pageSpecification="7" :pageOffer="12"
+<x-table-content :specification="'HEATER AND HORIZONTAL COOLER MIXER'" :pageTechnicalData="4" :pageSpecification="7" :pageOffer="12"
     :pageTerms="13" />
 
 
