@@ -19,14 +19,15 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        
+
         $this->call([
             // StateSeeder::class,
             // TearmConditionSeeder::class,
             // CountrySeeder::class
             // CountryPhoneCodeSeeder::class
             //   $this->call(RegionStateSeeder::class),
-                BankDetailSeeder::class,
+            PermissionSeeder::class,
+            BankDetailSeeder::class,
         ]);
     }
 }

@@ -15,9 +15,9 @@ class PermissionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { 
-        $permissions=Permission::orderByDesc('created_at')->paginate(5);
-        return response()->view('permissions.index',compact('permissions'));
+    {
+        $permissions = Permission::orderByDesc('created_at')->get();
+        return response()->view('permissions.index', compact('permissions'));
     }
 
     /**
@@ -37,18 +37,17 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        $validator=Validator::make($request->all(),[
-            'name'=>'required|unique:permissions|min:3'
-     ]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:permissions|min:3'
+        ]);
 
-      if(!$validator->fails()){
-         Permission::create($validator->validate());
-         session()->flash('success','permission is created successfully');
-         return redirect()->route('admin.permission.index');
-      }
-      else{
-         return redirect()->route('admin.permission.index')->withInput()->withErrors($validator->errors());
-      }
+        if (!$validator->fails()) {
+            Permission::create($validator->validate());
+            session()->flash('success', 'permission is created successfully');
+            return redirect()->route('admin.permission.index');
+        } else {
+            return redirect()->route('admin.permission.index')->withInput()->withErrors($validator->errors());
+        }
     }
 
     /**
@@ -70,8 +69,8 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        $permission=Permission::findOrFail($id);
-        return response()->view('permissions.edit',compact('permission'));
+        $permission = Permission::findOrFail($id);
+        return response()->view('permissions.edit', compact('permission'));
     }
 
     /**
@@ -82,17 +81,17 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator=Validator::make($request->all(),[
-            'name'=>'required|unique:permissions,name,'.$id.',id|min:3'
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:permissions,name,' . $id . ',id|min:3'
         ]);
-        if($validator->fails()){
+        if ($validator->fails()) {
             return redirect()->route('permission.create')->withInput()->withErrors($validator->errors());
         }
-        $permission=Permission::findOrFail($id)->update(
-            ['name'=>$request->name]
+        $permission = Permission::findOrFail($id)->update(
+            ['name' => $request->name]
         );
 
-        session()->flash('success','permission is updated successfully');
+        session()->flash('success', 'permission is updated successfully');
         return redirect()->route('admin.permission.index');
     }
 
@@ -104,9 +103,9 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        $permission=Permission::findOrFail($id);
+        $permission = Permission::findOrFail($id);
         $permission->delete();
-        session()->flash('success','permission is deleted successfully');
+        session()->flash('success', 'permission is deleted successfully');
         return redirect()->route('admin.permission.index');
     }
 }
