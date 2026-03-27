@@ -38,7 +38,7 @@
                             <td>{{$model->machine->name ?? ""}}</td>
                             <td>{{$model->name ?? ""}}</td>
                             <td>{{$model->production ?? ""}}</td>
-                            <td>{{$model->motorRequirement->motor_requirement ??''}}  {{ $model->motorRequirement2->motor_requirement??'' }}</td>
+                            <td>{{$model->motorRequirement->motor_requirement ??''}} OR {{ $model->motorRequirement2->motor_requirement??'' }}</td>
 
                             <td>
                                 <nobr>

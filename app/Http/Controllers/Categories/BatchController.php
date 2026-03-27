@@ -56,7 +56,7 @@ class BatchController extends Controller
     {
         $batch=Batch::with(['machine','model'])->findOrFail($id);
         $machines=Machine::orderByDesc('created_at')->get();
-        return response()->view('categories.batches.update',compact('batch','machines'));
+        return response()->view('categories.batches.update',compact('batch','machines')); 
     }
 
     /**
