@@ -274,7 +274,7 @@
 
                 if (applicationId && machineId) {
                     $.ajax({
-                        url: '/categories/options/models/' + machineId + '/' + applicationId,
+                        url: '/categories/options/models/application/' + machineId + '/' + applicationId,
                         type: 'GET',
                         success: function (models) {
 

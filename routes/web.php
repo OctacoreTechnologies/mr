@@ -161,7 +161,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('/feeding_hooper_capacities', FeedingHooperCapacityController::class);
         Route::resource('/rotary-air-lock-valves', RotaryAirLockValveController::class);
         Route::get('/options/applications/{id}', [ApplicationController::class, 'applicationOptionsByMachine'])->name('application.options');
-        Route::get('/options/models/{machine_id}/{application_id}', [ModeleController::class, 'getModelsByApplicationId'])->name('model.options');
+        Route::get('/options/models/application/{machine_id}/{application_id}', [ModeleController::class, 'getModelsByApplicationId'])->name('model.options');
+        Route::get('/options/models/{id}', [ModeleController::class, 'getModelsByMachineId'])->name('model.options');
       });
     });
 
