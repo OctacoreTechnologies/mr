@@ -170,7 +170,7 @@
             'label' => 'Select Batch for ' . $second,
             'name' => 'batch2',
             'name1' => 'batch2_id',
-            'options' => $batches,
+            'options' => $batch2,
             'key' => 'batches',
         ],
         [

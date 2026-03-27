@@ -90,6 +90,7 @@ class QuotationController extends Controller
             $materialToProcess = MaterialToProcess::whereNull('model_id')->get();
         }
         $batchs = Batch::where('model_id',$model->id)->get();
+        $batch2 = $batchs->slice(1);
         $mixingTools = MixingTool::where('model_id', $previewData['model_id'])->get();
         $modeles = Modele::where('name', 'LIKE', '%' . $model->name . '%')->where('machine_id', $previewData['machine_id'])->with(['motorRequirement', 'motorRequirement2'])->get();
 
@@ -101,6 +102,7 @@ class QuotationController extends Controller
             'customer' => $customer,
             'materialToProcess' => $materialToProcess,
             'batchs' => $batchs,
+            'batch2' => $batch2,
             'mixingTools' => $mixingTools,
             'motorRequirements' => $motorRequirements,
             'motorRequirements2' => $motorRequirements2,
