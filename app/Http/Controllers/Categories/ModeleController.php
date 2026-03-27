@@ -89,14 +89,13 @@ class ModeleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    use Illuminate\Support\Facades\DB;
 
     public function update(UpdateModelRequest $request, string $id)
     {
         $data = $request->validated();
 
         $relationFields = [
-            'motor' => [MotorRequirement::class, 'motor_requirement'],
+            'motor' => [MototRequirement::class, 'motor_requirement'],
         ];
 
         $foreignKeys = [];
