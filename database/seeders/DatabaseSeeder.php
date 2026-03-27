@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
             // CountryPhoneCodeSeeder::class
             //   $this->call(RegionStateSeeder::class),
             PermissionSeeder::class,
-            BankDetailSeeder::class,
+            //BankDetailSeeder::class,
         ]);
     }
 }
