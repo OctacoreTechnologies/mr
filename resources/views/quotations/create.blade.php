@@ -356,11 +356,26 @@
                                 <label>{{ $select['label'] }}</label>
                                 <select class="form-control select2 readonly-select" name="{{ $select['name'] }}">
                                     @foreach ($select['options'] as $option)
-                                        <option value="{{ $option[$select['key']] }}"
+                                        {{-- <option value="{{ $option[$select['key']] }}"
                                             {{ ($previewData[$select['name']] ?? '') == $option->id || ($product->{$select['name1']} ?? '') == $option->id
                                                 ? 'selected'
                                                 : '' }}>
                                             {{ $option[$select['key']] }}
+                                        </option> --}}
+                                        <option value="{{ $option[$select['key']] }}"
+                                                    {{
+                                                        ($previewData[$select['name']] ?? '') == $option->id ||
+                                                        ($product->{$select['name1']} ?? '') == $option->id ||
+                                                
+                                                        (
+                                                            $select['name'] == 'batch2' &&
+                                                            isset($previewData['batch']) &&
+                                                            $option[$select['key']] == ($previewData['batch'] * 2)
+                                                        )
+                                                        ? 'selected'
+                                                        : ''
+                                                    }}>
+                                                    {{ $option[$select['key']] }}
                                         </option>
                                     @endforeach
                                 </select>
