@@ -30,6 +30,16 @@
                             @endforeach
                        </x-adminlte-select>
                     </div>
+                    <div class="col-md-6">
+                           <x-adminlte-select  name="application_id" id="application_id" label="Select Application" required>
+                              <option>Select Application</option>
+                              @foreach($applications as $application)
+                                <option value="{{ $application->id }}" {{ $application->id == $model->application_id ? 'selected' : '' }}>
+                                    {{ $application->name }}
+                                </option>
+                            @endforeach
+                          </x-adminlte-select>
+                    </div>
 
                     <div class="col-md-6">
                         <x-adminlte-select name="motor" class="select2" label="Motor Requirement" fgroup-class="mb-3" required>

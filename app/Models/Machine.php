@@ -19,7 +19,7 @@ class Machine extends Model
     }
 
     public function applications(){
-        return $this->hasMany(Quotation::class,'batch_id');
+        return $this->hasMany(Modele::class,'application_id');
     }
 
     public function modeles(){

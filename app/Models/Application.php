@@ -15,13 +15,18 @@ class Application extends Model
     return $this->hasMany(Quotation::class, 'application_id');
   }
 
-  public function modele()
-  {
-    return $this->belongsTo(Modele::class, 'model_id');
-  }
+  // public function modele()
+  // {
+  //   return $this->belongsTo(Modele::class, 'model_id');
+  // }
   public function machine()
   {
     return $this->belongsTo(Machine::class, 'machine_id');
+  }
+
+  public function modele()
+  {
+    return $this->hasMany(Modele::class, 'application_id');
   }
 
   public function materialToProcess()

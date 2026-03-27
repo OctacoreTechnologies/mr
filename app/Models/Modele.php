@@ -21,6 +21,11 @@ class Modele extends Model
         return $this->belongsTo(Machine::class, 'machine_id');
     }
 
+    public function application()
+    {
+        return $this->belongsTo(Application::class, 'application_id');
+    }
+
     public function motorRequirement()
     {
         return $this->belongsTo(MototRequirement::class, 'motor_id');
@@ -55,10 +60,6 @@ class Modele extends Model
         return $this->hasMany(Batch::class, 'model_id');
     }
 
-    public function application()
-    {
-        return $this->belongsTo(Application::class, 'model_id');
-    }
 
     public function mixingTools()
     {

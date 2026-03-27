@@ -26,6 +26,7 @@ class UpdateModelRequest extends FormRequest
             'name'=>'required|string|max:255',
             'production'=>'required',
             'machine_id'=>'required',
+            'application_id'=> 'required',
             'motor'=>'required',
             'motor2'=>'nullable',
             'is_two_application'=>'nullable',

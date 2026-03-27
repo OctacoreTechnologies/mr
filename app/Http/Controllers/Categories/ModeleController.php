@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Categories;
 use App\Http\Controllers\categories\MotorRequirementController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateModelRequest;
+use App\Models\Application;
 use App\Models\Machine;
 use App\Models\Modele;
 use App\Models\MototRequirement;
@@ -83,7 +84,8 @@ class ModeleController extends Controller
         $modele = Modele::find($id);
         $machines = Machine::all();
         $motorRequirements = MototRequirement::all();
-        return response()->view('categories.models.edit', ['model' => $modele, 'machines' => $machines, 'motorRequirements' => $motorRequirements]);
+        $applications = Application::where('machine_id', $modele->machine_id)->get();
+        return response()->view('categories.models.edit', ['model' => $modele, 'machines' => $machines, 'motorRequirements' => $motorRequirements,'applications'=> $applications]);
     }
 
     /**
@@ -140,6 +142,16 @@ class ModeleController extends Controller
     {
         // $machineId = $request->input('machine_id');
         $models = Modele::where('machine_id', $id)->get();
+        return response()->json($models);
+    }
+
+    public function getModelsByApplicationId($machineid, $application_id)
+    {
+        // $machineId = $request->input('machine_id');
+        $models = Modele::where('machine_id', $machineid)->where('application_id', $application_id)->get();
+        if ($models->isEmpty()) {
+            return response()->json(['message' => 'No models found'], 404);
+        }
         return response()->json($models);
     }
 }
