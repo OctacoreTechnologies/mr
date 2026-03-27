@@ -9,6 +9,7 @@ use App\Models\Machine;
 use App\Models\Modele;
 use App\Models\MototRequirement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ModeleController extends Controller
 {
@@ -17,11 +18,14 @@ class ModeleController extends Controller
      */
     public function index()
     {
-        $models=Modele::with('application','machine')->orderByDesc('created_at')->get();
-    //    return $models;
-        $machines=Machine::all();
-        return response()->view('categories.models.index',['models'=>$models,'machines'=>$machines,
-        'motorRequirements'=>MototRequirement::all()]);
+        $models = Modele::with('application', 'machine')->orderByDesc('created_at')->get();
+        //    return $models;
+        $machines = Machine::all();
+        return response()->view('categories.models.index', [
+            'models' => $models,
+            'machines' => $machines,
+            'motorRequirements' => MototRequirement::all()
+        ]);
     }
 
     /**
@@ -38,30 +42,29 @@ class ModeleController extends Controller
     public function store(UpdateModelRequest $request)
     {
         $data = $request->validated();
-        $relationfields=[
-          'motor'=>[MototRequirement::class,'motor_requirement'],
-          'motor2'=>[MototRequirement::class,'motor_requirement'],
-         ];
+        $relationfields = [
+            'motor' => [MototRequirement::class, 'motor_requirement'],
+            'motor2' => [MototRequirement::class, 'motor_requirement'],
+        ];
         $foreignKeys = [];
-         foreach($relationfields as $field=>[$modelClass,$columnName]){
-           if ($data[$field]!=null) {
-            $record = $modelClass::firstOrCreate([$columnName => $data[$field]]);
-            $foreignKeys[$field . '_id'] = $record->id;
-           } else {
-            $foreignKeys[$field . '_id'] = null;
-           }
-          }
+        foreach ($relationfields as $field => [$modelClass, $columnName]) {
+            if ($data[$field] != null) {
+                $record = $modelClass::firstOrCreate([$columnName => $data[$field]]);
+                $foreignKeys[$field . '_id'] = $record->id;
+            } else {
+                $foreignKeys[$field . '_id'] = null;
+            }
+        }
         //  $modele = Modele::find($id);
-          $finalData = array_merge(
-        // Just regular fields
-        collect($data)->except(array_keys($relationfields))->toArray(),
+        $finalData = array_merge(
+            // Just regular fields
+            collect($data)->except(array_keys($relationfields))->toArray(),
 
-        // Foreign key fields
-        $foreignKeys
-    );
+            // Foreign key fields
+            $foreignKeys
+        );
         Modele::create($finalData);
         return response()->redirectToRoute('model.index');
-        
     }
 
     /**
@@ -80,38 +83,48 @@ class ModeleController extends Controller
         $modele = Modele::find($id);
         $machines = Machine::all();
         $motorRequirements = MototRequirement::all();
-        return response()->view('categories.models.edit',['model'=>$modele,'machines'=>$machines,'motorRequirements'=>$motorRequirements]);
+        return response()->view('categories.models.edit', ['model' => $modele, 'machines' => $machines, 'motorRequirements' => $motorRequirements]);
     }
 
     /**
      * Update the specified resource in storage.
      */
+    use Illuminate\Support\Facades\DB;
+
     public function update(UpdateModelRequest $request, string $id)
     {
-         $data=$request->validated();
-         $relationfields=[
-          'motor'=>[MototRequirement::class,'motor_requirement'],
-         ];
+        $data = $request->validated();
+
+        $relationFields = [
+            'motor' => [MotorRequirement::class, 'motor_requirement'],
+        ];
+
         $foreignKeys = [];
-         foreach($relationfields as $field=>[$modelClass,$columnName]){
-           if ($data[$field]!=null) {
-            $record = $modelClass::firstOrCreate([$columnName => $data[$field]]);
-            $foreignKeys[$field . '_id'] = $record->id;
-           } else {
-            $foreignKeys[$field . '_id'] = null;
-           }
-          }
-         $modele = Modele::find($id);
-          $finalData = array_merge(
-        // Just regular fields
-        collect($data)->except(array_keys($relationfields))->toArray(),
 
-        // Foreign key fields
-        $foreignKeys
-    );
+        foreach ($relationFields as $field => [$modelClass, $columnName]) {
+            if (!empty($data[$field])) {
+                $record = $modelClass::firstOrCreate([
+                    $columnName => $data[$field]
+                ]);
 
-         $modele->update($finalData);
-         return response()->redirectToRoute('model.index');
+                $foreignKeys[$field . '_id'] = $record->id;
+            } else {
+                $foreignKeys[$field . '_id'] = null;
+            }
+        }
+
+        $modele = Modele::findOrFail($id);
+
+        $finalData = array_merge(
+            collect($data)->except(array_keys($relationFields))->toArray(),
+            $foreignKeys
+        );
+
+        DB::transaction(function () use ($modele, $finalData) {
+            $modele->update($finalData);
+        });
+
+        return redirect()->route('model.index');
     }
 
     /**
