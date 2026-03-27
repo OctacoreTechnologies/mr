@@ -478,27 +478,58 @@ class QuotationController extends Controller
         return redirect()->route('quotation.create');
     }
 
+    // function getNextReference($inputRef)
+    // {
+
+    //     if (preg_match('/^(.*)\/(\d+)R$/', $inputRef, $matches)) {
+    //         $baseRef = $matches[1];
+    //         $currentNumber = intval($matches[2]);
+    //         $nextNumber = $currentNumber + 1;
+    //         return $baseRef . '/R' . $nextNumber; // Ensure the format R1, R2, R3, etc.
+    //     } else {
+
+    //         if (preg_match('/^(.*)\/R(\d+)$/', $inputRef, $matches)) {
+    //             $baseRef = $matches[1];           // e.g. MR/007/2025-26
+    //             $currentNumber = intval($matches[2]);
+    //             $nextNumber = $currentNumber + 1; // Increase by 1
+    //             return $baseRef . '/R' . $nextNumber; // Ensure the format R1, R2, R3, etc.
+    //         } else {
+
+    //             return $inputRef . '/R1';
+    //         }
+    //     }
+    // }
+
     function getNextReference($inputRef)
-    {
+{
+    do {
 
         if (preg_match('/^(.*)\/(\d+)R$/', $inputRef, $matches)) {
             $baseRef = $matches[1];
             $currentNumber = intval($matches[2]);
             $nextNumber = $currentNumber + 1;
-            return $baseRef . '/R' . $nextNumber; // Ensure the format R1, R2, R3, etc.
+            $newRef = $baseRef . '/R' . $nextNumber;
+
+        } else if (preg_match('/^(.*)\/R(\d+)$/', $inputRef, $matches)) {
+            $baseRef = $matches[1];
+            $currentNumber = intval($matches[2]);
+            $nextNumber = $currentNumber + 1;
+            $newRef = $baseRef . '/R' . $nextNumber;
+
         } else {
-
-            if (preg_match('/^(.*)\/R(\d+)$/', $inputRef, $matches)) {
-                $baseRef = $matches[1];           // e.g. MR/007/2025-26
-                $currentNumber = intval($matches[2]);
-                $nextNumber = $currentNumber + 1; // Increase by 1
-                return $baseRef . '/R' . $nextNumber; // Ensure the format R1, R2, R3, etc.
-            } else {
-
-                return $inputRef . '/R1';
-            }
+            $newRef = $inputRef . '/R1';
         }
-    }
+
+        // Check in DB (change table/column as per your system)
+        $exists = Quotation::where('reference_no', $newRef)->exists();
+
+        // Prepare for next loop
+        $inputRef = $newRef;
+
+    } while ($exists);
+
+    return $newRef;
+}
 
     public function isVerified(Request $request)
     {
