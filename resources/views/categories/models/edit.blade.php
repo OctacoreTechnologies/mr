@@ -45,7 +45,7 @@
                     @if($model->is_two_application)
                             
                     <div class="col-md-6">
-                        <x-adminlte-select name="motor" class="select2" label="Motor Requirement For Second Application" fgroup-class="mb-3" required>
+                        <x-adminlte-select name="motor2" class="select2" label="Motor Requirement For Second Application" fgroup-class="mb-3" required>
                             <option>Select Motor Requirement</option>
                             @foreach($motorRequirements as $motorRequirement)
                                 <option value="{{ $motorRequirement->motor_requirement }}" {{ $motorRequirement->id == $model->motor2_id ? 'selected' : '' }}>
