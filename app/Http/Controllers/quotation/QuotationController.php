@@ -89,7 +89,7 @@ class QuotationController extends Controller
         if ($materialToProcess->isEmpty()) {
             $materialToProcess = MaterialToProcess::whereNull('model_id')->get();
         }
-        $batchs = Batch::all();
+        $batchs = Batch::where('model_id',$model->id)->get();
         $mixingTools = MixingTool::where('model_id', $previewData['model_id'])->get();
         $modeles = Modele::where('name', 'LIKE', '%' . $model->name . '%')->where('machine_id', $previewData['machine_id'])->with(['motorRequirement', 'motorRequirement2'])->get();
 
