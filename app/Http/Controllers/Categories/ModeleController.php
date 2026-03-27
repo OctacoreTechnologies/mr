@@ -85,7 +85,7 @@ class ModeleController extends Controller
         $machines = Machine::all();
         $motorRequirements = MototRequirement::all();
         $applications = Application::where('machine_id', $modele->machine_id)->get();
-        return response()->view('categories.models.edit', ['model' => $modele, 'machines' => $machines, 'motorRequirements' => $motorRequirements,'applications'=> $applications]);
+        return response()->view('categories.models.edit', ['model' => $modele, 'machines' => $machines, 'motorRequirements' => $motorRequirements, 'applications' => $applications]);
     }
 
     /**
@@ -148,7 +148,12 @@ class ModeleController extends Controller
     public function getModelsByApplicationId($machineid, $application_id)
     {
         // $machineId = $request->input('machine_id');
-        $models = Modele::where('machine_id', $machineid)->where('application_id', $application_id)->get();
+        $models = Modele::where('machine_id', $machineid)
+            ->where(function ($query) use ($application_id) {
+                $query->where('application_id', $application_id)
+                    ->orWhereNull('application_id');
+            })
+            ->get();
         if ($models->isEmpty()) {
             return response()->json(['message' => 'No models found'], 404);
         }
