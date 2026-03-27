@@ -96,6 +96,7 @@ class ModeleController extends Controller
 
         $relationFields = [
             'motor' => [MototRequirement::class, 'motor_requirement'],
+            'motor2' => [MototRequirement::class, 'motor_requirement'],
         ];
 
         $foreignKeys = [];
