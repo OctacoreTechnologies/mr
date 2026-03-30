@@ -195,7 +195,7 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Batch Size</td>
                 <td class="value-cell"><span
-                        style="position: relative;left:4px;">{{ $quotation->batche2->batches ?? '' }}Kg( 4 Batch/Hr
+                        style="position: relative;left:4px;">{{ $quotation->batch2->batches ?? '' }}Kg( 4 Batch/Hr
                         )</span> </td>
             </tr>
             <tr>

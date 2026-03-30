@@ -141,13 +141,18 @@ class QuotationController extends Controller
             'motor_requirement' => [MototRequirement::class, 'motor_requirement'],
             'motor_requirement2' => [MototRequirement::class, 'motor_requirement'],
             'make_motor' => [MakeMotor::class, 'name'],
+            'make_motor_2' => [MakeMotor::class, 'name'],
             'batch' => [Batch::class, 'batches'],
             'batch2' => [Batch::class, 'batches'],
             'mixing_tool' => [MixingTool::class, 'mixing_tool'],
             'electrical_control' => [ElelctricalControl::class, 'electrical_control'],
+            'electrical_control_2' => [ElelctricalControl::class, 'electrical_control'],
             'ac_frequency_drive' => [AcFequencyDrive::class, 'ac_fequency_drive'],
+            'ac_frequency_drive_2' => [AcFequencyDrive::class, 'ac_fequency_drive'],
             'bearing' => [Bearing::class, 'bearing'],
+            'bearing_2' => [Bearing::class, 'bearing'],
             'pneumatic' => [Pneumatic::class, 'pneumatic'],
+            'pneumatic_2' => [Pneumatic::class, 'pneumatic'],
             //   'model'=>[Modele::class,'name'],
             'blower' => [Blower::class, 'blower'],
             'rotary_air_lock_valve' => [RotaryAirLockValve::class, 'rotary_air_lock_valve'],
@@ -393,7 +398,7 @@ class QuotationController extends Controller
 
 
         $termCondition = null;
-        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'items'])->findOrFail($id);
+        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'electricalControl2', 'acFrequencyDrive', 'acFrequencyDrive2', 'bearinge', 'bearinge2', 'pneumatic', 'pneumatic2', 'batch2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'items'])->findOrFail($id);
         if ($quotation->customer->location_type == 'international') {
             $termCondition = TearmCondition::findOrFail(2);
         } else {

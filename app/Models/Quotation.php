@@ -103,7 +103,7 @@ class Quotation extends Model implements Auditable
     return $this->belongsTo(Batch::class, 'batch_id');
   }
 
-  public function batche2()
+  public function batch2()
   {
     return $this->belongsTo(Batch::class, 'batch2_id');
   }
@@ -129,7 +129,7 @@ class Quotation extends Model implements Auditable
 
   public function electricalControl2()
   {
-    return $this->belongsTo(ElelctricalControl::class, 'electrical_control2_id');
+    return $this->belongsTo(ElelctricalControl::class, 'electrical_control_2_id');
   }
   public function acFrequencyDrive()
   {
@@ -138,7 +138,7 @@ class Quotation extends Model implements Auditable
 
   public function acFrequencyDrive2()
   {
-    return $this->belongsTo(AcFequencyDrive::class, 'ac_frequency_drive2_id');
+    return $this->belongsTo(AcFequencyDrive::class, 'ac_frequency_drive_2_id');
   }
   public function bearinge()
   {
@@ -147,7 +147,7 @@ class Quotation extends Model implements Auditable
 
   public function bearinge2()
   {
-    return $this->belongsTo(Bearing::class, 'bearing2_id');
+    return $this->belongsTo(Bearing::class, 'bearing_2_id');
   }
 
   public function pneumatic()
@@ -157,7 +157,7 @@ class Quotation extends Model implements Auditable
 
   public function pneumatic2()
   {
-    return $this->belongsTo(Pneumatic::class, 'pneumatic2_id');
+    return $this->belongsTo(Pneumatic::class, 'pneumatic_2_id');
   }
   public function blower()
   {
@@ -184,7 +184,7 @@ class Quotation extends Model implements Auditable
 
   public function makeMotor2()
   {
-    return $this->belongsTo(MakeMotor::class, 'make_motor2_id');
+    return $this->belongsTo(MakeMotor::class, 'make_motor_2_id');
   }
 
   public function quotationFollowUps()

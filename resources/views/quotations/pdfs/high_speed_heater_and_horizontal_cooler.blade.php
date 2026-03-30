@@ -140,11 +140,11 @@
         ],
         [
             'title' => 'Electrical Control',
-            'description' => 'ABB / SIEMENS / L&T',
+            'description' => $quotation->electricalControl2->electrical_control ?? '',
         ],
         [
             'title' => 'Bearing',
-            'description' => 'ZKL / FAG / SKF',
+            'description' => $quotation->bearinge2->bearing ?? '',
         ],
 
     ];
@@ -152,19 +152,19 @@
     $mixerSpecs3 = [
         [
             'title' => 'Pneumatic Control',
-            'description' => 'SPAC / JANATICS',
+            'description' =>$quotation->pneumatic2->pneumatic ?? '',
         ],
         [
             'title' => 'Gear Box',
-            'description' => 'Heli Bevel',
+            'description' => $quotation->gear_box_2 ?? '',
         ],
-        [
-            'title' => 'Motor',
-            'description' => 'Hindustan / ABB / SIEMENS 1440 RPM AC ',
-        ],
+        // [
+        //     'title' => 'Motor',
+        //     'description' => $quotation->make_motor_2->name ?? '',
+        // ],
         [
             'title' => 'Driving System',
-            'description' => 'The drive system incorporates Direct Motor and Gear Box assembly driven.',
+            'description' => $quotation->drive_system_2 ?? '',
         ],
     ];
 @endphp

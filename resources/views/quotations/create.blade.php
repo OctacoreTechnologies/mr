@@ -181,37 +181,72 @@
             'key' => 'mixing_tool',
         ],
         [
-            'label' => 'Electrical Control',
+            'label' => 'Electrical Control for ' . $first,
             'name' => 'electrical_control',
             'name1' => 'electrical_control_id',
             'options' => $electricalControls,
             'key' => 'electrical_control',
         ],
         [
-            'label' => 'Select Ac Frequency Drives',
+            'label' => 'Electrical Control for ' . $second,
+            'name' => 'electrical_control_2',
+            'name1' => 'electrical_control_2_id',
+            'options' => $electricalControls,
+            'key' => 'electrical_control',
+        ],
+        [
+            'label' => 'Select Ac Frequency Drives For ' . $first,
             'name' => 'ac_frequency_drive',
             'name1' => 'ac_frequency_drive_id',
             'options' => $acFrequencyDrives,
             'key' => 'ac_fequency_drive',
         ],
         [
-            'label' => 'Select Bearing',
+            'label' => 'Select ' . $second . ' Ac Frequency Drive',
+            'name' => 'ac_frequency_drive_2',
+            'name1' => 'ac_frequency_drive_2_id',
+            'options' => $acFrequencyDrives,
+            'key' => 'ac_fequency_drive',
+        ],
+        [
+            'label' => 'Select Bearing for ' . $first,
             'name' => 'bearing',
             'name1' => 'bearing_id',
             'options' => $bearings,
             'key' => 'bearing',
         ],
         [
-            'label' => 'Select Pneumatics',
+            'label' => 'Select ' . $second . ' Bearing',
+            'name' => 'bearing_2',
+            'name1' => 'bearing_2_id',
+            'options' => $bearings,
+            'key' => 'bearing',
+        ],
+        [
+            'label' => 'Select Pneumatics for ' . $first,
             'name' => 'pneumatic',
             'name1' => 'pneumatic_id',
             'options' => $pneumatics,
             'key' => 'pneumatic',
         ],
         [
-            'label' => 'Select Make Motor',
+            'label' => 'Select ' . $second . ' Pneumatic',
+            'name' => 'pneumatic_2',
+            'name1' => 'pneumatic_2_id',
+            'options' => $pneumatics,
+            'key' => 'pneumatic',
+        ],
+        [
+            'label' => 'Select Make Motor for ' . $first,
             'name' => 'make_motor',
             'name1' => 'make_motor_id',
+            'options' => $makeMotors,
+            'key' => 'name',
+        ],
+        [
+            'label' => 'Select Make ' . $second . ' Motor',
+            'name' => 'make_motor_2',
+            'name1' => 'make_motor_2_id',
             'options' => $makeMotors,
             'key' => 'name',
         ],
@@ -230,7 +265,7 @@
             'key' => 'no_of_blades',
         ],
         [
-            'label' => 'Select Capacity',
+            'label' => 'Select Capacity ',
             'name' => 'capacity',
             'name1' => 'capacity_id',
             'options' => $capacities,
@@ -538,7 +573,40 @@
                                 required />
                             <i class="fas fa-pencil-alt edit-icon"></i>
                         </div>
-                    @endif
+                    @endif 
+                    @if (isset($product->gear_box_1))
+                        <div class="col-md-6">
+                            <label>Gear Box for {{ $first }}</label>
+                            <input name="gear_box_1" value="{{ $product->gear_box_1 }}" class="form-control readonly-input"
+                                required />
+                            <i class="fas fa-pencil-alt edit-icon"></i>
+                        </div>
+                    @endif 
+                    @if (isset($product->gear_box_2))
+                        <div class="col-md-6">
+                            <label>Gear Box for {{ $second }}</label>
+                            <input name="gear_box_2" value="{{ $product->gear_box_2 }}" class="form-control readonly-input"
+                                required />
+                            <i class="fas fa-pencil-alt edit-icon"></i>
+                        </div>
+                    @endif 
+                   @if (isset($product->drive_system_1))
+                        <div class="col-md-6">
+                            <label>Drive System for {{ $first }}</label>
+                            <input name="drive_system_1" value="{{ $product->drive_system_1 }}" class="form-control readonly-input"
+                                required />
+                            <i class="fas fa-pencil-alt edit-icon"></i>
+                        </div>
+                    @endif 
+
+                      @if (isset($product->drive_system_2))
+                        <div class="col-md-6">
+                            <label>Drive System for {{ $second }}</label>
+                            <input name="drive_system_2" value="{{ $product->drive_system_2 }}" class="form-control readonly-input"
+                                required />
+                            <i class="fas fa-pencil-alt edit-icon"></i>
+                        </div>
+                    @endif 
 
                     {{-- User Selector --}}
                     <div class="col-md-6">
