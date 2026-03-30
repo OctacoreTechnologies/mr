@@ -103,7 +103,7 @@ class Quotation extends Model implements Auditable
     return $this->belongsTo(Batch::class, 'batch_id');
   }
 
-  public function batch2()
+  public function batche2()
   {
     return $this->belongsTo(Batch::class, 'batch2_id');
   }
