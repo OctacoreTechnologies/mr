@@ -17,7 +17,16 @@ class Pneumatic extends Model
 
   public function applications()
   {
+    return $this->hasMany(Application::class, 'pneuamtic_id');
+  }
+  public function quotations2()
+  {
     return $this->hasMany(Quotation::class, 'pneuamtic_id');
+  }
+
+  public function applications2()
+  {
+    return $this->hasMany(Application::class, 'pneuamtic_id');
   }
 
   protected static function booted()

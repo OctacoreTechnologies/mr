@@ -16,7 +16,17 @@ class Bearing extends Model
 
   public function applications()
   {
-    return $this->hasMany(Quotation::class, 'batch_id');
+    return $this->hasMany(Application::class, 'bearing_id');
+  }
+
+  public function quotations2()
+  {
+    return $this->hasMany(Quotation::class, 'bearing2_id');
+  }
+
+  public function applications2()
+  {
+    return $this->hasMany(Application::class, 'bearing2_id');
   }
 
   protected static function booted()

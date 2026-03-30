@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 
 class Quotation extends Model implements Auditable
 {
-  use SoftDeletes, \OwenIt\Auditing\Auditable,LogsUserActivity;
+  use SoftDeletes, \OwenIt\Auditing\Auditable, LogsUserActivity;
 
   protected $auditInclude = [
     'id',
@@ -103,7 +103,7 @@ class Quotation extends Model implements Auditable
     return $this->belongsTo(Batch::class, 'batch_id');
   }
 
-  public function batche2()
+  public function batch2()
   {
     return $this->belongsTo(Batch::class, 'batch2_id');
   }
@@ -126,18 +126,38 @@ class Quotation extends Model implements Auditable
   {
     return $this->belongsTo(ElelctricalControl::class, 'electrical_control_id');
   }
+
+  public function electricalControl2()
+  {
+    return $this->belongsTo(ElelctricalControl::class, 'electrical_control2_id');
+  }
   public function acFrequencyDrive()
   {
     return $this->belongsTo(AcFequencyDrive::class, 'ac_frequency_drive_id');
+  }
+
+  public function acFrequencyDrive2()
+  {
+    return $this->belongsTo(AcFequencyDrive::class, 'ac_frequency_drive2_id');
   }
   public function bearinge()
   {
     return $this->belongsTo(Bearing::class, 'bearing_id');
   }
 
+  public function bearinge2()
+  {
+    return $this->belongsTo(Bearing::class, 'bearing2_id');
+  }
+
   public function pneumatic()
   {
     return $this->belongsTo(Pneumatic::class, 'pneumatic_id');
+  }
+
+  public function pneumatic2()
+  {
+    return $this->belongsTo(Pneumatic::class, 'pneumatic2_id');
   }
   public function blower()
   {
@@ -160,6 +180,11 @@ class Quotation extends Model implements Auditable
   public function makeMotor()
   {
     return $this->belongsTo(MakeMotor::class, 'make_motor_id');
+  }
+
+  public function makeMotor2()
+  {
+    return $this->belongsTo(MakeMotor::class, 'make_motor2_id');
   }
 
   public function quotationFollowUps()

@@ -33,6 +33,12 @@ class MototRequirement extends Model
     return $this->hasMany(Quotation::class, 'motor_requirement2_id');
   }
 
+  public function applications2()
+  {
+    return $this->hasMany(Quotation::class, 'motor_requirement2_id');
+  }
+
+
   protected static function booted()
   {
     static::addGlobalScope('order', function ($query) {

@@ -24,6 +24,11 @@ class Batch extends Model
   {
     return $this->hasMany(Quotation::class, 'batch_id');
   }
+
+  public function applications2()
+  {
+    return $this->hasMany(Quotation::class, 'batch2_id');
+  }
   public function machine()
   {
     return $this->belongsTo(Machine::class, 'machine_id');

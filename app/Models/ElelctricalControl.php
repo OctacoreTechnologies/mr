@@ -7,21 +7,34 @@ use Illuminate\Database\Eloquent\Model;
 
 class ElelctricalControl extends Model
 {
-    use LogsUserActivity;
-    protected $guarded=[];
+  use LogsUserActivity;
+  protected $guarded = [];
 
-      public function quotations(){
-        return $this->hasMany(Quotation::class,'electical_control_id');
-     }
-      public function applications(){
-        return $this->hasMany(Quotation::class,'batch_id');
-      }
+  public function quotations()
+  {
+    return $this->hasMany(Quotation::class, 'electical_control_id');
+  }
+  public function applications()
+  {
+    return $this->hasMany(Application::class, 'electical_control_id');
+  }
 
-      
-    protected static function booted()
-    {
-        static::addGlobalScope('order', function ($query) {
-            $query->orderBy('electrical_control', 'asc');
-        });
-    }
+
+  public function quotations2()
+  {
+    return $this->hasMany(Quotation::class, 'electical_control2_id');
+  }
+  public function applications2()
+  {
+    return $this->hasMany(Application::class, 'electical_control2_id');
+  }
+
+
+
+  protected static function booted()
+  {
+    static::addGlobalScope('order', function ($query) {
+      $query->orderBy('electrical_control', 'asc');
+    });
+  }
 }

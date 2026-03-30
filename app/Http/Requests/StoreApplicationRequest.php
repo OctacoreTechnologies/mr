@@ -32,9 +32,13 @@ class StoreApplicationRequest extends FormRequest
          'motor_requirement'=>'nullable',
          'motor_requirement2'=>'nullable',
          'electrical_control'=>'nullable',
+         'electrical_control_2'=>'nullable',
          'ac_frequency_drive'=>'nullable',
+         'ac_frequency_drive_2'=>'nullable',
          'bearing'=>'nullable',
+         'bearing_2'=>'nullable',
          'pneumatic'=>'nullable',
+         'pneumatic_2'=>'nullable',
          'price'=>'nullable',
          'machine'=>'nullable',
          'water_pressure'=>'nullable',
@@ -47,6 +51,7 @@ class StoreApplicationRequest extends FormRequest
          'no_of_fixes_blade'=>'nullable',
          'capacity'=>'nullable',
          'make_motor'=>'nullable',
+         'make_motor_2'=>'nullable',
          'is_two_application'=>'nullable',
          'useful_volume'=>'nullable',
          'compress_air_consumption'=>'nullable',
@@ -61,6 +66,10 @@ class StoreApplicationRequest extends FormRequest
          'rotor'=>'nullable',
          'material'=>'nullable',
          'tank' => 'nullable',
+         'gear_box_1' => 'nullable',
+         'gear_box_2' => 'nullable',
+         'drive_system_1' => 'nullable',
+         'drive_system_2' => 'nullable',
 
         ];
     }
