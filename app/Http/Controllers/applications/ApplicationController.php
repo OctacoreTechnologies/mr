@@ -189,16 +189,54 @@ class ApplicationController extends Controller
         ];
     }
 
+    protected function directCreateFields(): array
+    {
+        return [
+            'drive_system_1' => [DriveSystem::class, 'drive_system'],
+            'gear_box_1'     => [GearBox::class, 'gear_box'],
+            'drive_system_2' => [DriveSystem::class, 'drive_system'],
+            'gear_box_2'     => [GearBox::class, 'gear_box'],
+        ];
+    }
+
     // ===================== Prepare Data Helper =====================
+
+    // protected function prepareApplicationData(array $data, bool $isUpdate = false): array
+    // {
+    //     $relationFields = $this->relationFields();
+    //     $foreignKeys = [];
+
+    //     foreach ($relationFields as $field => [$model, $column]) {
+
+    //         // Update case: field form me nahi aayi → skip
+    //         if ($isUpdate && !array_key_exists($field, $data)) {
+    //             continue;
+    //         }
+
+    //         if (!empty($data[$field])) {
+    //             $record = $model::firstOrCreate([$column => $data[$field]]);
+    //             $foreignKeys[$field . '_id'] = $record->id;
+    //         } else {
+    //             $foreignKeys[$field . '_id'] = null;
+    //         }
+    //     }
+
+    //     return array_merge(
+    //         collect($data)->except(array_keys($relationFields))->toArray(),
+    //         $foreignKeys
+    //     );
+    // }
 
     protected function prepareApplicationData(array $data, bool $isUpdate = false): array
     {
         $relationFields = $this->relationFields();
+        $directFields   = $this->directCreateFields();
+
         $foreignKeys = [];
 
+        // 🔵 Foreign Key fields (same as before)
         foreach ($relationFields as $field => [$model, $column]) {
 
-            // Update case: field form me nahi aayi → skip
             if ($isUpdate && !array_key_exists($field, $data)) {
                 continue;
             }
@@ -211,8 +249,25 @@ class ApplicationController extends Controller
             }
         }
 
+        // 🟢 Direct string fields with auto-create
+        foreach ($directFields as $field => [$model, $column]) {
+
+            if ($isUpdate && !array_key_exists($field, $data)) {
+                continue;
+            }
+
+            if (!empty($data[$field])) {
+                $model::firstOrCreate([$column => $data[$field]]);
+                $foreignKeys[$field] = $data[$field]; // 🔥 store string, not ID
+            } else {
+                $foreignKeys[$field] = null;
+            }
+        }
+
         return array_merge(
-            collect($data)->except(array_keys($relationFields))->toArray(),
+            collect($data)
+                ->except(array_merge(array_keys($relationFields), array_keys($directFields)))
+                ->toArray(),
             $foreignKeys
         );
     }

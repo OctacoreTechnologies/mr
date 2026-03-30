@@ -66,8 +66,8 @@ class StoreApplicationRequest extends FormRequest
          'rotor'=>'nullable',
          'material'=>'nullable',
          'tank' => 'nullable',
-         'gear_box_1' => 'nullable',
-         'gear_box_2' => 'nullable',
+         'gear_box_1'    =>   'nullable',
+         'gear_box_2' =>     'nullable',
          'drive_system_1' => 'nullable',
          'drive_system_2' => 'nullable',
 
