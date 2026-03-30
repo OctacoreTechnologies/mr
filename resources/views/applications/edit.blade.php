@@ -625,7 +625,7 @@
                                     <option value="">-- Select --</option>
                                     @foreach ($gearboxes as $item)
                                         <option value="{{ $item->gear_box }}"
-                                            {{ old('gear_box_2', optional($product)->gear_box_2) == $item->gear_box ? 'selected' : '' }}>
+                                            {{ trim(old('gear_box_2', $product->gear_box_2)) == trim($item->gear_box) ? 'selected' : '' }}>
                                             {{ $item->gear_box }}
                                         </option>
                                     @endforeach

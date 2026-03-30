@@ -174,12 +174,12 @@ class ApplicationController extends Controller
             'bearing'                 => [Bearing::class,                'bearing'],
             'pneumatic'               => [Pneumatic::class,              'pneumatic'],
             // 'drive_system'          => [DriveSystem::class,            'drive_system'],
-            // 'gear_box'              => [GearBox::class,                'gear_box'],
+            // 'gear_box_1'              => [GearBox::class,                'gear_box'],
 
             // Application 2 — Motor & Config
             'motor_requirement2'       => [MototRequirement::class,       'motor_requirement'],
             'make_motor_2'             => [MakeMotor::class,              'name'],
-            'batch_2'                  => [Batch::class,                  'batches'],
+            'batch2'                   => [Batch::class,                  'batches'],
             'electrical_control_2'     => [ElelctricalControl::class,     'electrical_control'],
             'ac_frequency_drive_2'     => [AcFequencyDrive::class,        'ac_fequency_drive'],
             'bearing_2'                => [Bearing::class,                'bearing'],
