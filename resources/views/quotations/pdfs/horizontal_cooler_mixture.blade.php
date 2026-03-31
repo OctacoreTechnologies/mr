@@ -74,7 +74,7 @@
         // ],
         [
             'title' => 'Driving System',
-            'description' =>  $quotation->drive_system_2 ?? '',
+            'description' =>  $quotation->drive_system_1 ?? '',
         ],
     ];
 
