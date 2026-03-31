@@ -178,9 +178,23 @@
             'key' => 'electrical_control',
         ],
         [
+            'label' => 'Electrical Control for ' . $second,
+            'name' => 'electrical_control_2',
+            'name1' => 'electrical_control_2_id',
+            'options' => $electricalControls,
+            'key' => 'electrical_control',
+        ],
+        [
             'label' => 'Select Ac Frequency Drives',
             'name' => 'ac_frequency_drive',
             'name1' => 'ac_frequency_drive_id',
+            'options' => $acFrequencyDrives,
+            'key' => 'ac_fequency_drive',
+        ],
+        [
+            'label' => 'Select ' . $second . ' Ac Frequency Drive',
+            'name' => 'ac_frequency_drive_2',
+            'name1' => 'ac_frequency_drive_2_id',
             'options' => $acFrequencyDrives,
             'key' => 'ac_fequency_drive',
         ],
@@ -192,9 +206,23 @@
             'key' => 'bearing',
         ],
         [
+            'label' => 'Select ' . $second . ' Bearing',
+            'name' => 'bearing_2',
+            'name1' => 'bearing_2_id',
+            'options' => $bearings,
+            'key' => 'bearing',
+        ],
+        [
             'label' => 'Select Pneumatics',
             'name' => 'pneumatic',
             'name1' => 'pneumatic_id',
+            'options' => $pneumatics,
+            'key' => 'pneumatic',
+        ],
+        [
+            'label' => 'Select ' . $second . ' Pneumatic',
+            'name' => 'pneumatic_2',
+            'name1' => 'pneumatic_2_id',
             'options' => $pneumatics,
             'key' => 'pneumatic',
         ],
@@ -205,27 +233,34 @@
             'options' => $makeMotors,
             'key' => 'name',
         ],
-        [
-            'label' => 'Select No of Rotating Blade',
-            'name' => 'no_of_rotating_blades',
-            'name1' => 'no_of_rotating_blades',
-            'options' => $noOfRotatingBlades,
-            'key' => 'no_of_blades',
+         [
+            'label' => 'Select Make ' . $second . ' Motor',
+            'name' => 'make_motor_2',
+            'name1' => 'make_motor_2_id',
+            'options' => $makeMotors,
+            'key' => 'name',
         ],
-        [
-            'label' => 'Select No of Fixes Blade',
-            'name' => 'no_of_fixes_blades',
-            'name1' => 'no_of_fixes_blades',
-            'options' => $noOfFixesBlades,
-            'key' => 'no_of_blades',
-        ],
-        [
-            'label' => 'Select Capacity',
-            'name' => 'capacity',
-            'name1' => 'capacity',
-            'options' => $capacities,
-            'key' => 'capacity',
-        ],
+        // [
+        //     'label' => 'Select No of Rotating Blade',
+        //     'name' => 'no_of_rotating_blades',
+        //     'name1' => 'no_of_rotating_blades',
+        //     'options' => $noOfRotatingBlades,
+        //     'key' => 'no_of_blades',
+        // ],
+        // [
+        //     'label' => 'Select No of Fixes Blade',
+        //     'name' => 'no_of_fixes_blades',
+        //     'name1' => 'no_of_fixes_blades',
+        //     'options' => $noOfFixesBlades,
+        //     'key' => 'no_of_blades',
+        // ],
+        // [
+        //     'label' => 'Select Capacity',
+        //     'name' => 'capacity',
+        //     'name1' => 'capacity',
+        //     'options' => $capacities,
+        //     'key' => 'capacity',
+        // ],
     ];
 
     $inputs = [
@@ -359,6 +394,123 @@
                             </div>
                         @endif
                     @endforeach
+
+                    @if (!empty($quotation->no_of_rotating_blades))
+                        <div class="col-md-6 form-group">
+                            <label>No of Rotating Blades</label>
+                            <select class="form-control select2 readonly-select" name="no_of_rotating_blades" readonly>
+                                <option value="{{ $quotation->no_of_rotating_blades }}" selected> {{  $quotation->no_of_rotating_blades }}</option>
+                                @foreach ($noOfRotatingBlades as $blade)
+                                    <option value="{{ $blade->no_of_blades }}"
+                                        {{ $quotation->no_of_rotating_blades == $blade->no_of_blades ? 'selected' : '' }}>
+                                        {{ $blade->no_of_blades }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+
+                    @if (!empty($quotation->no_of_fixes_blades))
+                        <div class="col-md-6 form-group">
+                            <label>No of Fixes Blades</label>
+                           <select class="form-control select2 readonly-select" name="no_of_fixes_blades" readonly>
+                               <option value="{{ $quotation->no_of_fixes_blades }}" selected> {{  $quotation->no_of_fixes_blades }}</option>
+                                @foreach ($noOfFixesBlades as $blade)
+                                    <option value="{{ $blade->no_of_blades }}"
+                                        {{ $quotation->no_of_fixes_blades == $blade->no_of_blades ? 'selected' : '' }}>
+                                        {{ $blade->no_of_blades }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                    @endif
+
+                    {{-- capacity --}}
+
+                    @if (!empty($quotation->capacity))
+                        <div class="col-md-6 form-group">
+                            <label>Capacity</label>
+                            <select class="form-control select2 readonly-select" name="capacity" readonly>
+                                <option value="{{ $quotation->capacity }}" selected> {{  $quotation->capacity }}</option>
+                                @foreach ($capacities as $capacity)
+                                    <option value="{{ $capacity->capacity }}"
+                                        {{ $quotation->capacity == $capacity->capacity ? 'selected' : '' }}>
+                                        {{ $capacity->capacity }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                    @endif
+
+                    {{-- gear box 1 --}}
+
+                    @if (!empty($quotation->gear_box_1))
+                        <div class="col-md-6 form-group">
+                            <label>Gear Box 1</label>
+                            <select class="form-control select2 readonly-select" name="gear_box_1" readonly>
+                                <option value="{{ $quotation->gear_box_1 }}" selected> {{  $quotation->gear_box_1 }}</option>
+                                @foreach ($gearBoxes as $gearBox)
+                                    <option value="{{ $gearBox->name }}"
+                                        {{ $quotation->gear_box_1 == $gearBox->name ? 'selected' : '' }}>
+                                        {{ $gearBox->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                    @endif
+
+                     {{-- gear box 2 --}}
+
+                     @if (!empty($quotation->gear_box_2))
+                        <div class="col-md-6 form-group">
+                            <label>Gear Box 2</label>
+                            <select class="form-control select2 readonly-select" name="gear_box_2" readonly>
+                                <option value="{{ $quotation->gear_box_2 }}" selected> {{  $quotation->gear_box_2 }}</option>
+                                @foreach ($gearBoxes as $gearBox)
+                                    <option value="{{ $gearBox->name }}"
+                                        {{ $quotation->gear_box_2 == $gearBox->name ? 'selected' : '' }}>
+                                        {{ $gearBox->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+
+                    {{-- drive System 1 --}}
+                    @if (!empty($quotation->drive_system_1))
+                        <div class="col-md-6 form-group">
+                            <label>Drive System 1</label>
+                            <select class="form-control select2 readonly-select" name="drive_system_1" readonly>
+                                <option value="{{ $quotation->drive_system_1 }}" selected> {{  $quotation->drive_system_1 }}</option>
+                                @foreach ($driveSystems as $driveSystem)
+                                    <option value="{{ $driveSystem->name }}"
+                                        {{ $quotation->drive_system_1 == $driveSystem->name ? 'selected' : '' }}>
+                                        {{ $driveSystem->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
+
+                    {{-- drive System 2 --}}    
+
+                    @if (!empty($quotation->drive_system_2))
+                        <div class="col-md-6 form-group">
+                            <label>Drive System 2</label>
+                            <select class="form-control select2 readonly-select" name="drive_system_2" readonly>
+                                <option value="{{ $quotation->drive_system_2 }}" selected> {{  $quotation->drive_system_2 }}</option>
+                                @foreach ($driveSystems as $driveSystem)
+                                    <option value="{{ $driveSystem->name }}"
+                                        {{ $quotation->drive_system_2 == $driveSystem->name ? 'selected' : '' }}>
+                                        {{ $driveSystem->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
 
                     {{-- Other input fields with condition (Example fields from your code) --}}
 
