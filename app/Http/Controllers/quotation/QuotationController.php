@@ -54,14 +54,14 @@ class QuotationController extends Controller
      */
     public function index()
     {
-        $currentYear = now()->year;
+        // $currentYear = now()->year;
 
-        // Calculate the start and end of the financial year
-        // Financial Year runs from April to March
-        $startDate = now()->month >= 4 ? Carbon::create($currentYear, 4, 1) : Carbon::create($currentYear - 1, 4, 1);
-        $endDate = $startDate->copy()->addYear()->subDay();
-        $quotations = Quotation::with(['product', 'customer'])->whereBetween('created_at', [$startDate, $endDate])->orderByDesc('updated_at')->get();
-
+        // // Calculate the start and end of the financial year
+        // // Financial Year runs from April to March
+        // $startDate = now()->month >= 4 ? Carbon::create($currentYear, 4, 1) : Carbon::create($currentYear - 1, 4, 1);
+        // $endDate = $startDate->copy()->addYear()->subDay();
+        // $quotations = Quotation::with(['product', 'customer'])->whereBetween('created_at', [$startDate, $endDate])->orderByDesc('updated_at')->get();
+        $quotations = Quotation::with(['product', 'customer'])->orderByDesc('updated_at')->get();
         return response()->view('quotations.index', [
             "quotations" => $quotations
         ]);
