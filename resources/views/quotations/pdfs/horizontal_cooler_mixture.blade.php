@@ -66,15 +66,15 @@
         ],
         [
             'title' => 'Gear Box',
-            'description' => 'Heli Bevel',
+            'description' =>  $quotation->gear_box_1 ?? '',
         ],
-        [
-            'title' => 'Motor',
-            'description' =>  ($quotation->makeMotor?->name ?? 'Hindustan / ABB / SIEMENS 1440 RPM AC ') . '.',
-        ],
+        // [
+        //     'title' => 'Motor',
+        //     'description' =>  ($quotation->makeMotor?->name ?? 'Hindustan / ABB / SIEMENS 1440 RPM AC ') . '.',
+        // ],
         [
             'title' => 'Driving System',
-            'description' => 'The drive system incorporates Direct Motor and Gear Box assembly driven.',
+            'description' =>  $quotation->drive_system_2 ?? '',
         ],
     ];
 
