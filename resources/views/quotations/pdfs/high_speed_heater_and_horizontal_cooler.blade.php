@@ -160,7 +160,7 @@
         ],
         [
             'title' => 'Motor',
-            'description' => $quotation->make_motor_2->name ?? '',
+            'description' => $quotation->makeMotor2->name ?? '',
         ],
         [
             'title' => 'Driving System',
