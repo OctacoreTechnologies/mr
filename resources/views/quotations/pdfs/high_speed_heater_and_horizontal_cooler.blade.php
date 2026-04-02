@@ -158,10 +158,10 @@
             'title' => 'Gear Box',
             'description' => $quotation->gear_box_2 ?? '',
         ],
-        // [
-        //     'title' => 'Motor',
-        //     'description' => $quotation->make_motor_2->name ?? '',
-        // ],
+        [
+            'title' => 'Motor',
+            'description' => $quotation->make_motor_2->name ?? '',
+        ],
         [
             'title' => 'Driving System',
             'description' => $quotation->drive_system_2 ?? '',
