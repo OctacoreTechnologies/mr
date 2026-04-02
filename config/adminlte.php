@@ -311,12 +311,12 @@ return [
             'topnav_right' => true,
         ],
         // Notification
-          [
+        [
             'type' => 'navbar-notification',
             'id' => 'my-notification',
             'icon' => 'fas fa-bell',
             // 'url' => 'notifications/show',
-            'url'=>'/reminder/today',
+            'url' => '/reminder/today',
             'topnav_right' => true,
             'dropdown_mode' => true,
             'dropdown_flabel' => 'All notifications',
@@ -332,17 +332,17 @@ return [
             'text' => 'search',
         ],
         //
-         [ 
-          'text' => 'Dashboard',
-          'url'  => 'dashboard/index',
-          'icon' => 'fas fa-tachometer-alt'
-         ],
+        [
+            'text' => 'Dashboard',
+            'url'  => 'dashboard/index',
+            'icon' => 'fas fa-tachometer-alt'
+        ],
 
-         [
-         'text' => 'Today',
-         'url'  => 'reminder/today',
-         'icon' => 'fas fa-calendar-day',
-         ],
+        [
+            'text' => 'Today',
+            'url'  => 'reminder/today',
+            'icon' => 'fas fa-calendar-day',
+        ],
         // 
         // ['header' => 'account_settings'],
         [
@@ -350,13 +350,13 @@ return [
             'url' => '/lead',
             'icon' => 'fas fa-fw fa-search-dollar',
 
-            
+
         ],
         [
             'text' => 'Opportunities',
-            'url'=>'/opportunity',
+            'url' => '/opportunity',
             'icon' => 'fas fa-fw fa-hand-holding-usd',
-            
+
         ],
         [
             'text' => 'Quotation',
@@ -369,26 +369,26 @@ return [
         //     'icon' => 'fas fa-database',
         // ],
         [
-    'text' => 'Total Orders',
-    'icon' => 'fas fa-file-signature', // 📝 Signature/Document icon
-    'submenu' => [
-        [
-            'text' => 'Advance Payment',
-            'url' => '/sale-order/advance-payment/index',
-            'icon' => 'fas fa-money-check-alt', 
+            'text' => 'Total Orders',
+            'icon' => 'fas fa-file-signature', // 📝 Signature/Document icon
+            'submenu' => [
+                [
+                    'text' => 'Advance Payment',
+                    'url' => '/sale-order/advance-payment/index',
+                    'icon' => 'fas fa-money-check-alt',
+                ],
+                [
+                    'text' => 'OAL',
+                    'url' => '/sale-order/order-acceptance-letter/index',
+                    'icon' => 'fas fa-file-contract',
+                ],
+                [
+                    'text' => 'Index',
+                    'url' => '/sale-order',
+                    'icon' => 'fas fa-file-alt',
+                ],
+            ],
         ],
-        [
-            'text' => 'OAL',
-            'url' => '/sale-order/order-acceptance-letter/index',
-            'icon' => 'fas fa-file-contract', 
-        ],
-        [
-            'text' => 'Index',
-            'url' => '/sale-order',
-            'icon' => 'fas fa-file-alt', 
-        ],
-    ],
-],
 
         [
             'text' => 'Application',
@@ -407,98 +407,98 @@ return [
         ],
 
         // report dropdown
-         [
-    'text' => 'Reports',
-    'icon' => 'fas fa-chart-bar', // 📊 Bar Chart icon (common for reports)
-    'submenu' => [
         [
-            'text' => 'Lead Report',
-            'url' => '/report/leads',
-            'icon' => 'fas fa-file-alt',
+            'text' => 'Reports',
+            'icon' => 'fas fa-chart-bar', // 📊 Bar Chart icon (common for reports)
+            'submenu' => [
+                [
+                    'text' => 'Lead Report',
+                    'url' => '/report/leads',
+                    'icon' => 'fas fa-file-alt',
+                ],
+                [
+                    'text' => 'Customer Report',
+                    'url' => '/report/customers',
+                    'icon' => 'fas fa-file-alt',
+                ],
+                [
+                    'text' => 'Quotation Report',
+                    'url' => '/report/quotations',
+                    'icon' => 'fas fa-file-alt',
+                ],
+                [
+                    'text' => 'Sale Report',
+                    'url' => '/report/sale-order',
+                    'icon' => 'fas fa-file-alt',
+                ],
+            ],
         ],
-        [
-            'text' => 'Customer Report',
-            'url' => '/report/customers',
-            'icon' => 'fas fa-file-alt',
-        ],
-        [
-            'text' => 'Quotation Report',
-            'url' => '/report/quotations',
-            'icon' => 'fas fa-file-alt',
-        ],
-         [
-            'text' => 'Sale Report',
-            'url' => '/report/sale-order',
-            'icon' => 'fas fa-file-alt',
-        ],
-    ],
-],
 
-          [
+        [
             'text' => 'Terms & Email',
             'icon' => 'fas fa-fw fa-user-shield',
-            
-            'submenu' => [
-                           [
-                             'text' => 'Term & Condition',
-                             'url' => '/term-conditions',
-                             'icon'=>'fas fa-file-signature',
-                            //  'can'=>'view roles'
-                           ],
-                           [
-                            'text'=> 'Bank Detail',
-                            'url' => '/bank/details',
-                            'icon'=>'fas fa-university',
-                           ],
-                            [
-                              'text' => 'Email',
-                              'url' => '/mail',
-                              'icon'=>'fas fa-fw fa-envelope',
-                            //   'can'=>'view permissions'
-                            ],
-                            [
-                              'text' => 'Email Send',
-                              'url' => '/emails/send',
-                              'icon'=>'fas fa-fw fa-envelope',
-                            //   'can'=>'view permissions'
-                            ],
-                            [
-                              'text' => 'Email Template',
-                              'url' => '/email-template',
-                              'icon'=>'fas fa-fw fa-envelope',
-                            //   'can'=>'view permissions'
-                            ],
-                        ],
-            
-                    ],
 
-          [
+            'submenu' => [
+                [
+                    'text' => 'Term & Condition',
+                    'url' => '/term-conditions',
+                    'icon' => 'fas fa-file-signature',
+                    //  'can'=>'view roles'
+                ],
+                [
+                    'text' => 'Bank Detail',
+                    'url' => '/bank/details',
+                    'icon' => 'fas fa-university',
+                ],
+                [
+                    'text' => 'Email',
+                    'url' => '/mail',
+                    'icon' => 'fas fa-fw fa-envelope',
+                    //   'can'=>'view permissions'
+                ],
+                [
+                    'text' => 'Email Send',
+                    'url' => '/emails/send',
+                    'icon' => 'fas fa-fw fa-envelope',
+                    //   'can'=>'view permissions'
+                ],
+                [
+                    'text' => 'Email Template',
+                    'url' => '/email-template',
+                    'icon' => 'fas fa-fw fa-envelope',
+                    //   'can'=>'view permissions'
+                ],
+            ],
+
+        ],
+
+        [
             'text' => 'Roles & Permission',
             'icon' => 'fas fa-fw fa-user-lock',
-            
+
             'submenu' => [
-                           [
-                             'text' => 'Manage Roles',
-                             'url' => 'admin/role',
-                             'icon'=>'fas fa-fw fa-key',
-                            //  'can'=>'view roles'
-                           ],
-                            [
-                              'text' => 'Manage Permission',
-                              'url' => 'admin/permission',
-                              'icon'=>'fas fa-fw fa-lock',
-                            //   'can'=>'view permissions'
-                            ],
-                              [
-                                'text' => 'Manage Users',
-                                'url' => 'admin/users',
-                                'icon'=>'fas fa-fw fa-users',
-                              ],
-                        ],
-            
-                    ],
-   
-    
+                [
+                    'text' => 'Manage Roles',
+                    'url' => 'admin/role',
+                    'icon' => 'fas fa-fw fa-key',
+                    //  'can'=>'view roles'
+                ],
+                [
+                    'text' => 'Manage Permission',
+                    'url' => 'admin/permission',
+                    'icon' => 'fas fa-fw fa-lock',
+                    //   'can'=>'view permissions'
+                ],
+                [
+                    'text' => 'Manage Users',
+                    'url' => 'admin/users',
+                    'icon' => 'fas fa-fw fa-users',
+                ],
+            ],
+
+        ],
+
+
 
         // [
         //     'text' => 'multilevel',
