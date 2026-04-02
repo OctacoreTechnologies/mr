@@ -204,6 +204,11 @@
                         style="position: relative;left:4px;">{{ $quotation->contact_part ?? ' ' }}</span> </td>
             </tr>
             <tr>
+                <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Operating Pressure</td>
+                <td class="value-cell"><span
+                        style="position: relative;left:4px;">{{ $quotation->operating_pressure ?? ' ' }} Bar</span> </td>
+            </tr>
+            <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Water Pressure</td>
                 <td class="value-cell"><span
                         style="position: relative;left:4px;">{{ $quotation->water_pressure ?? ' ' }} Bar</span> </td>
