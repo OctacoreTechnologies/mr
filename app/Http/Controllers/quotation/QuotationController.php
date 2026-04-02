@@ -399,7 +399,7 @@ class QuotationController extends Controller
 
 
         $termCondition = null;
-        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'electricalControl2', 'acFrequencyDrive', 'acFrequencyDrive2', 'bearinge', 'bearinge2', 'pneumatic', 'pneumatic2', 'batch2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'items'])->findOrFail($id);
+        $quotation = Quotation::with(['customer', 'application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'electricalControl2', 'acFrequencyDrive', 'acFrequencyDrive2', 'bearinge', 'bearinge2', 'pneumatic', 'pneumatic2', 'batch2', 'blower', 'rotaryAirLockValve', 'feedingHooperCapacity', 'items','makeMotor','makeMotor2'])->findOrFail($id);
         if ($quotation->customer->location_type == 'international') {
             $termCondition = TearmCondition::findOrFail(2);
         } else {
