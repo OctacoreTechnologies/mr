@@ -40,7 +40,6 @@ class ApplicationController extends Controller
 
     public function create()
     {
-        
         return response()->view('applications.create', $this->getFormData());
     }
 
@@ -125,22 +124,22 @@ class ApplicationController extends Controller
             'machines'                => Machine::orderBy('name')->get(),
             'models'                  => Modele::all(),
             'capacities'              => Capacity::all(),
-            'materialToProcess'       => MaterialToProcess::select('material_to_process')->distinct()->get(),
-            'rotatingBlades'          => Blade::where('type', 'rotating_blades')->select('*')->groupBy('no_of_blades')->get(),
-            'fixedBlades'             => Blade::where('type', 'fix_blades')->select('*')->groupBy('no_of_blades')->get(),
-            'blowers'                 => Blower::select('*')->groupBy('blower')->get(),
-            'rotaryAirLockValves'     => RotaryAirLockValve::select('*')->groupBy('rotary_air_lock_valve')->get(),
-            'feedingHooperCapacities' => FeedingHooperCapacity::select('*')->groupBy('feeding_hooper_capacity')->get(),
-            'motorRequirements'       => MototRequirement::select('*')->groupBy('motor_requirement')->get(),
-            'makeMotors'              => MakeMotor::select('*')->groupBy('name')->get(),
-            'batchs'                  => Batch::select('*')->groupBy('batches')->get(),
-            'mixingTools'             => MixingTool::select('*')->groupBy('mixing_tool')->get(),
-            'electricalControls'      => ElelctricalControl::select('*')->groupBy('electrical_control')->get(),
-            'acFrequencyDrives'       => AcFequencyDrive::select('*')->groupBy('ac_fequency_drive')->get(),
-            'bearings'                => Bearing::select('*')->groupBy('bearing')->get(),
-            'pneumatics'              => Pneumatic::select('*')->groupBy('pneumatic')->get(),
-            'driveSystems'            => DriveSystem::select('*')->groupBy('drive_system')->get(),
-            'gearboxes'               => GearBox::select('*')->groupBy('gear_box')->get(),
+            'materialToProcess'       => MaterialToProcess::all(),
+            'rotatingBlades'          => Blade::where('type', 'rotating_blades')->get(),
+            'fixedBlades'             => Blade::where('type', 'fix_blades')->get(),
+            'blowers'                 => Blower::all(),
+            'rotaryAirLockValves'     => RotaryAirLockValve::all(),
+            'feedingHooperCapacities' => FeedingHooperCapacity::all(),
+            'motorRequirements'       => MototRequirement::all(),
+            'makeMotors'              => MakeMotor::all(),
+            'batchs'                  => Batch::all(),
+            'mixingTools'             => MixingTool::all(),
+            'electricalControls'      => ElelctricalControl::all(),
+            'acFrequencyDrives'       => AcFequencyDrive::all(),
+            'bearings'                => Bearing::all(),
+            'pneumatics'              => Pneumatic::all(),
+            'driveSystems'            => DriveSystem::all(),
+            'gearboxes'               => GearBox::all(),
         ];
     }
 
