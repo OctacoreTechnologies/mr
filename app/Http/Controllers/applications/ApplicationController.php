@@ -40,7 +40,8 @@ class ApplicationController extends Controller
 
     public function create()
     {
-        return response()->view('applications.create', $this->getFormData());
+        return $this->getFormData()
+        // return response()->view('applications.create', $this->getFormData());
     }
 
     // ===================== Store =====================
