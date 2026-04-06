@@ -41,7 +41,7 @@
                 </div>
 
                 {{-- Lead --}}
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <x-adminlte-select name="lead_id" label="Lead" fgroup-class="mb-3" class="select2">
                         @foreach ($leads as $lead)
                             <option value="{{ $lead->id }}" {{ old('lead_id') == $lead->id ? 'selected' : '' }}>
@@ -49,7 +49,7 @@
                             </option>
                         @endforeach
                     </x-adminlte-select>
-                </div>
+                </div> --}}
 
                 {{-- Opportunity Name --}}
                 <div class="col-md-6">

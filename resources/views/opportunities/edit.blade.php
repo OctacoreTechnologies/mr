@@ -28,7 +28,7 @@
 
             <div class="row">
                 {{-- Lead --}}
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <x-adminlte-select name="lead_id" id="lead_id" label="Lead" fgroup-class="mb-3"
                         class="js-example-basic-single">
                         <option value="">Select a Lead</option>
@@ -41,7 +41,7 @@
                     @error('lead_id')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                </div>
+                </div> --}}
 
                 {{-- Opportunity Name --}}
                 <div class="col-md-6">
