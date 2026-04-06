@@ -40,7 +40,7 @@
                             <td>{{ $opportunity->name ?? '—' }}</td>
                             <td>{{ $opportunity->created_at ?? '—' }}</td>
                             <td>{{ $opportunity->stage ??'—' }}</td>
-                            <td>{{ $opportunity->opportunity_type ??'—' }}</td>
+                            <td>{{ $opportunity->type ??'—' }}</td>
                             <td>
                                 <div class="btn-group btn-group-sm">
                                     {{-- Edit --}}

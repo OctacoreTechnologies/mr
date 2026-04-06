@@ -78,13 +78,13 @@
                 </div>
 
                 {{-- Probability --}}
-                <div class="col-md-6">
+                {{-- <div class="col-md-6">
                     <x-adminlte-input name="probability" type="number" min="0" max="100" label="Probability (%)"
                         value="{{ old('probability', $opportunity->probability) }}" fgroup-class="mb-3" />
                     @error('probability')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                </div>
+                </div> --}}
 
                 {{-- Close Date --}}
                 <div class="col-md-6">
