@@ -3,106 +3,302 @@
 {{-- Extend and customize the browser title --}}
 
 @section('title')
-    {{ config('adminlte.title') }}
-    @hasSection('subtitle')
-        | @yield('subtitle')
-    @endif
+{{ config('adminlte.title') }}
+@hasSection('subtitle')
+    | @yield('subtitle')
+@endif
 @stop
 
 {{-- Apply Custom CSS in Side BAR --}}
 @push('css')
     <link rel="stylesheet" href="{{ asset('style/customer.css') }}">
     <style>
+        /* .sidebar-dark-primary {
+
+                background: linear-gradient(to bottom, #4169E1, #007FFF) !important;
+                color: #FFFFFF !important;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.15);
+            }
+
+
+            .sidebar-dark-primary .brand-link {
+                background-color: transparent !important;
+                color: #FFF !important;
+                font-weight: 600;
+                font-size: 20px;
+                letter-spacing: 0.5px;
+
+                border-bottom: 1px solid #007FFF !important;
+                text-align: center;
+                padding: 1rem;
+            }
+
+
+            .sidebar-dark-primary .nav-sidebar .nav-link {
+
+
+                color: #ffffff !important;
+                font-size: 15px;
+                font-weight: 500;
+                padding: 10px 18px;
+                transition: all 0.3s ease-in-out;
+                border-left: 3px solid transparent;
+            }
+
+
+            .sidebar-dark-primary .nav-sidebar .nav-link:hover {
+
+                background-color: #007FFF !important;
+                color: #FFFFFF !important;
+                border-left: 3px solid #FFFFFF;
+            }
+
+            .sidebar-dark-primary .nav-sidebar .nav-link.active {
+
+                background-color: #007FFF !important;
+
+                color: #ffffff !important;
+                font-weight: 550;
+                border-left: 3px solid #FFF;
+            }
+
+
+            .sidebar-dark-primary .nav-icon {
+                color: #ffffffd9 !important;
+                margin-right: 8px;
+                font-size: 16px;
+                opacity: 0.85;
+            }
+
+            .sidebar-dark-primary .form-control-sidebar {
+
+                background-color: #007FFF !important;
+                border: 1px solid #fff !important;
+                color: #fff !important;
+                padding: 6px 12px;
+            }
+
+            .sidebar-dark-primary .btn-sidebar {
+
+                background-color: #007FFF !important;
+                border: 1px solid #fff !important;
+                color: #fff !important;
+            }
+
+
+            .sidebar::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .sidebar::-webkit-scrollbar-thumb {
+
+                background-color: #007FFF !important;
+                border-radius: 4px;
+            }
+
+            .sidebar-dark-primary .nav-sidebar .nav-item>.nav-link .right {
+                color: #ccc !important;
+            }
+
+            .nav-treeview {
+                position: relative;
+                left: 12px;
+            } */
+        /* ============================================================
+       CRM Sidebar — Matches crm-forms.css color system
+       AdminLTE 3 | sidebar-dark-primary
+       ============================================================ */
+
+        /* ── Sidebar Background ── */
         .sidebar-dark-primary {
-            /* background: linear-gradient(180deg, #B71C1C 0%, #8B1010 100%) !important; */
-            background: linear-gradient(to bottom, #4169E1, #007FFF) !important;
-            color: #FFFFFF !important;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(180deg, #1e40af 0%, #2563eb 50%, #1d4ed8 100%) !important;
+            color: #fff !important;
+            box-shadow: 3px 0 12px rgba(37, 99, 235, 0.25);
         }
 
-
+        /* ── Brand / Logo area ── */
         .sidebar-dark-primary .brand-link {
-            background-color: transparent !important;
-            color: #FFF !important;
-            font-weight: 600;
-            font-size: 20px;
-            letter-spacing: 0.5px;
-            /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
-            border-bottom: 1px solid #007FFF !important;
+            background: rgba(0, 0, 0, 0.15) !important;
+            color: #fff !important;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
             text-align: center;
-            padding: 1rem;
+            padding: 1rem 1.2rem;
+            transition: background 0.2s ease;
         }
 
+        .sidebar-dark-primary .brand-link:hover {
+            background: rgba(0, 0, 0, 0.22) !important;
+        }
 
+        .sidebar-dark-primary .brand-link .brand-image {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+        }
+
+        /* ── Nav Links ── */
         .sidebar-dark-primary .nav-sidebar .nav-link {
-
-            /* color: #F5F5F5 !important; */
-            color: #ffffff !important;
-            font-size: 15px;
+            color: rgba(255, 255, 255, 0.88) !important;
+            font-size: 14px;
             font-weight: 500;
-            padding: 10px 18px;
-            transition: all 0.3s ease-in-out;
+            padding: 10px 16px;
+            border-radius: 6px;
+            margin: 2px 8px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        /* ── Hover ── */
+        .sidebar-dark-primary .nav-sidebar .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15) !important;
+            color: #ffffff !important;
+            border-left: 3px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* ── Active ── */
+        .sidebar-dark-primary .nav-sidebar .nav-link.active {
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            border-left: 3px solid #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ── Nav Icons ── */
+        .sidebar-dark-primary .nav-icon {
+            color: rgba(255, 255, 255, 0.75) !important;
+            margin-right: 9px;
+            font-size: 15px;
+            width: 18px;
+            text-align: center;
+            transition: color 0.2s ease;
+        }
+
+        .sidebar-dark-primary .nav-sidebar .nav-link:hover .nav-icon,
+        .sidebar-dark-primary .nav-sidebar .nav-link.active .nav-icon {
+            color: #ffffff !important;
+            opacity: 1;
+        }
+
+        /* ── Nav Header / Section Labels ── */
+        .sidebar-dark-primary .nav-header {
+            color: rgba(255, 255, 255, 0.45) !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 14px 18px 4px;
+            margin-top: 4px;
+        }
+
+        /* ── Treeview (submenu) ── */
+        .nav-treeview {
+            position: relative;
+            left: 0;
+            padding-left: 4px;
+        }
+
+        .sidebar-dark-primary .nav-treeview .nav-link {
+            font-size: 13px !important;
+            color: rgba(255, 255, 255, 0.72) !important;
+            padding: 7px 14px 7px 36px !important;
+            border-radius: 6px;
+            margin: 1px 8px;
             border-left: 3px solid transparent;
         }
 
-
-        .sidebar-dark-primary .nav-sidebar .nav-link:hover {
-            /* background-color: #6A0C0C !important; */
-            background-color: #007FFF !important;
-            color: #FFFFFF !important;
-            border-left: 3px solid #FFFFFF;
-        }
-
-        .sidebar-dark-primary .nav-sidebar .nav-link.active {
-            /* background-color: #570909 !important; */
-            background-color: #007FFF !important;
-            /* color: #FFFFFF !important; */
-            color: #ffffff !important;
-            font-weight: 550;
-            border-left: 3px solid #FFF;
-        }
-
-
-        .sidebar-dark-primary .nav-icon {
-            color: #ffffffd9 !important;
-            margin-right: 8px;
-            font-size: 16px;
-            opacity: 0.85;
-        }
-
-        .sidebar-dark-primary .form-control-sidebar {
-            /* background-color: #911010 !important; */
-            background-color: #007FFF !important;
-            border: 1px solid #fff !important;
+        .sidebar-dark-primary .nav-treeview .nav-link:hover {
+            background: rgba(255, 255, 255, 0.12) !important;
             color: #fff !important;
+            border-left-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .sidebar-dark-primary .nav-treeview .nav-link.active {
+            background: rgba(255, 255, 255, 0.18) !important;
+            color: #fff !important;
+            border-left-color: #fff;
+        }
+
+        /* ── Collapse arrow ── */
+        .sidebar-dark-primary .nav-sidebar .nav-item>.nav-link .right {
+            color: rgba(255, 255, 255, 0.5) !important;
+            font-size: 12px;
+            transition: transform 0.25s ease;
+        }
+
+        .sidebar-dark-primary .nav-sidebar .nav-item.menu-open>.nav-link .right {
+            transform: rotate(-90deg);
+            color: rgba(255, 255, 255, 0.85) !important;
+        }
+
+        /* ── Search box in sidebar ── */
+        .sidebar-dark-primary .form-control-sidebar {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            color: #fff !important;
+            border-radius: 6px;
             padding: 6px 12px;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-dark-primary .form-control-sidebar::placeholder {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .sidebar-dark-primary .form-control-sidebar:focus {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border-color: rgba(255, 255, 255, 0.5) !important;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
         }
 
         .sidebar-dark-primary .btn-sidebar {
-            /* background-color: #6A0C0C !important; */
-            background-color: #007FFF !important;
-            border: 1px solid #fff !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
             color: #fff !important;
+            border-radius: 6px;
+            transition: background 0.2s ease;
         }
 
+        .sidebar-dark-primary .btn-sidebar:hover {
+            background: rgba(255, 255, 255, 0.25) !important;
+        }
 
+        /* ── Scrollbar ── */
         .sidebar::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
         }
 
         .sidebar::-webkit-scrollbar-thumb {
-            /* background-color: #751010; */
-            background-color: #007FFF !important;
+            background: rgba(255, 255, 255, 0.25);
             border-radius: 4px;
         }
 
-        .sidebar-dark-primary .nav-sidebar .nav-item>.nav-link .right {
-            color: #ccc !important;
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.45);
         }
 
-        .nav-treeview {
-            position: relative;
-            left: 12px;
+        /* ── User panel (if used) ── */
+        .sidebar-dark-primary .user-panel {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+            padding: 12px 16px;
+        }
+
+        .sidebar-dark-primary .user-panel .info a {
+            color: #fff !important;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .sidebar-dark-primary .user-panel img {
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
     </style>
 @endpush
@@ -110,34 +306,34 @@
 {{-- Extend and customize the page content header --}}
 
 @section('content_header')
-    @hasSection('content_header_title')
-        <h1 class="text-muted">
-            @yield('content_header_title')
+@hasSection('content_header_title')
+    <h1 class="text-muted">
+        @yield('content_header_title')
 
-            @hasSection('content_header_subtitle')
-                <small class="text-dark">
-                    <i class="fas fa-xs fa-angle-right text-muted"></i>
-                    @yield('content_header_subtitle')
-                </small>
-            @endif
-        </h1>
-    @endif
+        @hasSection('content_header_subtitle')
+            <small class="text-dark">
+                <i class="fas fa-xs fa-angle-right text-muted"></i>
+                @yield('content_header_subtitle')
+            </small>
+        @endif
+    </h1>
+@endif
 @stop
 
 {{-- Rename section content to content_body --}}
 
 @section('content')
-    @yield('content_body')
+@yield('content_body')
 @stop
 
 {{-- Create a common footer --}}
 
 @section('footer')
 
-    <div class="w-100 text-right">
-        Developed by
-        <a href="{{ config('app.company_url', '#') }}" class="w-100 text-right">OctaCore Technologies</a>.
-    </div>
+<div class="w-100 text-right">
+    Developed by
+    <a href="{{ config('app.company_url', '#') }}" class="w-100 text-right">OctaCore Technologies</a>.
+</div>
 @stop
 
 {{-- Add common Javascript/Jquery code --}}
@@ -151,20 +347,20 @@
     <script src="{{ asset('js/index.js') }}"></script>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             //  $('.js-example-basic-single').select2();
             //  $(".selection").children('.select2-selection').addClass('h-100')
             //  $('.select2').addClass('w-100');
 
-            $('.edit').on('click', function(e) {
+            $('.edit').on('click', function (e) {
                 if (!confirm('Are you sure you want to edit this?')) {
                     e.preventDefault(); // stop the link from navigating
                 }
             });
 
             // For Delete buttons in forms
-            $('.delete').on('click', function(e) {
+            $('.delete').on('click', function (e) {
                 if (!confirm('Are you sure you want to delete this?')) {
                     e.preventDefault(); // stop form from submitting
                 }
@@ -210,7 +406,7 @@
             }
 
             if (!element.hasAttribute('readonly')) {
-                element.addEventListener('input', function() {
+                element.addEventListener('input', function () {
 
                     let cursorPosition = element.selectionStart;
                     let originalLength = element.value.length;
@@ -242,7 +438,7 @@
         }
 
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
 
             // Set today's date if empty
             let today = new Date();
@@ -252,7 +448,7 @@
 
             let formattedDate = yyyy + '-' + mm + '-' + dd;
 
-            document.querySelectorAll('input[type="date"]').forEach(function(input) {
+            document.querySelectorAll('input[type="date"]').forEach(function (input) {
                 if (!input.value) {
                     input.value = formattedDate;
                 }
@@ -260,13 +456,13 @@
 
 
             // Apply number formatting
-            document.querySelectorAll('.format-number').forEach(function(input) {
+            document.querySelectorAll('.format-number').forEach(function (input) {
                 initFormatNumber(input);
             });
 
 
             // Contact number formatting
-            document.addEventListener('input', function(e) {
+            document.addEventListener('input', function (e) {
 
                 if (e.target.classList.contains('contact-number')) {
 
@@ -284,17 +480,17 @@
 
 
             // Form submit cleanup
-            document.addEventListener('submit', function(e) {
+            document.addEventListener('submit', function (e) {
 
                 const form = e.target;
 
                 if (form.tagName === 'FORM') {
 
-                    form.querySelectorAll('.contact-number').forEach(function(input) {
+                    form.querySelectorAll('.contact-number').forEach(function (input) {
                         input.value = input.value.replace(/\s/g, '');
                     });
 
-                    form.querySelectorAll('.format-number').forEach(function(input) {
+                    form.querySelectorAll('.format-number').forEach(function (input) {
                         input.value = input.value.replace(/,/g, '');
                     });
 

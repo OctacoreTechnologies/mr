@@ -17,7 +17,7 @@ class OpportunityController extends Controller
      */
     public function index()
     {
-        $opportunities = Opportunity::with('quotation')->orderByDesc('created_at')->get();
+        $opportunities = Opportunity::with('customer')->orderByDesc('created_at')->get();
         return response()->view('opportunities.index', [
             'opportunities' => $opportunities
         ]);
@@ -71,9 +71,11 @@ class OpportunityController extends Controller
     {
         $opportunity = Opportunity::findOrFail($id);
         $leads = Lead::orderByDesc('created_at')->get();
+        $users = User::orderByDesc('created_at')->get();
         return response()->view('opportunities.edit', [
             'opportunity' => $opportunity,
-            'leads' => $leads
+            'leads' => $leads,
+            'users' => $users
         ]);
     }
 

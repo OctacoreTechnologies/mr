@@ -16,8 +16,10 @@
 @section('title', 'Customer')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="mb-0 text-primary font-weight-bold">Customers</h1>
+    <div class="crm-page-header">
+        <h1>
+              <i class="fas fa-users"></i>
+            Customers</h1>
         <div>
           <a href="{{ route('customer.create') }}" class="btn btn-primary btn-md"><i class="fas fa-plus-circle"></i> Add Customer</a>
           <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#customerImport">
@@ -33,10 +35,12 @@
     <x-alert-components class="my-3" />
 
     {{-- 📋 Customer Table --}}
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title mb-0"><i class="fas fa-building"></i> Customer List</h3>
-        </div>
+    <div class="crm-card">
+         <div class="crm-card-header">
+            <h3 class="card-title">
+             <i class="fas fa-users"></i> Customer List
+            </h3>
+          </div>
 
         <div class="card-body">
             <div class="table-responsive">
@@ -111,8 +115,9 @@
 @endsection
 
 @push('css')
-<link rel="stylesheet"  href="{{asset('style/customer.css')}}">
+<link rel="stylesheet" href="{{ asset('style/common.css') }}">
 @endpush
+
 
 @push('js')
     <script>

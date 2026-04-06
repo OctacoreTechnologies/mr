@@ -11,6 +11,11 @@ class Customer extends Model
     use LogsUserActivity;
     protected $guarded=[];
 
+
+    public function opportunities(){
+        return $this->hasMany(Opportunity::class,'customer_id');
+    }
+
     public function quotations(){
         return $this->hasMany(Quotation::class,'customer_id');
     }

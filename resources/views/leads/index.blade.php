@@ -6,9 +6,9 @@
         'Status',
         'Phone',
         'FollowUp',
-        ['label' => 'Actions', 'no-export' => false,],
+        ['label' => 'Actions', 'no-export' => false],
     ];
-    $srno=1;
+    $srno = 1;
 @endphp
 
 @extends('layouts.app')
@@ -16,130 +16,145 @@
 @section('title', 'Leads')
 
 @section('content_header')
-<a href="{{ route('lead.create') }}" class="btn btn-primary btn-md"><i class="fas fa-plus-circle"></i> Create Lead</a>
-@stop
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-users"></i>
+        Leads
+    </h1>
 
-@section('content')
-<x-alert-components class="my-3" />
-
-<div class="card shadow-sm">
-    <div class="card-header bg-primary text-white">
-        <h3 class="card-title"><i class="fas fa-users"></i> Lead Lists</h3>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <x-adminlte-datatable id="table1" :heads="$heads" striped hoverable with-buttons>
-                @foreach ($leads as $lead)
-                    <tr class="{{$lead->status}}">
-                        <td>{{$srno++}}</td>
-                        <td>{{$lead->company_name}}</td>
-                        <td>{{ $lead->contact_person_1_email }}</td>
-                        <td>
-                            @php
-                                $statusClass = match($lead->status) {
-                                    'new' => 'badge badge-warning',
-                                    'contacted' => 'badge badge-info',
-                                    'qualified' => 'badge badge-success',
-                                    'disqualified' => 'badge badge-danger',
-                                    default => 'badge badge-secondary',
-                                };
-                            @endphp
-                            <span class="{{ $statusClass }}">{{ ucfirst($lead->status) }}</span>
-                        </td>
-                        <td class="format-number">{{$lead->contact_person_1_contact}}</td>
-                        <td>
-                             <a href="{{ route('followup.edit', $lead->id) }}"
-                                   class="btn btn-sm btn-outline-info shadow-sm btn-round"
-                                   target="_blank" title="Add Follow-Up">
-                                    <i class="fas fa-phone-alt"></i> Follow Up
-                            </a>
-                        </td>
-
-                        <td>
-                            <nobr>
-                                <!-- Edit Button -->
-                                <a href="{{ route('lead.edit', $lead->id) }}"
-                                    class="btn btn-sm btn-outline-primary mx-1 shadow" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <!-- Delete Button -->
-                                <form action="{{ route('customer.destroy', $lead->id) }}" method="POST" class="d-inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger mx-1 shadow delete-project" title="Delete"
-                                        data-url="{{ route('customer.destroy', $lead->id) }}">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                                <!-- View Details Button -->
-                                <a href="{{ route('customer.show', $lead->id) }}"
-                                    class="btn btn-sm btn-outline-teal mx-1 shadow" title="Details">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </nobr>
-                        </td>
-                    </tr>
-                @endforeach
-            </x-adminlte-datatable>
-        </div>
-    </div>
+    <a href="{{ route('lead.create') }}" class="btn btn-primary btn-sm">
+        <i class="fas fa-plus-circle"></i> Create Lead
+    </a>
 </div>
 @stop
 
-@push('js')
-    <script>
-        $(document).ready(function () {
-            // Add any JavaScript functionalities if needed
-        });
-    </script>
-@endpush
+@section('content')
 
-@section('css')
-<style>
-    .card-header {
-        border-radius: 8px 8px 0 0;
-    }
+<x-alert-components class="mb-3" />
 
-    .card-body {
-        background-color: #f9f9f9;
-        border-radius: 0 0 8px 8px;
-    }
+<div class="crm-card">
+    <div class="crm-card-header">
+        <h3 class="card-title">
+            <i class="fas fa-users"></i> Lead List
+        </h3>
+    </div>
 
-    .btn-outline-primary,
-    .btn-outline-danger,
-    .btn-outline-teal {
-        font-size: 14px;
-        padding: 5px 12px;
-        border-radius: 25px;
-    }
+    <div class="crm-card-body">
 
-    .btn-outline-primary:hover {
-        background-color: #007bff;
-        color: white;
-    }
+        <div class="table-responsive">
+            <table id="leadTable" class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        @foreach ($heads as $head)
+                            @if(is_array($head))
+                                <th>{{ $head['label'] }}</th>
+                            @else
+                                <th>{{ $head }}</th>
+                            @endif
+                        @endforeach
+                    </tr>
+                </thead>
 
-    .btn-outline-danger:hover {
-        background-color: #dc3545;
-        color: white;
-    }
+                <tbody>
+                    @foreach ($leads as $lead)
+                        <tr class="{{ $lead->status }}">
+                            <td>{{ $srno++ }}</td>
 
-    .btn-outline-teal:hover {
-        background-color: #20c997;
-        color: white;
-    }
+                            <td>{{ $lead->company_name }}</td>
 
-    .table th,
-    .table td {
-        padding: 15px;
-        text-align: center;
-    }
+                            <td>{{ $lead->contact_person_1_email }}</td>
 
-    .table tbody tr:hover {
-        background-color: #f1f1f1;
-    }
-</style>
+                            {{-- Status --}}
+                            <td>
+                                @php
+                                    $statusClass = match($lead->status) {
+                                        'new' => 'badge badge-warning',
+                                        'contacted' => 'badge badge-info',
+                                        'qualified' => 'badge badge-success',
+                                        'disqualified' => 'badge badge-danger',
+                                        default => 'badge badge-secondary',
+                                    };
+                                @endphp
+
+                                <span class="{{ $statusClass }}">
+                                    {{ ucfirst($lead->status) }}
+                                </span>
+                            </td>
+
+                            {{-- Phone --}}
+                            <td class="format-number">
+                                {{ $lead->contact_person_1_contact }}
+                            </td>
+
+                            {{-- Follow Up --}}
+                            <td>
+                                <a href="{{ route('followup.edit', $lead->id) }}"
+                                   class="btn btn-sm btn-outline-primary"
+                                   target="_blank">
+                                    <i class="fas fa-phone-alt"></i> Follow Up
+                                </a>
+                            </td>
+
+                            {{-- Actions --}}
+                            <td>
+                                <nobr>
+
+                                    {{-- Edit --}}
+                                    <a href="{{ route('lead.edit', $lead->id) }}"
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+
+                                    {{-- Delete --}}
+                                    <form action="{{ route('customer.destroy', $lead->id) }}"
+                                          method="POST"
+                                          class="d-inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger delete-project"
+                                                data-url="{{ route('customer.destroy', $lead->id) }}"
+                                                onclick="return confirm('Are you sure you want to delete this lead?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+
+                                    {{-- View --}}
+                                    <a href="{{ route('customer.show', $lead->id) }}"
+                                       class="btn btn-sm btn-outline-secondary">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
+                                </nobr>
+                            </td>
+
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
 @stop
 
 @push('css')
-    <link rel="stylesheet" href="{{asset('style/customer.css')}}">
-@endpush   
+<link rel="stylesheet" href="{{ asset('style/common.css') }}">
+@endpush
+
+@push('js')
+<script>
+    $(document).ready(function () {
+
+        $('#leadTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true,
+            lengthChange: true,
+            pageLength: 10
+        });
+
+    });
+</script>
+@endpush

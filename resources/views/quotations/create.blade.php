@@ -122,7 +122,15 @@
 @endpush
 
 @section('content_header')
-    <h1>Added Quotation</h1>
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-plus-circle"></i>
+        Create Quotation
+    </h1>
+    <a href="{{ route('quotation.index') }}" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-arrow-left"></i> Back to Index
+    </a>
+</div>
 @stop
 
 @php
@@ -296,10 +304,13 @@
 @endphp
 
 @section('content')
-    <div class="card shadow-sm border-0 rounded-2">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Create Quotation</h4>
+    <div class="crm-card">
+        <div class="crm-card-header">
+          <h3 class="card-title">
+            <i class="fas fa-info-circle"></i> Quotation Information
+          </h3>
         </div>
+
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -816,5 +827,9 @@
 @stop --}}
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('style/customer.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+@endpush
+
+@push('css')
+    {{-- <link rel="stylesheet" href="{{ asset('style/customer.css') }}"> --}}
 @endpush

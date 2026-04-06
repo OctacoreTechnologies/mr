@@ -651,7 +651,9 @@
     </form>
 
 @stop
-
+@push('css')
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+@endpush
 @push('js')
 <script>
     $(document).ready(function () {

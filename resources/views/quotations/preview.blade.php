@@ -1,162 +1,212 @@
 @extends('layouts.app')
 
-@section('title', 'Added Quotation')
+@section('title', 'Create Quotation')
 
 @section('content_header')
-<h1>Added Quotation</h1>
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-file-invoice"></i>
+        Create Quotation
+    </h1>
+    <a href="{{ route('quotation.index') }}" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-arrow-left"></i> Back to Quotations
+    </a>
+</div>
 @stop
 
 @section('content')
-<div class="card shadow-sm">
-    <div class="card-body">
+
+<div class="crm-card">
+    <div class="crm-card-header">
+        <h3 class="card-title">
+            <i class="fas fa-info-circle"></i> Quotation Information
+        </h3>
+    </div>
+
+    <div class="crm-card-body">
+
+        {{-- Validation Errors --}}
         @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            <div class="alert alert-danger mb-4">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <div>
+                    <strong>Please fix the following errors:</strong>
+                    <ul class="mb-0 mt-1 pl-3">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         @endif
 
         <form action="{{ route('quotation.preview') }}" method="POST">
             @csrf
             @method("POST")
+
+            {{-- ── Machine Selection ── --}}
+            <p class="crm-section">Machine Selection</p>
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label>Customer</label>
-                    <select class="select2 form-control" name="customer_id" required>
-                        <option value="">Select Customer</option>
-                        @foreach($customers as $customer)
-                            <option value="{{ $customer->id }}" {{ old('customer_id', $quotation->customer_id ?? '') == $customer->id ? 'selected' : '' }}>
-                                {{ $customer->company_name }}
-                            </option>
-                        @endforeach
-                    </select>
+
+                {{-- Customer --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="customer_id">Customer</label>
+                        <select class="select2 form-control w-100" name="customer_id" id="customer_id" required>
+                            <option value="">Select Customer</option>
+                            @foreach($customers as $customer)
+                                <option value="{{ $customer->id }}"
+                                    {{ old('customer_id', $quotation->customer_id ?? '') == $customer->id ? 'selected' : '' }}>
+                                    {{ $customer->company_name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Machine Type</label>
-                    <select class="select2 form-control" name="machine_type_id" id="machine_type_id" required>
-                        <option>Select Machine Type</option>
-                        @foreach($machineTypes as $type)
-                            <option value="{{ $type->id }}" {{ old('machine_type_id') == $type->id ? 'selected' : '' }}
-                                data-price="{{ $type->price }}">
-                                {{ $type->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                {{-- Machine Type --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="machine_type_id">Machine Type</label>
+                        <select class="select2 form-control w-100" name="machine_type_id" id="machine_type_id" required>
+                            <option value="">Select Machine Type</option>
+                            @foreach($machineTypes as $type)
+                                <option value="{{ $type->id }}"
+                                    {{ old('machine_type_id') == $type->id ? 'selected' : '' }}
+                                    data-price="{{ $type->price }}">
+                                    {{ $type->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Machine</label>
-                    <select class="select2 form-control" name="machine_id" id="machine_id" required>
-                        <option>Select Machine</option>
-                    </select>
+                {{-- Machine --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="machine_id">Machine</label>
+                        <select class="select2 form-control w-100" name="machine_id" id="machine_id" required>
+                            <option value="">Select Machine</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Application</label>
-                    <select class="select2 form-control" name="application_id" id="application_id" required>
-                        <option>Select Application</option>
-                    </select>
+                {{-- Application --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="application_id">Application</label>
+                        <select class="select2 form-control w-100" name="application_id" id="application_id" required>
+                            <option value="">Select Application</option>
+                        </select>
+                    </div>
                 </div>
 
+                {{-- Model --}}
                 <div class="col-md-6" id="model">
-                    <label>Model</label>
-                    <select class="select2 form-control" name="model_id" id="model_id" required>
-                        <option>Select Model</option>
-                    </select>
+                    <div class="form-group">
+                        <label for="model_id">Model</label>
+                        <select class="select2 form-control w-100" name="model_id" id="model_id" required>
+                            <option value="">Select Model</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Quotation Ref No</label>
-                    <input type="text" name="reference_no" class="form-control" value="{{ $reference_no }}" readonly>
+            </div>
+
+            {{-- ── Quotation Details ── --}}
+            <p class="crm-section">Quotation Details</p>
+            <div class="row">
+
+                {{-- Reference No --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="reference_no">Quotation Ref No</label>
+                        <input type="text" name="reference_no" id="reference_no"
+                            class="form-control"
+                            value="{{ $reference_no }}" readonly>
+                    </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Date</label>
-                    <input type="date" name="date" class="form-control" value="{{ old('date') }}">
+                {{-- Date --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" name="date" id="date"
+                            class="form-control"
+                            value="{{ old('date') }}">
+                    </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Price(Unit)</label>
-                    <input type="text" name="total_price" id="total_price" class="form-control format-number"
-                        step="0.01" value="{{ old('total_price') }}">
+                {{-- Price --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="total_price">Price (Unit)</label>
+                        <input type="text" name="total_price" id="total_price"
+                            class="form-control format-number"
+                            step="0.01"
+                            value="{{ old('total_price') }}"
+                            placeholder="0.00">
+                    </div>
                 </div>
 
-                <div class="col-md-6 mb-3">
-                    <label>Quantity</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control" step="1"
-                        value="{{ old('quantity', 1) }}">
+                {{-- Quantity --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" name="quantity" id="quantity"
+                            class="form-control"
+                            step="1"
+                            value="{{ old('quantity', 1) }}"
+                            min="1">
+                    </div>
                 </div>
-
-                {{--<div class="col-md-6 mb-3">
-                    <label>Discount</label>
-                    <input type="number" name="discount" id="discount" class="form-control" step="0.01"
-                        value="{{ old('discount', 0) }}">
-                </div>--}}
 
                 <input type="hidden" name="user_id" value="{{ Auth::id() }}">
             </div>
 
-            <div class="mt-3 d-flex justify-content-end gap-2">
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <a href="{{ route('quotation.index') }}" class="btn btn-secondary">Cancel</a>
+            {{-- ── Actions ── --}}
+            <div class="crm-form-actions">
+                <a href="{{ route('quotation.index') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-times"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-eye"></i> Preview Quotation
+                </button>
             </div>
+
         </form>
-    </div>
-</div>
+    </div>{{-- /crm-card-body --}}
+</div>{{-- /crm-card --}}
+
 @stop
 
 @push('css')
-    <link rel="stylesheet" href="{{asset('style/customer.css')}}">
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
 @endpush
-
 
 @push('js')
     <script>
         $(document).ready(function () {
-            // $("#leadId").hide();
-            //    $("#model").hide();
-            $('.js-example-basic-single').select2();
-            $(".selection").children('.select2-selection').addClass('h-100')
-            $('.select2').addClass('w-100');
 
+            // Init Select2
+            $('.select2').select2({ width: '100%' });
+            $(".selection").children('.select2-selection').addClass('h-100');
+
+            // ── Price calculation ──
             function updatePrice() {
-                // Get the selected product's price
                 var productPrice = $('#product_id option:selected').data('price');
-
-                // Get the quantity entered by the user
-                var quantity = $('#quantity').val();
-
-                // Calculate total price
-                var totalPrice = productPrice * quantity;
-
-                // Update the total price input field
+                var quantity     = $('#quantity').val();
+                var totalPrice   = productPrice * quantity;
                 // $('#total_price').val(totalPrice.toFixed(2));
             }
 
-            // Update price when product is selected
-            $('#product_id').change(function () {
-                updatePrice();
-            });
-
-            // Update price when quantity is changed
-            $('#quantity').on('input', function () {
-                updatePrice();
-            });
-
-            // Initial calculation on page load (in case a product is already selected)
+            $('#product_id').change(updatePrice);
+            $('#quantity').on('input', updatePrice);
             updatePrice();
 
-            //change dropdown's 
+            // ── Machine Type → Machines ──
             $('#machine_type_id').on('change', function () {
                 let machineTypeId = $(this).val();
-                let selectedText = $(this).find("option:selected").text();
-
-                // Update label dynamically
-                // $('#machine_label').text(`Select ${selectedText}`);
 
                 if (machineTypeId) {
                     $.ajax({
@@ -164,82 +214,20 @@
                         type: 'GET',
                         success: function (machines) {
                             $('#machine_id').empty().append('<option value="">Select Machine</option>');
-
                             $.each(machines, function (key, machine) {
-                                $('#machine_id').append('<option value="' + machine.id + '">' + machine.name + '</option>');
+                                $('#machine_id').append(
+                                    '<option value="' + machine.id + '">' + machine.name + '</option>'
+                                );
                             });
-
-                            // If you're using select2
                             $('#machine_id').trigger('change');
                         }
                     });
                 } else {
                     $('#machine_id').empty().append('<option value="">Select Machine</option>');
-                    $('#machine_label').text('Select Machine');
                 }
             });
 
-            $("#machine_id").on('change', function () {
-                $("#models").show();
-            })
-        })
-
-        $('.edit-icon').on('click', function () {
-            const input = $(this).siblings('input, select');
-            input.prop('readonly', false).prop('disabled', false).removeClass('readonly-input');
-        });
-
-        // application dropdowns
-        // $('#machine_id').on('change', function () {
-        //         let machineId = $(this).val();
-        //         let selectedText = $(this).find("option:selected").text();
-
-
-        //         // $('#machine_label').text(`Select ${selectedText}`);
-
-        //         if (machineId) {
-        //             $.ajax({
-        //                 url: '/categories/options/applications/' + machineId,
-        //                 type: 'GET',
-        //                 success: function (applications) {
-        //                     $('#application_id').empty().append('<option value="">Select Application</option>');
-
-        //                     $.each(applications, function (key, application) {
-        //                         $('#application_id').append('<option value="' + application.id + '">' + application.name + '</option>');
-        //                     });
-
-        //                     // If you're using select2
-        //                     $('#application_id').trigger('change');
-        //                 }
-        //             });
-        //             //Models
-        //             $.ajax({
-        //                 url: '/categories/options/models/' + machineId,
-        //                 type: 'GET',
-        //                 success: function (models) {
-        //                     $("#model").show();
-        //                     $('#model_id').empty().append('<option value="">Select Model</option>');
-
-        //                     $.each(models, function (key, model) {
-        //                         $('#model_id').append('<option value="' + model.id + '">' + model.name + '</option>');
-        //                     });
-
-        //                     // If you're using select2
-        //                     $('#model_id').trigger('change');
-        //                 }
-        //             });
-
-        //         } else {
-        //             $('#application_id').empty().append('<option value="">Select Application</option>');
-        //             // $('#machine_label').text('Select Machine');
-        //             $('#model_id').empty().append('<option value="">Select Model</option>');
-        //         }
-
-        //     });
-
-        $(document).ready(function () {
-
-            // 🔹 Machine Change → Load Applications
+            // ── Machine → Applications ──
             $('#machine_id').on('change', function () {
                 let machineId = $(this).val();
 
@@ -251,24 +239,21 @@
                         url: '/categories/options/applications/' + machineId,
                         type: 'GET',
                         success: function (applications) {
-
                             $.each(applications, function (key, application) {
                                 $('#application_id').append(
                                     '<option value="' + application.id + '">' + application.name + '</option>'
                                 );
                             });
-
                             $('#application_id').trigger('change');
                         }
                     });
                 }
             });
 
-
-            // 🔹 Application Change → Load Models
+            // ── Application → Models ──
             $('#application_id').on('change', function () {
                 let applicationId = $(this).val();
-                let machineId = $('#machine_id').val();
+                let machineId     = $('#machine_id').val();
 
                 $('#model_id').empty().append('<option value="">Select Model</option>');
 
@@ -277,7 +262,6 @@
                         url: '/categories/options/models/application/' + machineId + '/' + applicationId,
                         type: 'GET',
                         success: function (models) {
-
                             if (models.length > 0) {
                                 $.each(models, function (key, model) {
                                     $('#model_id').append(
@@ -287,7 +271,6 @@
                             } else {
                                 $('#model_id').append('<option value="">No Models Found</option>');
                             }
-
                             $('#model_id').trigger('change');
                         },
                         error: function () {
@@ -295,6 +278,12 @@
                         }
                     });
                 }
+            });
+
+            // Edit icon helper
+            $('.edit-icon').on('click', function () {
+                const input = $(this).siblings('input, select');
+                input.prop('readonly', false).prop('disabled', false).removeClass('readonly-input');
             });
 
         });

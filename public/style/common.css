@@ -1,0 +1,484 @@
+/* ============================================================
+   CRM Forms — Common Stylesheet
+   Works with: AdminLTE 3 + Bootstrap 4
+   Pages: Lead, Opportunity, Quotation, Sale Order (create/edit)
+   ============================================================ */
+
+/* ── Google Font ── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Root Variables ── */
+:root {
+  --crm-primary:        #2563eb;
+  --crm-primary-light:  #dbeafe;
+  --crm-primary-dark:   #1d4ed8;
+  --crm-accent:         #0ea5e9;
+  --crm-success:        #16a34a;
+  --crm-danger:         #dc2626;
+  --crm-warning:        #d97706;
+  --crm-text:           #1e293b;
+  --crm-text-muted:     #64748b;
+  --crm-border:         #e2e8f0;
+  --crm-bg:             #f8fafc;
+  --crm-card-bg:        #ffffff;
+  --crm-radius:         10px;
+  --crm-radius-sm:      6px;
+  --crm-shadow:         0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(37,99,235,.06);
+  --crm-shadow-focus:   0 0 0 3px rgba(37,99,235,.18);
+  --crm-font:           'DM Sans', sans-serif;
+  --crm-mono:           'DM Mono', monospace;
+  --crm-transition:     .18s ease;
+}
+
+/* ── Base ── */
+body,
+.content-wrapper {
+  font-family: var(--crm-font) !important;
+  background: var(--crm-bg) !important;
+  color: var(--crm-text);
+}
+
+/* ── Page Header ── */
+.crm-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0 18px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.crm-page-header h1 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--crm-text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+.crm-page-header h1 i {
+  width: 36px;
+  height: 36px;
+  background: var(--crm-primary-light);
+  color: var(--crm-primary);
+  border-radius: var(--crm-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .9rem;
+  flex-shrink: 0;
+}
+
+/* ── Card ── */
+.crm-card {
+  background: var(--crm-card-bg);
+  border: 1px solid var(--crm-border);
+  border-radius: var(--crm-radius);
+  box-shadow: var(--crm-shadow);
+  overflow: hidden;
+}
+
+.crm-card-header {
+  background: linear-gradient(135deg, var(--crm-primary) 0%, var(--crm-primary-dark) 100%);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crm-card-header h3,
+.crm-card-header .card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.crm-card-header h3 i,
+.crm-card-header .card-title i {
+  opacity: .85;
+  font-size: .9rem;
+}
+
+.crm-card-body {
+  padding: 28px 28px 20px;
+}
+
+/* ── Section Divider ── */
+.crm-section {
+  border-left: 3px solid var(--crm-primary);
+  padding-left: 12px;
+  margin: 24px 0 16px;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--crm-text-muted);
+}
+
+/* ── Form Labels ── */
+.form-group label,
+.crm-label {
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  color: var(--crm-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* ── Inputs & Selects ── */
+.form-control,
+.custom-select {
+  font-family: var(--crm-font) !important;
+  font-size: .92rem !important;
+  height: 42px !important;
+  border: 1.5px solid var(--crm-border) !important;
+  border-radius: var(--crm-radius-sm) !important;
+  background: var(--crm-bg) !important;
+  color: var(--crm-text) !important;
+  padding: 0 12px !important;
+  transition: border-color var(--crm-transition), box-shadow var(--crm-transition), background var(--crm-transition) !important;
+}
+
+.form-control:focus,
+.custom-select:focus {
+  border-color: var(--crm-primary) !important;
+  box-shadow: var(--crm-shadow-focus) !important;
+  background: #fff !important;
+  outline: none !important;
+}
+
+.form-control[readonly] {
+  background: #f1f5f9 !important;
+  cursor: not-allowed;
+  color: var(--crm-text-muted) !important;
+}
+
+textarea.form-control {
+  height: auto !important;
+  padding: 10px 12px !important;
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+
+/* ── Input Group ── */
+.input-group .form-control {
+  border-right: none !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.input-group-append .btn {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+/* ── Select2 ── */
+.select2-container--default .select2-selection--single {
+  height: 42px !important;
+  border: 1.5px solid var(--crm-border) !important;
+  border-radius: var(--crm-radius-sm) !important;
+  background: var(--crm-bg) !important;
+  display: flex;
+  align-items: center;
+  transition: border-color var(--crm-transition), box-shadow var(--crm-transition) !important;
+}
+
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--open .select2-selection--single {
+  border-color: var(--crm-primary) !important;
+  box-shadow: var(--crm-shadow-focus) !important;
+  background: #fff !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  font-family: var(--crm-font) !important;
+  font-size: .92rem !important;
+  color: var(--crm-text) !important;
+  line-height: 40px !important;
+  padding-left: 12px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 40px !important;
+  right: 8px !important;
+}
+
+.select2-dropdown {
+  border: 1.5px solid var(--crm-primary) !important;
+  border-radius: var(--crm-radius-sm) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.1) !important;
+  font-family: var(--crm-font) !important;
+  font-size: .92rem !important;
+}
+
+.select2-results__option--highlighted {
+  background-color: var(--crm-primary) !important;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+  border: 1.5px solid var(--crm-border) !important;
+  border-radius: var(--crm-radius-sm) !important;
+  padding: 6px 10px !important;
+  font-family: var(--crm-font) !important;
+  font-size: .88rem !important;
+}
+
+/* ── Validation Error ── */
+.text-danger {
+  font-size: .78rem !important;
+  font-weight: 500;
+  margin-top: 4px;
+  display: block;
+}
+
+.is-invalid .form-control,
+.form-control.is-invalid {
+  border-color: var(--crm-danger) !important;
+}
+
+/* ── Buttons ── */
+.btn {
+  font-family: var(--crm-font) !important;
+  font-weight: 600 !important;
+  font-size: .88rem !important;
+  letter-spacing: .03em;
+  border-radius: var(--crm-radius-sm) !important;
+  transition: all var(--crm-transition) !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px !important;
+}
+
+.btn-primary {
+  background: var(--crm-primary) !important;
+  border-color: var(--crm-primary) !important;
+  color: #fff !important;
+}
+.btn-primary:hover {
+  background: var(--crm-primary-dark) !important;
+  border-color: var(--crm-primary-dark) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37,99,235,.35) !important;
+}
+
+.btn-outline-primary {
+  border: 1.5px solid var(--crm-primary) !important;
+  color: var(--crm-primary) !important;
+  background: transparent !important;
+}
+.btn-outline-primary:hover {
+  background: var(--crm-primary-light) !important;
+  transform: translateY(-1px);
+}
+
+.btn-outline-secondary {
+  border: 1.5px solid var(--crm-border) !important;
+  color: var(--crm-text-muted) !important;
+  background: transparent !important;
+}
+.btn-outline-secondary:hover {
+  background: #f1f5f9 !important;
+  color: var(--crm-text) !important;
+}
+
+/* ── Form Action Bar ── */
+.crm-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0 4px;
+  border-top: 1px solid var(--crm-border);
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+/* ── Tabs ── */
+.nav-tabs {
+  border-bottom: 2px solid var(--crm-border) !important;
+  gap: 4px;
+}
+
+.nav-tabs .nav-link {
+  font-family: var(--crm-font) !important;
+  font-size: .85rem !important;
+  font-weight: 600 !important;
+  color: var(--crm-text-muted) !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  padding: 10px 18px !important;
+  transition: all var(--crm-transition) !important;
+  margin-bottom: -2px;
+  background: transparent !important;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.nav-tabs .nav-link:hover {
+  color: var(--crm-primary) !important;
+  background: var(--crm-primary-light) !important;
+  border-radius: var(--crm-radius-sm) var(--crm-radius-sm) 0 0 !important;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--crm-primary) !important;
+  border-bottom-color: var(--crm-primary) !important;
+  background: transparent !important;
+}
+
+.tab-content {
+  padding: 20px 0 0;
+}
+
+/* ── DataTable overrides ── */
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select {
+  font-family: var(--crm-font) !important;
+  font-size: .84rem !important;
+  border: 1.5px solid var(--crm-border) !important;
+  border-radius: var(--crm-radius-sm) !important;
+  padding: 4px 10px !important;
+  height: 34px !important;
+}
+
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_paginate {
+  font-size: .82rem !important;
+  color: var(--crm-text-muted) !important;
+  font-family: var(--crm-font) !important;
+}
+
+.dataTables_wrapper .paginate_button {
+  border-radius: var(--crm-radius-sm) !important;
+  font-family: var(--crm-font) !important;
+  font-size: .82rem !important;
+}
+
+.dataTables_wrapper .paginate_button.current,
+.dataTables_wrapper .paginate_button.current:hover {
+  background: var(--crm-primary) !important;
+  border-color: var(--crm-primary) !important;
+  color: #fff !important;
+}
+
+/* ── Table ── */
+.table {
+  font-family: var(--crm-font) !important;
+  font-size: .88rem !important;
+  color: var(--crm-text);
+}
+
+.table thead th {
+  font-size: .75rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--crm-text-muted) !important;
+  background: var(--crm-bg) !important;
+  border-bottom: 2px solid var(--crm-border) !important;
+  padding: 10px 12px !important;
+  white-space: nowrap;
+}
+
+.table td {
+  vertical-align: middle !important;
+  padding: 9px 12px !important;
+  border-color: var(--crm-border) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background: #f8fafc !important;
+}
+
+.table-striped tbody tr:hover {
+  background: var(--crm-primary-light) !important;
+  transition: background var(--crm-transition);
+}
+
+/* ── Badges ── */
+.badge {
+  font-family: var(--crm-mono) !important;
+  font-size: .72rem !important;
+  font-weight: 500 !important;
+  padding: 4px 9px !important;
+  border-radius: 20px !important;
+  letter-spacing: .04em;
+}
+
+/* ── Modal ── */
+.modal-content {
+  border: none !important;
+  border-radius: var(--crm-radius) !important;
+  box-shadow: 0 20px 60px rgba(0,0,0,.18) !important;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, var(--crm-primary), var(--crm-primary-dark));
+  border: none !important;
+  padding: 16px 24px !important;
+}
+
+.modal-header .modal-title {
+  font-family: var(--crm-font) !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+}
+
+.modal-header .close {
+  color: rgba(255,255,255,.7) !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+  font-size: 1.3rem;
+}
+.modal-header .close:hover {
+  color: #fff !important;
+}
+
+.modal-body {
+  padding: 24px !important;
+  background: var(--crm-card-bg);
+}
+
+.modal-footer {
+  background: var(--crm-bg);
+  border-top: 1px solid var(--crm-border) !important;
+  padding: 14px 24px !important;
+  gap: 8px;
+}
+
+/* ── Alert ── */
+.alert {
+  font-family: var(--crm-font) !important;
+  font-size: .88rem !important;
+  border: none !important;
+  border-radius: var(--crm-radius-sm) !important;
+  border-left: 4px solid !important;
+  padding: 12px 16px !important;
+}
+
+.alert-info    { border-left-color: var(--crm-accent) !important; background: #e0f2fe !important; color: #075985 !important; }
+.alert-warning { border-left-color: var(--crm-warning) !important; background: #fef3c7 !important; color: #92400e !important; }
+.alert-danger  { border-left-color: var(--crm-danger) !important; background: #fee2e2 !important; color: #991b1b !important; }
+.alert-success { border-left-color: var(--crm-success) !important; background: #dcfce7 !important; color: #166534 !important; }
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+  .crm-card-body { padding: 18px 16px 14px; }
+  .crm-form-actions { flex-direction: column; align-items: stretch; }
+  .crm-form-actions .btn { justify-content: center; }
+  .crm-page-header h1 { font-size: 1.1rem; }
+}

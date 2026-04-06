@@ -3,20 +3,25 @@
 @section('title', 'Customer Edit')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="mb-0 text-primary font-weight-bold">Edit Customer</h1>
-        <a href="{{ route('customer.index') }}" class="btn btn-outline-primary"><i class="fas fa-home"></i> Home</a>
-    </div>
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-edit"></i>
+        Edit Customer
+    </h1>
+    <a href="{{ route('customer.index') }}" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-arrow-left"></i> Back to Customers
+    </a>
+</div>
 @stop
-
 @section('content')
     <x-alert-components class="my-3" />
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title"><i class="fas fa-edit"></i> Customer Information</h3>
-        </div>
-
+<div class="crm-card">
+    <div class="crm-card-header">
+        <h3 class="card-title">
+            <i class="fas fa-info-circle"></i>  Customer Information
+        </h3>
+    </div>
         <div class="card-body">
             <form method="POST" action="{{ route('customer.update', $customer->id) }}">
                 @csrf
@@ -241,10 +246,10 @@
         </div>
     </div>
 @stop
-
 @push('css')
-    <link rel="stylesheet" href="{{ asset('style/customer.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
 @endpush
+
 @push('js')
     <script src={{ asset('js/country.js') }}></script>
 @endpush

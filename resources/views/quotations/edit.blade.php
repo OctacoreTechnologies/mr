@@ -2,9 +2,19 @@
 
 @section('title', 'Edit Quotation')
 
+@push('css')
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+@endpush
+
 @section('content_header')
-    <h1 class="m-0 text-dark">Edit Quotation</h1>
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-edit"></i>
+         Edit Quotation
+    </h1>
     <a class="btn btn-link" href="{{ route('quotation.fullEditForm', $quotation->id) }}">Full Edit</a>
+</div>
+   
 @stop
 
 @section('content')

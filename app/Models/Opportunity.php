@@ -31,4 +31,8 @@ class Opportunity extends Model
     public function lead(){
         return $this->belongsTo(Lead::class,'lead_id');
     }
+
+    public function customer(){
+        return $this->belongsTo(Customer::class,'customer_id');
+    }
 }

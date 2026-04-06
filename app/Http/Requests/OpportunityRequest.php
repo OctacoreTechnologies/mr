@@ -23,18 +23,20 @@ class OpportunityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lead_id' => 'required|exists:leads,id', // Make sure the lead_id exists in the leads table
-            'name' => 'required|string|max:255',
-            'amount' => 'nullable|numeric|min:0', // Ensure that value is numeric and non-negative
-            'stage' => 'required', // Status must be one of the listed options
-            'close_date' => 'nullable|date|after_or_equal:today', // Ensure close_date is today or in the future
-            // 'sales_stage' => 'nullable|in:prospecting,negotiation,closing', // Optional, but should be one of the listed stages
-            'probability' => 'nullable|numeric|min:0|max:100', // Optional, between 0 and 100
+            // 'lead_id' => 'required|exists:leads,id', 
+            // 'name' => 'required|string|max:255',
+            'customer_id' => 'required|exists:customers,id',
+            'amount' => 'nullable|numeric|min:0', 
+            'description' => 'nullable|string',
+            'stage' => 'required', 
+            'close_date' => 'nullable|date|after_or_equal:today',
+            // 'sales_stage' => 'nullable|in:prospecting,negotiation,closing', 
+            'probability' => 'nullable|numeric|min:0|max:100', 
             'account_name' => 'nullable|string|max:255',
             'expected_close_date'=>'nullable|date',
-            // 'assigned_to' => 'nullable|exists:users,id', // Ensure the user exists if assigned
-            'priority' => 'nullable|in:low,medium,high', // Optional priority field
-            'notes' => 'nullable|string', // Optional field for lead description
+            // 'assigned_to' => 'nullable|exists:users,id', 
+            'priority' => 'nullable|in:low,medium,high',
+            'notes' => 'nullable|string', 
             'remark1'=>'nullable',
             'remark2'=>'nullable',
             'type'=>'nullable',

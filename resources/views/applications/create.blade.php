@@ -3,7 +3,7 @@
 @section('title', 'Add Application')
 
 @section('content_header')
-    <h1 class="mb-2">Add New Application</h1>
+    <h1 class="mb-2">Create Application</h1>
 @stop
 
 @section('content')
@@ -629,6 +629,9 @@
     </form>
 
 @stop
+@push('css')
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+@endpush
 
 @push('js')
 <script>

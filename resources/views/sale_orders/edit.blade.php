@@ -3,8 +3,8 @@
 @section('title', 'Edit Sales Order')
 
 @section('content_header')
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="mb-0 text-primary font-weight-bold">Total Order Payment's</h1>
+<div class="crm-page-header">
+        <h1 class="mb-0 text-primary font-weight-bold">Edit Total Order</h1>
     <a href="{{ route('sale-order.index') }}" class="btn btn-outline-primary btn-sm">
         <i class="fas fa-arrow-left"></i> Back to Orders
     </a>
@@ -457,6 +457,9 @@
             display: none !important;
         }
     </style>
+@endpush
+@push('css')
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
 @endpush
 
 @push('js')

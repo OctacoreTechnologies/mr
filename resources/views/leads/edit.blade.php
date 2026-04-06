@@ -8,296 +8,236 @@
 
 @section('content')
 
-    <x-alert-components class="my-3" />
+<x-alert-components class="my-3" />
 
-    <div class="card shadow-lg border-0 rounded-3">
-        <div class="card-header bg-primary text-white rounded-top">
-            <h3 class="card-title"><i class="fas fa-building"></i> Lead Information</h3>
-        </div>
+<div class="crm-card">
+    <div class="crm-card-header">
+        <h3 class="card-title"><i class="fas fa-building"></i> Lead Information</h3>
+    </div>
 
-        <div class="card-body p-4">
-            <form method="POST" action="{{ route('customer.update', $lead->id) }}">
-                @csrf
-                @method('PUT')
-                <div class="row">
-                    <input type="hidden" name="type" value="lead">
-                    <div class="col-md-6">
-                        <x-adminlte-select name="lead_source" id="lead_source" label="Lead Source" fgroup-class="mb-3">
-                            <option value="web" {{ old('lead_source', $lead->lead_source) == 'web' ? 'selected' : '' }}>
-                                Web
+    <div class="crm-card-body">
+        <form method="POST" action="{{ route('customer.update', $lead->id) }}">
+            @csrf
+            @method('PUT')
+
+            <div class="row">
+                <input type="hidden" name="type" value="lead">
+
+                <div class="col-md-6">
+                    <x-adminlte-select name="lead_source" id="lead_source" label="Lead Source" fgroup-class="mb-3">
+                        <option value="web" {{ old('lead_source', $lead->lead_source) == 'web' ? 'selected' : '' }}>Web</option>
+                        <option value="referral" {{ old('lead_source', $lead->lead_source) == 'referral' ? 'selected' : '' }}>Referral</option>
+                        <option value="cold_call" {{ old('lead_source', $lead->lead_source) == 'cold_call' ? 'selected' : '' }}>Cold Call</option>
+                        <option value="social_media" {{ old('lead_source', $lead->lead_source) == 'social_media' ? 'selected' : '' }}>Social Media</option>
+                        <option value="other" {{ old('lead_source', $lead->lead_source) == 'other' ? 'selected' : '' }}>Other</option>
+                    </x-adminlte-select>
+                    @error('lead_source')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="col-md-6" id="lead_source_remark_div" style="display: {{ old('lead_source', $lead->lead_source) == 'other' ? 'block' : 'none' }};">
+                    <x-adminlte-textarea name="lead_source_remark" label="Lead Source Remark"
+                        placeholder="Enter any remarks regarding the lead source"
+                        fgroup-class="mb-3">{{ old('lead_source_remark', $lead->lead_source_remark) }}</x-adminlte-textarea>
+                </div>
+
+                <!-- Location Type -->
+                <div class="col-md-6">
+                    <x-adminlte-select name="location_type" label="Location Type" fgroup-class="mb-3">
+                        <option value="international" {{ old('location_type', $lead->location_type) == 'international' ? 'selected' : '' }}>International</option>
+                        <option value="domestic" {{ old('location_type', $lead->location_type) == 'domestic' ? 'selected' : '' }}>Domestic</option>
+                    </x-adminlte-select>
+                </div>
+
+                <!-- Continent -->
+                <div class="col-md-6">
+                    <x-adminlte-select name="continent" label="Select Continent" fgroup-class="mb-3">
+                        <option value="">--Please choose an option--</option>
+                        <option value="africa" {{ old('continent', $lead->continent) == 'africa' ? 'selected' : '' }}>Africa</option>
+                        <option value="antarctica" {{ old('continent', $lead->continent) == 'antarctica' ? 'selected' : '' }}>Antarctica</option>
+                        <option value="asia" {{ old('continent', $lead->continent) == 'asia' ? 'selected' : '' }}>Asia</option>
+                        <option value="europe" {{ old('continent', $lead->continent) == 'europe' ? 'selected' : '' }}>Europe</option>
+                        <option value="north_america" {{ old('continent', $lead->continent) == 'north_america' ? 'selected' : '' }}>North America</option>
+                        <option value="oceania" {{ old('continent', $lead->continent) == 'oceania' ? 'selected' : '' }}>Oceania</option>
+                        <option value="south_america" {{ old('continent', $lead->continent) == 'south_america' ? 'selected' : '' }}>South America</option>
+                    </x-adminlte-select>
+                </div>
+
+                <!-- Country -->
+                <div class="col-md-6">
+                    <x-adminlte-select name="country" label="Select Country" class="country-select">
+                        <option value="">--Please choose an option--</option>
+                        @foreach ($countries as $country)
+                            <option value="{{ strtolower($country->country) }}"
+                                data-code="{{ $country->country_code }}"
+                                {{ old('country', $lead->country) == strtolower($country->country) ? 'selected' : '' }}>
+                                {{ $country->country }}
                             </option>
-                            <option value="referral"
-                                {{ old('lead_source', $lead->lead_source) == 'referral' ? 'selected' : '' }}>Referral
+                        @endforeach
+                    </x-adminlte-select>
+                </div>
+
+                <!-- Region -->
+                <div class="col-md-6">
+                    <label for="region" class="crm-label">Region</label>
+                    <select name="region" id="region" class="form-control select2">
+                        @foreach ($regions as $region)
+                            <option value="{{ old('region', $region->name) }}" data-region-id={{ $region->id }}
+                                {{ $lead->region == $region->name ? 'selected' : '' }}>
+                                {{ $region->name }}
                             </option>
-                            <option value="cold_call"
-                                {{ old('lead_source', $lead->lead_source) == 'cold_call' ? 'selected' : '' }}>Cold Call
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- State -->
+                <div class="col-md-6" id="stateGroup">
+                    <x-adminlte-select name="state" label="State" class="form-control w-100">
+                        @foreach ($states as $state)
+                            <option value="{{ $state->name }}"
+                                {{ old('state', $lead->state) == $state->name ? 'selected' : '' }}>
+                                {{ $state->name }}
                             </option>
-                            <option value="social_media"
-                                {{ old('lead_source', $lead->lead_source) == 'social_media' ? 'selected' : '' }}>Social
-                                Media</option>
-                            <option value="other"
-                                {{ old('lead_source', $lead->lead_source) == 'other' ? 'selected' : '' }}>
-                                Other</option>
-                        </x-adminlte-select>
-                        @error('lead_source')
-                            <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="col-md-6" id="lead_source_remark_div" style="display: {{ old('lead_source', $lead->lead_source) == 'other' ? 'block' : 'none' }};">
-                        <x-adminlte-textarea name="lead_source_remark" label="Lead Source Remark"
-                            placeholder="Enter any remarks regarding the lead source"
-                            fgroup-class="mb-3">{{ old('lead_source_remark', $lead->lead_source_remark) }}</x-adminlte-textarea>
-                    </div>
+                        @endforeach
+                    </x-adminlte-select>
+                </div>
 
-                    <!-- Location Type -->
-                    <div class="col-md-6">
-                        <x-adminlte-select name="location_type" label="Location Type" fgroup-class="mb-3">
-                            <option value="international"
-                                {{ old('location_type', $lead->location_type) == 'international' ? 'selected' : '' }}>
-                                International</option>
-                            <option value="domestic"
-                                {{ old('location_type', $lead->location_type) == 'domestic' ? 'selected' : '' }}>Domestic
-                            </option>
-                        </x-adminlte-select>
-                    </div>
+                <!-- City -->
+                <div class="col-md-6">
+                    <x-adminlte-input name="city" value="{{ old('city', $lead->city) }}" label="City"
+                        placeholder="Enter City" fgroup-class="mb-3" disable-feedback />
+                </div>
 
-                    <!-- Continent -->
-                    <div class="col-md-6">
-                        <x-adminlte-select name="continent" label="Select Continent" fgroup-class="mb-3">
-                            <option value="">--Please choose an option--</option>
-                            <option value="africa" {{ old('continent', $lead->continent) == 'africa' ? 'selected' : '' }}>
-                                Africa</option>
-                            <option value="antarctica"
-                                {{ old('continent', $lead->continent) == 'antarctica' ? 'selected' : '' }}>Antarctica
-                            </option>
-                            <option value="asia" {{ old('continent', $lead->continent) == 'asia' ? 'selected' : '' }}>
-                                Asia
-                            </option>
-                            <option value="europe" {{ old('continent', $lead->continent) == 'europe' ? 'selected' : '' }}>
-                                Europe</option>
-                            <option value="north_america"
-                                {{ old('continent', $lead->continent) == 'north_america' ? 'selected' : '' }}>North America
-                            </option>
-                            <option value="oceania"
-                                {{ old('continent', $lead->continent) == 'oceania' ? 'selected' : '' }}>
-                                Oceania</option>
-                            <option value="south_america"
-                                {{ old('continent', $lead->continent) == 'south_america' ? 'selected' : '' }}>South America
-                            </option>
-                        </x-adminlte-select>
-                    </div>
+                <!-- Area -->
+                <div class="col-md-6">
+                    <x-adminlte-input name="area" value="{{ old('area', $lead->area) }}" label="Area"
+                        placeholder="Enter Area" fgroup-class="mb-3" disable-feedback />
+                </div>
 
-                    <!-- Country -->
-                    <div class="col-md-6">
-                        <x-adminlte-select name="country" label="Select Country" class="country-select">
-                            <option value="">--Please choose an option--</option>
-                            @foreach ($countries as $country)
-                                <option value="{{ strtolower($country->country) }}"
-                                    data-code="{{ $country->country_code }}"
-                                    {{ old('country', $lead->country) == strtolower($country->country) ? 'selected' : '' }}>
-                                    {{ $country->country }}
-                                </option>
-                            @endforeach
-                        </x-adminlte-select>
-                    </div>
+                <!-- Pincode -->
+                <div class="col-md-6">
+                    <x-adminlte-input name="pincode" value="{{ old('pincode', $lead->pincode) }}" label="Pincode"
+                        placeholder="Enter Pincode" fgroup-class="mb-3" disable-feedback />
+                </div>
 
-                    <!-- Region -->
-                    <div class="col-md-6">
-                        <label for="region" class="font-weight-bold text-muted">Region</label>
-                        <select name="region" id="region" class="form-control select2 rounded-pill">
-                            {{-- <option {{ $customer->region }}>{{ $customer->region }}</option> --}}
-                            @foreach ($regions as $region)
-                                <option value="{{ old('region', $region->name) }}" data-region-id={{ $region->id }}
-                                    {{ $lead->region == $region->name ? 'selected' : '' }}>{{ $region->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <!-- Company Name -->
+                <div class="col-md-6">
+                    <x-adminlte-input name="company_name" value="{{ old('company_name', $lead->company_name) }}"
+                        label="Company Name" placeholder="Enter Company Name"
+                        fgroup-class="mb-3" disable-feedback />
+                </div>
 
-                    <!-- State -->
-                    <div class="col-md-6" id="stateGroup">
-                        <x-adminlte-select name="state" label="State" class="form-control w-100">
-                            @foreach ($states as $state)
-                                <option value="{{ $state->name }}"
-                                    {{ old('state', $lead->state) == $state->name ? 'selected' : '' }}>{{ $state->name }}
-                                </option>
-                            @endforeach
-                        </x-adminlte-select>
-                    </div>
+                <!-- Address -->
+                <div class="col-md-6">
+                    <x-adminlte-textarea name="address_line_1" label="Address  (Bill To)"
+                        fgroup-class="mb-3">{{ old('address_line_1', $lead->address_line_1) }}</x-adminlte-textarea>
+                </div>
 
-                    <!-- City -->
-                    <div class="col-md-6">
-                        <x-adminlte-input name="city" value="{{ old('city', $lead->city) }}" label="City"
-                            placeholder="Enter City" fgroup-class="mb-3" disable-feedback />
-                    </div>
+                <div class="col-md-6">
+                    <x-adminlte-textarea name="address_line_2" label="Address  (Ship To)"
+                        fgroup-class="mb-3">{{ old('address_line_2', $lead->address_line_2) }}</x-adminlte-textarea>
+                </div>
 
-                    <!-- Area -->
-                    <div class="col-md-6">
-                        <x-adminlte-input name="area" value="{{ old('area', $lead->area) }}" label="Area"
-                            placeholder="Enter Area" fgroup-class="mb-3" disable-feedback />
-                    </div>
-
-                    <!-- Pincode -->
-                    <div class="col-md-6">
-                        <x-adminlte-input name="pincode" value="{{ old('pincode', $lead->pincode) }}" label="Pincode"
-                            placeholder="Enter Pincode" fgroup-class="mb-3" disable-feedback />
-                    </div>
-
-                    <!-- Company Name -->
-                    <div class="col-md-6">
-                        <x-adminlte-input name="company_name" value="{{ old('company_name', $lead->company_name) }}"
-                            label="Company Name" placeholder="Enter Company Name" fgroup-class="mb-3" disable-feedback />
-                    </div>
-
-                    <!-- Contact No -->
-                    {{-- <div class="col-md-6">
-
-                        <label>Contact No</label>
-
-                        <div class="input-group">
-
-                            <div class="input-group-prepend">
-                                <span class="input-group-text country-code">
-                                    {{ $lead->country_code ?? +91 }}
-                                </span>
-                                <input type="hidden" name="country_code" id="countryCodeField" id="countryCode"
-                                    value="{{ $lead->country_code ?? +91 }}">
-                            </div>
-
-                            <input type="text" name="contact_no" value="{{ $lead->contact_no }}"
-                                class="form-control contact-number" placeholder="Enter Contact No">
-
+                <!-- Contact Persons (UNCHANGED LOOP) -->
+                <div class="row col-12">
+                    @for ($i = 1; $i <= 6; $i++)
+                        <div class="col-md-6">
+                            <x-adminlte-input name="contact_person_{{ $i }}_name"
+                                value="{{ $lead->{'contact_person_' . $i . '_name'} ?? '' }}"
+                                label="Contact Person {{ $i }} Name" fgroup-class="mb-3" />
                         </div>
-                    </div> --}}
-                    <!-- Address Lines -->
-                    <div class="col-md-6">
-                        <x-adminlte-textarea name="address_line_1" label="Address  (Bill To)"
-                            placeholder="Enter Address Line 1"
-                            fgroup-class="mb-3">{{ old('address_line_1', $lead->address_line_1) }}</x-adminlte-textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <x-adminlte-textarea name="address_line_2" label="Address  (Ship To)"
-                            placeholder="Enter Address Line 2"
-                            fgroup-class="mb-3">{{ old('address_line_2', $lead->address_line_2) }}</x-adminlte-textarea>
-                    </div>
 
-                    {{-- <div class="col-md-6">
-                        <x-adminlte-select name="no_of_persons" id="no_of_persons" label="No. Of Contact Person's">
-                            @for ($i = 1; $i <= 6; $i++)
-                                <option value="{{ $i }}"
-                                    {{ old('no_of_persons', $lead->no_of_persons) == $i ? 'selected' : '' }}>
-                                    {{ $i }}</option>
-                            @endfor
-                        </x-adminlte-select>
-                    </div> --}}
+                        <div class="col-md-6">
+                            <x-adminlte-input name="contact_person_{{ $i }}_designation"
+                                value="{{ $lead->{'contact_person_' . $i . '_designation'} ?? '' }}"
+                                label="Contact Person {{ $i }} Designation" fgroup-class="mb-3" />
+                        </div>
 
-                    <!-- Contact Persons -->
-                    <div class="row col-12">
-                        @for ($i = 1; $i <= 6; $i++)
-                            <div class="col-md-6">
-                                <x-adminlte-input name="contact_person_{{ $i }}_name"
-                                    value="{{ $lead->{'contact_person_' . $i . '_name'} ?? '' }}"
-                                    label="Contact Person {{ $i }} Name"
-                                    placeholder="Enter Contact Person 2 Name" fgroup-class="mb-3" disable-feedback />
-                            </div>
-
-                            <!-- Contact Person 2 Designation -->
-                            <div class="col-md-6">
-                                <x-adminlte-input name="contact_person_{{ $i }}_designation"
-                                    value="{{ $lead->{'contact_person_' . $i . '_designation'} ?? '' }}"
-                                    label="Contact Person {{ $i }} Designation"
-                                    placeholder="Enter Contact Person 2 Designation" fgroup-class="mb-3"
-                                    disable-feedback />
-                            </div>
-
-                            <!-- Contact Person 2 Contact -->
-                            {{-- <div class="col-md-6">
-                                <x-adminlte-input name="contact_person_{{ $i }}_contact"
-                                    value="{{ $lead->{'contact_person_' . $i . '_contact'} ?? '' }}"
-                                    label="Contact Person {{ $i }} Contact"
-                                    placeholder="Enter Contact Person 2 Contact" fgroup-class="mb-3" disable-feedback
-                                    class="contact-number" />
-                            </div> --}}
-                            <div class="col-md-6">
-                                <label>Contact Person {{ $i }} Contact</label>
-
-                                <div class="input-group">
-
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text country-code">
-                                            {{ $lead->country_code ?? +91 }}
-                                        </span>
-                                        <input type="hidden" name="country_code" id="countryCodeField"
-                                            class="country_code_field" value="{{ $lead->country_code ?? +91 }}">
-                                    </div>
-
-                                    <input type="text" name="contact_person_{{ $i }}_contact"
-                                        value="{{ $lead->{'contact_person_' . $i . '_contact'} ?? '' }}"
-                                        class="form-control contact-number" placeholder="Enter Contact No">
+                        <div class="col-md-6">
+                            <label class="crm-label">Contact Person {{ $i }} Contact</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text country-code">
+                                        {{ $lead->country_code ?? +91 }}
+                                    </span>
+                                    <input type="hidden" name="country_code" class="country_code_field"
+                                        value="{{ $lead->country_code ?? +91 }}">
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <x-adminlte-input type="email" name="contact_person_{{ $i }}_email"
-                                    value="{{ $lead->{'contact_person_' . $i . '_email'} ?? '' }}"
-                                    label="Contact Person {{ $i }} email"
-                                    placeholder="Enter Contact Person {{ $i }} Email" fgroup-class="mb-3"
-                                    disable-feedback />
-                            </div>
-                        @endfor
-                    </div>
 
-                    <!-- GST -->
-                    <div class="col-md-6">
-                        <x-adminlte-input name="gst" value="{{ old('gst', $lead->gst) }}" label="GST Number"
-                            placeholder="Enter GST Number" fgroup-class="mb-3" />
-                    </div>
-                    <!-- Status and Followed By -->
-                    <div class="col-md-6">
-                        <x-adminlte-select name="status" label="Status" fgroup-class="mb-3">
-                            <option value="new" {{ old('status', $lead->status) == 'new' ? 'selected' : '' }}>New
-                            </option>
-                            <option value="contacted" {{ old('status', $lead->status) == 'contacted' ? 'selected' : '' }}>
-                                Contacted</option>
-                            <option value="qualified" {{ old('status', $lead->status) == 'qualified' ? 'selected' : '' }}>
-                                Qualified</option>
-                            <option value="disqualified"
-                                {{ old('status', $lead->status) == 'disqualified' ? 'selected' : '' }}>Disqualified
-                            </option>
-                        </x-adminlte-select>
-                    </div>
-                    <!-- Remarks -->
-                    <div class="col-md-6">
-                        <x-adminlte-textarea name="remark" label="Remark1" placeholder="Enter any remarks"
-                            fgroup-class="mb-3">{{ old('remark', $lead->remark) }}</x-adminlte-textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <x-adminlte-textarea name="remark2" label="Remark2" placeholder="Enter any remarks"
-                            fgroup-class="mb-3">{{ old('remark2', $lead->remark2) }}</x-adminlte-textarea>
-                    </div>
-                    <div class="col-md-6">
-                        <x-adminlte-select name="followed_by" label="Followed By" class="select2" fgroup-class="mb-3">
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}"
-                                    {{ old('followed_by', $lead->followed_by) == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}</option>
-                            @endforeach
-                        </x-adminlte-select>
-                    </div>
+                                <input type="text" name="contact_person_{{ $i }}_contact"
+                                    value="{{ $lead->{'contact_person_' . $i . '_contact'} ?? '' }}"
+                                    class="form-control contact-number" placeholder="Enter Contact No">
+                            </div>
+                        </div>
 
-                    <!-- Buttons -->
-                    <div class="col-md-12 text-center mt-3">
-                        <x-adminlte-button label="Submit" type="submit" theme="primary" class="mx-2" />
-                        <x-adminlte-button label="Cancel" type="button" theme="danger" class="mx-2"
+                        <div class="col-md-6">
+                            <x-adminlte-input type="email" name="contact_person_{{ $i }}_email"
+                                value="{{ $lead->{'contact_person_' . $i . '_email'} ?? '' }}"
+                                label="Contact Person {{ $i }} Email" fgroup-class="mb-3" />
+                        </div>
+                    @endfor
+                </div>
+
+                <!-- GST -->
+                <div class="col-md-6">
+                    <x-adminlte-input name="gst" value="{{ old('gst', $lead->gst) }}"
+                        label="GST Number" fgroup-class="mb-3" />
+                </div>
+
+                <!-- Status -->
+                <div class="col-md-6">
+                    <x-adminlte-select name="status" label="Status" fgroup-class="mb-3">
+                        <option value="new" {{ old('status', $lead->status) == 'new' ? 'selected' : '' }}>New</option>
+                        <option value="contacted" {{ old('status', $lead->status) == 'contacted' ? 'selected' : '' }}>Contacted</option>
+                        <option value="qualified" {{ old('status', $lead->status) == 'qualified' ? 'selected' : '' }}>Qualified</option>
+                        <option value="disqualified" {{ old('status', $lead->status) == 'disqualified' ? 'selected' : '' }}>Disqualified</option>
+                    </x-adminlte-select>
+                </div>
+
+                <!-- Remarks -->
+                <div class="col-md-6">
+                    <x-adminlte-textarea name="remark" label="Remark1" fgroup-class="mb-3">
+                        {{ old('remark', $lead->remark) }}
+                    </x-adminlte-textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <x-adminlte-textarea name="remark2" label="Remark2" fgroup-class="mb-3">
+                        {{ old('remark2', $lead->remark2) }}
+                    </x-adminlte-textarea>
+                </div>
+
+                <!-- Followed By -->
+                <div class="col-md-6">
+                    <x-adminlte-select name="followed_by" label="Followed By" class="select2" fgroup-class="mb-3">
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}"
+                                {{ old('followed_by', $lead->followed_by) == $user->id ? 'selected' : '' }}>
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
+                    </x-adminlte-select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="col-12">
+                    <div class="crm-form-actions">
+                        <x-adminlte-button label="Submit" type="submit" theme="primary" />
+                        <x-adminlte-button label="Cancel" type="button" theme="secondary"
                             onclick="window.history.back();" />
                     </div>
                 </div>
-            </form>
-        </div>
+
+            </div>
+        </form>
     </div>
+</div>
 
 @endsection
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('style/customer.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
 @endpush
 
 @push('js')

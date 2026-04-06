@@ -3,9 +3,9 @@
 @section('title', 'Create Order')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center mb-3">
+   <div class="crm-page-header">
         <h1 class="mb-0 text-primary font-weight-bold">Create Total Order</h1>
-        <a href="{{ route('sale-order.index') }}" class="btn btn-outline-primary btn-sm">
+        <a href="{{ route('sale-order.index') }}" class="btn btn-sm">
             <i class="fas fa-arrow-left"></i> Back to Orders
         </a>
     </div>
@@ -202,6 +202,10 @@
     }
 </style>
 @endpush
+@push('css')
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+@endpush
+
 
 @push('js')
 <script src="{{ asset('js/sale_order.js') }}"></script>

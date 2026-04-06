@@ -3,19 +3,25 @@
 @section('title', 'Create Customer')
 
 @section('content_header')
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="mb-0 text-primary font-weight-bold">Add New Customer</h1>
-        <a href="{{ route('customer.index') }}" class="btn btn-outline-primary"><i class="fas fa-home"></i> Home</a>
-    </div>
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-plus-circle"></i>
+        Create Customer
+    </h1>
+    <a href="{{ route('customer.index') }}" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</div>
 @stop
 
 @section('content')
 
     <x-alert-components class="my-3" />
-
-    <div class="card shadow-lg border-0 rounded-3">
-        <div class="card-header bg-primary text-white rounded-top">
-            <h3 class="card-title"><i class="fas fa-building"></i> Customer Information</h3>
+    <div class="crm-card">
+        <div class="crm-card-header">
+            <h3 class="card-title">
+                <i class="fas fa-info-circle"></i> Customer Information
+            </h3>
         </div>
 
         <div class="card-body p-4">
@@ -49,8 +55,8 @@
                     <div class="col-md-4">
                         <x-adminlte-select name="country" label="Select Country" class="country-select">
                             @foreach ($countries as $country)
-                                <option value="{{ strtolower($country->country) }}"
-                                    data-code="{{ $country->country_code }}">{{ $country->country }}</option>
+                                <option value="{{ strtolower($country->country) }}" data-code="{{ $country->country_code }}">
+                                    {{ $country->country }}</option>
                             @endforeach
                         </x-adminlte-select>
                     </div>
@@ -82,8 +88,8 @@
 
                     <!-- Area -->
                     <div class="col-md-4">
-                        <x-adminlte-input name="area" value="{{ old('area') }}" label="Area"
-                            placeholder="Enter Area" fgroup-class="mb-3" disable-feedback />
+                        <x-adminlte-input name="area" value="{{ old('area') }}" label="Area" placeholder="Enter Area"
+                            fgroup-class="mb-3" disable-feedback />
                     </div>
 
                     <!-- Pincode -->
@@ -150,9 +156,8 @@
                                 placeholder="Enter Designation" fgroup-class="mb-3" />
                         </div>
                         <div class="col-md-4">
-                            <x-adminlte-input name="contact_person_1_contact"
-                                value="{{ old('contact_person_1_contact') }}" label="Contact Person 1 Contact"
-                                placeholder="Enter contact" fgroup-class="mb-3" />
+                            <x-adminlte-input name="contact_person_1_contact" value="{{ old('contact_person_1_contact') }}"
+                                label="Contact Person 1 Contact" placeholder="Enter contact" fgroup-class="mb-3" />
                         </div>
                         <div class="col-md-4">
                             <x-adminlte-input name="contact_person_1_email" value="{{ old('contact_person_1_email') }}"
@@ -208,10 +213,10 @@
 @endsection
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('style/customer.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
 @endpush
 
 @push('js')
-<script src={{ asset('js/customer.js') }}></script>
-<script src={{ asset('js/country.js') }}></script>
+    <script src={{ asset('js/customer.js') }}></script>
+    <script src={{ asset('js/country.js') }}></script>
 @endpush

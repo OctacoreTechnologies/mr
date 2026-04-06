@@ -3,8 +3,8 @@
 @section('title', 'Edit Sales Order')
 
 @section('content_header')
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="mb-0 text-primary font-weight-bold">Letter For Advance Payments</h1>
+<div class="crm-page-header">
+    <h1>Letter For Advance Payments</h1>
     <a href="{{ route('sale-order.index') }}" class="btn btn-outline-primary btn-sm">
         <i class="fas fa-arrow-left"></i> Back to Orders
     </a>
@@ -20,7 +20,7 @@
 
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
-            <h3 class="card-title"><i class="fas fa-edit"></i> Edit Order Information</h3>
+           <h3 class="card-title"><i class="fas fa-plus-circle"></i> Edit Order Information</h3>
         </div>
 
         <div class="card-body">
@@ -475,6 +475,11 @@ foreach ($saleOrder->payments as $payment) {
  
     </style>
 @endpush
+
+@push('css')
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+@endpush
+
 
 @push('js')
     <script src="{{ asset('js/sale_order.js') }}"></script>
