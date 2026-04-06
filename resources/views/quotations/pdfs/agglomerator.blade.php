@@ -143,7 +143,7 @@
         [
             'title' => 'Bearing Housing',
             'description' =>
-                'Mixing vessel fitted on steel plates and bearing housing fitted on steel plates with heavy duty bearings with water cooling and greasing.',
+                'Mixing vessel fitted on steel plates and bearing housing fitted on steel plates with heavy duty bearings with water cooling and greasing  arrangements.',
         ],
 
         [
