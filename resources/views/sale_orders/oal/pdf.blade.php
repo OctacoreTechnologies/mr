@@ -144,7 +144,7 @@ $attributes = $oal->getAttributes();
 @if(
 !is_null($value) &&
 $value !== '' &&
-!in_array($field,['created_at','updated_at','sale_order_id','id','machine_id'])
+!in_array($field,['created_at','updated_at','sale_order_id','id','machine_id','model'])
 )
 
 <tr>
@@ -160,6 +160,46 @@ $value !== '' &&
 <tr>
 <th>Machine Name</th>
 <td>{{ $oal->saleOrder->quotation->machine->name ?? '' }}</td>
+</tr>
+
+@endif
+
+@if($field == 'model')
+@php
+    $name = $oal->saleOrder->quotation->modele->name ?? '';
+    $production = $oal->saleOrder->quotation->modele->production ?? '';
+
+    $names = preg_split('/[,\/]/', $name); // split by , and /
+    $productions = explode(',', $production);
+
+    $result = [];
+
+    foreach ($names as $index => $item) {
+        $item = trim($item);
+
+        if (!isset($productions[$index])) continue;
+
+        $prod = trim($productions[$index]);
+
+        // Extract prefix (text before number)
+        preg_match('/^[^\d]+/', $item, $prefixMatch);
+        $prefix = $prefixMatch[0] ?? '';
+
+        // Extract suffix (text after number)
+        preg_match('/\d+(.*)$/', $item, $suffixMatch);
+        $suffix = $suffixMatch[1] ?? '';
+
+        $result[] = trim($prefix . $prod . $suffix);
+    }
+
+    // Rebuild structure (handle / separation)
+    $final = implode(', ', $result);
+@endphp
+
+
+<tr>
+<th>Model</th>
+<td>{{ $final }}</td>
 </tr>
 
 @endif
