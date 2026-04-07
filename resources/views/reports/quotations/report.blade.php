@@ -67,10 +67,10 @@
                     <div class="col-md-3">
                         <label for="status" class="font-weight-bold text-muted">Status</label>
                         <select name="status[]" id="status" class="form-control select2 rounded-pill" multiple="multiple">
-                            <option value="draft" {{ in_array('draft', request('status', [])) ? 'selected' : '' }}>Draft</option>
-                            <option value="sent" {{ in_array('sent', request('status', [])) ? 'selected' : '' }}>Sent</option>
-                            <option value="accepted" {{ in_array('accepted', request('status', [])) ? 'selected' : '' }}>Accepted</option>
-                            <option value="rejected" {{ in_array('rejected', request('status', [])) ? 'selected' : '' }}>Rejected</option>
+                            <option value="Draft" {{ in_array('Draft', request('status', [])) ? 'selected' : '' }}>Draft</option>
+                            <option value="Sent" {{ in_array('Sent', request('status', [])) ? 'selected' : '' }}>Sent</option>
+                            <option value="Approved" {{ in_array('Approved', request('status', [])) ? 'selected' : '' }}>Approved</option>
+                            <option value="Rejected" {{ in_array('Rejected', request('status', [])) ? 'selected' : '' }}>Rejected</option>
                         </select>
                     </div>
 
