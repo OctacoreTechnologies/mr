@@ -233,7 +233,8 @@
                     if ($dicountType == 'percentage') {
                         $unitPrice = $unitPrice - ($unitPrice * $saleOrder->discount_percentage) / 100;
                     } elseif ($dicountType == 'amount') {
-                        $unitPrice = $unitPrice - $saleOrder->discount_amount/count($saleOrder->quotation->items) ?: 1;
+                        // $unitPrice = $unitPrice - $saleOrder->discount_amount/count($saleOrder->quotation->items) ?: 1;
+                          $unitPrice = $unitPrice - $saleOrder->discount_amount;
                     }
                     $totalBasicAmount = $unitPrice * $saleOrder->quotation->quantity;
                 @endphp
@@ -252,7 +253,9 @@
                         if ($dicountType == 'percentage') {
                             $itemUnitPrice = $itemUnitPrice - ($itemUnitPrice * $saleOrder->discount_percentage) / 100;
                         } elseif ($dicountType == 'amount') {
-                            $itemUnitPrice = $itemUnitPrice - $saleOrder->discount_amount/count($saleOrder->quotation->items) ?: 1;
+                            // $itemUnitPrice = $itemUnitPrice - $saleOrder->discount_amount/count($saleOrder->quotation->items) ?: 1;
+                            $itemUnitPrice = $itemUnitPrice;
+                            
                         }
                         $totalBasicAmount += $itemUnitPrice * $item->item_qty;
                     @endphp
