@@ -233,7 +233,7 @@
                     if ($dicountType == 'percentage') {
                         $unitPrice = $unitPrice - ($unitPrice * $saleOrder->discount_percentage) / 100;
                     } elseif ($dicountType == 'amount') {
-                        $unitPrice = $unitPrice - $saleOrder->discount_amount/$count($saleOrder->quotation->items);
+                        $unitPrice = $unitPrice - $saleOrder->discount_amount/count($saleOrder->quotation->items);
                     }
                     $totalBasicAmount = $unitPrice * $saleOrder->quotation->quantity;
                 @endphp
