@@ -66,7 +66,7 @@ class AdvancePaymentLetterController extends Controller
         $machine_id = $saleOrder->quotation->machine_id ?? null;
         $orderAccptLtr = OrderAcceptanceLetter::where('sale_order_id', $id)->first();
         $fields = DemoAdvancePaymentLetter::where('machine_id', $machine_id)->first();
-        $quotation = Quotation::with(['application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batche2'])->findOrFail($saleOrder->quotation->id);
+        $quotation = Quotation::with(['application', 'user', 'followedBy', 'machine', 'modele', 'materialToProcess', 'batch', 'mixingTool', 'electricalControl', 'acFrequencyDrive', 'bearinge', 'pneumatic', 'batch2'])->findOrFail($saleOrder->quotation->id);
         // dropdown's
         $product = $quotation->application;
         $machine = $quotation->machine;
