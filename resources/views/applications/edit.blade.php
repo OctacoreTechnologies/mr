@@ -279,7 +279,7 @@
                             <label>No. of Fixed Blade</label>
                             <select class="form-control select2" name="no_of_fixes_blade">
                                 <option value="">-- Select --</option>
-                               @if(isset($product->no_of_fixes_blade_id))
+                               @if(!empty($product->no_of_fixes_blade_id))
                                     <option value="{{ $product->fixedBlade->no_of_blades }}" selected>
                                         {{  $product->fixedBlade->no_of_blades }}
                                     </option>
