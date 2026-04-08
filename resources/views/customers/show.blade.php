@@ -3,97 +3,196 @@
 @section('title', 'Customer Details')
 
 @section('content_header')
-    <h1><i class="fas fa-user-circle"></i> Customer Details</h1>
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-user-circle"></i>
+        Customer Details
+    </h1>
+</div>
 @stop
 
 @section('content')
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title"><i class="fas fa-info-circle"></i> Overview</h3>
-        </div>
-        <div class="card-body">
-            <div class="row">
 
-                @php
-                    $fields = [
-                        'Location' => $customer->location_type ?? '',
-                        'Country' => $customer->country ?? '',
-                        'Region' => $customer->region ?? '',
-                        'State' => $customer->state ?? '',
-                        'City' => $customer->city ?? '',
-                        'Area' => $customer->area ?? '',
-                        'Pincode' => $customer->pincode ?? '',
-                        'Company Name' => $customer->company_name ?? '',
-                        // 'Contact No' => $customer->contact_no ?? '',
-                        'Status' => $customer->status ?? '',
-                        'Contact Person 1 name'         => $customer->contact_person_1_name,
-                        'Contact Person 1 designation'  => $customer->contact_person_1_designation,
-                        'Contact Person 1 email'        => $customer->contact_person_1_email,
-                        'Contact Person 1 contact'      => $customer->contact_person_1_contact,
+<x-alert-components class="my-2" />
 
-                        'Contact Person 2 name'         => $customer->contact_person_2_name,
-                        'Contact Person 2 designation'  => $customer->contact_person_2_designation,
-                        'Contact Person 2 email'        => $customer->contact_person_2_email,
-                        'Contact Person 2 contact'      => $customer->contact_person_2_contact,
+<div class="crm-index-card">
 
-                        'Contact Person 3 name'         => $customer->contact_person_3_name,
-                        'Contact Person 3 designation'  => $customer->contact_person_3_designation,
-                        'Contact Person 3 email'        => $customer->contact_person_3_email,
-                        'Contact Person 3 contact'      => $customer->contact_person_3_contact,
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-info-circle"></i> Overview
+        </h3>
+    </div>
 
-                        'Contact Person 4 name'         => $customer->contact_person_4_name,
-                        'Contact Person 4 designation'  => $customer->contact_person_4_designation,
-                        'Contact Person 4 email'        => $customer->contact_person_4_email,
-                        'Contact Person 4 contact'      => $customer->contact_person_4_contact,
+    <div class="card-body">
 
-                        'Contact Person 5 name'         => $customer->contact_person_5_name,
-                        'Contact Person 5 designation'  => $customer->contact_person_5_designation,
-                        'Contact Person 5 email'        => $customer->contact_person_5_email,
-                        'Contact Person 5 contact'      => $customer->contact_person_5_contact,
+        {{-- BASIC DETAILS --}}
+        <div class="row">
+            @php
+                $fields = [
+                    'Location' => ucfirst($customer->location_type) ?? '',
+                    'Country' => ucfirst($customer->country) ?? '',
+                    'Region' => ucfirst($customer->region) ?? '',
+                    'State' => ucfirst($customer->state) ?? '',
+                    'City' => ucfirst($customer->city) ?? '',
+                    'Area' => ucfirst($customer->area) ?? '',
+                    'Pincode' => $customer->pincode ?? '',
+                    'Company Name' => $customer->company_name ?? '',
+                    'gst' => $customer->gst ?? '',
+                    'Status' => $customer->status ?? '',
+                ];
+            @endphp
 
-                        'Contact Person 6 name'         => $customer->contact_person_6_name,
-                        'Contact Person 6 designation'  => $customer->contact_person_6_designation,
-                        'Contact Person 6 email'        => $customer->contact_person_6_email,
-                        'Contact Person 6 contact'      => $customer->contact_person_6_contact,
-                    ];
-                @endphp
-
-                @foreach($fields as $label => $value)
-                    <div class="col-md-6 mb-3">
-                        <div class="border p-2 rounded bg-light">
-                            <strong>{{ $label }}:</strong>
-                            <p class="mb-0 text-muted">{{ $value }}</p>
+            @foreach($fields as $label => $value)
+                <div class="col-md-4 col-sm-6 mb-3">
+                    <div class="crm-detail-box">
+                        <span class="crm-detail-label">{{ $label }}</span>
+                        <div class="crm-detail-value">
+                            {{ $value ?: '—' }}
                         </div>
                     </div>
-                @endforeach
-
-                <div class="col-md-12 mb-3">
-                    <div class="border p-2 rounded bg-light">
-                        <strong>Remark 1:</strong>
-                        <p class="mb-0 text-muted">{{ $customer->remark ?? '—' }}</p>
-                    </div>
                 </div>
+            @endforeach
+        </div>
 
-                <div class="col-md-12 mb-3">
-                    <div class="border p-2 rounded bg-light">
-                        <strong>Remark 2:</strong>
-                        <p class="mb-0 text-muted">{{ $customer->remark2 ?? '—' }}</p>
-                    </div>
-                </div>
+        {{-- CONTACT PERSONS --}}
+        <div class="mt-4">
+            <h5 class="crm-section-title">Contact Persons</h5>
 
-                <div class="col-md-12 mb-3">
-                    <div class="border p-2 rounded bg-light">
-                        <strong>Followed By:</strong>
-                        <p class="mb-0 text-muted">{{ $customer->followedBy->name ?? '—' }}</p>
-                    </div>
-                </div>
-            </div>
+            <div class="row">
 
-            <div class="mt-4">
-                <a href="{{ route('customer.index') }}" class="btn btn-outline-secondary">
-                    <i class="fas fa-arrow-left"></i> Back to Customers
-                </a>
+                @for ($i = 1; $i <= 6; $i++)
+                    @php
+                        $name = $customer->{'contact_person_'.$i.'_name'};
+                    @endphp
+
+                    @if($name)
+                        <div class="col-md-6 mb-3">
+                            <div class="crm-detail-box">
+                                <strong class="d-block mb-1">
+                                    <i class="fas fa-user"></i> Contact Person {{ $i }}
+                                </strong>
+
+                                <div class="crm-detail-value">
+                                    <div><b>Name:</b> {{ $name }}</div>
+                                    <div><b>Designation:</b> {{ $customer->{'contact_person_'.$i.'_designation'} }}</div>
+                                    <div><b>Email:</b> {{ $customer->{'contact_person_'.$i.'_email'} }}</div>
+                                    <div><b>Contact:</b> {{ $customer->{'contact_person_'.$i.'_contact'} }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                @endfor
+
             </div>
         </div>
+
+
+         {{-- Address --}}
+        <div class="mt-4">
+            <h5 class="crm-section-title">Address</h5>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="crm-detail-box">
+                        <span class="crm-detail-label">Bill To</span>
+                        <div class="crm-detail-value">
+                            {{ $customer->address_line_1 ?? '—' }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="crm-detail-box">
+                        <span class="crm-detail-label">Ship To</span>
+                        <div class="crm-detail-value">
+                            {{ $customer->address_line_2 ?? '—' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- REMARKS --}}
+        <div class="mt-4">
+            <h5 class="crm-section-title">Remarks</h5>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="crm-detail-box">
+                        <span class="crm-detail-label">Remark 1</span>
+                        <div class="crm-detail-value">
+                            {{ $customer->remark ?? '—' }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="crm-detail-box">
+                        <span class="crm-detail-label">Remark 2</span>
+                        <div class="crm-detail-value">
+                            {{ $customer->remark2 ?? '—' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- FOLLOWED BY --}}
+        <div class="mt-3">
+            <div class="crm-detail-box">
+                <span class="crm-detail-label">Followed By</span>
+                <div class="crm-detail-value">
+                    <i class="fas fa-user-circle"></i>
+                    {{ $customer->followedBy->name ?? '—' }}
+                </div>
+            </div>
+        </div>
+
+        {{-- BACK BUTTON --}}
+        <div class="mt-4">
+            <a href="{{ route('customer.index') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Customers
+            </a>
+        </div>
+
     </div>
+</div>
+
 @stop
+
+@push('css')
+<link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
+<style>
+    .crm-detail-box {
+        background: var(--crm-bg);
+        border: 1px solid var(--crm-border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        height: 100%;
+    }
+
+    .crm-detail-label {
+        font-size: .7rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: var(--crm-text-muted);
+        display: block;
+        margin-bottom: 3px;
+    }
+
+    .crm-detail-value {
+        font-size: .85rem;
+        color: var(--crm-text);
+        font-weight: 500;
+        word-break: break-word;
+    }
+
+    .crm-section-title {
+        font-size: .85rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        color: var(--crm-text-muted);
+        text-transform: uppercase;
+    }
+</style>
+@endpush

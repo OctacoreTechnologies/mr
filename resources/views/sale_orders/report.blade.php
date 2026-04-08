@@ -1,18 +1,23 @@
 @php
-$heads = [
-    'SR NO',
-    'Work Order No',
-    'Quotation(Ref.No)',
-    'Customer Name',
-    'Order Date',
-    'Machine',
-    'Application',
-    'Status',
-    'Payment Status',
-    'Followed By',
-    'Pdf',
-    'Actions',
-];
+    $heads = [
+        'SR NO',
+        'Work Order No',
+        'Quotation(Ref.No)',
+        'Customer Name',
+        'Order Date',
+        'Machine',
+        'Application',
+        'Status',
+        'Payment Status',
+        'Followed By',
+        'Pdf',
+        'Actions',
+    ];
+
+    // Safe request handling
+    $reqCustomers = (array) request('customers', []);
+    $reqStatus = (array) request('status', []);
+    $reqFollowedBy = (array) request('followed_by', []);
 @endphp
 
 @extends('layouts.app')
@@ -20,236 +25,405 @@ $heads = [
 @section('title', 'SaleOrder Report')
 
 @section('content_header')
-    <h1>SaleOrder Report</h1>
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-shopping-cart"></i>
+        SaleOrder Report
+    </h1>
+</div>
 @stop
 
 @section('content')
-    <x-alert-components class="my-3" />
 
-    <div class="card shadow-lg border-0">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h3 class="card-title mb-0">SaleOrder Report</h3>
+<x-alert-components class="my-2" />
+
+{{-- FILTER CARD --}}
+<div class="crm-index-card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-filter"></i> Filters
+        </h3>
+
+        <div class="crm-export-group">
+            <button class="crm-export-btn" id="exportExcelBtn">
+                <i class="fas fa-file-excel"></i> Excel
+            </button>
+            <button class="crm-export-btn" id="exportCsvBtn">
+                <i class="fas fa-file-csv"></i> CSV
+            </button>
+            <button class="crm-export-btn crm-export-btn--danger" id="exportPdfBtn">
+                <i class="fas fa-file-pdf"></i> PDF
+            </button>
         </div>
+    </div>
 
-        <div class="card-body">
-            <!-- Filter Section -->
-            <form id="filterForm" method="GET" action="{{ route('saleOrder.report') }}" class="mb-4">
-                <div class="row g-4">
+    <div class="card-body">
+        <form method="GET" action="{{ route('saleOrder.report') }}">
+            <div class="row">
 
-                    <!-- Export Buttons -->
-                    <div class="col-md-12 mb-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <button type="button" class="btn btn-outline-light btn-sm mx-2" id="exportExcelBtn">
-                                    <i class="fa fa-file-excel"></i> Export Excel
-                                </button>
-                                <button type="button" class="btn btn-outline-light btn-sm mx-2" id="exportCsvBtn">
-                                    <i class="fa fa-file-csv"></i> Export CSV
-                                </button>
-                                <button type="button" class="btn btn-outline-light btn-sm mx-2" id="exportPdfBtn">
-                                    <i class="fa fa-file-pdf"></i> Export PDF
-                                </button>
-                            </div>
-                        </div>
+                {{-- REF NO --}}
+                <div class="col-md-3 col-sm-6">
+                    <div class="form-group">
+                        <label>SaleOrder Ref.No</label>
+                        <input type="text" name="reference_no" class="form-control"
+                            value="{{ request('reference_no') }}">
                     </div>
+                </div>
 
-                    <div class="col-md-3">
-                        <label for="reference_no">SaleOrder Ref.No</label>
-                        <input type="text" name="reference_no" id="reference_no" class="form-control"
-                               value="{{ request('reference_no') }}">
-                    </div>
-
-                    <div class="col-md-3">
-                        <label for="customers">Customers</label>
-                        <select name="customers[]" id="customers" class="form-control select2 rounded-pill" multiple>
+                {{-- CUSTOMERS --}}
+                <div class="col-md-3 col-sm-6">
+                    <div class="form-group">
+                        <label>Customers</label>
+                        <select name="customers[]" class="form-control crm-multi" multiple>
                             @foreach ($customers as $customer)
-                                <option value="{{ $customer->id }}"
-                                    {{ in_array($customer->id, request('customers', [])) ? 'selected' : '' }}>
+                                <option value="{{ $customer->id }}" {{ in_array($customer->id, $reqCustomers) ? 'selected' : '' }}>
                                     {{ $customer->company_name }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+                </div>
 
-                    <div class="col-md-3">
-                        <label for="status">Status</label>
-                        <select name="status[]" id="status" class="form-control select2 rounded-pill" multiple>
+                {{-- STATUS --}}
+                <div class="col-md-3 col-sm-6">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select name="status[]" class="form-control crm-multi" multiple>
                             @foreach (['pending', 'processing', 'shipped', 'delivered', 'canceled'] as $status)
-                                <option value="{{ $status }}"
-                                    {{ in_array($status, request('status', [])) ? 'selected' : '' }}>
+                                <option value="{{ $status }}" {{ in_array($status, $reqStatus) ? 'selected' : '' }}>
                                     {{ ucfirst($status) }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+                </div>
 
-                    <div class="col-md-3">
-                        <label for="due_date" class="font-weight-bold text-muted">Due Date</label>
-                        <select name="due_date" id="due_date" class="form-control select2 rounded-pill" multiple>
+                {{-- DUE DATE --}}
+                <div class="col-md-3 col-sm-6">
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <select name="due_date" id="due_date" class="form-control">
                             <option value="">Any</option>
                             <option value="today" {{ request('due_date') == 'today' ? 'selected' : '' }}>Today</option>
-                            <option value="this_week" {{ request('due_date') == 'this_week' ? 'selected' : '' }}>This Week</option>
-                            <option value="this_month" {{ request('due_date') == 'this_month' ? 'selected' : '' }}>This Month</option>
-                            <option value="this_year" {{ request('due_date') == 'this_year' ? 'selected' : '' }}>This Year</option>
+                            <option value="this_week" {{ request('due_date') == 'this_week' ? 'selected' : '' }}>This Week
+                            </option>
+                            <option value="this_month" {{ request('due_date') == 'this_month' ? 'selected' : '' }}>This
+                                Month</option>
+                            <option value="this_year" {{ request('due_date') == 'this_year' ? 'selected' : '' }}>This Year
+                            </option>
                             <option value="custom" {{ request('due_date') == 'custom' ? 'selected' : '' }}>Custom</option>
                         </select>
                     </div>
+                </div>
 
-                    <div class="col-md-3">
-                        <label for="followedBy">Followed By</label>
-                        <select name="followed_by[]" id="followedBy" class="form-control select2 rounded-pill" multiple>
+                {{-- FOLLOWED BY --}}
+                <div class="col-md-3 col-sm-6">
+                    <div class="form-group">
+                        <label>Followed By</label>
+                        <select name="followed_by[]" class="form-control crm-multi" multiple>
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}"
-                                    {{ in_array($user->id, request('followed_by', [])) ? 'selected' : '' }}>
+                                <option value="{{ $user->id }}" {{ in_array($user->id, $reqFollowedBy) ? 'selected' : '' }}>
                                     {{ $user->name }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+                </div>
 
-                    <div class="col-md-3 mb-3 custom-date-range" style="display: {{ request('due_date') == 'custom' ? 'block' : 'none' }};">
-                        <label for="from_date" class="font-weight-semibold">From</label>
-                        <input type="date" name="from_date" id="from_date" class="form-control rounded-pill" value="{{ request('from_date') }}">
-
-                        <label for="to_date" class="font-weight-semibold">To</label>
-                        <input type="date" name="to_date" id="to_date" class="form-control rounded-pill" value="{{ request('to_date') }}">
+                {{-- CUSTOM DATE --}}
+                <div class="col-md-3 col-sm-6 custom-date-range"
+                    style="display: {{ request('due_date') == 'custom' ? 'block' : 'none' }};">
+                    <div class="form-group">
+                        <label>From</label>
+                        <input type="date" name="from_date" class="form-control" value="{{ request('from_date') }}">
                     </div>
-
-
-
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary btn-md mt-4 w-100 rounded-pill">Apply Filters</button>
+                    <div class="form-group mb-0">
+                        <label>To</label>
+                        <input type="date" name="to_date" class="form-control" value="{{ request('to_date') }}">
                     </div>
                 </div>
-            </form>
-            <!-- Table -->
+
+                {{-- APPLY / RESET --}}
+                <div class="col-md-3 col-sm-6 d-flex align-items-end" style="gap:8px;">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-search"></i> Apply
+                    </button>
+
+                    <a href="{{ route('saleOrder.report') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times"></i>
+                    </a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- TABLE --}}
+<div class="crm-index-card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-list"></i> Sale Orders
+        </h3>
+        <span class="crm-record-count">{{ $saleOrders->count() }} records</span>
+    </div>
+
+    <div class="card-body">
+        <div class="table-responsive">
             <x-adminlte-datatable id="saleOrderTable" :heads="$heads" striped hoverable responsive>
+
                 @foreach ($saleOrders as $saleOrder)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $saleOrder->work_order_no }}</td>
-                        <td>{{ $saleOrder->quotation->reference_no ?? 'N.A' }}</td>
-                        <td>{{ $saleOrder->quotation->customer->company_name ?? 'N.A' }}</td>
-                        <td>{{ $saleOrder->order_date }}</td>
-                        <td>{{ $saleOrder->quotation->machine->name ?? 'N.A' }}</td>
-                        <td>{{ $saleOrder->quotation->application->name ?? 'N.A' }}</td>
+                        <td>{{ $saleOrder->quotation->reference_no ?? '—' }}</td>
+                        <td>{{ $saleOrder->quotation->customer->company_name ?? '—' }}</td>
+
                         <td>
-                            <span class="badge badge-{{ $saleOrder->status === 'shipped' ? 'success' : ($saleOrder->status === 'delivered' ? 'danger' : 'warning') }}">
+                            <span class="crm-date-cell">
+                                <i class="fas fa-calendar"></i>
+                                {{ $saleOrder->order_date ?? '—' }}
+                            </span>
+                        </td>
+
+                        <td>{{ $saleOrder->quotation->machine->name ?? '—' }}</td>
+                        <td>{{ $saleOrder->quotation->application->name ?? '—' }}</td>
+
+                        <td>
+                            @php
+                                $statusMap = [
+                                    'shipped' => 'crm-badge-closed-won',
+                                    'delivered' => 'crm-badge-negotiation',
+                                    'processing' => 'crm-badge-proposal',
+                                    'pending' => 'crm-badge-qualification',
+                                ];
+                            @endphp
+                            <span class="crm-badge {{ $statusMap[$saleOrder->status] ?? '' }}">
                                 {{ ucfirst($saleOrder->status) }}
                             </span>
                         </td>
-                        <td>{{ $saleOrder->payment_status ?? '' }}</td>
-                        <td>{{ $saleOrder->followedBy->name ?? '' }}</td>
+
+                        <td>{{ $saleOrder->payment_status ?? '—' }}</td>
+
                         <td>
-                            <a class="btn btn-link text-info" href="{{ route('quotation.pdf', $saleOrder->quotation->id) }}" target="_blank">
-                                <i class="fa fa-file-pdf"></i> PDF
+                            <span class="crm-followed-link">
+                                <i class="fas fa-user-circle"></i>
+                                {{ $saleOrder->followedBy->name ?? 'N.A' }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <a href="{{ route('quotation.pdf', $saleOrder->quotation->id) }}"
+                                class="btn btn-sm btn-outline-danger" target="_blank">
+                                <i class="fas fa-file-pdf"></i>
                             </a>
                         </td>
+
                         <td>
-                            <nobr>
-                                <a href="{{ route('sale-order.edit', $saleOrder->id) }}" class="btn btn-xs btn-outline-primary mx-1"><i class="fa fa-pen"></i></a>
-                                <form action="{{ route('sale-order.destroy', $saleOrder->id) }}" method="POST" class="d-inline-block">
-                                    @csrf @method("DELETE")
-                                    <button class="btn btn-xs btn-outline-danger mx-1"><i class="fa fa-trash"></i></button>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{{ route('sale-order.edit', $saleOrder->id) }}"
+                                    class="btn btn-default text-primary">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+
+                                <form action="{{ route('sale-order.destroy', $saleOrder->id) }}" method="POST"
+                                    class="d-inline" onsubmit="return confirm('Are you sure?')">
+                                    @csrf @method('DELETE')
+                                    <button class="btn btn-default text-danger">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </form>
-                                <a href="{{ route('sale-order.show', $saleOrder->id) }}" class="btn btn-xs btn-outline-success mx-1"><i class="fa fa-eye"></i></a>
-                            </nobr>
+
+                                <a href="{{ route('sale-order.show', $saleOrder->id) }}" class="btn btn-default text-teal">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @endforeach
+
             </x-adminlte-datatable>
         </div>
     </div>
-@stop
+</div>
 
+@stop
+@push('css')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
+    <style>
+        .card-body .form-group label {
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--crm-text-muted);
+            margin-bottom: 5px;
+            display: block;
+        }
+        /* Multi-select pills */
+        .select2-container--default .select2-selection--multiple {
+            min-height: 42px !important;
+            border: 1.5px solid var(--crm-border) !important;
+            border-radius: var(--crm-radius-sm) !important;
+            background: var(--crm-bg) !important;
+            padding: 3px 6px !important;
+        }
+        .select2-container--default.select2-container--focus .select2-selection--multiple {
+            border-color: var(--crm-primary) !important;
+            box-shadow: 0 0 0 3px rgba(37,99,235,.14) !important;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background: var(--crm-primary) !important;
+            border: none !important;
+            color: #fff !important;
+            border-radius: 20px !important;
+            padding: 2px 8px !important;
+            font-size: .74rem !important;
+            font-weight: 600;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+            color: rgba(255,255,255,.8) !important;
+            margin-right: 4px;
+        }
+        /* Export buttons */
+        .crm-export-group { display:flex; align-items:center; gap:6px; }
+        .crm-export-btn {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 5px 13px;
+            font-family: var(--crm-font); font-size: .78rem; font-weight: 600;
+            border-radius: 6px;
+            border: 1.5px solid rgba(255,255,255,.35);
+            background: rgba(255,255,255,.15); color: #fff;
+            cursor: pointer; transition: all .18s ease;
+        }
+        .crm-export-btn:hover { background:rgba(255,255,255,.28); transform:translateY(-1px); }
+        .crm-export-btn--danger { background:rgba(220,38,38,.22); border-color:rgba(254,202,202,.5); }
+        .crm-export-btn--danger:hover { background:rgba(220,38,38,.38); }
+        /* Record count */
+        .crm-record-count {
+            font-family: var(--crm-mono); font-size:.74rem; font-weight:600;
+            color:rgba(255,255,255,.8); background:rgba(255,255,255,.15);
+            padding:3px 10px; border-radius:20px;
+        }
+        /* Followed by pill */
+        .crm-followed-link {
+            display:inline-flex; align-items:center; gap:5px;
+            font-size:.82rem; font-weight:500; color:var(--crm-primary);
+            text-decoration:none; padding:3px 9px; border-radius:6px;
+            background:var(--crm-primary-light); transition:all .18s ease;
+            white-space:nowrap;
+        }
+        .crm-followed-link:hover { background:var(--crm-primary); color:#fff; text-decoration:none; }
+        /* Date cell */
+        .crm-date-cell { display:inline-flex; align-items:center; gap:5px; font-size:.83rem; }
+        .crm-date-cell i { color:var(--crm-primary); font-size:.76rem; }
+    </style>
+@endpush
 
 @push('js')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
-
-        <!-- PapaParse for CSV export -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-
-        <!-- jsPDF for PDF export -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+    <!-- PapaParse for CSV export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <!-- jsPDF for PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
     <script>
-            $(document).ready(function () {
-                $('#status, #customers, #payment_status, #followedBy, #due_date').select2();
+        $(document).ready(function () {
+            $('.crm-multi').each(function () {
+                var $el = $(this);
 
-                $('#due_date').change(function () {
-                    $('.custom-date-range').toggle($(this).val() == 'custom');
+                let selected = [];
+                $el.find('option:selected').each(function () {
+                    selected.push($(this).val());
                 });
 
-                $('#exportExcelBtn').click(function () {
-                    event.preventDefault();
-                    const table = document.getElementById('saleOrderTable');
-                    const wb = XLSX.utils.table_to_book(table, { sheet: 'Sale Orders' });
-                    XLSX.writeFile(wb, 'saleOrders.xlsx');
+                $el.select2({
+                    width: '100%',
+                    placeholder: 'Select...',
+                    allowClear: true
                 });
 
-                $('#exportCsvBtn').click(function () {
-                    event.preventDefault();
-                    const table = document.getElementById('saleOrderTable');
-                    const rows = Array.from(table.rows).map(row =>
-                        Array.from(row.cells).map(cell => cell.innerText));
-                    const csv = Papa.unparse(rows);
-                    const blob = new Blob([csv], { type: 'text/csv' });
-                    const link = document.createElement('a');
-                    link.href = URL.createObjectURL(blob);
-                    link.download = 'saleOrders.csv';
-                    link.click();
-                });
-
-                $('#exportPdfBtn').click(function () {
-                    event.preventDefault();
-                    const { jsPDF } = window.jspdf;
-                    const doc = new jsPDF();
-
-                    const table = document.getElementById('saleOrderTable');
-
-                    if (!table) {
-                        alert("Table not found!");
-                        return;
-                    }
-
-                    // Extract table headers
-                    const headers = Array.from(table.querySelectorAll("thead tr th")).map(th => th.innerText.trim());
-
-                    // Extract table body rows
-                    const bodyRows = Array.from(table.querySelectorAll("tbody tr")).map(row =>
-                        Array.from(row.cells).map(cell => cell.innerText.trim())
-                    );
-
-                    // Add Title
-                    doc.setFontSize(14);
-                    doc.text("Sale Order Report", 14, 15);
-
-                    // AutoTable configuration
-                    doc.autoTable({
-                        startY: 20,
-                        head: [headers],
-                        body: bodyRows,
-                        styles: {
-                            fontSize: 9,
-                            cellPadding: 3,
-                            overflow: 'linebreak',
-                        },
-                        headStyles: {
-                            fillColor: [0, 123, 255],
-                            textColor: 255,
-                            fontStyle: 'bold',
-                        },
-                        alternateRowStyles: {
-                            fillColor: [245, 245, 245],
-                        },
-                        theme: 'striped',
-                        margin: { top: 20 },
-                    });
-
-                    doc.save('saleOrders.pdf');
-                });
-
+                if (selected.length > 0) {
+                    $el.val(selected).trigger('change.select2');
+                }
             });
+
+            $('#due_date').on('change', function () {
+                $('.custom-date-range').toggle($(this).val() === 'custom');
+            });
+
+
+            $('#exportExcelBtn').click(function () {
+                event.preventDefault();
+                const table = document.getElementById('saleOrderTable');
+                const wb = XLSX.utils.table_to_book(table, { sheet: 'Sale Orders' });
+                XLSX.writeFile(wb, 'saleOrders.xlsx');
+            });
+
+            $('#exportCsvBtn').click(function () {
+                event.preventDefault();
+                const table = document.getElementById('saleOrderTable');
+                const rows = Array.from(table.rows).map(row =>
+                    Array.from(row.cells).map(cell => cell.innerText));
+                const csv = Papa.unparse(rows);
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'saleOrders.csv';
+                link.click();
+            });
+
+            $('#exportPdfBtn').click(function () {
+                event.preventDefault();
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                const table = document.getElementById('saleOrderTable');
+
+                if (!table) {
+                    alert("Table not found!");
+                    return;
+                }
+
+                // Extract table headers
+                const headers = Array.from(table.querySelectorAll("thead tr th")).map(th => th.innerText.trim());
+
+                // Extract table body rows
+                const bodyRows = Array.from(table.querySelectorAll("tbody tr")).map(row =>
+                    Array.from(row.cells).map(cell => cell.innerText.trim())
+                );
+
+                // Add Title
+                doc.setFontSize(14);
+                doc.text("Sale Order Report", 14, 15);
+
+                // AutoTable configuration
+                doc.autoTable({
+                    startY: 20,
+                    head: [headers],
+                    body: bodyRows,
+                    styles: {
+                        fontSize: 9,
+                        cellPadding: 3,
+                        overflow: 'linebreak',
+                    },
+                    headStyles: {
+                        fillColor: [0, 123, 255],
+                        textColor: 255,
+                        fontStyle: 'bold',
+                    },
+                    alternateRowStyles: {
+                        fillColor: [245, 245, 245],
+                    },
+                    theme: 'striped',
+                    margin: { top: 20 },
+                });
+
+                doc.save('saleOrders.pdf');
+            });
+
+        });
     </script>
 @endpush

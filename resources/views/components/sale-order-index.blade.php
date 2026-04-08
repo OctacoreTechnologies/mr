@@ -1,6 +1,7 @@
 @php
     $heads = [
         'SR.No',
+        'Quote Ref No',
         'Work Order No',
         'Customer',
         'Machine',
@@ -70,6 +71,9 @@
                 @foreach ($salesOrders as $key => $order)
                     <tr>
                         <td class="align-middle">{{ $key + 1 }}</td>
+                        <td class="align-middle font-weight-bold text">
+                            {{ $order->quotation->reference_no ?? 'N/A' }}
+                        </td>
 
                         <td class="align-middle font-weight-bold text-primary">
                             {{ $order->work_order_no ?? 'N/A' }}
