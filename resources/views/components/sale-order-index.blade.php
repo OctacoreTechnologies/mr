@@ -8,8 +8,7 @@
         'Application',
         'Order Date',
         'Delivery Date',
-        'Status',
-        'Payment',
+        'Payment Status',
     ];
 
     if ($advancePdf) {
@@ -99,11 +98,11 @@
                             {{ \Carbon\Carbon::parse($order->delivery_date)->format('d M Y') }}
                         </td>
 
-                        <td class="align-middle">
+                        {{-- <td class="align-middle">
                             <span class="badge badge-success px-3 py-2">
                                 {{ ucfirst($order->status) }}
                             </span>
-                        </td>
+                        </td> --}}
 
                         <td class="align-middle">
                             <span class="badge badge-{{ $order->payment_status == 'paid' ? 'success' : 'warning' }} px-3 py-2">

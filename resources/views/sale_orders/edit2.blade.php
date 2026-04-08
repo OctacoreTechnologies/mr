@@ -76,10 +76,10 @@
 
                 {{-- Status --}}
                 <div class="col-md-3 mb-3">
-                    <label for="status">Order Status</label>
-                    <select name="status" class="form-control">
-                        @foreach(['pending', 'processing', 'shipped', 'delivered', 'canceled'] as $status)
-                            <option value="{{ $status }}" {{ $saleOrder->status == $status ? 'selected' : '' }}>
+                    <label for="status">Payment Status</label>
+                    <select name="payment_status" class="form-control">
+                        @foreach(['unpaid', 'received', 'cancelled''] as $status)
+                            <option value="{{ $status }}" {{ $saleOrder->payment_status == $status ? 'selected' : '' }}>
                                 {{ ucfirst($status) }}
                             </option>
                         @endforeach

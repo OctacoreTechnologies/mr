@@ -76,11 +76,22 @@
                 </div> 
 
                 {{-- Status --}}
-                <div class="col-md-3 mb-3">
+                {{-- <div class="col-md-3 mb-3">
                     <label for="status">Order Status</label>
                     <select name="status" class="form-control">
                         @foreach(['pending', 'processing', 'shipped', 'delivered', 'canceled'] as $status)
                             <option value="{{ $status }}" {{ $saleOrder->status == $status ? 'selected' : '' }}>
+                                {{ ucfirst($status) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div> --}}
+
+                <div class="col-md-3 mb-3">
+                    <label for="status">Payment Status</label>
+                    <select name="payment_status" class="form-control">
+                        @foreach(['unpaid', 'received', 'canceled'] as $status)
+                            <option value="{{ $status }}" {{ $saleOrder->payment_status == $status ? 'selected' : '' }}>
                                 {{ ucfirst($status) }}
                             </option>
                         @endforeach
@@ -176,7 +187,7 @@
                     <x-adminlte-input label="Customer Po No." name="po_no" id="po_no" value="{{$saleOrder->po_no}}"
                         required />
                 </div>
-                  <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3">
                     <x-adminlte-input type="text" label="Payment  Condition" name="payment_term_condition"
                         value="{{ $saleOrder->payment_term_condition??'40% Advance & 60% Before Dispatch' }}" />
                 </div>
