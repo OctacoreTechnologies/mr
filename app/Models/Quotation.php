@@ -145,6 +145,10 @@ class Quotation extends Model implements Auditable
     return $this->belongsTo(Bearing::class, 'bearing_id');
   }
 
+  public function throatSize(){
+    return $this->belongsTo(ThroatSize::class, 'throat_size_id');
+  }
+
   public function bearinge2()
   {
     return $this->belongsTo(Bearing::class, 'bearing_2_id');

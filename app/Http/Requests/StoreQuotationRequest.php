@@ -75,6 +75,8 @@ class StoreQuotationRequest extends FormRequest
             'gear_box_2' => 'nullable',
             'drive_system_1' => 'nullable',
             'drive_system_2' => 'nullable',
+            'blade_moc' => 'nullable',
+            'throat_size' => 'nullable',
 
             'remark' => 'nullable',
             'followed_by' => 'required|exists:users,id',

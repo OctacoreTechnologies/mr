@@ -40,6 +40,7 @@ use App\Models\QuotationNotification;
 use App\Models\Reminder;
 use App\Models\RotaryAirLockValve;
 use App\Models\SaleOrder;
+use App\Models\ThroatSize;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
@@ -117,6 +118,7 @@ class QuotationController extends Controller
             'bearings' => Bearing::all(),
             'pneumatics' => Pneumatic::all(),
             'machines' => Machine::all(),
+            'throatSizes' => ThroatSize::where('model_id', $previewData['model_id'])->get(),
             'users' => User::all(),
             'makeMotors' => MakeMotor::all(),
             'noOfRotatingBlades' => Blade::where(['model_id' => $previewData['model_id'], 'type' => 'rotating_blades'])->get(),
@@ -156,6 +158,7 @@ class QuotationController extends Controller
             'pneumatic' => [Pneumatic::class, 'pneumatic'],
             'pneumatic_2' => [Pneumatic::class, 'pneumatic'],
             'blower' => [Blower::class, 'blower'],
+            'throat_size' => [ThroatSize::class, 'size'],
             'rotary_air_lock_valve' => [RotaryAirLockValve::class, 'rotary_air_lock_valve'],
             'feeding_hooper_capacity' => [FeedingHooperCapacity::class, 'feeding_hooper_capacity'],
 

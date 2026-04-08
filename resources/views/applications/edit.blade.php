@@ -221,6 +221,14 @@
                                 placeholder="Enter Material">
                         </div>
                     </div>
+                    <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Blade MOC</label>
+                                <input type="text" name="blade_moc" class="form-control"
+                                    value="{{ old('blade_moc', $product->blade_moc) }}"
+                                    placeholder="Enter Blade MOC">
+                            </div>
+                    </div>
 
                     {{-- Dropdowns --}}
                     {{-- ✅ Edit mein: $product->capacity->capacity se current value nikalo --}}
@@ -271,9 +279,14 @@
                             <label>No. of Fixed Blade</label>
                             <select class="form-control select2" name="no_of_fixes_blade">
                                 <option value="">-- Select --</option>
+                               @if($product->no_of_fixes_blade_id)
+                                    <option value="{{ $product->fixedBlade->no_of_blades }}" selected>
+                                        {{  $product->fixedBlade->no_of_blades }}
+                                    </option>
+                                @endif
                                 @foreach ($fixedBlades as $item)
                                     <option value="{{ $item->no_of_blades }}"
-                                       {{ old('no_of_fixes_blade', $product->no_of_fixes_blade_id) == $item->id ? 'selected' : '' }}>
+                                        {{ old('no_of_fixes_blade') == $item->id ? 'selected' : '' }}>
                                         {{ $item->no_of_blades }}
                                     </option>
                                 @endforeach
@@ -286,7 +299,7 @@
                             <select class="form-control select2" name="blower">
                                 <option value="">-- Select --</option>
                                 @foreach ($blowers as $item)
-                                    <option value="{{ $item->id }}"
+                                    <option value="{{ $item->blower }}"
                                         {{ old('blower_id', $product->blower_id) == $item->id ? 'selected' : '' }}>
                                         {{ $item->blower }}
                                     </option>
@@ -294,6 +307,22 @@
                             </select>
                         </div>
                     </div>
+
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Throat Size</label>
+                            <select class="form-control select2" name="throat_size">
+                                <option value="">-- Select --</option>
+                                @foreach ($throatSizes as $item)
+                                    <option value="{{ $item->size }}"
+                                        {{ old('throat_size', $product->throat_size_id) == $item->id ? 'selected' : '' }}>
+                                        {{ $item->size }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Rotary Air Lock Valve</label>
@@ -306,8 +335,8 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
-                    </div>
+                        </div>  
+                    </div> 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Feeding Hooper Capacity</label>

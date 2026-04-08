@@ -204,6 +204,13 @@
                                 value="{{ old('material') }}" placeholder="Enter Material">
                         </div>
                     </div>
+                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Blade MOC</label>
+                            <input type="text" name="blade_moc" class="form-control"
+                                value="{{ old('blade_moc') }}" placeholder="Enter Blade MOC">
+                        </div>
+                    </div>
 
                     {{-- Dropdowns --}}
                     <div class="col-md-6">
@@ -257,6 +264,20 @@
                                     <option value="{{ $item->id }}"
                                         {{ old('no_of_fixes_blade') == $item->id ? 'selected' : '' }}>
                                         {{ $item->no_of_blades }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Throat Size</label>
+                            <select class="form-control select2" name="throat_size">
+                                <option value="">-- Select --</option>
+                                @foreach ($throatSizes as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ old('throat_size') == $item->id ? 'selected' : '' }}>
+                                        {{ $item->size }}
                                     </option>
                                 @endforeach
                             </select>

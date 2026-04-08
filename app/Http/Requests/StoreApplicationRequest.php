@@ -50,6 +50,7 @@ class StoreApplicationRequest extends FormRequest
          'no_of_rotating_blade'=>'nullable',
          'no_of_fixes_blade'=>'nullable',
          'capacity'=>'nullable',
+         'throat_size'=>'nullable',
          'make_motor'=>'nullable',
          'make_motor_2'=>'nullable',
          'is_two_application'=>'nullable',
@@ -70,6 +71,7 @@ class StoreApplicationRequest extends FormRequest
          'gear_box_2' =>     'nullable',
          'drive_system_1' => 'nullable',
          'drive_system_2' => 'nullable',
+         'blade_moc'     => 'nullable',
 
         ];
     }

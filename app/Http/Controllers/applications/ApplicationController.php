@@ -23,6 +23,7 @@ use App\Models\Modele;
 use App\Models\MototRequirement;
 use App\Models\Pneumatic;
 use App\Models\RotaryAirLockValve;
+use App\Models\ThroatSize;
 
 class ApplicationController extends Controller
 {
@@ -140,6 +141,7 @@ class ApplicationController extends Controller
             'pneumatics'              => Pneumatic::all(),
             'driveSystems'            => DriveSystem::all(),
             'gearboxes'               => GearBox::all(),
+            'throatSizes'             => ThroatSize::all(), 
         ];
     }
 
@@ -161,6 +163,8 @@ class ApplicationController extends Controller
             'feeding_hooper_capacity' => [FeedingHooperCapacity::class, 'feeding_hooper_capacity'],
             'capacity'                => [Capacity::class,              'capacity'],
 
+            'throat_size'              => [ThroatSize::class,              'size'],
+
             // Machine
             'machine'                 => [Machine::class,               'name'],
 
@@ -173,9 +177,7 @@ class ApplicationController extends Controller
             'ac_frequency_drive'      => [AcFequencyDrive::class,        'ac_fequency_drive'],
             'bearing'                 => [Bearing::class,                'bearing'],
             'pneumatic'               => [Pneumatic::class,              'pneumatic'],
-            // 'drive_system'          => [DriveSystem::class,            'drive_system'],
-            // 'gear_box_1'              => [GearBox::class,                'gear_box'],
-
+         
             // Application 2 — Motor & Config
             'motor_requirement2'       => [MototRequirement::class,       'motor_requirement'],
             'make_motor_2'             => [MakeMotor::class,              'name'],
@@ -184,8 +186,7 @@ class ApplicationController extends Controller
             'ac_frequency_drive_2'     => [AcFequencyDrive::class,        'ac_fequency_drive'],
             'bearing_2'                => [Bearing::class,                'bearing'],
             'pneumatic_2'              => [Pneumatic::class,              'pneumatic'],
-            // 'drive_system_2'           => [DriveSystem::class,            'drive_system'],
-            // 'gear_box_2'               => [GearBox::class,                'gear_box'],
+           
         ];
     }
 
@@ -193,7 +194,7 @@ class ApplicationController extends Controller
     {
         return [
             'drive_system_1' => [DriveSystem::class, 'drive_system'],
-            'gear_box_1'     => [GearBox::class, 'gear_box'],
+            'gear_box_1'     => [GearBox::class, 'gear_box'], 
             'drive_system_2' => [DriveSystem::class, 'drive_system'],
             'gear_box_2'     => [GearBox::class, 'gear_box'],
         ];

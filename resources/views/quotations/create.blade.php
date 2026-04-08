@@ -287,6 +287,13 @@
             'key' => 'blower',
         ],
         [
+             'label' => 'Select Throat Size',
+            'name' => 'throat_size',
+            'name1' => 'throat_size_id',
+            'options' => $throatSizes,
+            'key' => 'size',
+        ],
+        [
             'label' => 'Select Rotary Air Lock Valve',
             'name' => 'rotary_air_lock_valve',
             'name1' => 'rotary_air_lock_valve_id',
@@ -577,6 +584,14 @@
                             <i class="fas fa-pencil-alt edit-icon"></i>
                         </div>
                     @endif
+                     @if (isset($product->blade_moc))
+                        <div class="col-md-6">
+                            <label>Blade MOC</label>
+                            <input name="blade_moc" value="{{ $product->blade_moc }}" class="form-control readonly-input"
+                                required />
+                            <i class="fas fa-pencil-alt edit-icon"></i>
+                        </div>
+                    @endif 
                     @if (isset($product->material))
                         <div class="col-md-6">
                             <label>Material</label>

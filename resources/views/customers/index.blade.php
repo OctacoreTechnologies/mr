@@ -59,7 +59,7 @@
                                         default => 'badge badge-secondary',
                                     };
                                 @endphp
-                                <span class="{{ $statusClass }}">{{ ucfirst($customer->customer_status) }}</span>
+                                <span class="{{ $statusClass }}">{{ strtoupper($customer->customer_status) }}</span>
                             </td>
                             <td>{{ $customer->user->name ??'N.A' }}</td>
                             <td> <a href="{{ route('followup.customers.show', $customer->id) }}" class="btn btn-sm btn-outline-success mx-1 shadow" title="Edit">

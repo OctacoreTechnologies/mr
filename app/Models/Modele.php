@@ -82,6 +82,11 @@ class Modele extends Model
         return $this->hasMany(FeedingHooperCapacity::class, 'model_id');
     }
 
+      public function throatSizes()
+    {
+        return $this->hasMany(ThroatSize::class, 'model_id');
+    }
+
     // sorting
     protected static function booted()
     {

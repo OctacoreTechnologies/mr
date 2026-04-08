@@ -1,6 +1,7 @@
 <x-header-footer-pdf />
 <x-client-pdf-template :quotation="$quotation" />
-<x-table-content :specification="'GRINDER'" :pageTechnicalData="4" :pageSpecification="5" :pageOffer="6" :pageTerms="7" />
+<x-table-content :specification="'GRINDER'" :pageTechnicalData="4" :pageSpecification="5" :pageOffer="6"
+    :pageTerms="7" />
 <!-- Technical Data -->
 <div class="page-break">
     <div class="techincal-data parameter-table techincal-specification">
@@ -8,12 +9,13 @@
         <!-- DESING PARAMETER OF HIGH-SPEED -->
         <div class="technical-data-sub-head"
             style="text-align:left; width: 95%; font-family: bolder; text-decoration: underline;">
-            {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3> --}}
+            {{-- <h3>1.1 <span style="text-decoration: underline;">DESIGN PARAMETER OF HIGH-SPEED MIXTURE</span></h3>
+            --}}
             <h3 style="text-decoration: underline;">1.1 <span>DESIGN PARAMETER OF
                     {{ strtoupper($quotation->machine->name) }}</span></h3>
         </div>
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 105%; line-height: 1.1;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Model</td>
                 <td style="padding: 8px;">:&nbsp;{{ $quotation->modele->name ?? '' }}</td>
@@ -24,7 +26,7 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Blade MOC</td>
-                <td style="padding: 8px;">:&nbsp; Made of Alloy of Steel</td>
+                <td style="padding: 8px;">:&nbsp;{{ $quotation->blade_moc ?? '' }}</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Number of Rotating Blades
@@ -33,15 +35,15 @@
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Number of Fix Blades</td>
-                <td style="padding: 8px;">:&nbsp;{{ $quotation->no_of_fixes_blades ?? 'N.A' }}Nos</td>
+                <td style="padding: 8px;">:&nbsp;{{ $quotation->no_of_fixes_blades ?? 'N.A' }} Nos</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;Throat Size</td>
-                <td style="padding: 8px;">:&nbsp;305 X 305</td>
+                <td style="padding: 8px;">:&nbsp;{{ isset($quotation->throatSize->size)? str_replace(',', ' X ', $quotation->throatSize->size): 'N.A' }}</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;Capacity</td>
-                <td style="padding: 8px;">:&nbsp;{{ $quotation->capacity ?? '' }}Kg/hr*(Depend on Material)</td>
+                <td style="padding: 8px;">:&nbsp;{{ $quotation->capacity ?? '' }} Kg/hr*(Depend on Material)</td>
             </tr>
         </table>
 
@@ -50,11 +52,12 @@
             <h3 style="text-decoration: underline;">1.2 <span style="">ELECTRICAL PARAMETERS</span></h3>
         </div>
         <table class="parameter-table"
-            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 90%; line-height: 1.1;">
+            style="border-collapse: collapse; font-size: 14px; position: relative; left: 40px; width: 105%; line-height: 1.1;">
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Requirement</td>
                 {{-- <td style="padding: 8px;">:&nbsp;15 KW/20 HP Single Speed Mixer – 1440 RPM</td> --}}
-                <td style="padding: 8px;  text-align: justify;">:&nbsp;{{ $quotation->motorRequirement->motor_requirement }}</td>
+                <td style="padding: 8px;  text-align: justify;">
+                    :&nbsp;{{ $quotation->motorRequirement->motor_requirement }}</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp; Motor Make</td>
@@ -85,7 +88,8 @@
 <div class="page-break" style="padding: 27px 20px 15px 10px;  font-size: 14px;  box-sizing: border-box;">
     <div class="specification">
 
-        <h2 style="margin-bottom: 10px; text-decoration: underline;font-size:24px;">2.&nbsp; TECHNICAL SPECIFICATION OF GRINDER</h2>
+        <h2 style="margin-bottom: 10px; text-decoration: underline;font-size:24px;">2.&nbsp; TECHNICAL SPECIFICATION OF
+            GRINDER</h2>
 
         <!-- 2.2 MIXING VESSEL LID -->
         <div style="font-size: 11pt; line-height: 1.5; padding-left: 10px; padding-top:40px">
