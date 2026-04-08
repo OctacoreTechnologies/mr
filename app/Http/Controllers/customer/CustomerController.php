@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\customer;
 
+use App\Exports\SampleCustomerImport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Imports\CustomersImport;
@@ -146,6 +147,10 @@ class CustomerController extends Controller
                 'customer' => $customer,
             ]
         );
+    }
+
+    public function getCustomerExcelSample(){
+         return Excel::download(new SampleCustomerImport(), 'customers_sample.xlsx');
     }
 }
       
