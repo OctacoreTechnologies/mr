@@ -71,7 +71,7 @@ class ApplicationController extends Controller
 
     public function edit(string $id)
     {
-        $product = Application::findOrFail($id);
+        $product = Application::with(['fixedBlade'])->findOrFail($id);
 
         return response()->view('applications.edit', array_merge(
             ['product' => $product],
