@@ -46,7 +46,7 @@
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;Rotary Air Lock Valve</td>
                 <td style="padding: 8px;">:&nbsp;{{ $quotation->rotaryAirLockValve->rotary_air_lock_valve ?? '' }} HP
-                    along with Dust Collector with Filter</td>
+                    along with Dust Collector with Filter Clothes</td>
             </tr>
             <tr>
                 <td style="padding: 8px; vertical-align: top; white-space: nowrap;">• &nbsp;Water Cooling</td>
