@@ -279,11 +279,11 @@
                             <label>No. of Fixed Blade</label>
                             <select class="form-control select2" name="no_of_fixes_blade">
                                 <option value="">-- Select --</option>
-                               @if(!empty($product->no_of_fixes_blade_id))
-                                    <option value="{{ $product->fixedBlade->no_of_blades }}" selected>
-                                        {{  $product->fixedBlade->no_of_blades }}
-                                    </option>
-                                @endif
+                                 @if(!empty($product->no_of_fixes_blade_id) && $product->fixedBlade)
+                                     <option value="{{ $product->fixedBlade->no_of_blades }}" selected>
+                                         {{ $product->fixedBlade->no_of_blades }}
+                                     </option>
+                                 @endif
                                 @foreach ($fixedBlades as $item)
                                     <option value="{{ $item->no_of_blades }}"
                                         {{ old('no_of_fixes_blade') == $item->id ? 'selected' : '' }}>
