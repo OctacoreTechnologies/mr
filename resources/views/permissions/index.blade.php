@@ -2,7 +2,7 @@
     $heads = [
         'ID',
         'Permission Name',
-        ['label' => 'Created Date', 'width' => 40],
+        'Created Date',
         ['label' => 'Actions', 'no-export' => true, 'width' => 10],
     ];
 @endphp
@@ -12,100 +12,234 @@
 @section('title', 'Permissions')
 
 @section('content_header')
-<h1 class="text-muted">Permissions</h1>
+<div class="crm-header">
+    <div>
+        <h1><i class="fas fa-lock"></i> Permissions</h1>
+        <p>Manage system access permissions</p>
+    </div>
+
+    {{-- Future Add Button --}}
+    {{-- 
+    <a href="#" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add Permission
+    </a> 
+    --}}
+</div>
 @stop
 
 @section('content')
 
 <x-alert-components class="mb-3" />
 
-{{-- Add Permission Button --}}
-{{-- <x-adminlte-button label="Add Permission" theme="success" icon="fas fa-plus" class="mb-3" data-toggle="modal"
-    data-target="#modalAddPermission" /> --}}
+<div class="crm-card">
 
-{{-- Add Permission Modal --}}
-{{-- <x-adminlte-modal id="modalAddPermission" title="Add Permission" size="lg" theme="success" icon="fas fa-key">
-    <form method="POST" action="{{ route('admin.permission.store') }}">
-        @csrf
-        <div class="row">
-            <div class="col-md-12">
-                <x-adminlte-input name="name" label="Permission Name" placeholder="Enter permission name"
-                    value="{{ old('name') }}" fgroup-class="mb-3" disable-feedback />
-
-                @error('name')
-                <p class="text-danger">{{ $message }}</p>
-                @enderror
-            </div>
+    {{-- CARD HEADER --}}
+    <div class="crm-card-header">
+        <div>
+            <h3><i class="fas fa-key"></i> Permission List</h3>
+            <span class="crm-count">{{ count($permissions) }} Total</span>
         </div>
-
-        <div class="text-right">
-            <x-adminlte-button label="Cancel" data-dismiss="modal" theme="outline-danger" class="mr-2" />
-            <x-adminlte-button label="Submit" type="submit" theme="primary" />
-        </div>
-    </form>
-</x-adminlte-modal> --}}
-
-{{-- Permissions Table --}}
-<div class="card shadow">
-    <div class="card-header bg-primary text-white">
-        <h3 class="card-title"><i class="fas fa-lock mr-1"></i> Permission List</h3>
     </div>
 
-    <div class="card-body">
-        <x-adminlte-datatable id="permissionsTable" :heads="$heads" striped hoverable bordered compressed>
+    {{-- TABLE --}}
+    <div class="crm-table-wrapper">
+
+        @if($permissions->isEmpty())
+            <div class="crm-empty">
+                <i class="fas fa-folder-open"></i>
+                <p>No permissions found</p>
+            </div>
+        @else
+
+        <x-adminlte-datatable
+            id="permissionsTable"
+            :heads="$heads"
+            striped
+            hoverable
+            responsive
+        >
+
             @foreach ($permissions as $permission)
                 <tr>
-                    <td>{{ $permission->id }}</td>
-                    <td>{{ $permission->name }}</td>
-                    <td>{{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}</td>
+
                     <td>
-                        {{-- <nobr>
+                        <span class="crm-id">#{{ $permission->id }}</span>
+                    </td>
+
+                    <td>
+                        <span class="crm-title">
+                            {{ $permission->name }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="crm-date">
+                            <i class="fas fa-calendar"></i>
+                            {{ \Carbon\Carbon::parse($permission->created_at)->format('d M Y') }}
+                        </span>
+                    </td>
+
+                    <td>
+                        <div class="crm-actions">
+
+                            {{-- OPTIONAL ACTIONS --}}
+                            {{-- 
                             <a href="{{ route('admin.permission.edit', $permission->id) }}"
-                                class="btn btn-xs btn-info mx-1 shadow" title="Edit">
+                               class="btn-action edit">
                                 <i class="fas fa-pen"></i>
                             </a>
 
-                            <form method="POST" action="{{ route('admin.permission.destroy', $permission->id) }}"
-                                class="d-inline-block"
-                                onsubmit="return confirm('Are you sure you want to delete this permission?');">
+                            <form method="POST"
+                                  action="{{ route('admin.permission.destroy', $permission->id) }}"
+                                  onsubmit="return confirm('Delete this permission?')">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-xs btn-danger mx-1 shadow" type="submit" title="Delete">
+
+                                <button class="btn-action delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </form>
-                        </nobr> --}}
+                            --}}
+
+                            <span class="text-muted small">No Actions</span>
+
+                        </div>
                     </td>
+
                 </tr>
             @endforeach
+
         </x-adminlte-datatable>
 
-        {{-- Pagination --}}
-        {{-- <div class="mt-3">
-            {{ $permissions->links() }}
-        </div>--}}
+        @endif
+
     </div>
+
 </div>
 
 @stop
 
 @push('css')
-    <style>
-        .card-title {
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
+<link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
+<style>
 
-        .modal-content {
-            border-radius: 0.5rem;
-        }
+/* ===== HEADER ===== */
+.crm-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
-        .btn-xs i {
-            font-size: 0.8rem;
-        }
-    </style>
-@endpush
+.crm-header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0;
+}
 
-@push('js')
-    {{-- Optional: Add JavaScript here if needed --}}
+.crm-header p {
+    margin: 0;
+    font-size: 13px;
+    color: #6c757d;
+}
+
+/* ===== CARD ===== */
+.crm-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+/* HEADER */
+.crm-card-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.crm-card-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.crm-count {
+    font-size: 12px;
+    color: #888;
+}
+
+/* TABLE */
+.crm-table-wrapper {
+    padding: 15px;
+}
+
+/* ID */
+.crm-id {
+    background: #f1f5f9;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+/* TITLE */
+.crm-title {
+    font-weight: 500;
+}
+
+/* DATE */
+.crm-date {
+    font-size: 13px;
+    color: #555;
+}
+
+.crm-date i {
+    margin-right: 5px;
+    color: #0d6efd;
+}
+
+/* ACTIONS */
+.crm-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-action {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.btn-action.edit {
+    background: #e3f2fd;
+    color: #0d6efd;
+}
+
+.btn-action.delete {
+    background: #fdecea;
+    color: #dc3545;
+}
+
+.btn-action:hover {
+    transform: scale(1.1);
+}
+
+/* EMPTY */
+.crm-empty {
+    text-align: center;
+    padding: 40px 0;
+    color: #999;
+}
+
+.crm-empty i {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+</style>
 @endpush
