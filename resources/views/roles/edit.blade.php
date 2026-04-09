@@ -3,105 +3,234 @@
 @section('title', 'Edit Role')
 
 @section('content_header')
-    <h1 class="text-muted">Edit Role</h1>
+<div class="crm-header">
+    <div>
+        <h1>Edit Role</h1>
+        <p class="crm-subtitle">Update role details and permissions</p>
+    </div>
+</div>
 @stop
 
 @section('content')
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title">
-                <i class="fas fa-user-shield mr-2"></i> Update Role & Permissions
-            </h3>
-        </div>
 
-        <div class="card-body">
-            <form action="{{ route('admin.role.update', $role->id) }}" method="POST">
-                @csrf
-                @method("PUT")
+<x-alert-components class="mb-3" />
 
-                {{-- Role Name --}}
-                <div class="row">
-                    <div class="col-md-6">
-                        <x-adminlte-input 
-                            name="name" 
-                            value="{{ old('name', $role->name) }}" 
-                            label="Role Name" 
-                            placeholder="Enter role name" 
-                            fgroup-class="mb-3" 
-                            disable-feedback 
-                            required 
-                        />
-                        @error('name')
-                            <p class="text-danger mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
+<form action="{{ route('admin.role.update', $role->id) }}" method="POST">
+@csrf
+@method('PUT')
 
-                {{-- Permissions --}}
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <label class="font-weight-bold mb-2">Assign Permissions:</label>
-                        <div class="row">
-                            @foreach ($permissions as $permission)
-                                <div class="col-md-3 mb-2">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" 
-                                            name="permission[]" 
-                                            value="{{ $permission->name }}"
-                                            id="permission-{{ $permission->id }}"
-                                            {{ $assignPermission->contains($permission->name) ? 'checked' : '' }}>
-                                            
-                                        <label class="form-check-label" for="permission-{{ $permission->id }}">
-                                            {{ ucfirst($permission->name) }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        @error('permission')
-                            <p class="text-danger mt-2">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
+<div class="crm-card">
 
-                {{-- Actions --}}
-                <div class="mt-4 d-flex justify-content-end">
-                    <a href="{{ route('admin.role.index') }}" class="btn btn-outline-secondary mr-2">
-                        <i class="fas fa-arrow-left"></i> Cancel
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Update Role
-                    </button>
-                </div>
-            </form>
+    {{-- ROLE INFO --}}
+    <div class="crm-section">
+        <h3 class="crm-section-title">Role Details</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="crm-label">Role Name</label>
+                <input type="text"
+                       name="name"
+                       value="{{ old('name', $role->name) }}"
+                       class="form-control crm-input"
+                       placeholder="Enter role name"
+                       required>
+
+                @error('name')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+            </div>
         </div>
     </div>
+
+    {{-- PERMISSIONS --}}
+    <div class="crm-section border-top">
+
+        <div class="crm-section-header">
+            <h3 class="crm-section-title">Permissions</h3>
+
+            <div class="crm-permission-actions">
+                <input type="text" id="permissionSearch"
+                       class="form-control form-control-sm"
+                       placeholder="Search permission...">
+
+                <button type="button" class="btn btn-sm btn-light" id="selectAll">
+                    Select All
+                </button>
+
+                <button type="button" class="btn btn-sm btn-light" id="unselectAll">
+                    Clear
+                </button>
+            </div>
+        </div>
+
+        <div class="crm-permission-grid" id="permissionList">
+
+            @foreach ($permissions as $permission)
+                <label class="crm-permission-item">
+
+                    <input type="checkbox"
+                           name="permission[]"
+                           value="{{ $permission->name }}"
+                           class="crm-checkbox"
+                           {{ in_array($permission->name, old('permission', $assignPermission->toArray())) ? 'checked' : '' }}>
+
+                    <span>{{ ucfirst($permission->name) }}</span>
+
+                </label>
+            @endforeach
+
+        </div>
+
+        @error('permission')
+            <small class="text-danger">{{ $message }}</small>
+        @enderror
+
+    </div>
+
+    {{-- ACTIONS --}}
+    <div class="crm-footer">
+        <a href="{{ route('admin.role.index') }}" class="btn btn-light">
+            Cancel
+        </a>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Update Role
+        </button>
+    </div>
+
+</div>
+
+</form>
+
 @stop
 
 @push('css')
+<link rel="stylesheet" href="{{ asset('style/common.css') }}">
 <style>
-    .card-title {
-        font-weight: 600;
-        font-size: 1.2rem;
-    }
+.crm-header {
+    margin-bottom: 15px;
+}
 
-    .form-check-input {
-        margin-top: 0.3rem;
-    }
+.crm-header h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
 
-    .form-check-label {
-        margin-left: 0.3rem;
-        font-weight: 500;
-    }
+.crm-subtitle {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* CARD */
+.crm-card {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #eef2f7;
+    overflow: hidden;
+}
+
+/* SECTION */
+.crm-section {
+    padding: 18px;
+}
+
+.crm-section-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* INPUT */
+.crm-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.crm-input {
+    height: 38px;
+    border-radius: 6px;
+}
+
+/* HEADER FLEX */
+.crm-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ACTIONS */
+.crm-permission-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* GRID */
+.crm-permission-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+
+/* ITEM */
+.crm-permission-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #f9fafb;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.15s ease;
+}
+
+.crm-permission-item:hover {
+    background: #eef2ff;
+    border-color: #6366f1;
+}
+
+/* CHECKBOX */
+.crm-checkbox {
+    accent-color: #4f46e5;
+}
+
+/* FOOTER */
+.crm-footer {
+    padding: 15px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
 </style>
 @endpush
 
 @push('js')
 <script>
-    $(document).ready(function () {
-        $('.js-example-basic-single').select2();
-        $(".selection").children('.select2-selection').addClass('h-100');
-        $('.select2').addClass('w-100');
+$(document).ready(function () {
+
+    // Select All
+    $('#selectAll').click(function () {
+        $('.crm-checkbox').prop('checked', true);
     });
+
+    // Unselect All
+    $('#unselectAll').click(function () {
+        $('.crm-checkbox').prop('checked', false);
+    });
+
+    // Search Filter
+    $('#permissionSearch').on('keyup', function () {
+        let value = $(this).val().toLowerCase();
+
+        $('#permissionList .crm-permission-item').filter(function () {
+            $(this).toggle($(this).text().toLowerCase().includes(value));
+        });
+    });
+
+});
 </script>
 @endpush

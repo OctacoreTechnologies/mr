@@ -3,147 +3,219 @@
 @section('title', 'Edit Mail')
 
 @section('content_header')
-    <h1 class="text-muted">Edit Mail</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0 text-primary font-weight-bold">
+        <i class="fas fa-edit mr-2"></i> Edit Mail
+    </h1>
+
+    <a href="{{ route('mail.index') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</div>
 @stop
 
 @section('content')
-    <div class="card shadow">
-        <div class="card-header bg-warning text-white">
-            <h3 class="card-title">
-                <i class="fas fa-edit mr-2"></i> Edit Mail Information
-            </h3>
+
+<x-alert-components class="mb-3" />
+
+<div class="container-fluid">
+    <div class="card shadow border-0">
+
+        <!-- HEADER -->
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-envelope-open mr-2"></i> Update Mail Details
+            </h5>
         </div>
 
-        <div class="card-body">
-            <form method="POST" action="{{ route('mail.update', $mail->id) }}">
-                @csrf
-                @method('PUT')
+        <form method="POST" action="{{ route('mail.update', $mail->id) }}">
+            @csrf
+            @method('PUT')
+
+            <div class="card-body">
 
                 <div class="row">
-                    {{-- Machine Dropdown --}}
+
+                    <!-- Machine -->
                     <div class="col-md-6">
-                        <x-adminlte-select
-                            name="machine_id"
-                            label="Machine"
-                            id="machine_id"
-                            fgroup-class="mb-3"
-                            data-placeholder="Select a machine"
-                            required
-                        >
-                            <option></option>
-                            @foreach($machines as $machine)
-                                <option value="{{ $machine->id }}" 
-                                    {{ (old('machine_id', $mail->machine_id) == $machine->id) ? 'selected' : '' }}>
-                                    {{ $machine->name }}
-                                </option>
-                            @endforeach
-                        </x-adminlte-select>
-                        @error('machine_id')
-                            <p class="text-danger mt-1">{{ $message }}</p>
-                        @enderror
+                        <div class="form-group">
+                            <label>Machine <span class="text-danger">*</span></label>
+
+                            <select name="machine_id" id="machine_id"
+                                class="form-control @error('machine_id') is-invalid @enderror" required>
+
+                                <option value="">Select Machine</option>
+
+                                @foreach($machines as $machine)
+                                    <option value="{{ $machine->id }}"
+                                        {{ old('machine_id', $mail->machine_id) == $machine->id ? 'selected' : '' }}>
+                                        {{ $machine->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @error('machine_id')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
 
-                    {{-- Application Dropdown --}}
+                    <!-- Application -->
                     <div class="col-md-6">
-                        <x-adminlte-select
-                            name="application_id"
-                            id="application_id"
-                            label="Application"
-                            fgroup-class="mb-3"
-                            data-placeholder="Select an application"
-                            required
-                        >
-                            <option></option>
-                            @foreach($applications as $application)
-                                <option value="{{ $application->id }}" 
-                                    {{ (old('application_id', $mail->application_id) == $application->id) ? 'selected' : '' }}>
-                                    {{ $application->name }}
-                                </option>
-                            @endforeach
-                        </x-adminlte-select>
-                        @error('application_id')
-                            <p class="text-danger mt-1">{{ $message }}</p>
-                        @enderror
+                        <div class="form-group">
+                            <label>Application <span class="text-danger">*</span></label>
+
+                            <select name="application_id" id="application_id"
+                                class="form-control @error('application_id') is-invalid @enderror" required>
+
+                                <option value="">Select Application</option>
+
+                                @foreach($applications as $application)
+                                    <option value="{{ $application->id }}"
+                                        {{ old('application_id', $mail->application_id) == $application->id ? 'selected' : '' }}>
+                                        {{ $application->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @error('application_id')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
 
-                    {{-- Subject --}}
+                    <!-- Subject -->
                     <div class="col-md-12">
-                        <x-adminlte-input 
-                            name="subject" 
-                            value="{{ old('subject', $mail->subject) }}" 
-                            label="Subject" 
-                            placeholder="Enter subject"
-                            fgroup-class="mb-3"
-                            disable-feedback
-                            required
-                        />
-                        @error('subject')
-                            <p class="text-danger mt-1">{{ $message }}</p>
-                        @enderror
+                        <div class="form-group">
+                            <label>Subject <span class="text-danger">*</span></label>
+
+                            <input type="text"
+                                name="subject"
+                                class="form-control @error('subject') is-invalid @enderror"
+                                value="{{ old('subject', $mail->subject) }}"
+                                placeholder="Enter subject"
+                                required>
+
+                            @error('subject')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
 
-                    {{-- Message --}}
+                    <!-- Message -->
                     <div class="col-md-12">
-                        <x-adminlte-textarea 
-                            name="messages" 
-                            label="Message" 
-                            rows=6 
-                            placeholder="Describe your issue or request"
-                            fgroup-class="mb-3"
-                            disable-feedback
-                            required
-                        >{{ old('messages', $mail->messages) }}</x-adminlte-textarea>
-                        @error('message')
-                            <p class="text-danger mt-1">{{ $message }}</p>
-                        @enderror
+                        <div class="form-group">
+                            <label>Message <span class="text-danger">*</span></label>
+
+                            <textarea name="messages"
+                                rows="6"
+                                class="form-control @error('messages') is-invalid @enderror"
+                                placeholder="Write your message..."
+                                required>{{ old('messages', $mail->messages) }}</textarea>
+
+                            @error('messages')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
+
                 </div>
 
-                {{-- Buttons --}}
-                <div class="d-flex justify-content-end mt-4">
-                    <a href="{{ route('mail.index') }}" class="btn btn-outline-secondary mr-2">
-                        <i class="fas fa-arrow-left"></i> Cancel
-                    </a>
-                    <button type="submit" class="btn btn-warning text-white">
-                        <i class="fas fa-save"></i> Update Mail
-                    </button>
-                </div>
-            </form>
-        </div>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="card-footer justify-content-between">
+                <a href="{{ route('mail.index') }}"
+                   class="btn btn-outline-secondary rounded-pill px-4">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary text-white rounded-pill px-4">
+                    <i class="fas fa-save mr-1"></i> Update Mail
+                </button>
+            </div>
+
+        </form>
     </div>
-@stop
+</div>
+
+@endsection
+
+
+@push('css')
+<link rel="stylesheet" href="{{ asset('style/common.css') }}">
+<style>
+
+/* Card */
+.card {
+    border-radius: 10px;
+}
+
+/* Header */
+.card-header {
+    border-radius: 10px 10px 0 0;
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 6px;
+}
+
+/* Focus */
+.form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 0 2px rgba(255,193,7,.2);
+}
+
+/* Buttons */
+.btn-warning {
+    border-radius: 20px;
+}
+
+.btn-outline-secondary {
+    border-radius: 20px;
+}
+label {
+    display: inline-block !important;
+}
+
+label span {
+    display: inline !important;
+    margin-left: 3px;
+}
+</style>
+@endpush
+
 
 @push('js')
-    <script>
-        $(document).ready(function () {
-            // Populate application dropdown based on selected machine
-            $('#machine_id').on('change', function () {
-                let machineId = $(this).val();
+<script>
+$(document).ready(function () {
 
-                if (machineId) {
-                    $.ajax({
-                        url: '/categories/options/applications/' + machineId,
-                        type: 'GET',
-                        success: function (applications) {
-                            $('#application_id').empty().append('<option value="">Select Application</option>');
+    $('#machine_id').on('change', function () {
+        let machineId = $(this).val();
 
-                            $.each(applications, function (key, application) {
-                                $('#application_id').append('<option value="' + application.id + '">' + application.name + '</option>');
-                            });
+        if (machineId) {
+            $.ajax({
+                url: '/categories/options/applications/' + machineId,
+                type: 'GET',
+                success: function (applications) {
 
-                            $('#application_id').trigger('change');
-                        }
+                    let appDropdown = $('#application_id');
+                    appDropdown.empty().append('<option value="">Select Application</option>');
+
+                    $.each(applications, function (key, application) {
+                        appDropdown.append('<option value="' + application.id + '">' + application.name + '</option>');
                     });
-                } else {
-                    $('#application_id').empty().append('<option value="">Select Application</option>');
+
+                    appDropdown.trigger('change');
                 }
             });
+        } else {
+            $('#application_id').empty().append('<option value="">Select Application</option>');
+        }
+    });
 
-            // Trigger change if edit page has machine selected
-            // let preselectedMachineId = $('#machine_id').val();
-            // if (preselectedMachineId) {
-            //     $('#machine_id').trigger('change');
-            // }
-        });
-    </script>
+});
+</script>
 @endpush

@@ -3,165 +3,264 @@
 @section('title', 'Edit User')
 
 @section('content_header')
-    <h1 class="text-muted">Edit User</h1>
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-user-edit"></i>
+        Edit User
+    </h1>
+</div>
 @stop
 
 @section('content')
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title"><i class="fas fa-user-edit mr-2"></i> Update User Information</h3>
-        </div>
 
-        <div class="card-body">
-            <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
-                @csrf
-                @method('PUT')
+<x-alert-components class="my-2" />
+
+<div class="crm-form-card">
+
+    {{-- HEADER --}}
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-id-card"></i> User Information
+        </h3>
+    </div>
+
+    <div class="card-body">
+        <form method="POST" action="{{ route('admin.users.update', $user->id) }}">
+            @csrf
+            @method('PUT')
+
+            {{-- BASIC INFO --}}
+            <div class="crm-section">
+                <h4 class="crm-section-title">
+                    <i class="fas fa-user"></i> Basic Details
+                </h4>
 
                 <div class="row">
-                    {{-- Name --}}
+
+                    {{-- NAME --}}
                     <div class="col-md-6">
-                        <x-adminlte-input 
-                            name="name" 
-                            label="Full Name" 
-                            value="{{ old('name', $user->name) }}" 
-                            placeholder="Enter full name" 
-                            fgroup-class="mb-3" 
-                            disable-feedback 
-                            required 
-                        />
+                        <label>Full Name</label>
+                        <div class="crm-input-group">
+                            <i class="fas fa-user"></i>
+                            <input type="text" name="name"
+                                   value="{{ old('name', $user->name) }}"
+                                   class="form-control"
+                                   placeholder="Enter full name" required>
+                        </div>
                         @error('name')
-                            <p class="text-danger mt-1">{{ $message }}</p>
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
-                    {{-- Email --}}
+                    {{-- EMAIL --}}
                     <div class="col-md-6">
-                        <x-adminlte-input 
-                            name="email" 
-                            label="Email Address" 
-                            value="{{ old('email', $user->email) }}" 
-                            placeholder="Enter email" 
-                            fgroup-class="mb-3" 
-                            disable-feedback 
-                            required 
-                        />
+                        <label>Email Address</label>
+                        <div class="crm-input-group">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" name="email"
+                                   value="{{ old('email', $user->email) }}"
+                                   class="form-control"
+                                   placeholder="Enter email" required>
+                        </div>
                         @error('email')
-                            <p class="text-danger mt-1">{{ $message }}</p>
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    {{-- CONTACT --}}
+                    <div class="col-md-6 mt-3">
+                        <label>Contact Number</label>
+                        <div class="crm-input-group">
+                            <i class="fas fa-phone"></i>
+                            <input type="text" name="contact_no"
+                                   value="{{ old('contact_no', $user->contact_no) }}"
+                                   class="form-control"
+                                   placeholder="Enter contact number" required>
+                        </div>
+                        @error('contact_no')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                </div>
+            </div>
+
+            {{-- ROLES --}}
+            <div class="crm-section mt-4">
+                <h4 class="crm-section-title">
+                    <i class="fas fa-user-shield"></i> Assign Roles
+                </h4>
+
+                <div class="crm-checkbox-grid">
+                    @foreach ($roles as $role)
+                        <label class="crm-checkbox-card">
+                            <input type="checkbox"
+                                   name="role[]"
+                                   value="{{ $role->name }}"
+                                   {{ $userRole->contains($role->id) ? 'checked' : '' }}>
+                            <span>{{ ucfirst($role->name) }}</span>
+                        </label>
+                    @endforeach
+                </div>
+            </div>
+
+            {{-- PASSWORD --}}
+            <div class="crm-section mt-4">
+                <h4 class="crm-section-title">
+                    <i class="fas fa-key"></i> Change Password
+                </h4>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label>New Password</label>
+                        <div class="crm-input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="password"
+                                   class="form-control"
+                                   placeholder="Enter new password">
+                        </div>
+                        @error('password')
+                            <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
 
                     <div class="col-md-6">
-                        <x-adminlte-input 
-                            name="contact_no" 
-                            value="{{ old('contact_no',$user->contact_no) }}" 
-                            label="Contact No" 
-                            placeholder="Enter Contact No" 
-                            fgroup-class="mb-3" 
-                            disable-feedback 
-                            required 
-                        />
-                        @error('contact_no')
-                            <p class="text-danger mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                {{-- User Roles --}}
-                <div class="row mt-2">
-                    <div class="col-md-12">
-                        <label class="font-weight-bold mb-2">Assign Roles:</label>
-                        <div class="row">
-                            @foreach ($roles as $role)
-                                <div class="col-md-3 mb-2">
-                                    <div class="form-check">
-                                        <input 
-                                            class="form-check-input" 
-                                            type="checkbox" 
-                                            name="role[]" 
-                                            id="role-{{ $role->id }}" 
-                                            value="{{ $role->name }}" 
-                                            {{ $userRole->contains($role->id) ? 'checked' : '' }}
-                                        >
-                                        <label class="form-check-label" for="role-{{ $role->id }}">
-                                            {{ ucfirst($role->name) }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
+                        <label>Confirm Password</label>
+                        <div class="crm-input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="password_confirmation"
+                                   class="form-control"
+                                   placeholder="Confirm password">
                         </div>
                     </div>
+
                 </div>
+            </div>
 
-                <!--  -->
-                   {{-- Change Password --}}
-<div class="row mt-4">
-    <div class="col-md-12">
-        <h5 class="text-primary mb-3"><i class="fas fa-key mr-1"></i> Change Password</h5>
-    </div>
+            {{-- ACTIONS --}}
+            <div class="crm-form-actions">
+                <a href="{{ route('admin.users.index') }}" class="btn crm-btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Cancel
+                </a>
 
-    {{-- New Password --}}
-    <div class="col-md-6">
-        <x-adminlte-input 
-            name="password" 
-            type="password" 
-            label="New Password" 
-            placeholder="Enter new password" 
-            fgroup-class="mb-3"
-            disable-feedback
-        />
-        @error('password')
-            <p class="text-danger mt-1">{{ $message }}</p>
-        @enderror
-    </div>
+                <button type="submit" class="btn crm-btn-primary">
+                    <i class="fas fa-save"></i> Update User
+                </button>
+            </div>
 
-    {{-- Confirm Password --}}
-    <div class="col-md-6">
-        <x-adminlte-input 
-            name="password_confirmation" 
-            type="password" 
-            label="Confirm Password" 
-            placeholder="Re-enter new password" 
-            fgroup-class="mb-3"
-            disable-feedback
-        />
+        </form>
     </div>
 </div>
 
-                <!--  -->
-
-                {{-- Form Actions --}}
-                <div class="mt-4 d-flex justify-content-end">
-                    <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary mr-2">
-                        <i class="fas fa-arrow-left"></i> Cancel
-                    </a>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Update User
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 @stop
 
 @push('css')
+<link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
 <style>
-    .form-check-label {
-        margin-left: 0.3rem;
-        font-weight: 500;
-    }
-    .card-title {
-        font-weight: 600;
-        font-size: 1.2rem;
-    }
-</style>
-@endpush
 
-@push('js')
-<script>
-    $(document).ready(function () {
-        $('.js-example-basic-single').select2();
-        $(".selection").children('.select2-selection').addClass('h-100');
-        $('.select2').addClass('w-100');
-    });
-</script>
+/* CARD */
+.crm-form-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.05);
+    overflow: hidden;
+}
+
+/* HEADER */
+.crm-form-card .card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.crm-form-card .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* SECTION */
+.crm-section-title {
+    font-size: .9rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* INPUT */
+.crm-input-group {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.crm-input-group i {
+    width: 38px;
+    text-align: center;
+    color: #9ca3af;
+}
+
+.crm-input-group input {
+    border: none;
+    flex: 1;
+    padding: 10px;
+}
+
+.crm-input-group:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+
+/* CHECKBOX GRID */
+.crm-checkbox-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.crm-checkbox-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: .8rem;
+}
+
+.crm-checkbox-card:hover {
+    border-color: #2563eb;
+    background: #f8fafc;
+}
+
+/* BUTTONS */
+.crm-form-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.crm-btn-primary {
+    background: #2563eb;
+    color: #fff;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
+.crm-btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
+</style>
 @endpush

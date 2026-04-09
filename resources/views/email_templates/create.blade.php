@@ -3,107 +3,196 @@
 @section('title', 'Create Mail')
 
 @section('content_header')
-    <h1 class="text-muted">Create New Mail</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0 text-primary font-weight-bold">
+        <i class="fas fa-envelope mr-2"></i> Create Email Template
+    </h1>
+    <a href="{{ route('email-template.index') }}" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</div>
 @stop
 
 @section('content')
-<div class="container-fluid pt-3">
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">Create Email Template</h3>
-            <div class="card-tools">
-                <a href="{{ route('email-template.index') }}" class="btn btn-sm btn-secondary">Back to List</a>
-            </div>
+
+<x-alert-components class="mb-3" />
+
+<div class="container-fluid">
+    <div class="card shadow border-0">
+
+        <!-- HEADER -->
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="fas fa-plus-circle mr-2"></i> New Template
+            </h5>
         </div>
+
         <form action="{{ route('email-template.store') }}" method="POST">
             @csrf
+
             <div class="card-body">
-                {{-- Template Name --}}
-                <div class="form-group">
-                    <label for="name">Template Name <span class="text-danger">*</span></label>
-                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror"
-                        value="{{ old('name') }}" placeholder="Enter template name">
-                    @error('name')
-                        <span class="invalid-feedback">{{ $message }}</span>
-                    @enderror
+
+                <div class="row">
+
+                    <!-- Template Name -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Template Name <span class="text-danger">*</span></label>
+                            <input type="text"
+                                name="name"
+                                class="form-control @error('name') is-invalid @enderror"
+                                value="{{ old('name') }}"
+                                placeholder="Enter template name">
+
+                            @error('name')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select name="status" class="form-control">
+                                <option value="active" {{ old('status')=='active' ? 'selected':'' }}>Active</option>
+                                <option value="inactive" {{ old('status')=='inactive' ? 'selected':'' }}>Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
 
-                {{-- Subject --}}
+                <!-- Subject -->
                 <div class="form-group">
-                    <label for="subject">Subject <span class="text-danger">*</span></label>
-                    <input type="text" name="subject" id="subject" class="form-control @error('subject') is-invalid @enderror"
-                        value="{{ old('subject') }}" placeholder="Enter email subject">
+                    <label>Subject <span class="text-danger">*</span></label>
+                    <input type="text"
+                        name="subject"
+                        class="form-control @error('subject') is-invalid @enderror"
+                        value="{{ old('subject') }}"
+                        placeholder="Enter email subject">
+
                     @error('subject')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
 
-                {{-- Status --}}
+                <!-- Body -->
                 <div class="form-group">
-                    <label for="status">Status</label>
-                    <select name="status" id="status" class="form-control">
-                        <option value="active" {{ old('status')=='active' ? 'selected' : '' }}>Active</option>
-                        <option value="inactive" {{ old('status')=='inactive' ? 'selected' : '' }}>Inactive</option>
-                    </select>
-                </div>
+                    <label>Body <span class="text-danger">*</span></label>
 
-                {{-- Body --}}
-                <div class="form-group">
-                    <label for="body">Body <span class="text-danger">*</span></label>
-                    <textarea name="body" id="body-editor" class="form-control @error('body') is-invalid @enderror"
-                        placeholder="Enter email body">{{ old('body') }}</textarea>
+                    <textarea name="body"
+                        id="body-editor"
+                        class="form-control @error('body') is-invalid @enderror">
+                        {{ old('body') }}
+                    </textarea>
+
                     @error('body')
                         <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
-                   <small class="form-text text-muted">
-                             You can use placeholders like 
-                             <code>@{{name}}</code>, 
-                             <code>@{{email}}</code>, etc.
-                   </small>
 
-                </div>
-
-                {{-- Variables --}}
-                <div class="form-group">
-                    <label for="variables">Variables (JSON format)</label>
-                    <textarea name="variables" id="variables" class="form-control" placeholder='["name","email"]'>{{ old('variables') }}</textarea>
-                    <small class="form-text text-muted">
-                        Optional: Enter placeholders in JSON array format.
+                    <small class="form-text text-muted mt-2">
+                        Use placeholders like:
+                        <code>@{{name}}</code>,
+                        <code>@{{email}}</code>,
+                        <code>@{{company}}</code>
                     </small>
                 </div>
+
+                <!-- Variables -->
+                <div class="form-group">
+                    <label>Variables (Optional JSON)</label>
+                    <textarea name="variables"
+                        class="form-control"
+                        placeholder='["name","email","company"]'>{{ old('variables') }}</textarea>
+
+                    <small class="form-text text-muted">
+                        Example: ["name","email"]
+                    </small>
+                </div>
+
             </div>
 
-            <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Create Template</button>
-                <a href="{{ route('email-templates.index') }}" class="btn btn-secondary">Cancel</a>
+            <!-- FOOTER -->
+            <div class="card-footer justify-content-between">
+                <button type="submit"
+                        class="btn btn-primary rounded-pill ">
+                    <i class="fas fa-save mr-1"></i> Create Template
+                </button>
+                <a href="{{ route('email-template.index') }}"
+                   class="btn btn-outline-secondary rounded-pill">
+                    Cancel
+                </a>
             </div>
+
         </form>
     </div>
 </div>
 
 @endsection
 
-@push('css')
 
+@push('css')
+<link rel="stylesheet"  href="{{ asset('style/common.css') }}">
+<style>
+
+/* Card */
+.card {
+    border-radius: 10px;
+}
+
+/* Header */
+.card-header {
+    border-radius: 10px 10px 0 0;
+}
+
+/* Inputs */
+.form-control {
+    border-radius: 6px;
+}
+
+/* Focus */
+.form-control:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37,99,235,.15);
+}
+
+/* Buttons */
+.btn-primary {
+    border-radius: 20px;
+}
+
+.btn-outline-secondary {
+    border-radius: 20px;
+}
+label {
+    display: inline-block !important;
+}
+
+label span {
+    display: inline !important;
+    margin-left: 3px;
+}
+
+</style>
 @endpush
+
 
 @push('js')
 <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
 
 <script>
-    CKEDITOR.replace('body-editor', {
-        height: 400,
-        removeButtons: 'Subscript,Superscript,Anchor',
-        toolbarGroups: [
-            { name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-            { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-            { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align' ] },
-            { name: 'styles' },
-            { name: 'insert' },
-            { name: 'colors' },
-            { name: 'tools' },
-            { name: 'document', groups: [ 'mode', 'document', 'doctools' ] }
-        ]
-    });
+let editor = CKEDITOR.replace('body-editor', {
+    height: 350,
+    removeButtons: 'Subscript,Superscript,Anchor',
+});
+
+// ✅ IMPORTANT: old body fix
+window.onload = function () {
+    let oldBody = document.getElementById('body-editor').value;
+    if (oldBody) {
+        editor.setData(oldBody);
+    }
+};
 </script>
 @endpush
