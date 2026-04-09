@@ -51,30 +51,37 @@
                             <td>
                                 <nobr>
                                     <!-- Edit Button -->
+                                @can('edit application')
                                     <a href="{{ route('applications.edit', $product->id) }}"
                                        class="btn btn-sm btn-outline-primary mx-1 shadow-sm"
                                        title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                @endcan
 
                                     <!-- Delete Button -->
-                                    <form action="{{ route('applications.destroy', $product->id) }}"
-                                          method="POST"
-                                          class="d-inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-danger mx-1 shadow-sm delete-product"
-                                                title="Delete">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
+                                    @can('delete application')
+
+                                      <form action="{{ route('applications.destroy', $product->id) }}"
+                                            method="POST"
+                                            class="d-inline-block">
+                                          @csrf
+                                          @method('DELETE')
+                                          <button class="btn btn-sm btn-outline-danger mx-1 shadow-sm delete-product"
+                                                  title="Delete">
+                                              <i class="fas fa-trash-alt"></i>
+                                          </button>
+                                      </form>
+                                    @endcan
 
                                     <!-- View Details Button -->
-                                    <a href="{{ route('applications.show', $product->id) }}"
+                                    @can('show application')
+                                     <a href="{{ route('applications.show', $product->id) }}"
                                        class="btn btn-sm btn-outline-teal mx-1 shadow-sm"
                                        title="Details">
                                         <i class="fas fa-eye"></i>
-                                    </a>
+                                     </a>
+                                    @endcan
                                 </nobr>
                             </td>
                         </tr>

@@ -105,7 +105,6 @@
 @stop
 
 @push('css')
-<link rel="stylesheet" href="{{ asset('style/common.css') }}">
 <style>
 .crm-header {
     margin-bottom: 15px;
@@ -209,28 +208,25 @@
 @endpush
 
 @push('js')
-<script>
-$(document).ready(function () {
+    <script>
+        $(document).ready(function () {
+                $('#selectAll').click(function () {
+                    $('.crm-checkbox').prop('checked', true);
+                });
 
-    // Select All
-    $('#selectAll').click(function () {
-        $('.crm-checkbox').prop('checked', true);
-    });
+                // Unselect All
+                $('#unselectAll').click(function () {
+                    $('.crm-checkbox').prop('checked', false);
+                });
 
-    // Unselect All
-    $('#unselectAll').click(function () {
-        $('.crm-checkbox').prop('checked', false);
-    });
+                // Search Filter
+                $('#permissionSearch').on('keyup', function () {
+                    let value = $(this).val().toLowerCase();
 
-    // Search Filter
-    $('#permissionSearch').on('keyup', function () {
-        let value = $(this).val().toLowerCase();
-
-        $('#permissionList .crm-permission-item').filter(function () {
-            $(this).toggle($(this).text().toLowerCase().includes(value));
-        });
-    });
-
-});
-</script>
+                    $('#permissionList .crm-permission-item').filter(function () {
+                        $(this).toggle($(this).text().toLowerCase().includes(value));
+                    });
+                });
+            });
+    </script>
 @endpush

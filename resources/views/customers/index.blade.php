@@ -64,28 +64,35 @@
                                 <span class="{{ $statusClass }}">{{ strtoupper($customer->customer_status) }}</span>
                             </td>
                             <td>{{ $customer->user->name ?? 'N.A' }}</td>
-                            <td> <a href="{{ route('followup.customers.show', $customer->id) }}"
+                             <td> 
+                              @can('customer followup track')
+                                <a href="{{ route('followup.customers.show', $customer->id) }}"
                                     class="btn btn-sm btn-outline-success mx-1 shadow" title="Edit">
                                     Track
                                 </a>
-                            </td>
-                            <td>
-                                <a href="{{ route('followup.edit', $customer->id) }}"
-                                    class="btn btn-sm btn-outline-info shadow-sm btn-round" target="_blank"
-                                    title="Add Follow-Up">
-                                    <i class="fas fa-phone-alt"></i> Follow Up
-                                </a>
-                            </td>
+                              @endcan
+                             </td>
+                             <td>
+                                @can('customer-followup')
+                                 <a href="{{ route('followup.edit', $customer->id) }}"
+                                     class="btn btn-sm btn-outline-info shadow-sm btn-round" target="_blank"
+                                     title="Add Follow-Up">
+                                     <i class="fas fa-phone-alt"></i> Follow Up
+                                 </a>
+                                @endcan
+                             </td>
                             <td class="text-center">
                                 <nobr>
                                     <!-- Edit Button -->
+                                  @can('edit customer')
                                     <a href="{{ route('customer.edit', $customer->id) }}"
                                         class="btn btn-sm btn-outline-warning mx-1 shadow" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
+                                    @endcan
                                     <!-- Delete Button -->
-                                    <form action="{{ route('customer.destroy', $customer->id) }}" method="POST"
+                                    @can('delete customer')
+                                     <form action="{{ route('customer.destroy', $customer->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
                                         @method("DELETE")
@@ -93,12 +100,16 @@
                                             title="Delete">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
-                                    </form>
+                                     </form>
+                                    @endcan
 
                                     <!-- View Details Button -->
-                                    <a href="{{ route('customer.show', $customer->id) }}"
+                                    @can('show customer')
+                                     <a href="{{ route('customer.show', $customer->id) }}"
                                         class="btn btn-sm btn-outline-teal mx-1 shadow" title="Details">
                                         <i class="fas fa-eye"></i>
+                                     </a>
+                                    @endcan
                                     </a>
                                 </nobr>
                             </td>

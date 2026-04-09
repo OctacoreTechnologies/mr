@@ -112,21 +112,26 @@
 
                         @if ($advancePdf)
                         <td class="align-middle text-center">
+                           @can('view advance payment pdf')
                             <a href="{{ route('sale-order.advance-pdf', $order->id) }}"
                                class="btn btn-outline-primary btn-sm rounded-pill"
                                target="_blank">
                                 <i class="fas fa-file-pdf"></i>
                             </a>
+                            @endcan
                         </td>
                         @endif
 
                         @if ($oalPdf)
                         <td class="align-middle text-center">
+
+                            @can('view oal pdf')
                             <a href="{{ route('orderaceptance.pdf',$order->id) }}"
                                class="btn btn-outline-primary btn-sm rounded-pill"
                                target="_blank">
                                 <i class="fas fa-file-pdf"></i>
                             </a>
+                            @endcan
                         </td>
                         @endif
 
@@ -139,16 +144,20 @@
                                 </button>
 
                                 <div class="dropdown-menu dropdown-menu-right shadow">
-                                    <a class="dropdown-item" href="{{ route($showView, $order->id) }}">
+                                    @can('show sale order')
+                                     <a class="dropdown-item" href="{{ route($showView, $order->id) }}">
                                         <i class="fas fa-eye text-info mr-2"></i> View
-                                    </a>
-
-                                    <a class="dropdown-item" href="{{ route($editView, $order->id) }}">
-                                        <i class="fas fa-edit text-primary mr-2"></i> Edit
-                                    </a>
+                                     </a>
+                                    @endcan
+                                    @can('edit sale order')
+                                
+                                     <a class="dropdown-item" href="{{ route($editView, $order->id) }}">
+                                         <i class="fas fa-edit text-primary mr-2"></i> Edit
+                                     </a>
+                                    @endcan
 
                                     <div class="dropdown-divider"></div>
-
+                                   @can('delete sale order')
                                     <form action="{{ route('sale-order.destroy', $order->id) }}"
                                           method="POST"
                                           onsubmit="return confirm('Are you sure to delete this  order?');">
@@ -158,6 +167,7 @@
                                             <i class="fas fa-trash-alt mr-2"></i> Delete
                                         </button>
                                     </form>
+                                    @endcan
                                 </div>
                             </div>
                         </td>

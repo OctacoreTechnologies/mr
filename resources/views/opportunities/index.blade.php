@@ -21,9 +21,11 @@
         <i class="fas fa-briefcase"></i>
         Opportunity List
     </h1>
-    <a href="{{ route('opportunity.create') }}" class="btn btn-success">
+    @can('create opportunity')
+     <a href="{{ route('opportunity.create') }}" class="btn btn-success">
         <i class="fas fa-plus"></i> Create Opportunity
-    </a>
+     </a>
+    @endcan
 </div>
 @stop
 
@@ -108,32 +110,36 @@
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
 
-                                    {{-- Edit --}}
-                                    <a href="{{ route('opportunity.edit', $opportunity->id) }}"
+                                    @can('edit opportunity')
+                                     <a href="{{ route('opportunity.edit', $opportunity->id) }}"
                                         class="btn btn-default text-primary"
                                         title="Edit">
                                         <i class="fas fa-pen"></i>
-                                    </a>
+                                     </a>
+                                    @endcan
 
                                     {{-- Delete --}}
-                                    <form action="{{ route('opportunity.destroy', $opportunity->id) }}"
-                                        method="POST" class="d-inline-block"
-                                        onsubmit="return confirm('Are you sure you want to delete this opportunity?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            class="btn btn-default text-danger"
-                                            title="Delete">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                    @can('delete opportunity')
+                                       <form action="{{ route('opportunity.destroy', $opportunity->id) }}"
+                                           method="POST" class="d-inline-block"
+                                           onsubmit="return confirm('Are you sure you want to delete this opportunity?');">
+                                           @csrf
+                                           @method('DELETE')
+                                           <button type="submit"
+                                               class="btn btn-default text-danger"
+                                               title="Delete">
+                                               <i class="fas fa-trash"></i>
+                                           </button>
+                                       </form>
+                                    @endcan
 
-                                    {{-- View --}}
-                                    <a href="{{ route('opportunity.show', $opportunity->id) }}"
+                                    @can('show opportunity')
+                                     <a href="{{ route('opportunity.show', $opportunity->id) }}"
                                         class="btn btn-default text-teal"
                                         title="View Details">
                                         <i class="fas fa-eye"></i>
-                                    </a>
+                                     </a>
+                                    @endcan
 
                                 </div>
                             </td>

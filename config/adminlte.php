@@ -335,13 +335,16 @@ return [
         [
             'text' => 'Dashboard',
             'url'  => 'dashboard/index',
-            'icon' => 'fas fa-tachometer-alt'
+            'icon' => 'fas fa-tachometer-alt',
+            'can' => 'view dashboard',
         ],
 
         [
             'text' => 'Today',
             'url'  => 'reminder/today',
             'icon' => 'fas fa-calendar-day',
+            'can' => 'view reminders',
+
         ],
         // 
         // ['header' => 'account_settings'],
@@ -349,6 +352,7 @@ return [
             'text' => 'Lead',
             'url' => '/lead',
             'icon' => 'fas fa-fw fa-search-dollar',
+            'can' => 'view leads',
 
 
         ],
@@ -356,12 +360,14 @@ return [
             'text' => 'Opportunities',
             'url' => '/opportunity',
             'icon' => 'fas fa-fw fa-hand-holding-usd',
+            'can' => 'view opportunities',
 
         ],
         [
             'text' => 'Quotation',
             'url' => '/quotation',
             'icon' => 'fas fa-file-invoice-dollar',
+            'can' => 'view quotations',
         ],
         // [
         //     'text' => 'Product',
@@ -376,16 +382,19 @@ return [
                     'text' => 'Advance Payment',
                     'url' => '/sale-order/advance-payment/index',
                     'icon' => 'fas fa-money-check-alt',
+                    'can' => 'view advance payments',
                 ],
                 [
                     'text' => 'OAL',
                     'url' => '/sale-order/order-acceptance-letter/index',
                     'icon' => 'fas fa-file-contract',
+                    'can' => 'view oal',
                 ],
                 [
                     'text' => 'Index',
                     'url' => '/sale-order',
                     'icon' => 'fas fa-file-alt',
+                    'can' => 'view sale orders',
                 ],
             ],
         ],
@@ -394,42 +403,51 @@ return [
             'text' => 'Application',
             'url' => '/applications',
             'icon' => 'fas fa-database',
+            'can' => 'view applications',
         ],
         [
             'text' => 'Customer',
             'url' => '/customer',
             'icon' => 'fas fa-users',
+            'can' => 'view customers',
         ],
         [
             'text' => 'Categories',
             'url' => '/categories/machine-type',
             'icon' => 'fas fa-list',
+            'can' => 'categories management',
         ],
 
         // report dropdown
         [
             'text' => 'Reports',
             'icon' => 'fas fa-chart-bar', // 📊 Bar Chart icon (common for reports)
+            'can' => 'view reports',
             'submenu' => [
                 [
                     'text' => 'Lead Report',
                     'url' => '/report/leads',
                     'icon' => 'fas fa-file-alt',
+                    'can' => 'view lead report',
                 ],
                 [
                     'text' => 'Customer Report',
                     'url' => '/report/customers',
                     'icon' => 'fas fa-file-alt',
+                    'can' => 'view customer report',
                 ],
                 [
                     'text' => 'Quotation Report',
                     'url' => '/report/quotations',
                     'icon' => 'fas fa-file-alt',
+                    'can' => 'view quotation report',
                 ],
                 [
                     'text' => 'Sale Report',
                     'url' => '/report/sale-order',
                     'icon' => 'fas fa-file-alt',
+                    'can' => 'view sale report',
+
                 ],
             ],
         ],
@@ -437,36 +455,38 @@ return [
         [
             'text' => 'Terms & Email',
             'icon' => 'fas fa-fw fa-user-shield',
+            'can' => 'manage terms and email',
 
             'submenu' => [
                 [
                     'text' => 'Term & Condition',
                     'url' => '/term-conditions',
                     'icon' => 'fas fa-file-signature',
-                    //  'can'=>'view roles'
+                    'can' => 'view terms and conditions',
                 ],
                 [
                     'text' => 'Bank Detail',
                     'url' => '/bank/details',
                     'icon' => 'fas fa-university',
+                    'can' => 'view bank details',
                 ],
                 [
                     'text' => 'Email',
                     'url' => '/mail',
                     'icon' => 'fas fa-fw fa-envelope',
-                    //   'can'=>'view permissions'
+                    'can' => 'view emails',
                 ],
                 [
                     'text' => 'Email Send',
                     'url' => '/emails/send',
                     'icon' => 'fas fa-fw fa-envelope',
-                    //   'can'=>'view permissions'
+                    'can' => 'send emails',
                 ],
                 [
                     'text' => 'Email Template',
                     'url' => '/email-template',
                     'icon' => 'fas fa-fw fa-envelope',
-                    //   'can'=>'view permissions'
+                    'can' => 'view email templates',
                 ],
             ],
 
@@ -481,18 +501,19 @@ return [
                     'text' => 'Manage Roles',
                     'url' => 'admin/role',
                     'icon' => 'fas fa-fw fa-key',
-                    //  'can'=>'view roles'
+                    'can' => 'view roles',
                 ],
                 [
                     'text' => 'Manage Permission',
                     'url' => 'admin/permission',
                     'icon' => 'fas fa-fw fa-lock',
-                    //   'can'=>'view permissions'
+                    'can' => 'view permissions',
                 ],
                 [
                     'text' => 'Manage Users',
                     'url' => 'admin/users',
                     'icon' => 'fas fa-fw fa-users',
+                    'can' => 'view users',
                 ],
             ],
 

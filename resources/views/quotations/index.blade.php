@@ -24,9 +24,11 @@
         <i class="fas fa-file-invoice"></i>
         Quotation List
     </h1>
-    <a href="{{ route('quotation.previewForm') }}" class="btn btn-success">
-        <i class="fas fa-plus"></i> Create Quotation
-    </a>
+    @can('create quotation')
+     <a href="{{ route('quotation.previewForm') }}" class="btn btn-success">
+         <i class="fas fa-plus"></i> Create Quotation
+     </a>
+    @endcan
 </div>
 @stop
 
@@ -111,17 +113,21 @@
 
                         {{-- PDF --}}
                         <td>
-                            <a class="btn btn-default text-danger btn-group-sm"
+                            @can('pdf quotation')
+                             <a class="btn btn-default text-danger btn-group-sm"
                                 href="{{ route('quotation.pdf', $quotation->id) }}"
                                 target="_blank" title="View PDF"
                                 style="width:auto !important;padding:6px 10px !important;gap:5px;">
                                 <i class="fas fa-file-pdf"></i>
                                 <span style="font-size:.78rem;font-weight:600;">PDF</span>
-                            </a>
+                             </a>
+                            @endcan
                         </td>
 
                         {{-- Follow Up --}}
+
                         <td>
+                          @can('customer followups')
                             <a class="btn btn-default text-primary btn-group-sm"
                                 href="{{ route('followup.edit', $quotation->customer_id) }}?quotation_id={{ $quotation->id }}"
                                 title="Follow Up"
@@ -129,6 +135,7 @@
                                 <i class="fas fa-calendar-check"></i>
                                 <span style="font-size:.78rem;font-weight:600;">Follow Up</span>
                             </a>
+                           @endcan
                         </td>
 
                         {{-- Actions Dropdown --}}
@@ -141,13 +148,14 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right crm-dropdown-menu"
                                     aria-labelledby="actionsDropdown{{ $quotation->id }}">
-
+                                  @can('edit quotation')
                                     <a class="crm-dropdown-item" href="{{ route('quotation.edit', $quotation->id) }}">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
+                                  @endcan
 
                                     <div class="crm-dropdown-divider"></div>
-
+                                  @can('verify quotation')
                                     <button class="crm-dropdown-item crm-dropdown-item--success"
                                         data-toggle="modal" data-target="#modalMin"
                                         data-id="{{ $quotation->id }}"
@@ -156,7 +164,8 @@
                                         data-verified="{{ $quotation->is_verified ?? '' }}">
                                         <i class="fas fa-check-circle"></i> Verify
                                     </button>
-
+                                   @endcan
+                                  @can('update quotation status')
                                     <button class="crm-dropdown-item crm-dropdown-item--info"
                                         data-toggle="modal" data-target="#updateQuotationStatus"
                                         data-quotationId="{{ $quotation->id }}"
@@ -165,8 +174,9 @@
                                         data-status="{{ $quotation->status ?? 'N/A' }}">
                                         <i class="fas fa-sync-alt"></i> Update Status
                                     </button>
-
-                                    <button class="crm-dropdown-item crm-dropdown-item--info"
+                                  @endcan
+                                   @can('send emails')
+                                     <button class="crm-dropdown-item crm-dropdown-item--info"
                                         data-toggle="modal" data-target="#sendEmailModal"
                                         data-id="{{ $quotation->id }}"
                                         data-customer_name="{{ $quotation->customer->company_name }}"
@@ -175,19 +185,24 @@
                                         data-customer_id="{{ $quotation->customer_id }}"
                                         data-application_id="{{ $quotation->application_id }}">
                                         <i class="fas fa-envelope"></i> Send Email
-                                    </button>
-
+                                     </button>
+                                    @endcan
+                                  
+                                  @can('reorder quotation')
                                     <a class="crm-dropdown-item crm-dropdown-item--success"
                                         href="{{ route('quotation.reorder', $quotation->id) }}">
                                         <i class="fas fa-redo"></i> Reorder
                                     </a>
-
-                                    <button class="crm-dropdown-item"
+                                  @endcan
+                                   
+                                   @can('history quotation')
+                                     <button class="crm-dropdown-item"
                                         data-toggle="modal" data-target="#historyModal"
                                         data-id="{{ $quotation->id }}">
                                         <i class="fas fa-history"></i> History
-                                    </button>
-
+                                     </button>
+                                    @endcan
+                                  @can('delete quotation')
                                     <div class="crm-dropdown-divider"></div>
 
                                     <form action="{{ route('quotation.destroy', $quotation->id) }}" method="POST"
@@ -198,6 +213,7 @@
                                             <i class="fas fa-trash-alt"></i> Delete
                                         </button>
                                     </form>
+                                   @endcan
 
                                 </div>
                             </div>

@@ -1,105 +1,148 @@
-@php
-    $heads = [
-        'ID',
-        'Name',
-        ['label' => 'Created Date', 'width' => 40],
-        ['label' => 'Actions', 'no-export' => true, 'width' => 10],
-    ];
-@endphp
-
 @extends('layouts.app')
 
-@section('title', 'Clients')
+@section('title', 'Create Permission')
 
 @section('content_header')
-    <h1 class="text-muted">Clients</h1>
+<div class="crm-header">
+    <div>
+        <h1>Create Permission</h1>
+        <p class="crm-subtitle">Add a new permission</p>
+    </div>
+</div>
 @stop
 
 @section('content')
 
-    <x-alert-components class="my-3" />
+<x-alert-components />
 
-    {{-- Add Client Button --}}
-    <x-adminlte-button label="Add Client" theme="success" icon="fas fa-plus" class="mb-3" data-toggle="modal" data-target="#modalMin" />
+<form action="{{ route('admin.permission.store') }}" method="POST">
+@csrf
 
-    {{-- Add Client Modal --}}
-    <x-adminlte-modal id="modalMin" title="Add Client" size="lg" theme="success" icon="fas fa-user-plus">
-        <form method="POST" action="{{ route('permission.store') }}">
-            @csrf
-            <div class="row">
-                <div class="col-md-12">
-                    <x-adminlte-input name="name" label="Client Name" placeholder="Enter client name" value="{{ old('name') }}"
-                        fgroup-class="mb-3" disable-feedback />
+<div class="crm-card">
 
-                    @error('name')
-                        <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                </div>
-            </div>
+    {{-- PERMISSION INFO --}}
+    <div class="crm-section">
+        <h3 class="crm-section-title">Permission Details</h3>
 
-            <div class="text-right">
-                <x-adminlte-button label="Cancel" data-dismiss="modal" theme="outline-danger" class="mr-2" />
-                <x-adminlte-button label="Submit" type="submit" theme="primary" />
-            </div>
-        </form>
-    </x-adminlte-modal>
+        <div class="row">
+            <div class="col-md-6">
 
-    {{-- Clients Table --}}
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h3 class="card-title"><i class="fas fa-users mr-1"></i> Client List</h3>
-        </div>
+                <label class="crm-label">Permission Name</label>
 
-        <div class="card-body">
-            <x-adminlte-datatable id="clientsTable" :heads="$heads" striped hoverable bordered compressed>
-                @foreach ($clients as $client)
-                    <tr>
-                        <td>{{ $client->id }}</td>
-                        <td>{{ $client->name }}</td>
-                        <td>{{ \Carbon\Carbon::parse($client->created_at)->format('d M, Y') }}</td>
-                        <td>
-                            <nobr>
-                                <a href="{{ route('client.edit', $client->id) }}" class="btn btn-xs btn-info mx-1 shadow" title="Edit">
-                                    <i class="fa fa-pen"></i>
-                                </a>
+                <input type="text"
+                       name="name"
+                       value="{{ old('name') }}"
+                       class="form-control crm-input"
+                       placeholder="e.g. quotation_view"
+                       required>
 
-                                <form action="{{ route('client.destroy', $client->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-xs btn-danger mx-1 shadow" title="Delete">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </form>
+                @error('name')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
 
-                                <a href="{{ route('client.show', $client->id) }}" class="btn btn-xs btn-secondary mx-1 shadow" title="Details">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                            </nobr>
-                        </td>
-                    </tr>
-                @endforeach
-            </x-adminlte-datatable>
+                <small class="text-muted d-block mt-1">
+                    Use format: <strong>module_action</strong> (example: quotation_view)
+                </small>
 
-            {{-- Pagination --}}
-            <div class="mt-3">
-                <!-- {{ $clients->links() }} -->
             </div>
         </div>
     </div>
+
+    {{-- ACTIONS --}}
+    <div class="crm-footer">
+        <a href="{{ route('admin.permission.index') }}" class="btn btn-light">
+            Cancel
+        </a>
+
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Save Permission
+        </button>
+    </div>
+
+</div>
+
+</form>
+
 @stop
 
 @push('css')
 <style>
-    .card-title {
-        font-weight: 600;
-    }
 
-    .modal-content {
-        border-radius: 0.5rem;
-    }
+.crm-header {
+    margin-bottom: 15px;
+}
 
-    .btn-xs i {
-        font-size: 0.8rem;
-    }
+.crm-header h1 {
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.crm-subtitle {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* CARD */
+.crm-card {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #eef2f7;
+    overflow: hidden;
+}
+
+/* SECTION */
+.crm-section {
+    padding: 18px;
+}
+
+.crm-section-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* INPUT */
+.crm-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+.crm-input {
+    height: 38px;
+    border-radius: 6px;
+}
+
+/* FOOTER */
+.crm-footer {
+    padding: 15px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
 </style>
+@endpush
+@push('js')
+<script>
+
+$(document).ready(function () {
+
+    function generatePermission() {
+        let module = $('#module').val();
+        let action = $('#action').val();
+
+        if (module && action) {
+            $('#permission_name').val(module + '_' + action);
+        }
+    }
+
+    $('#module, #action').on('change', function () {
+        generatePermission();
+    });
+
+});
+
+</script>
 @endpush

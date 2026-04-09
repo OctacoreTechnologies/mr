@@ -21,10 +21,11 @@
         <i class="fas fa-users"></i>
         Leads
     </h1>
-
-    <a href="{{ route('lead.create') }}" class="btn btn-primary btn-sm">
+    @can('create lead')
+     <a href="{{ route('lead.create') }}" class="btn btn-primary btn-sm">
         <i class="fas fa-plus-circle"></i> Create Lead
-    </a>
+     </a>
+    @endcan
 </div>
 @stop
 
@@ -88,41 +89,47 @@
 
                             {{-- Follow Up --}}
                             <td>
+                            @can('edit customer-followup')
                                 <a href="{{ route('followup.edit', $lead->id) }}"
                                    class="btn btn-sm btn-outline-primary"
                                    target="_blank">
                                     <i class="fas fa-phone-alt"></i> Follow Up
                                 </a>
+                            @endcan
                             </td>
 
                             {{-- Actions --}}
                             <td>
                                 <nobr>
 
-                                    {{-- Edit --}}
-                                    <a href="{{ route('lead.edit', $lead->id) }}"
+                                   @can('edit lead')
+                                     <a href="{{ route('lead.edit', $lead->id) }}"
                                        class="btn btn-sm btn-outline-primary">
                                         <i class="fas fa-edit"></i>
-                                    </a>
-
+                                     </a>
+                                    @endcan
                                     {{-- Delete --}}
-                                    <form action="{{ route('customer.destroy', $lead->id) }}"
-                                          method="POST"
-                                          class="d-inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-danger delete-project"
-                                                data-url="{{ route('customer.destroy', $lead->id) }}"
-                                                onclick="return confirm('Are you sure you want to delete this lead?')">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
 
-                                    {{-- View --}}
-                                    <a href="{{ route('customer.show', $lead->id) }}"
-                                       class="btn btn-sm btn-outline-secondary">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
+                                    @can('delete lead')
+                                      <form action="{{ route('customer.destroy', $lead->id) }}"
+                                            method="POST"
+                                            class="d-inline-block">
+                                          @csrf
+                                          @method('DELETE')
+                                          <button class="btn btn-sm btn-outline-danger delete-project"
+                                                  data-url="{{ route('customer.destroy', $lead->id) }}"
+                                                  onclick="return confirm('Are you sure you want to delete this lead?')">
+                                              <i class="fas fa-trash-alt"></i>
+                                          </button>
+                                      </form>
+                                    @endcan
+
+                                   @can('show lead')
+                                       <a href="{{ route('customer.show', $lead->id) }}"
+                                          class="btn btn-sm btn-outline-secondary">
+                                           <i class="fas fa-eye"></i>
+                                       </a>
+                                    @endcan
 
                                 </nobr>
                             </td>
