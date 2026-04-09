@@ -2,160 +2,183 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class PermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Define permissions based on menu items
         $permissions = [
-            // Dashboard
-            ['name' => 'view dashboard', 'guard_name' => 'web'],
 
-            // Today/Reminders
-            ['name' => 'view reminders', 'guard_name' => 'web'],
+            // Basic Permissions (SQL me extra hai)
+            'admin',
+            'view',
+            'edit',
+            'delete',
+            'create',
+            'send mail',
+            'index',
+
+            // Dashboard & Reminder
+            'view dashboard',
+            'view reminders',
 
             // Lead
-            ['name' => 'view leads', 'guard_name' => 'web'],
-            ['name' => 'create lead', 'guard_name' => 'web'],
-            ['name' => 'edit lead', 'guard_name' => 'web'],
-            ['name' => 'delete lead', 'guard_name' => 'web'],
+            'view leads',
+            'create lead',
+            'edit lead',
+            'delete lead',
+            'show lead',
 
-            // Opportunities
-            ['name' => 'view opportunities', 'guard_name' => 'web'],
-            ['name' => 'create opportunity', 'guard_name' => 'web'],
-            ['name' => 'edit opportunity', 'guard_name' => 'web'],
-            ['name' => 'delete opportunity', 'guard_name' => 'web'],
+            // Opportunity
+            'view opportunities',
+            'create opportunity',
+            'edit opportunity',
+            'delete opportunity',
+            'show opportunity',
 
             // Quotation
-            ['name' => 'view quotations', 'guard_name' => 'web'],
-            ['name' => 'create quotation', 'guard_name' => 'web'],
-            ['name' => 'edit quotation', 'guard_name' => 'web'],
-            ['name' => 'delete quotation', 'guard_name' => 'web'],
+            'view quotations',
+            'create quotation',
+            'edit quotation',
+            'delete quotation',
+            'pdf quotation',
+            'verify quotation',
+            'update quotation status',
+            'reorder quotation',
+            'history quotation',
 
-            // Total Orders (Sales Order)
-            ['name' => 'view sale orders', 'guard_name' => 'web'],
-            ['name' => 'create sale order', 'guard_name' => 'web'],
-            ['name' => 'edit sale order', 'guard_name' => 'web'],
-            ['name' => 'delete sale order', 'guard_name' => 'web'],
+            // Sale Order
+            'view sale orders',
+            'create sale order',
+            'edit sale order',
+            'delete sale order',
 
             // Advance Payment
-            ['name' => 'view advance payments', 'guard_name' => 'web'],
-            ['name' => 'create advance payment', 'guard_name' => 'web'],
-            ['name' => 'edit advance payment', 'guard_name' => 'web'],
-            ['name' => 'delete advance payment', 'guard_name' => 'web'],
+            'view advance payments',
+            'create advance payment',
+            'edit advance payment',
+            'delete advance payment',
+            'view advance payment', // SQL me duplicate type naming
 
-            // Order Acceptance Letter (OAL)
-            ['name' => 'view oal', 'guard_name' => 'web'],
-            ['name' => 'create oal', 'guard_name' => 'web'],
-            ['name' => 'edit oal', 'guard_name' => 'web'],
-            ['name' => 'delete oal', 'guard_name' => 'web'],
+            // OAL
+            'view oal',
+            'create oal',
+            'edit oal',
+            'delete oal',
 
             // Application
-            ['name' => 'view applications', 'guard_name' => 'web'],
-            ['name' => 'create application', 'guard_name' => 'web'],
-            ['name' => 'edit application', 'guard_name' => 'web'],
-            ['name' => 'delete application', 'guard_name' => 'web'],
+            'view applications',
+            'create application',
+            'edit application',
+            'delete application',
 
             // Customer
-            ['name' => 'view customers', 'guard_name' => 'web'],
-            ['name' => 'create customer', 'guard_name' => 'web'],
-            ['name' => 'edit customer', 'guard_name' => 'web'],
-            ['name' => 'delete customer', 'guard_name' => 'web'],
+            'view customers',
+            'create customer',
+            'edit customer',
+            'delete customer',
+            'show customer',
 
-            // Categories
-            ['name' => 'view categories', 'guard_name' => 'web'],
-            ['name' => 'create category', 'guard_name' => 'web'],
-            ['name' => 'edit category', 'guard_name' => 'web'],
-            ['name' => 'delete category', 'guard_name' => 'web'],
+            // Followups
+            'customer followups',
+            'customer-followup',
+            'customer followup track',
+
+            // Category
+            'view categories',
+            'create category',
+            'edit category',
+            'delete category',
+            'categories management',
 
             // Reports
-            ['name' => 'view reports', 'guard_name' => 'web'],
-            ['name' => 'view lead reports', 'guard_name' => 'web'],
-            ['name' => 'view customer reports', 'guard_name' => 'web'],
-            ['name' => 'view quotation reports', 'guard_name' => 'web'],
-            ['name' => 'view sale reports', 'guard_name' => 'web'],
+            'view reports',
+            'view lead reports',
+            'view customer reports',
+            'view quotation reports',
+            'view sale reports',
 
-            // Terms & Email
-            ['name' => 'view terms conditions', 'guard_name' => 'web'],
-            ['name' => 'edit terms conditions', 'guard_name' => 'web'],
+            // SQL me alag naming bhi hai
+            'view lead report',
+            'view customer report',
+            'view quotation report',
+            'view sale report',
 
-            ['name' => 'view bank details', 'guard_name' => 'web'],
-            ['name' => 'create bank detail', 'guard_name' => 'web'],
-            ['name' => 'edit bank detail', 'guard_name' => 'web'],
-            ['name' => 'delete bank detail', 'guard_name' => 'web'],
+            // Terms
+            'view terms conditions',
+            'edit terms conditions',
 
-            ['name' => 'view mails', 'guard_name' => 'web'],
-            ['name' => 'create mail', 'guard_name' => 'web'],
-            ['name' => 'edit mail', 'guard_name' => 'web'],
-            ['name' => 'delete mail', 'guard_name' => 'web'],
+            // Bank
+            'view bank details',
+            'create bank detail',
+            'edit bank detail',
+            'delete bank detail',
 
-            ['name' => 'send emails', 'guard_name' => 'web'],
+            // Mail
+            'view mails',
+            'create mail',
+            'edit mail',
+            'delete mail',
+            'send emails',
 
-            ['name' => 'view email templates', 'guard_name' => 'web'],
-            ['name' => 'create email template', 'guard_name' => 'web'],
-            ['name' => 'edit email template', 'guard_name' => 'web'],
-            ['name' => 'delete email template', 'guard_name' => 'web'],
+            // Email Template
+            'view email templates',
+            'create email template',
+            'edit email template',
+            'delete email template',
 
-            // Roles & Permission
-            ['name' => 'view roles', 'guard_name' => 'web'],
-            ['name' => 'create role', 'guard_name' => 'web'],
-            ['name' => 'edit role', 'guard_name' => 'web'],
-            ['name' => 'delete role', 'guard_name' => 'web'],
+            // Roles
+            'view roles',
+            'create role',
+            'edit role',
+            'delete role',
 
-            ['name' => 'view permissions', 'guard_name' => 'web'],
-            ['name' => 'create permission', 'guard_name' => 'web'],
-            ['name' => 'edit permission', 'guard_name' => 'web'],
-            ['name' => 'delete permission', 'guard_name' => 'web'],
+            // Permissions
+            'view permissions',
+            'create permission',
+            'edit permission',
+            'delete permission',
 
-            ['name' => 'view users', 'guard_name' => 'web'],
-            ['name' => 'create user', 'guard_name' => 'web'],
-            ['name' => 'edit user', 'guard_name' => 'web'],
-            ['name' => 'delete user', 'guard_name' => 'web'],
+            // Users
+            'view users',
+            'create user',
+            'edit user',
+            'delete user',
         ];
 
-        // Create permissions
+        // Insert Permissions
         foreach ($permissions as $permission) {
             Permission::updateOrCreate(
-                ['name' => $permission['name'], 'guard_name' => $permission['guard_name']],
-                $permission
+                ['name' => $permission, 'guard_name' => 'web']
             );
         }
 
-        // Create roles
-        $adminRole = Role::updateOrCreate(['name' => 'Admin', 'guard_name' => 'web']);
-        $userRole = Role::updateOrCreate(['name' => 'User', 'guard_name' => 'web']);
-        $viewerRole = Role::updateOrCreate(['name' => 'Viewer', 'guard_name' => 'web']);
+        // Roles
+        $admin = Role::updateOrCreate(['name' => 'Admin']);
+        $user = Role::updateOrCreate(['name' => 'User']);
+        $viewer = Role::updateOrCreate(['name' => 'Viewer']);
 
-        // Get all permissions
         $allPermissions = Permission::all();
 
-        // Assign all permissions to Admin role
-        $adminRole->syncPermissions($allPermissions);
+        // Admin → all permissions
+        $admin->syncPermissions($allPermissions);
 
-        // Assign limited permissions to User role (can view, create, edit but not delete)
+        // User → no delete + no admin settings
         $userPermissions = $allPermissions->filter(function ($permission) {
             return !str_contains($permission->name, 'delete') &&
-                !str_contains($permission->name, 'permission') &&
-                !str_contains($permission->name, 'role') &&
-                !str_contains($permission->name, 'user');
+                   !str_contains($permission->name, 'role') &&
+                   !str_contains($permission->name, 'permission') &&
+                   !str_contains($permission->name, 'user');
         });
-        $userRole->syncPermissions($userPermissions);
+        $user->syncPermissions($userPermissions);
 
-        // Assign view-only permissions to Viewer role
+        // Viewer → only view
         $viewerPermissions = $allPermissions->filter(function ($permission) {
-            return str_contains($permission->name, 'view') &&
-                !str_contains($permission->name, 'permission') &&
-                !str_contains($permission->name, 'role') &&
-                !str_contains($permission->name, 'user');
+            return str_contains($permission->name, 'view');
         });
-        $viewerRole->syncPermissions($viewerPermissions);
+        $viewer->syncPermissions($viewerPermissions);
     }
 }
