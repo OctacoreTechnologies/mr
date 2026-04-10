@@ -31,7 +31,7 @@ class OpportunityRequest extends FormRequest
             'stage' => 'required', 
             'close_date' => 'nullable|date|after_or_equal:today',
             // 'sales_stage' => 'nullable|in:prospecting,negotiation,closing', 
-            'probability' => 'nullable|numeric|min:0|max:100', 
+            // 'probability' => 'nullable|numeric|min:0|max:100', 
             'account_name' => 'nullable|string|max:255',
             'expected_close_date'=>'nullable|date',
             // 'assigned_to' => 'nullable|exists:users,id', 
@@ -39,7 +39,7 @@ class OpportunityRequest extends FormRequest
             'notes' => 'nullable|string', 
             'remark1'=>'nullable',
             'remark2'=>'nullable',
-            'type'=>'nullable',
+            'type'=>'required|in:new_business,upsell,cross_sell,renewal',
         ];
     }
 }

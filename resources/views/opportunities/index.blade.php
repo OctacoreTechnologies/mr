@@ -70,10 +70,10 @@
                                 @php
                                     $stage = $opportunity->stage ?? null;
                                     $stageBadge = match($stage) {
-                                        'qualification' => 'crm-badge-qualification',
+                                        // 'qualification' => 'crm-badge-qualification',
                                         'proposal'      => 'crm-badge-proposal',
-                                        'negotiation'   => 'crm-badge-negotiation',
-                                        'closed_won'    => 'crm-badge-closed-won',
+                                        'quoted'   => 'crm-badge-negotiation',
+                                        'won'           => 'crm-badge-closed-won',
                                         'closed_lost'   => 'crm-badge-closed-lost',
                                         default         => '',
                                     };

@@ -53,7 +53,7 @@
                     </div>
 
                     {{-- Status --}}
-                    <div class="col-md-4 mb-3">
+                    {{-- <div class="col-md-4 mb-3">
                         <label for="status">Order Status</label>
                         <select name="status" class="form-control" required>
                             @if (old('status'))
@@ -65,16 +65,16 @@
                             <option value="delivered">Delivered</option>
                             <option value="canceled">Canceled</option>
                         </select>
-                    </div>
+                    </div> --}}
                     <div class="col-md-4 mb-3">
                         <label for="status">Payment Status</label>
                         <select name="payment_status" class="form-control" required>
                             @if (old('payment_status'))
                               <option value="{{ old('payment_status') }}" selected>{{ ucfirst(old('payment_status')) }}</option>
                             @endif
-                            <option value="paid">Paid</option>
-                            <option value="unpaid">Unpaid</option>
-                            <option value="half_paid">Half Paid</option>
+                            <option value="pending">Pending</option>
+                            <option value="received">Received</option>
+                            <option value="cancelled">Cancelled</option>
                         </select>
                     </div>
                     <div class="col-md-4 mb-3">

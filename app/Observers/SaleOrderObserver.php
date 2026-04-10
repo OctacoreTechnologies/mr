@@ -109,6 +109,6 @@ class SaleOrderObserver
             $saleOrder->work_order_no = SaleOrder::countWorkOrdersByWorkOrderNo('MR/M-AG-00/');
         }
 
-        $saleOrder->save(); // Update the saleOrder after setting work_order_no
+        $saleOrder->saveQuietly(); // Update the saleOrder after setting work_order_no
     }
 }

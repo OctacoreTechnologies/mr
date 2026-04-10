@@ -39,11 +39,14 @@
                 {{-- Stage --}}
                 <div class="col-md-6">
                     <x-adminlte-select name="stage" label="Stage" fgroup-class="mb-3">
-                        <option value="qualification" {{ old('stage', $opportunity->stage) == 'qualification' ? 'selected' : '' }}>Qualification</option>
+                        {{-- <option value="qualification" {{ old('stage', $opportunity->stage) == 'qualification' ? 'selected' : '' }}>Qualification</option>
                         <option value="proposal"      {{ old('stage', $opportunity->stage) == 'proposal'      ? 'selected' : '' }}>Proposal</option>
                         <option value="negotiation"   {{ old('stage', $opportunity->stage) == 'negotiation'   ? 'selected' : '' }}>Negotiation</option>
                         <option value="closed_won"    {{ old('stage', $opportunity->stage) == 'closed_won'    ? 'selected' : '' }}>Closed Won</option>
-                        <option value="closed_lost"   {{ old('stage', $opportunity->stage) == 'closed_lost'   ? 'selected' : '' }}>Closed Lost</option>
+                        <option value="closed_lost"   {{ old('stage', $opportunity->stage) == 'closed_lost'   ? 'selected' : '' }}>Closed Lost</option> --}}
+                        <option value="proposal"      {{ old('stage', $opportunity->stage) == 'proposal'      ? 'selected' : '' }}>Proposal</option>
+                        <option value="won"           {{ old('stage', $opportunity->stage) == 'won'   ? 'selected' : '' }}>Won</option>
+                        <option value="quoted"        {{ old('stage', $opportunity->stage) == 'quoted'    ? 'selected' : '' }}>Quoted</option>
                     </x-adminlte-select>
                     @error('stage') <p class="text-danger">{{ $message }}</p> @enderror
                 </div>
@@ -66,13 +69,13 @@
 
                 {{-- Opportunity Type --}}
                 <div class="col-md-6">
-                    <x-adminlte-select name="opportunity_type" label="Opportunity Type" fgroup-class="mb-3">
-                        <option value="new_business" {{ old('opportunity_type', $opportunity->opportunity_type) == 'new_business' ? 'selected' : '' }}>New Enquiry</option>
-                        <option value="upsell"       {{ old('opportunity_type', $opportunity->opportunity_type) == 'upsell'       ? 'selected' : '' }}>Upsell</option>
-                        <option value="cross_sell"   {{ old('opportunity_type', $opportunity->opportunity_type) == 'cross_sell'   ? 'selected' : '' }}>Cross Sell</option>
-                        <option value="renewal"      {{ old('opportunity_type', $opportunity->opportunity_type) == 'renewal'      ? 'selected' : '' }}>Renewal</option>
+                    <x-adminlte-select name="type" label="Opportunity Type" fgroup-class="mb-3">
+                        <option value="new_business" {{ old('type', $opportunity->type) == 'new_business' ? 'selected' : '' }}>New Enquiry</option>
+                        <option value="upsell"       {{ old('type', $opportunity->type) == 'upsell'       ? 'selected' : '' }}>Upsell</option>
+                        <option value="cross_sell"   {{ old('type', $opportunity->type) == 'cross_sell'   ? 'selected' : '' }}>Cross Sell</option>
+                        <option value="renewal"      {{ old('type', $opportunity->type) == 'renewal'      ? 'selected' : '' }}>Renewal</option>
                     </x-adminlte-select>
-                    @error('opportunity_type') <p class="text-danger">{{ $message }}</p> @enderror
+                    @error('type') <p class="text-danger">{{ $message }}</p> @enderror
                 </div>
 
                 {{-- Assigned To --}}

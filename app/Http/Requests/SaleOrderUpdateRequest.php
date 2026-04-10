@@ -29,6 +29,7 @@ class SaleOrderUpdateRequest extends FormRequest
             'delivery_date' => 'nullable|date',
             'status' => 'nullable|in:pending,processing,shipped,delivered,canceled',
             // 'payment_status' => 'nullable|in:paid,unpaid,half paid',
+            'payment_status' => 'nullable|in:pending,received,cancelled',
             'transporation_payment' => 'required',
             'total_amount' => 'required|numeric|min:0',
             'tax' => 'nullable|numeric|min:0',

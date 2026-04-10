@@ -59,11 +59,14 @@
                 {{-- Stage --}}
                 <div class="col-md-6">
                     <x-adminlte-select name="stage" label="Stage" fgroup-class="mb-3">
-                        <option value="qualification" {{ old('stage') == 'qualification' ? 'selected' : '' }}>Qualification</option>
+                        {{-- <option value="qualification" {{ old('stage') == 'qualification' ? 'selected' : '' }}>Qualification</option>
                         <option value="proposal"      {{ old('stage') == 'proposal'      ? 'selected' : '' }}>Proposal</option>
                         <option value="negotiation"   {{ old('stage') == 'negotiation'   ? 'selected' : '' }}>Negotiation</option>
                         <option value="closed_won"    {{ old('stage') == 'closed_won'    ? 'selected' : '' }}>Closed Won</option>
-                        <option value="closed_lost"   {{ old('stage') == 'closed_lost'   ? 'selected' : '' }}>Closed Lost</option>
+                        <option value="closed_lost"   {{ old('stage') == 'closed_lost'   ? 'selected' : '' }}>Closed Lost</option> --}}
+                        <option value="proposal"      {{ old('stage') == 'proposal'      ? 'selected' : '' }}>Proposal</option>
+                        <option value="won"   {{ old('stage') == 'won'   ? 'selected' : '' }}>Won</option>
+                        <option value="quoted"    {{ old('stage') == 'quoted'    ? 'selected' : '' }}>Quoted</option>
                     </x-adminlte-select>
                     @error('stage') <p class="text-danger">{{ $message }}</p> @enderror
                 </div>
