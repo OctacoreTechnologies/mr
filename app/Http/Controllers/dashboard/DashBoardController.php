@@ -11,11 +11,12 @@ use App\Models\SaleOrder;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashBoardController extends Controller
 {
 public function dashboard(){
-    dd(auth()->user()->getAllPermissions()->pluck('name'));
+    dd(Auth::user()->getAllPermissions()->pluck('name'));
     // Get the current year
     $currentYear = now()->year;
 
