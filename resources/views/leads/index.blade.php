@@ -21,7 +21,7 @@
         <i class="fas fa-users"></i>
         Leads
     </h1>
-    @can('create lead')
+    @can('lead_create')
      <a href="{{ route('lead.create') }}" class="btn btn-primary btn-sm">
         <i class="fas fa-plus-circle"></i> Create Lead
      </a>
@@ -89,7 +89,7 @@
 
                             {{-- Follow Up --}}
                             <td>
-                            @can('edit customer-followup')
+                            @can('followup_customer')
                                 <a href="{{ route('followup.edit', $lead->id) }}"
                                    class="btn btn-sm btn-outline-primary"
                                    target="_blank">
@@ -102,7 +102,7 @@
                             <td>
                                 <nobr>
 
-                                   @can('edit lead')
+                                   @can('lead_edit')
                                      <a href="{{ route('lead.edit', $lead->id) }}"
                                        class="btn btn-sm btn-outline-primary">
                                         <i class="fas fa-edit"></i>
@@ -110,7 +110,7 @@
                                     @endcan
                                     {{-- Delete --}}
 
-                                    @can('delete lead')
+                                    @can('lead_delete')
                                       <form action="{{ route('customer.destroy', $lead->id) }}"
                                             method="POST"
                                             class="d-inline-block">
@@ -124,7 +124,7 @@
                                       </form>
                                     @endcan
 
-                                   @can('show lead')
+                                   @can('lead_show')
                                        <a href="{{ route('customer.show', $lead->id) }}"
                                           class="btn btn-sm btn-outline-secondary">
                                            <i class="fas fa-eye"></i>

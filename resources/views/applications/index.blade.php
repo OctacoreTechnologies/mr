@@ -14,9 +14,11 @@
 @section('title', 'Products')
 
 @section('content_header')
+ @can('application_create')
     <a href="{{ route('applications.create') }}" class="btn btn-primary btn-md shadow-sm">
         <i class="fas fa-plus-circle"></i> Create Application
     </a>
+ @endcan
 @stop
 
 @section('content')
@@ -51,7 +53,7 @@
                             <td>
                                 <nobr>
                                     <!-- Edit Button -->
-                                @can('edit application')
+                                @can('application_edit')
                                     <a href="{{ route('applications.edit', $product->id) }}"
                                        class="btn btn-sm btn-outline-primary mx-1 shadow-sm"
                                        title="Edit">
@@ -60,7 +62,7 @@
                                 @endcan
 
                                     <!-- Delete Button -->
-                                    @can('delete application')
+                                    @can('application_delete')
 
                                       <form action="{{ route('applications.destroy', $product->id) }}"
                                             method="POST"

@@ -24,7 +24,7 @@
         <i class="fas fa-file-invoice"></i>
         Quotation List
     </h1>
-    @can('create quotation')
+    @can('quotation_create')
      <a href="{{ route('quotation.previewForm') }}" class="btn btn-success">
          <i class="fas fa-plus"></i> Create Quotation
      </a>
@@ -113,7 +113,7 @@
 
                         {{-- PDF --}}
                         <td>
-                            @can('pdf quotation')
+                            @can('quotation_pdf')
                              <a class="btn btn-default text-danger btn-group-sm"
                                 href="{{ route('quotation.pdf', $quotation->id) }}"
                                 target="_blank" title="View PDF"
@@ -127,7 +127,7 @@
                         {{-- Follow Up --}}
 
                         <td>
-                          @can('customer followups')
+                          @can('followup_customer')
                             <a class="btn btn-default text-primary btn-group-sm"
                                 href="{{ route('followup.edit', $quotation->customer_id) }}?quotation_id={{ $quotation->id }}"
                                 title="Follow Up"
@@ -148,14 +148,14 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right crm-dropdown-menu"
                                     aria-labelledby="actionsDropdown{{ $quotation->id }}">
-                                  @can('edit quotation')
+                                  @can('quotation_edit')
                                     <a class="crm-dropdown-item" href="{{ route('quotation.edit', $quotation->id) }}">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>
                                   @endcan
 
                                     <div class="crm-dropdown-divider"></div>
-                                  @can('verify quotation')
+                                  @can('quotation_verify')
                                     <button class="crm-dropdown-item crm-dropdown-item--success"
                                         data-toggle="modal" data-target="#modalMin"
                                         data-id="{{ $quotation->id }}"
@@ -165,7 +165,7 @@
                                         <i class="fas fa-check-circle"></i> Verify
                                     </button>
                                    @endcan
-                                  @can('update quotation status')
+                                  @can('quotation_status_update')
                                     <button class="crm-dropdown-item crm-dropdown-item--info"
                                         data-toggle="modal" data-target="#updateQuotationStatus"
                                         data-quotationId="{{ $quotation->id }}"
@@ -175,7 +175,7 @@
                                         <i class="fas fa-sync-alt"></i> Update Status
                                     </button>
                                   @endcan
-                                   @can('send emails')
+                                   @can('mail_send')
                                      <button class="crm-dropdown-item crm-dropdown-item--info"
                                         data-toggle="modal" data-target="#sendEmailModal"
                                         data-id="{{ $quotation->id }}"
@@ -188,21 +188,21 @@
                                      </button>
                                     @endcan
                                   
-                                  @can('reorder quotation')
+                                  @can('quotation_reorder')
                                     <a class="crm-dropdown-item crm-dropdown-item--success"
                                         href="{{ route('quotation.reorder', $quotation->id) }}">
                                         <i class="fas fa-redo"></i> Reorder
                                     </a>
                                   @endcan
                                    
-                                   @can('history quotation')
+                                   @can('quotation_history')
                                      <button class="crm-dropdown-item"
                                         data-toggle="modal" data-target="#historyModal"
                                         data-id="{{ $quotation->id }}">
                                         <i class="fas fa-history"></i> History
                                      </button>
                                     @endcan
-                                  @can('delete quotation')
+                                  @can('quotation_delete')
                                     <div class="crm-dropdown-divider"></div>
 
                                     <form action="{{ route('quotation.destroy', $quotation->id) }}" method="POST"

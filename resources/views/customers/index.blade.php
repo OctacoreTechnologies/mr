@@ -22,11 +22,15 @@
         Customers
     </h1>
     <div>
-        <a href="{{ route('customer.create') }}" class="btn btn-primary btn-md"><i class="fas fa-plus-circle"></i> Add
+        @can('customer_create')
+           <a href="{{ route('customer.create') }}" class="btn btn-primary btn-md"><i class="fas fa-plus-circle"></i> Add
             Customer</a>
-        <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#customerImport">
+        @endcan
+        @can('customer_import')
+         <button type="button" class="btn btn-success btn-md" data-toggle="modal" data-target="#customerImport">
             <i class="fas fa-file-excel"></i> Import Excel
-        </button>
+         </button>
+        @endcan
     </div>
 
 </div>
@@ -65,7 +69,7 @@
                             </td>
                             <td>{{ $customer->user->name ?? 'N.A' }}</td>
                              <td> 
-                              @can('customer followup track')
+                              @can('followup_track')
                                 <a href="{{ route('followup.customers.show', $customer->id) }}"
                                     class="btn btn-sm btn-outline-success mx-1 shadow" title="Edit">
                                     Track
@@ -73,7 +77,7 @@
                               @endcan
                              </td>
                              <td>
-                                @can('customer-followup')
+                                @can('followup_customer')
                                  <a href="{{ route('followup.edit', $customer->id) }}"
                                      class="btn btn-sm btn-outline-info shadow-sm btn-round" target="_blank"
                                      title="Add Follow-Up">
@@ -84,14 +88,14 @@
                             <td class="text-center">
                                 <nobr>
                                     <!-- Edit Button -->
-                                  @can('edit customer')
+                                  @can('customer_edit')
                                     <a href="{{ route('customer.edit', $customer->id) }}"
                                         class="btn btn-sm btn-outline-warning mx-1 shadow" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     @endcan
                                     <!-- Delete Button -->
-                                    @can('delete customer')
+                                    @can('customer_delete')
                                      <form action="{{ route('customer.destroy', $customer->id) }}" method="POST"
                                         class="d-inline-block">
                                         @csrf
@@ -104,7 +108,7 @@
                                     @endcan
 
                                     <!-- View Details Button -->
-                                    @can('show customer')
+                                    @can('customer_show')
                                      <a href="{{ route('customer.show', $customer->id) }}"
                                         class="btn btn-sm btn-outline-teal mx-1 shadow" title="Details">
                                         <i class="fas fa-eye"></i>

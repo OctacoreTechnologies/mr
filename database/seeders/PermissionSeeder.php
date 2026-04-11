@@ -12,141 +12,137 @@ class PermissionSeeder extends Seeder
     {
         $permissions = [
 
-            // Basic Permissions (SQL me extra hai)
-            'admin',
-            'view',
-            'edit',
-            'delete',
-            'create',
-            'send mail',
-            'index',
+            // Admin
+            'admin_access',
 
             // Dashboard & Reminder
-            'view dashboard',
-            'view reminders',
+            'dashboard_view',
+            'reminder_view',
 
             // Lead
-            'view leads',
-            'create lead',
-            'edit lead',
-            'delete lead',
-            'show lead',
+            'lead_view',
+            'lead_create',
+            'lead_edit',
+            'lead_delete',
+            'lead_show',
 
             // Opportunity
-            'view opportunities',
-            'create opportunity',
-            'edit opportunity',
-            'delete opportunity',
-            'show opportunity',
+            'opportunity_view',
+            'opportunity_create',
+            'opportunity_edit',
+            'opportunity_delete',
+            'opportunity_show',
 
             // Quotation
-            'view quotations',
-            'create quotation',
-            'edit quotation',
-            'delete quotation',
-            'pdf quotation',
-            'verify quotation',
-            'update quotation status',
-            'reorder quotation',
-            'history quotation',
+            'quotation_view',
+            'quotation_create',
+            'quotation_edit',
+            'quotation_delete',
+            'quotation_pdf',
+            'quotation_verify',
+            'quotation_status_update',
+            'quotation_reorder',
+            'quotation_history',
 
             // Sale Order
-            'view sale orders',
-            'create sale order',
-            'edit sale order',
-            'delete sale order',
+            'sale_order_view',
+            'sale_order_show',
+            'sale_order_create',
+            'sale_order_edit',
+            'sale_order_delete',
 
             // Advance Payment
-            'view advance payments',
-            'create advance payment',
-            'edit advance payment',
-            'delete advance payment',
-            'view advance payment', // SQL me duplicate type naming
+            'advance_payment_view',
+            'advance_payment_show',
+            'advance_payment_pdf',
+            'advance_payment_create',
+            'advance_payment_edit',
+            'advance_payment_delete',
 
             // OAL
-            'view oal',
-            'create oal',
-            'edit oal',
-            'delete oal',
+            'oal_view',
+            'oal_show',
+            'oal_pdf',
+            'oal_create',
+            'oal_edit',
+            'oal_delete',
+
+            // customer account details
+            'customer_account_view',
+            'customer_account_pdf',
 
             // Application
-            'view applications',
-            'create application',
-            'edit application',
-            'delete application',
+            'application_view',
+            'application_create',
+            'application_edit',
+            'application_delete',
 
             // Customer
-            'view customers',
-            'create customer',
-            'edit customer',
-            'delete customer',
-            'show customer',
+            'customer_view',
+            'customer_create',
+            'customer_edit',
+            'customer_delete',
+            'customer_show',
 
             // Followups
-            'customer followups',
-            'customer-followup',
-            'customer followup track',
+            'followup_customer',
+            'followup_track',
 
             // Category
-            'view categories',
-            'create category',
-            'edit category',
-            'delete category',
-            'categories management',
+            'category_view',
+            'category_create',
+            'category_edit',
+            'category_delete',
+            'category_manage',
 
             // Reports
-            'view reports',
-            'view lead reports',
-            'view customer reports',
-            'view quotation reports',
-            'view sale reports',
-
-            // SQL me alag naming bhi hai
-            'view lead report',
-            'view customer report',
-            'view quotation report',
-            'view sale report',
+            'report_view',
+            'report_lead_view',
+            'report_customer_view',
+            'report_quotation_view',
+            'report_sale_view',
 
             // Terms
-            'view terms conditions',
-            'edit terms conditions',
+            'terms_view',
+            'terms_edit',
 
             // Bank
-            'view bank details',
-            'create bank detail',
-            'edit bank detail',
-            'delete bank detail',
+            'bank_view',
+            'bank_create',
+            'bank_edit',
+            'bank_delete',
 
             // Mail
-            'view mails',
-            'create mail',
-            'edit mail',
-            'delete mail',
-            'send emails',
+            'mail_view',
+            'mail_create',
+            'mail_edit',
+            'mail_delete',
+            'mail_send',
 
             // Email Template
-            'view email templates',
-            'create email template',
-            'edit email template',
-            'delete email template',
+            'email_template_view',
+            'email_template_show',
+            'email_template_create',
+            'email_template_edit',
+            'email_template_delete',
 
             // Roles
-            'view roles',
-            'create role',
-            'edit role',
-            'delete role',
+            'role_view',
+            'role_create',
+            'role_edit',
+            'role_delete',
 
             // Permissions
-            'view permissions',
-            'create permission',
-            'edit permission',
-            'delete permission',
+            'permission_view',
+            'permission_create',
+            'permission_edit',
+            'permission_delete',
 
             // Users
-            'view users',
-            'create user',
-            'edit user',
-            'delete user',
+            'user_view',
+            'user_create',
+            'user_edit',
+            'user_delete',
         ];
 
         // Insert Permissions
@@ -168,16 +164,16 @@ class PermissionSeeder extends Seeder
 
         // User → no delete + no admin settings
         $userPermissions = $allPermissions->filter(function ($permission) {
-            return !str_contains($permission->name, 'delete') &&
-                   !str_contains($permission->name, 'role') &&
-                   !str_contains($permission->name, 'permission') &&
-                   !str_contains($permission->name, 'user');
+            return !str_contains($permission->name, '_delete') &&
+                   !str_contains($permission->name, 'role_') &&
+                   !str_contains($permission->name, 'permission_') &&
+                   !str_contains($permission->name, 'user_');
         });
         $user->syncPermissions($userPermissions);
 
         // Viewer → only view
         $viewerPermissions = $allPermissions->filter(function ($permission) {
-            return str_contains($permission->name, 'view');
+            return str_contains($permission->name, '_view');
         });
         $viewer->syncPermissions($viewerPermissions);
     }

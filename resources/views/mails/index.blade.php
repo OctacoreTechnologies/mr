@@ -17,11 +17,11 @@
     <h1 class="mb-0 text-primary font-weight-bold">
         <i class="fas fa-envelope-open-text mr-2"></i> Emails
     </h1>
-
-    <a href="{{ route('mail.create') }}"
-       class="btn btn-primary rounded-pill px-4 shadow-sm d-flex align-items-center">
+    @can('mail_create')
+     <a href="{{ route('mail.create') }}" class="btn btn-primary rounded-pill px-4 shadow-sm d-flex align-items-center">
         <i class="fas fa-plus mr-1"></i> Add Email
-    </a>
+     </a>
+    @endcan
 </div>
 @stop
 
@@ -42,13 +42,7 @@
     <div class="card-body p-0">
 
         <div class="table-responsive">
-            <x-adminlte-datatable
-                id="table1"
-                :heads="$heads"
-                striped
-                hoverable
-                bordered
-            >
+            <x-adminlte-datatable id="table1" :heads="$heads" striped hoverable bordered>
 
                 @forelse ($mails as $index => $mail)
                     <tr>
@@ -81,25 +75,24 @@
                         <!-- ACTIONS -->
                         <td class="text-center">
                             <nobr>
-
-                                <a href="{{ route('mail.edit', $mail->id) }}"
-                                   class="btn btn-sm btn-outline-primary mx-1"
-                                   title="Edit">
+                             @can('mail_view')
+                                <a href="{{ route('mail.edit', $mail->id) }}" class="btn btn-sm btn-outline-primary mx-1"
+                                    title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </a>
+                             @endcan
+                               @can('mail_delete')
 
-                                <form action="{{ route('mail.destroy', $mail->id) }}"
-                                      method="POST"
-                                      class="d-inline"
-                                      onsubmit="return confirm('Delete this email?')">
+                                 <form action="{{ route('mail.destroy', $mail->id) }}" method="POST" class="d-inline"
+                                    onsubmit="return confirm('Delete this email?')">
                                     @csrf
                                     @method('DELETE')
 
-                                    <button class="btn btn-sm btn-outline-danger mx-1"
-                                            title="Delete">
+                                    <button class="btn btn-sm btn-outline-danger mx-1" title="Delete">
                                         <i class="fas fa-trash"></i>
                                     </button>
-                                </form>
+                                 </form>
+                                @endcan
 
                             </nobr>
                         </td>
@@ -118,8 +111,7 @@
                                     You haven't created any emails yet.
                                 </p>
 
-                                <a href="{{ route('mail.create') }}"
-                                   class="btn btn-primary rounded-pill px-4">
+                                <a href="{{ route('mail.create') }}" class="btn btn-primary rounded-pill px-4">
                                     <i class="fas fa-plus mr-1"></i> Create Email
                                 </a>
                             </div>
@@ -137,52 +129,50 @@
 
 
 @push('css')
-<link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
-<style>
+    <link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
+    <style>
+        /* Card */
+        .card {
+            border-radius: 10px;
+        }
 
-/* Card */
-.card {
-    border-radius: 10px;
-}
+        /* Header */
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
 
-/* Header */
-.card-header {
-    border-radius: 10px 10px 0 0;
-}
+        /* Table */
+        .table th {
+            font-weight: 600;
+            font-size: 14px;
+        }
 
-/* Table */
-.table th {
-    font-weight: 600;
-    font-size: 14px;
-}
+        /* Row hover */
+        .table tbody tr:hover {
+            background: #f8fbff;
+            transition: 0.2s;
+        }
 
-/* Row hover */
-.table tbody tr:hover {
-    background: #f8fbff;
-    transition: 0.2s;
-}
+        /* Badge styles */
+        .badge-light {
+            background: #eef2ff;
+            color: #333;
+        }
 
-/* Badge styles */
-.badge-light {
-    background: #eef2ff;
-    color: #333;
-}
+        .badge-info {
+            background: #e0f7fa;
+            color: #007b8f;
+        }
 
-.badge-info {
-    background: #e0f7fa;
-    color: #007b8f;
-}
+        /* Buttons */
+        .btn-outline-primary,
+        .btn-outline-danger {
+            border-radius: 20px;
+        }
 
-/* Buttons */
-.btn-outline-primary,
-.btn-outline-danger {
-    border-radius: 20px;
-}
-
-/* Empty state icon */
-.text-center i {
-    opacity: 0.5;
-}
-
-</style>
+        /* Empty state icon */
+        .text-center i {
+            opacity: 0.5;
+        }
+    </style>
 @endpush

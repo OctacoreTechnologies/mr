@@ -71,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
   // Lead Routes
-  Route::middleware(['can:view leads'])->group(function () {
+  Route::middleware(['can:lead_view'])->group(function () {
     Route::resource('/lead', LeadController::class);
     Route::controller(LeadFollowUpController::class)->prefix('/lead')->group(function () {
       Route::get('/followup/edit/{leadId}', 'followUpQuotationEdit')->name('lead.followup.edit');
@@ -80,12 +80,12 @@ Route::middleware(['auth'])->group(function () {
   });
 
   // Opportunities Routes
-  Route::middleware(['can:view opportunities'])->group(function () {
+  Route::middleware(['can:opportunity_view'])->group(function () {
     Route::resource('/opportunity', OpportunityController::class);
   });
 
   // Quotation Routes
-  Route::middleware(['can:view quotations'])->group(function () {
+  Route::middleware(['can:quotation_view'])->group(function () {
     Route::resource('/quotation', QuotationController::class);
     Route::get('/quotation/{id}/audits', [App\Http\Controllers\quotation\QuotationController::class, 'audits'])->name('quotation.audits');
     Route::post('/quotation/store', [QuotationController::class, 'store'])->name('q.stores');
@@ -99,12 +99,12 @@ Route::middleware(['auth'])->group(function () {
   });
 
   // Application Routes
-  Route::middleware(['can:view applications'])->group(function () {
+  Route::middleware(['can:application_view'])->group(function () {
     Route::resource('/applications', ApplicationController::class);
   });
 
   // Customer Routes
-  Route::middleware(['can:view customers'])->group(function () {
+  Route::middleware(['can:customer_view'])->group(function () {
     Route::resource('/customer', CustomerController::class);
     Route::controller(CustomerFollowUpController::class)->prefix('/customer')->group(function () {
       Route::get('/followup/edit/{customerId}', 'CustomerfollowUpEdit')->name('followup.edit');
@@ -117,16 +117,16 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/get-customer-excel-sample', [CustomerController::class, 'getCustomerExcelSample'])->name('fetch.customer.excel.sample');
 
   // Terms & Conditions Routes
-  Route::middleware(['can:view terms conditions'])->group(function () {
+  Route::middleware(['can:terms_view'])->group(function () {
     Route::resource('term-conditions', TermConditionController::class);
   });
 
   // Products / Categories Routes
-  Route::middleware(['can:view categories'])->group(function () {
+  Route::middleware(['can:category_view'])->group(function () {
     Route::resource('/product', ProductController::class);
 
     // Products / Categories Routes
-    Route::middleware(['can:view categories'])->group(function () {
+    Route::middleware(['can:category_view'])->group(function () {
       Route::resource('/product', ProductController::class);
 
       Route::prefix('/categories')->group(function () {
@@ -169,7 +169,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Reports Routes
-    Route::middleware(['can:view reports'])->group(function () {
+    Route::middleware(['can:report_view'])->group(function () {
       Route::prefix('/report')->group(function () {
         Route::controller(ReportQuotationController::class)->group(function () {
           Route::get('/quotations', 'quotationReport')->name('quotation.report');
@@ -189,7 +189,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Reminders Routes
-    Route::middleware(['can:view reminders'])->group(function () {
+    Route::middleware(['can:reminder_view'])->group(function () {
       Route::controller(ReminderController::class)->group(function () {
         Route::get('/reminder/today', 'remiderToday')->name('reminder.today');
         Route::get('/reminder/read/{id}', 'readAt')->name('reminder.read');
@@ -198,7 +198,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Dashboard Routes
-    Route::middleware(['can:view dashboard'])->group(function () {
+    Route::middleware(['can:dashboard_view'])->group(function () {
       Route::controller(DashBoardController::class)->prefix('/dashboard')->group(function () {
         Route::get('/index', 'dashboard')->name('dashboard.index');
         Route::get('/users-summary', 'summary')->name('dashbord.user');
@@ -206,7 +206,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Sale Orders Routes
-    Route::middleware(['can:view sale orders'])->group(function () {
+    Route::middleware(['can:sale_order_view'])->group(function () {
       Route::resource('/sale-order', SaleOrderController::class);
       Route::get('/sale-order/{id}/account-pdf', [SaleOrderController::class, 'downloadAccountPdf'])->name('sale-order.account-pdf');
       Route::get('/sale-order/{id}/advance-pdf', [SaleOrderController::class, 'downloadAdvancePaymentPdf'])->name('sale-order.advance-pdf');
@@ -226,13 +226,13 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Email Routes
-    Route::middleware(['can:view mails'])->group(function () {
+    Route::middleware(['can:mail_view'])->group(function () {
       Route::resource('/mail', EmailController::class);
       Route::get('mail/application/{applicationId}', [EmailController::class, 'applicatonEmail']);
     });
 
     // Email Send Routes
-    Route::middleware(['can:send emails'])->group(function () {
+    Route::middleware(['can:mail_send'])->group(function () {
       Route::prefix('/email-send')->controller(SendEmailController::class)->group(function () {
         Route::post('/quotation', 'sendMail')->name('quotation.send.mail');
       });
@@ -241,7 +241,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Email Templates Routes
-    Route::middleware(['can:view email templates'])->group(function () {
+    Route::middleware(['can:email_template_view'])->group(function () {
       Route::resource('email-templates', EmailTemplateController::class);
       Route::post('email-templates/{emailTemplate}/preview', [EmailTemplateController::class, 'preview'])->name('email-templates.preview');
       Route::post('email-templates/{emailTemplate}/send-test', [EmailTemplateController::class, 'sendTest'])->name('email-templates.sendTest');
@@ -249,7 +249,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Bank Details Routes
-    Route::middleware(['can:view bank details'])->group(function () {
+    Route::middleware(['can:bank_view'])->group(function () {
       Route::prefix('/bank')->group(function () {
         Route::controller(App\Http\Controllers\Bank\BankDetailController::class)->group(function () {
           Route::get('/details', 'index')->name('bank.details');
@@ -259,15 +259,15 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Roles & Permissions Routes
-    Route::middleware(['can:view roles'])->prefix('/admin')->name('admin.')->group(function () {
+    Route::middleware(['can:role_view'])->prefix('/admin')->name('admin.')->group(function () {
       Route::resource('/role', RoleController::class);
     });
 
-    Route::middleware(['can:view permissions'])->prefix('/admin')->name('admin.')->group(function () {
+    Route::middleware(['can:permission_view'])->prefix('/admin')->name('admin.')->group(function () {
       Route::resource('/permission', PermissionController::class);
     });
 
-    Route::middleware(['can:view users'])->prefix('/admin')->name('admin.')->group(function () {
+    Route::middleware(['can:user_view'])->prefix('/admin')->name('admin.')->group(function () {
       Route::resource('/users', UserController::class);
     });
 

@@ -21,7 +21,7 @@
         <i class="fas fa-briefcase"></i>
         Opportunity List
     </h1>
-    @can('create opportunity')
+    @can('opportunity_create')
      <a href="{{ route('opportunity.create') }}" class="btn btn-success">
         <i class="fas fa-plus"></i> Create Opportunity
      </a>
@@ -110,7 +110,7 @@
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
 
-                                    @can('edit opportunity')
+                                    @can('opportunity_edit')
                                      <a href="{{ route('opportunity.edit', $opportunity->id) }}"
                                         class="btn btn-default text-primary"
                                         title="Edit">
@@ -119,7 +119,7 @@
                                     @endcan
 
                                     {{-- Delete --}}
-                                    @can('delete opportunity')
+                                    @can('opportunity_delete')
                                        <form action="{{ route('opportunity.destroy', $opportunity->id) }}"
                                            method="POST" class="d-inline-block"
                                            onsubmit="return confirm('Are you sure you want to delete this opportunity?');">
@@ -133,7 +133,7 @@
                                        </form>
                                     @endcan
 
-                                    @can('show opportunity')
+                                    @can('opportunity_show')
                                      <a href="{{ route('opportunity.show', $opportunity->id) }}"
                                         class="btn btn-default text-teal"
                                         title="View Details">

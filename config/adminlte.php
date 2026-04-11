@@ -336,14 +336,14 @@ return [
             'text' => 'Dashboard',
             'url'  => 'dashboard/index',
             'icon' => 'fas fa-tachometer-alt',
-            'can' => 'view dashboard',
+            'can' => 'dashboard_view',
         ],
 
         [
             'text' => 'Today',
             'url'  => 'reminder/today',
             'icon' => 'fas fa-calendar-day',
-            'can' => 'view reminders',
+            'can' => 'reminder_view',
 
         ],
         // 
@@ -352,7 +352,7 @@ return [
             'text' => 'Lead',
             'url' => '/lead',
             'icon' => 'fas fa-fw fa-search-dollar',
-            'can' => 'view leads',
+            'can' => 'lead_view',
 
 
         ],
@@ -360,14 +360,14 @@ return [
             'text' => 'Opportunities',
             'url' => '/opportunity',
             'icon' => 'fas fa-fw fa-hand-holding-usd',
-            'can' => 'view opportunities',
+            'can' => 'opportunity_view',
 
         ],
         [
             'text' => 'Quotation',
             'url' => '/quotation',
             'icon' => 'fas fa-file-invoice-dollar',
-            'can' => 'view quotations',
+            'can' => 'quotation_view',
         ],
         // [
         //     'text' => 'Product',
@@ -382,19 +382,19 @@ return [
                     'text' => 'Advance Payment',
                     'url' => '/sale-order/advance-payment/index',
                     'icon' => 'fas fa-money-check-alt',
-                    'can' => 'view advance payments',
+                    'can' => 'advance_payment_view',
                 ],
                 [
                     'text' => 'OAL',
                     'url' => '/sale-order/order-acceptance-letter/index',
                     'icon' => 'fas fa-file-contract',
-                    'can' => 'view oal',
+                    'can' => 'oal_view',
                 ],
                 [
                     'text' => 'Index',
                     'url' => '/sale-order',
                     'icon' => 'fas fa-file-alt',
-                    'can' => 'view sale orders',
+                    'can' => 'sale_order_view',
                 ],
             ],
         ],
@@ -403,50 +403,50 @@ return [
             'text' => 'Application',
             'url' => '/applications',
             'icon' => 'fas fa-database',
-            'can' => 'view applications',
+            'can' => 'application_view',
         ],
         [
             'text' => 'Customer',
             'url' => '/customer',
             'icon' => 'fas fa-users',
-            'can' => 'view customers',
+            'can' => 'customer_view',
         ],
         [
             'text' => 'Categories',
             'url' => '/categories/machine-type',
             'icon' => 'fas fa-list',
-            'can' => 'categories management',
+            'can' => 'category_view',
         ],
 
         // report dropdown
         [
             'text' => 'Reports',
             'icon' => 'fas fa-chart-bar', // 📊 Bar Chart icon (common for reports)
-            'can' => 'view reports',
+            'can' => 'report_view',
             'submenu' => [
                 [
                     'text' => 'Lead Report',
                     'url' => '/report/leads',
                     'icon' => 'fas fa-file-alt',
-                    'can' => 'view lead report',
+                    'can' => 'report_lead_view',
                 ],
                 [
                     'text' => 'Customer Report',
                     'url' => '/report/customers',
                     'icon' => 'fas fa-file-alt',
-                    'can' => 'view customer report',
+                    'can' => 'report_customer_view',
                 ],
                 [
                     'text' => 'Quotation Report',
                     'url' => '/report/quotations',
                     'icon' => 'fas fa-file-alt',
-                    'can' => 'view quotation report',
+                    'can' => 'report_quotation_view',
                 ],
                 [
                     'text' => 'Sale Report',
                     'url' => '/report/sale-order',
                     'icon' => 'fas fa-file-alt',
-                    'can' => 'view sale report',
+                    'can' => 'report_sale_view',
 
                 ],
             ],
@@ -455,38 +455,38 @@ return [
         [
             'text' => 'Terms & Email',
             'icon' => 'fas fa-fw fa-user-shield',
-            'can' => 'manage terms and email',
+            'can' => 'terms_view',
 
             'submenu' => [
                 [
                     'text' => 'Term & Condition',
                     'url' => '/term-conditions',
                     'icon' => 'fas fa-file-signature',
-                    'can' => 'view terms and conditions',
+                    'can' => 'terms_view',
                 ],
                 [
                     'text' => 'Bank Detail',
                     'url' => '/bank/details',
                     'icon' => 'fas fa-university',
-                    'can' => 'view bank details',
+                    'can' => 'bank_view',
                 ],
                 [
                     'text' => 'Email',
                     'url' => '/mail',
                     'icon' => 'fas fa-fw fa-envelope',
-                    'can' => 'view emails',
+                    'can' => 'mail_view',
                 ],
                 [
                     'text' => 'Email Send',
                     'url' => '/emails/send',
                     'icon' => 'fas fa-fw fa-envelope',
-                    'can' => 'send emails',
+                    'can' => ' mail_send',
                 ],
                 [
                     'text' => 'Email Template',
                     'url' => '/email-template',
                     'icon' => 'fas fa-fw fa-envelope',
-                    'can' => 'view email templates',
+                    'can' => 'email_template_view',
                 ],
             ],
 
@@ -501,19 +501,19 @@ return [
                     'text' => 'Manage Roles',
                     'url' => 'admin/role',
                     'icon' => 'fas fa-fw fa-key',
-                    'can' => 'view roles',
+                    'can' => 'role_view',
                 ],
                 [
                     'text' => 'Manage Permission',
                     'url' => 'admin/permission',
                     'icon' => 'fas fa-fw fa-lock',
-                    'can' => 'view permissions',
+                    'can' => 'permission_view',
                 ],
                 [
                     'text' => 'Manage Users',
                     'url' => 'admin/users',
                     'icon' => 'fas fa-fw fa-users',
-                    'can' => 'view users',
+                    'can' => 'user_view',
                 ],
             ],
 

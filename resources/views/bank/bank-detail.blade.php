@@ -43,11 +43,8 @@
                                         <i class="fas fa-building text-primary"></i>
                                     </span>
                                 </div>
-                                <input type="text"
-                                    name="company_name"
-                                    class="form-control"
-                                    value="{{ old('company_name', $bankDetail->company_name) }}"
-                                    required>
+                                <input type="text" name="company_name" class="form-control"
+                                    value="{{ old('company_name', $bankDetail->company_name) }}" required>
                             </div>
                         </div>
 
@@ -60,11 +57,8 @@
                                         <i class="fas fa-university text-primary"></i>
                                     </span>
                                 </div>
-                                <input type="text"
-                                    name="bank_name"
-                                    class="form-control"
-                                    value="{{ old('bank_name', $bankDetail->bank_name) }}"
-                                    required>
+                                <input type="text" name="bank_name" class="form-control"
+                                    value="{{ old('bank_name', $bankDetail->bank_name) }}" required>
                             </div>
                         </div>
 
@@ -77,11 +71,8 @@
                                         <i class="fas fa-credit-card text-primary"></i>
                                     </span>
                                 </div>
-                                <input type="text"
-                                    name="account_number"
-                                    class="form-control"
-                                    value="{{ old('account_number', $bankDetail->account_number) }}"
-                                    required>
+                                <input type="text" name="account_number" class="form-control"
+                                    value="{{ old('account_number', $bankDetail->account_number) }}" required>
                             </div>
                         </div>
 
@@ -94,11 +85,8 @@
                                         <i class="fas fa-code text-primary"></i>
                                     </span>
                                 </div>
-                                <input type="text"
-                                    name="ifsc_code"
-                                    class="form-control"
-                                    value="{{ old('ifsc_code', $bankDetail->ifsc_code) }}"
-                                    required>
+                                <input type="text" name="ifsc_code" class="form-control"
+                                    value="{{ old('ifsc_code', $bankDetail->ifsc_code) }}" required>
                             </div>
                         </div>
 
@@ -111,25 +99,23 @@
                                         <i class="fas fa-code-branch text-primary"></i>
                                     </span>
                                 </div>
-                                <input type="text"
-                                    name="branch_name"
-                                    class="form-control"
-                                    value="{{ old('branch_name', $bankDetail->branch_name) }}"
-                                    required>
+                                <input type="text" name="branch_name" class="form-control"
+                                    value="{{ old('branch_name', $bankDetail->branch_name) }}" required>
                             </div>
                         </div>
 
                         <!-- Buttons -->
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ url()->previous() }}"
-                               class="btn btn-outline-secondary rounded-pill px-4">
-                                Cancel
-                            </a>
+                            @can('bank_edit')
+                                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary rounded-pill px-4">
+                                    Cancel
+                                </a>
 
-                            <button type="submit"
-                                    class="btn btn-primary rounded-pill px-4">
-                                <i class="fas fa-save mr-1"></i> Update Details
-                            </button>
+
+                                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                    <i class="fas fa-save mr-1"></i> Update Details
+                                </button>
+                            @endcan
                         </div>
 
                     </form>
@@ -144,44 +130,42 @@
 @stop
 
 @push('css')
-<link rel="stylesheet"  href="{{ asset('style/common.css') }}">
-<style>
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+    <style>
+        /* Card */
+        .card {
+            border-radius: 10px;
+        }
 
-/* Card */
-.card {
-    border-radius: 10px;
-}
+        /* Header */
+        .card-header {
+            border-radius: 10px 10px 0 0;
+        }
 
-/* Header */
-.card-header {
-    border-radius: 10px 10px 0 0;
-}
+        /* Input */
+        .form-control {
+            border-radius: 6px;
+        }
 
-/* Input */
-.form-control {
-    border-radius: 6px;
-}
+        /* Input group */
+        .input-group-text {
+            background: #f1f5f9;
+            border: 1px solid #ced4da;
+        }
 
-/* Input group */
-.input-group-text {
-    background: #f1f5f9;
-    border: 1px solid #ced4da;
-}
+        /* Focus */
+        .form-control:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, .15);
+        }
 
-/* Focus */
-.form-control:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 2px rgba(37,99,235,.15);
-}
+        /* Buttons */
+        .btn-primary {
+            border-radius: 20px;
+        }
 
-/* Buttons */
-.btn-primary {
-    border-radius: 20px;
-}
-
-.btn-outline-secondary {
-    border-radius: 20px;
-}
-
-</style>
+        .btn-outline-secondary {
+            border-radius: 20px;
+        }
+    </style>
 @endpush

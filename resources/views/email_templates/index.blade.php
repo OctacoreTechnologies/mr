@@ -7,10 +7,11 @@
     <h1 class="mb-0 text-primary font-weight-bold">
         <i class="fas fa-envelope mr-2"></i> Email Templates
     </h1>
-
-    <a href="{{ route('email-templates.create') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">
+    @can('email_template_create')
+     <a href="{{ route('email-templates.create') }}" class="btn btn-primary rounded-pill px-4 shadow-sm">
         <i class="fas fa-plus mr-1"></i> Create Template
-    </a>
+     </a>
+    @endcan
 </div>
 @stop
 
@@ -70,32 +71,37 @@
 
                             <td class="text-center">
                                 <nobr>
-
-                                    <a href="{{ route('email-template.show', $template->id) }}"
-                                       class="btn btn-sm btn-outline-info mx-1"
-                                       title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-
-                                    <a href="{{ route('email-template.edit', $template->id) }}"
+                                   @can('email_template_show') 
+                                      <a href="{{ route('email-template.show', $template->id) }}"
+                                         class="btn btn-sm btn-outline-info mx-1"
+                                         title="View">
+                                          <i class="fas fa-eye"></i>
+                                      </a>
+                                    @endcan
+                                    @can('email_template_edit')
+                                      <a href="{{ route('email-template.edit', $template->id) }}"
                                        class="btn btn-sm btn-outline-primary mx-1"
                                        title="Edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
+                                       <i class="fas fa-edit"></i>
+                                      </a>
 
-                                    <form action="{{ route('email-templates.destroy', $template->id) }}"
-                                          method="POST"
-                                          class="d-inline"
-                                          onsubmit="return confirm('Are you sure you want to delete this template?');">
-                                        @csrf
-                                        @method('DELETE')
+                                    @endcan
+                                    @can('email_template_delete')
 
-                                        <button type="submit"
-                                                class="btn btn-sm btn-outline-danger mx-1"
-                                                title="Delete">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
+                                      <form action="{{ route('email-templates.destroy', $template->id) }}"
+                                            method="POST"
+                                            class="d-inline"
+                                            onsubmit="return confirm('Are you sure you want to delete this template?');">
+                                          @csrf
+                                          @method('DELETE')
+  
+                                          <button type="submit"
+                                                  class="btn btn-sm btn-outline-danger mx-1"
+                                                  title="Delete">
+                                              <i class="fas fa-trash"></i>
+                                          </button>
+                                      </form>
+                                    @endcan
 
                                 </nobr>
                             </td>
@@ -112,11 +118,13 @@
                                     <p class="text-muted mb-3">
                                         You haven't created any email templates yet.
                                     </p>
-
-                                    <a href="{{ route('email-templates.create') }}"
+                                   @can('email_template_create')
+                                       
+                                     <a href="{{ route('email-templates.create') }}"
                                        class="btn btn-primary rounded-pill px-4">
                                         <i class="fas fa-plus mr-1"></i> Create Template
-                                    </a>
+                                     </a>
+                                   @endcan
                                 </div>
                             </td>
                         </tr>
