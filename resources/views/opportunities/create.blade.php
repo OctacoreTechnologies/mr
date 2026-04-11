@@ -81,12 +81,12 @@
                 {{-- Opportunity Type --}}
                 <div class="col-md-6">
                     <x-adminlte-select name="type" label="Opportunity Type" fgroup-class="mb-3">
-                        <option value="new_business" {{ old('opportunity_type') == 'new_business' ? 'selected' : '' }}>New Enquiry</option>
-                        <option value="upsell"       {{ old('opportunity_type') == 'upsell'       ? 'selected' : '' }}>Upsell</option>
-                        <option value="cross_sell"   {{ old('opportunity_type') == 'cross_sell'   ? 'selected' : '' }}>Cross Sell</option>
-                        <option value="renewal"      {{ old('opportunity_type') == 'renewal'      ? 'selected' : '' }}>Renewal</option>
+                        <option value="new_enquiry" {{ old('type') == 'new_enquiry' ? 'selected' : '' }}>New Enquiry</option>
+                        <option value="upsell"       {{ old('type') == 'upsell'       ? 'selected' : '' }}>Upsell</option>
+                        <option value="cross_sell"   {{ old('type') == 'cross_sell'   ? 'selected' : '' }}>Cross Sell</option>
+                        <option value="renewal"      {{ old('type') == 'renewal'      ? 'selected' : '' }}>Renewal</option>
                     </x-adminlte-select>
-                    @error('opportunity_type') <p class="text-danger">{{ $message }}</p> @enderror
+                    @error('type') <p class="text-danger">{{ $message }}</p> @enderror
                 </div>
 
                 {{-- Assigned To --}}

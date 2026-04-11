@@ -91,7 +91,7 @@
                                 @php
                                     $type = $opportunity->type ?? null;
                                     $typeBadge = match($type) {
-                                        'new_business' => 'crm-badge-new-business',
+                                        'new_enquiry' => 'crm-badge-new-business',
                                         'upsell'       => 'crm-badge-upsell',
                                         'cross_sell'   => 'crm-badge-cross-sell',
                                         'renewal'      => 'crm-badge-renewal',

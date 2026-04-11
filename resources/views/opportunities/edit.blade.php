@@ -70,7 +70,7 @@
                 {{-- Opportunity Type --}}
                 <div class="col-md-6">
                     <x-adminlte-select name="type" label="Opportunity Type" fgroup-class="mb-3">
-                        <option value="new_business" {{ old('type', $opportunity->type) == 'new_business' ? 'selected' : '' }}>New Enquiry</option>
+                        <option value="new_enquiry" {{ old('type', $opportunity->type) == 'new_enquiry' ? 'selected' : '' }}>New Enquiry</option>
                         <option value="upsell"       {{ old('type', $opportunity->type) == 'upsell'       ? 'selected' : '' }}>Upsell</option>
                         <option value="cross_sell"   {{ old('type', $opportunity->type) == 'cross_sell'   ? 'selected' : '' }}>Cross Sell</option>
                         <option value="renewal"      {{ old('type', $opportunity->type) == 'renewal'      ? 'selected' : '' }}>Renewal</option>

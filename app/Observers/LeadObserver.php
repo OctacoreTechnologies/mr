@@ -13,16 +13,15 @@ class LeadObserver
      */
     public function saved(Lead $lead): void
     {
-        $opportunity=Opportunity::where('lead_id',$lead->id)->first();
-        if($lead->status=='qualified'&&is_null($opportunity)){
-            Opportunity::create([
-                'lead_id'=>$lead->id,
-                'name'=>$lead->full_name,
-                'stage'=>'qualification',
-                'followed_by'=>$lead->followed_by,
-                // 'created_by'=>Auth::user()->id,
-            ]);
-        }
+        // if ($lead->status === 'qualified') {
+        //     Opportunity::create(
+        //         [   'customer_id' => $lead->id,
+        //             'type' => 'new_enquiry',
+        //             'followed_by' => $lead->followed_by,
+        //             'created_by' => Auth::id(),
+        //         ]
+        //     );
+        // }
     }
 
     /**

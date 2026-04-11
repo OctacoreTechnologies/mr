@@ -86,6 +86,13 @@ class OpportunityController extends Controller
     {
         $opportunity = Opportunity::findOrFail($id);
         $opportunity->update($request->validated());
+        $data = $request->validated();
+
+        if ($data['stage'] === 'quoted') {
+          session()->flash('success', 'opportunity is quoted successfully now you can create a quotation for this opportunity');
+          return response()->redirectToRoute('quotation.previewForm', ['opportunity_id' => $opportunity->customer_id]);
+            
+        }
         session()->flash('success', 'opportunity updated successfully');
         return response()->redirectToRoute('opportunity.index');
     }

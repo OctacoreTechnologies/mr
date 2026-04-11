@@ -39,7 +39,7 @@ class OpportunityRequest extends FormRequest
             'notes' => 'nullable|string', 
             'remark1'=>'nullable',
             'remark2'=>'nullable',
-            'type'=>'required|in:new_business,upsell,cross_sell,renewal',
+            'type'=>'required|in:new_enquiry,upsell,cross_sell,renewal',
         ];
     }
 }

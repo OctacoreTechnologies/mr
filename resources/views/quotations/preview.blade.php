@@ -218,7 +218,7 @@
                         <option value="">-- Select Customer --</option>
                         @foreach($customers as $customer)
                             <option value="{{ $customer->id }}"
-                                data-name="{{ $customer->company_name ?? $customer->name }}">
+                                data-name="{{ $customer->company_name ?? $customer->name }}" {{ $customer->id == request()->get('opportunity_id') ? 'selected' : '' }}>
                                 {{ $customer->company_name ?? $customer->name }}
                             </option>
                         @endforeach

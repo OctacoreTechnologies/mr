@@ -14,7 +14,7 @@ class SaleOrderObserver
     public function created(SaleOrder $saleOrder): void
     {
         if (is_null($saleOrder->work_order_no)) {
-            $this->setWorkOrderNoBasedOnMachineName($saleOrder);
+            // $this->setWorkOrderNoBasedOnMachineName($saleOrder);
         }
         OrderAcceptanceLetter::create([
             'sale_order_id' => $saleOrder->id,
