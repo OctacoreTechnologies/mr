@@ -113,7 +113,7 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::post('customer/import', [CustomerController::class, 'import'])->name('customer.import');
   });
-  
+
   Route::get('/get-customer-excel-sample', [CustomerController::class, 'getCustomerExcelSample'])->name('fetch.customer.excel.sample');
 
   // Terms & Conditions Routes

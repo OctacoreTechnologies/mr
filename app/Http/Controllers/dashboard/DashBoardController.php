@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 class DashBoardController extends Controller
 {
 public function dashboard(){
+    dd(auth()->user()->getAllPermissions()->pluck('name'));
     // Get the current year
     $currentYear = now()->year;
 
