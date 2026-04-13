@@ -136,7 +136,7 @@
                         Please download the sample Excel file and follow the format before uploading.
                     </small>
                 </div>
-                <a href="{{ route('fetch.customer.excel.sample') }}" class="btn btn-primary btn-sm">
+                <a href="{{ route('customer.excel.sample') }}" class="btn btn-primary btn-sm">
                     <i class="fas fa-download"></i> Sample
                 </a>
             </div>

@@ -259,7 +259,7 @@
 
 @push('js')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+           document.addEventListener('DOMContentLoaded', function() {
             const noOfPersonsSelect = document.getElementById('no_of_persons') || document.querySelector(
                 '[name="no_of_persons"]');
             const contactPersonFieldsContainer = document.getElementById('contact_person_fields');

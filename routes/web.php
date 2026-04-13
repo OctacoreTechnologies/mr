@@ -109,25 +109,27 @@ Route::middleware(['auth'])->group(function () {
 
     // ========== QUOTATION MANAGEMENT ==========
     Route::middleware(['can:quotation_view'])->group(function () {
-        Route::resource('/quotation', QuotationController::class);
 
         Route::controller(QuotationController::class)
             ->prefix('/quotation')
             ->group(function () {
-                Route::get('/{id}/audits', 'audits')->name('quotation.audits');
                 Route::post('/store', 'store')->name('quotation.store');
-                Route::get('/{id}/reorder', 'reorder')->name('quotation.reorder');
-                Route::get('/preview-form', 'previewForm')->name('quotation.previewForm');
+                Route::get('/previewform', 'previewForm')->name('quotation.previewForm');
                 Route::post('/preview', 'preview')->name('quotation.preview');
+                Route::post('/status', 'updateStatus')->name('quotation.update.status');
+ 
+                // Routes WITH {id} parameter (MUST come last!)
+                Route::get('/{id}/audits', 'audits')->name('quotation.audits');
+                Route::get('/{id}/reorder', 'reorder')->name('quotation.reorder');
                 Route::get('/{id}/pdf', 'viewPdf')->name('quotation.pdf');
-                Route::post('/status', 'updateStatus')->name('quotation.updateStatus');
                 Route::get('/{id}/edit-form', 'full_edit')->name('quotation.fullEditForm');
                 Route::put('/{id}/full-update', 'full_update')->name('quotation.fullUpdate');
             });
+            Route::resource('/quotation', QuotationController::class);
 
         // Quotation Verification (used in sale orders)
-        Route::post('/quotation-verify', [QuotationController::class, 'isVerified'])
-            ->name('quotation.verify');
+        Route::post('admin/quotation-verify', [QuotationController::class, 'isVerified'])
+            ->name('admin.quotation.verify');
     });
 
     // ========== APPLICATION MANAGEMENT ==========
@@ -179,7 +181,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::post('/store', 'store')->name('machine-type.store');
                     Route::put('/{id}/update', 'update')->name('machine-type.update');
                     Route::delete('/{id}/delete', 'destroy')->name('machine-type.destroy');
-                    Route::get('/get/{machineTypeId}', 'getMachines')->name('machine-type.getMachines');
+                    Route::get('/get-machines/{machineTypeId}', 'getMachines')->name('getmachines');
                 });
 
             // Machine Category
@@ -367,7 +369,7 @@ Route::middleware(['auth'])->group(function () {
         Route::controller(SendEmailController::class)
             ->prefix('/email-send')
             ->group(function () {
-                Route::post('/quotation', 'sendMail')->name('quotation.sendMail');
+                Route::post('/quotation', 'sendMail')->name('quotation.send.mail');
             });
 
         Route::controller(EmailController_2::class)
@@ -430,9 +432,8 @@ Route::middleware(['auth'])->group(function () {
 
     // ========== REGIONS & STATES (AJAX) ==========
     Route::controller(RegionController::class)
-        ->prefix('/api')
         ->group(function () {
-            Route::get('/states/{region_id}', 'getStates')->name('api.getStates');
+            Route::get('/get-states/{region_id}', 'getStates')->name('api.getStates');
         });
 
     // ========== CUSTOMER DATA FETCHING (AJAX) ==========

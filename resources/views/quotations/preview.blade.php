@@ -272,7 +272,7 @@
 
                 if (machineTypeId) {
                     $.ajax({
-                        url: '/categories/get-machines/' + machineTypeId,
+                        url: '/categories/machine-type/get-machines/' + machineTypeId,
                         type: 'GET',
                         success: function (machines) {
                             $('#machine_id').empty().append('<option value="">Select Machine</option>');
