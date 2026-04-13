@@ -119,7 +119,7 @@
                                     @if ($advancePdf)
                                         <td class="align-middle text-center">
                                             @can('advance_payment_pdf')
-                                                <a href="{{ route('sale-order.advance-pdf', $order->id) }}"
+                                                <a href="{{ route('sale-order.advancePdf', $order->id) }}"
                                                     class="btn btn-outline-primary btn-sm rounded-pill" target="_blank">
                                                     <i class="fas fa-file-pdf"></i>
                                                 </a>
@@ -131,7 +131,7 @@
                                         <td class="align-middle text-center">
 
                                             @can('oal_pdf')
-                                                <a href="{{ route('orderaceptance.pdf', $order->id) }}"
+                                                <a href="{{ route('orderAcceptance.pdf', $order->id) }}"
                                                     class="btn btn-outline-primary btn-sm rounded-pill" target="_blank">
                                                     <i class="fas fa-file-pdf"></i>
                                                 </a>

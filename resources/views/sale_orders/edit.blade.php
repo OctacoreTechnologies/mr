@@ -454,7 +454,7 @@
 
             </div>
             <div class="modal-footer">
-                <a href="{{ route('sale-order.account-pdf', $saleOrder->id) }}" class="btn btn-primary btn-sm"
+                <a href="{{ route('sale-order.accountDetails', $saleOrder->id) }}" class="btn btn-primary btn-sm"
                     target="_blank">
                     <i class="fas fa-file-pdf"></i> Download PDF
                 </a>

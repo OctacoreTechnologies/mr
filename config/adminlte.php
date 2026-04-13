@@ -380,13 +380,13 @@ return [
             'submenu' => [
                 [
                     'text' => 'Advance Payment',
-                    'url' => '/sale-order/advance-payment/index',
+                    'url' => '/sale-order/advance-payment',
                     'icon' => 'fas fa-money-check-alt',
                     'can' => 'advance_payment_view',
                 ],
                 [
                     'text' => 'OAL',
-                    'url' => '/sale-order/order-acceptance-letter/index',
+                    'url' => '/sale-order/order-acceptance-letter',
                     'icon' => 'fas fa-file-contract',
                     'can' => 'oal_view',
                 ],

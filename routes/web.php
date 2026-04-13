@@ -319,7 +319,6 @@ Route::middleware(['auth'])->group(function () {
     // ========== SALE ORDERS ==========
     Route::middleware(['can:sale_order_view'])->group(function () {
 
-        Route::resource('/sale-order', SaleOrderController::class);
 
         Route::controller(SaleOrderController::class)
             ->prefix('/sale-order')
@@ -333,7 +332,7 @@ Route::middleware(['auth'])->group(function () {
             });
 
         // Order Acceptance Letter Routes
-        Route::resource('/order-acceptance-letter', OrderAccpetanceLetterController::class);
+        Route::resource('sale-order/order-acceptance-letter', OrderAccpetanceLetterController::class);
 
         Route::controller(OrderAccpetanceLetterController::class)
             ->prefix('/order-acceptance-letter')
@@ -344,11 +343,12 @@ Route::middleware(['auth'])->group(function () {
 
         // Advance Payment Routes
         Route::controller(SaleOrderController::class)
-            ->prefix('/advance-payment')
+            ->prefix('sale-order/advance-payment')
             ->group(function () {
                 Route::get('/', 'advanceIndex')->name('advancePayment.index');
                 Route::get('/{id}/edit', 'advancePaymentEdit')->name('advancePayment.edit');
             });
+        Route::resource('/sale-order', SaleOrderController::class);
     });
 
     // ========== EMAIL MANAGEMENT ==========
