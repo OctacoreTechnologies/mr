@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Auth;
 class DashBoardController extends Controller
 {
 public function dashboard(){
-    dd(Auth::user()->getAllPermissions()->pluck('name'));
     // Get the current year
     $currentYear = now()->year;
 
