@@ -92,7 +92,7 @@
                 'title' => 'Users',
                 'count' => $users,
                 'icon' => 'file-alt',
-                'route' => route('dashbord.user'),
+                'route' => route('dashboard.userSummary'),
                 'color' => '#0056b4',
                 'button' => 'View All',
                 'sub' => []
