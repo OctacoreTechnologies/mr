@@ -123,10 +123,9 @@ Route::middleware(['auth'])->group(function () {
 
   // Products / Categories Routes
   Route::middleware(['can:category_view'])->group(function () {
-    Route::resource('/product', ProductController::class);
+
 
     // Products / Categories Routes
-    Route::middleware(['can:category_view'])->group(function () {
       Route::resource('/product', ProductController::class);
 
       Route::prefix('/categories')->group(function () {
@@ -166,7 +165,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/options/models/application/{machine_id}/{application_id}', [ModeleController::class, 'getModelsByApplicationId'])->name('model.options');
         Route::get('/options/models/{id}', [ModeleController::class, 'getModelsByMachineId'])->name('model.options');
       });
-    });
+  
 
     // Reports Routes
     Route::middleware(['can:report_view'])->group(function () {
