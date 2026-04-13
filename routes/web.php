@@ -102,6 +102,13 @@ Route::middleware(['auth'])->group(function () {
   Route::middleware(['can:application_view'])->group(function () {
     Route::resource('/applications', ApplicationController::class);
   });
+  Route::get('/debug', function () {
+      return [
+        'roles' =>Auth::user()->getRoleNames(),
+        'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+      ];
+    });
+
 
   // Customer Routes
   Route::middleware(['can:customer_view'])->group(function () {
@@ -279,13 +286,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-customer/{customerId}', [CustomerController::class, 'customerDetail'])->name('fetch.customer');
     Route::get('/api/customers/{id}/sale-orders', [SaleOrderController::class, 'saleOrdersByCustomer'])->name('api.customers.sale-orders');
     Route::get('/api/customers/{id}/quotations', [SaleOrderController::class, 'quotationsByCustomer'])->name('api.customers.quotations');
-    Route::get('/debug', function () {
-      return [
-        'roles' =>Auth::user()->getRoleNames(),
-        'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
-      ];
-    });
-
     // Email Helper Routes
     Route::post('/emails/fetch-recipients', [EmailController_2::class, 'fetchRecipients'])->name('emails.fetchRecipients');
     Route::get('/emails/get-template/{id}', [EmailController_2::class, 'getTemplate'])->name('emails.getTemplate');
