@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\applications\ApplicationController;
+use App\Http\Controllers\Bank\BankDetailController;
 use App\Http\Controllers\Categories\AcFrequencyDriveController;
 use App\Http\Controllers\Categories\BatchController;
 use App\Http\Controllers\Categories\BearingController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\Categories\RotaryAirLockValveController;
 use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\customer\CustomerFollowUpController;
 use App\Http\Controllers\dashboard\DashBoardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\lead\LeadController;
 use App\Http\Controllers\lead\LeadFollowUpController;
 use App\Http\Controllers\mail\EmailController;
@@ -32,7 +34,6 @@ use App\Http\Controllers\notifications\NotificationController;
 use App\Http\Controllers\opportunity\OpportunityController;
 use App\Http\Controllers\order_acceptance_letter\OrderAccpetanceLetterController;
 use App\Http\Controllers\product\ProductController;
-use App\Http\Controllers\quotation\FollowupQuotationController;
 use App\Http\Controllers\quotation\QuotationController;
 use App\Http\Controllers\region\RegionController;
 use App\Http\Controllers\remiders\ReminderController;
@@ -46,254 +47,442 @@ use App\Http\Controllers\sale_orders\AdvancePaymentLetterController;
 use App\Http\Controllers\sale_orders\SaleOrderController;
 use App\Http\Controllers\Term\TermConditionController;
 use App\Http\Controllers\user\UserController;
-use App\Models\AdvancePaymentLetter;
-use App\Models\Application;
-use App\Models\Customer;
-use App\Models\MakeMotor;
-use App\Models\MixingTool;
-use App\Models\OrderAcceptanceLetter;
-use App\Models\RotaryAirLockValve;
-use App\Notifications\QuotationReminderNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group.
+|
+*/
 
+// Redirect root to login
 Route::redirect('/', '/login');
 
+// Authentication Routes
 Auth::routes();
 
+// Debug Route (Only for Testing - Remove in Production)
+Route::get('/debug', function () {
+    return [
+        'roles' => Auth::user()?->getRoleNames(),
+        'permissions' => Auth::user()?->getAllPermissions()->pluck('name'),
+    ];
+})->middleware('auth');
+
+// Privacy Policy Route
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| AUTHENTICATED ROUTES GROUP
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth'])->group(function () {
 
-  Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    // ========== HOME ROUTE ==========
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-  // Lead Routes
-  Route::middleware(['can:lead_view'])->group(function () {
-    Route::resource('/lead', LeadController::class);
-    Route::controller(LeadFollowUpController::class)->prefix('/lead')->group(function () {
-      Route::get('/followup/edit/{leadId}', 'followUpQuotationEdit')->name('lead.followup.edit');
-      Route::put('/followup/update/{leadId}', 'followUpQuotationStore')->name('lead.followup.update');
-    });
-  });
+    // ========== LEAD MANAGEMENT ==========
+    Route::middleware(['can:lead_view'])->group(function () {
+        Route::resource('/lead', LeadController::class);
 
-  // Opportunities Routes
-  Route::middleware(['can:opportunity_view'])->group(function () {
-    Route::resource('/opportunity', OpportunityController::class);
-  });
-
-  // Quotation Routes
-  Route::middleware(['can:quotation_view'])->group(function () {
-    Route::resource('/quotation', QuotationController::class);
-    Route::get('/quotation/{id}/audits', [App\Http\Controllers\quotation\QuotationController::class, 'audits'])->name('quotation.audits');
-    Route::post('/quotation/store', [QuotationController::class, 'store'])->name('q.stores');
-    Route::get('/quotation/{id}/reorder', [QuotationController::class, 'reorder'])->name('quotation.reorder');
-    Route::get('/quoation/preview', [QuotationController::class, 'previewForm'])->name('quotation.previewForm');
-    Route::post('/quotations/previewp', [QuotationController::class, 'preview'])->name('quotation.preview');
-    Route::get('/quotaion/pdf/{id}', [QuotationController::class, 'viewPdf'])->name('quotation.pdf');
-    Route::post('/quotation/status', [QuotationController::class, 'updateStatus'])->name('quotation.update.status');
-    Route::get('/quotation/editform/{id}', [QuotationController::class, 'full_edit'])->name('quotation.fullEditForm');
-    Route::put('/quotation/fullupdate/{id}', [QuotationController::class, 'full_update'])->name('quotation.fullUpdate');
-  });
-
-  // Application Routes
-  Route::middleware(['can:application_view'])->group(function () {
-    Route::resource('/applications', ApplicationController::class);
-  });
-  Route::get('/debug', function () {
-      return [
-        'roles' =>Auth::user()->getRoleNames(),
-        'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
-      ];
+        Route::controller(LeadFollowUpController::class)
+            ->prefix('/lead/followup')
+            ->group(function () {
+                Route::get('/edit/{leadId}', 'followUpQuotationEdit')->name('lead.followup.edit');
+                Route::put('/update/{leadId}', 'followUpQuotationStore')->name('lead.followup.update');
+            });
     });
 
-
-  // Customer Routes
-  Route::middleware(['can:customer_view'])->group(function () {
-    Route::resource('/customer', CustomerController::class);
-    Route::controller(CustomerFollowUpController::class)->prefix('/customer')->group(function () {
-      Route::get('/followup/edit/{customerId}', 'CustomerfollowUpEdit')->name('followup.edit');
-      Route::put('/followup/update/{customerId}', 'CustomerfollowUpStore')->name('followup.update');
-      Route::get('/followup/customer/{customerId}', 'customerFollowUp')->name('followup.customers.show');
-    });
-    Route::post('customer/import', [CustomerController::class, 'import'])->name('customer.import');
-  });
-
-  Route::get('/get-customer-excel-sample', [CustomerController::class, 'getCustomerExcelSample'])->name('fetch.customer.excel.sample');
-
-  // Terms & Conditions Routes
-  Route::middleware(['can:terms_view'])->group(function () {
-    Route::resource('term-conditions', TermConditionController::class);
-  });
-
-  // Products / Categories Routes
-  Route::middleware(['can:category_view'])->group(function () {
-
-
-    // Products / Categories Routes
-    Route::resource('/product', ProductController::class);
-
-    Route::prefix('/categories')->group(function () {
-      Route::controller(MachineTypeController::class)->group(function () {
-        Route::get('/machine-type', 'index')->name('machine-type.index');
-        Route::get('/machine-type/{id}/edit', 'edit')->name('machine-type.edit');
-        Route::post('/machine-type/store', 'store')->name('machine-type.store');
-        Route::put('/machine-type/update/{id}', 'update')->name('machine-type.update');
-        Route::delete('/machine-type/delete/{id}', 'destroy')->name('machine-type.destroy');
-        Route::get('/get-machines/{machineTypeId}', 'getMachines')->name('getmachines');
-      });
-
-      Route::controller(MachineController::class)->group(function () {
-        Route::get('/machine', 'index')->name('machine.index');
-        Route::get('/machine/create', 'createe')->name('machine.create');
-        Route::post('/machine/store', 'store')->name('machine.store');
-        Route::get('/machine/{id}/edit', 'edit')->name('machine.edit');
-        Route::put('/machine/update/{id}', 'update')->name('machine.update');
-        Route::delete('/machine/delete/{id}', 'destroy')->name('machine.destroy');
-      });
-      Route::resource('/model', ModeleController::class);
-      Route::resource('/material-to-process', MaterialToProcessController::class);
-      Route::resource('/batch', BatchController::class);
-      Route::resource('/mixing-tool', MixingToolController::class);
-      Route::resource('/motor-requirement', MotorRequirementController::class);
-      Route::resource('/electrical-control', ElectricalController::class);
-      Route::resource('/ac-frequency-drive', AcFrequencyDriveController::class);
-      Route::resource('/bearing', BearingController::class);
-      Route::resource('/pneumatic', PneumaticController::class);
-      Route::resource('/make-motor', MakeMotorController::class);
-      Route::resource('/capacity', CapacityController::class);
-      Route::resource("/blade", BladeController::class);
-      Route::resource('/blowers', BlowerController::class);
-      Route::resource('/feeding_hooper_capacities', FeedingHooperCapacityController::class);
-      Route::resource('/rotary-air-lock-valves', RotaryAirLockValveController::class);
-      Route::get('/options/applications/{id}', [ApplicationController::class, 'applicationOptionsByMachine'])->name('application.options');
-      Route::get('/options/models/application/{machine_id}/{application_id}', [ModeleController::class, 'getModelsByApplicationId'])->name('model.options');
-      Route::get('/options/models/{id}', [ModeleController::class, 'getModelsByMachineId'])->name('model.options');
+    // ========== OPPORTUNITY MANAGEMENT ==========
+    Route::middleware(['can:opportunity_view'])->group(function () {
+        Route::resource('/opportunity', OpportunityController::class);
     });
 
+    // ========== QUOTATION MANAGEMENT ==========
+    Route::middleware(['can:quotation_view'])->group(function () {
+        Route::resource('/quotation', QuotationController::class);
 
-    // Reports Routes
+        Route::controller(QuotationController::class)
+            ->prefix('/quotation')
+            ->group(function () {
+                Route::get('/{id}/audits', 'audits')->name('quotation.audits');
+                Route::post('/store', 'store')->name('quotation.store');
+                Route::get('/{id}/reorder', 'reorder')->name('quotation.reorder');
+                Route::get('/preview-form', 'previewForm')->name('quotation.previewForm');
+                Route::post('/preview', 'preview')->name('quotation.preview');
+                Route::get('/{id}/pdf', 'viewPdf')->name('quotation.pdf');
+                Route::post('/status', 'updateStatus')->name('quotation.updateStatus');
+                Route::get('/{id}/edit-form', 'full_edit')->name('quotation.fullEditForm');
+                Route::put('/{id}/full-update', 'full_update')->name('quotation.fullUpdate');
+            });
+
+        // Quotation Verification (used in sale orders)
+        Route::post('/quotation-verify', [QuotationController::class, 'isVerified'])
+            ->name('quotation.verify');
+    });
+
+    // ========== APPLICATION MANAGEMENT ==========
+    Route::middleware(['can:application_view'])->group(function () {
+        Route::resource('/applications', ApplicationController::class);
+    });
+
+    // ========== CUSTOMER MANAGEMENT ==========
+    Route::middleware(['can:customer_view'])->group(function () {
+        Route::resource('/customer', CustomerController::class);
+
+        Route::controller(CustomerFollowUpController::class)
+            ->prefix('/customer')
+            ->group(function () {
+                Route::get('/followup/edit/{customerId}', 'CustomerfollowUpEdit')
+                    ->name('followup.edit');
+                Route::put('/followup/update/{customerId}', 'CustomerfollowUpStore')
+                    ->name('followup.update');
+                Route::get('/followup/show/{customerId}', 'customerFollowUp')
+                    ->name('followup.customers.show');
+            });
+
+        Route::post('/import', [CustomerController::class, 'import'])
+            ->name('customer.import');
+
+        Route::get('/excel-sample', [CustomerController::class, 'getCustomerExcelSample'])
+            ->name('customer.excel.sample');
+    });
+
+    // ========== TERMS & CONDITIONS ==========
+    Route::middleware(['can:terms_view'])->group(function () {
+        Route::resource('/term-conditions', TermConditionController::class);
+    });
+
+    // ========== PRODUCTS & CATEGORIES ==========
+    Route::middleware(['can:category_view'])->group(function () {
+
+        Route::resource('/product', ProductController::class);
+
+        // ===== CATEGORY ROUTES =====
+        Route::prefix('/categories')->group(function () {
+
+            // Machine Type Category
+            Route::controller(MachineTypeController::class)
+                ->prefix('/machine-type')
+                ->group(function () {
+                    Route::get('/', 'index')->name('machine-type.index');
+                    Route::get('/{id}/edit', 'edit')->name('machine-type.edit');
+                    Route::post('/store', 'store')->name('machine-type.store');
+                    Route::put('/{id}/update', 'update')->name('machine-type.update');
+                    Route::delete('/{id}/delete', 'destroy')->name('machine-type.destroy');
+                    Route::get('/get/{machineTypeId}', 'getMachines')->name('machine-type.getMachines');
+                });
+
+            // Machine Category
+            Route::controller(MachineController::class)
+                ->prefix('/machine')
+                ->group(function () {
+                    Route::get('/', 'index')->name('machine.index');
+                    Route::get('/create', 'createe')->name('machine.create');
+                    Route::post('/store', 'store')->name('machine.store');
+                    Route::get('/{id}/edit', 'edit')->name('machine.edit');
+                    Route::put('/{id}/update', 'update')->name('machine.update');
+                    Route::delete('/{id}/delete', 'destroy')->name('machine.destroy');
+                });
+
+            // Model Category
+            Route::resource('/model', ModeleController::class);
+
+            // Material to Process Category
+            Route::resource('/material-to-process', MaterialToProcessController::class);
+
+            // Batch Category
+            Route::resource('/batch', BatchController::class);
+
+            // Mixing Tool Category
+            Route::resource('/mixing-tool', MixingToolController::class);
+
+            // Motor Requirement Category
+            Route::resource('/motor-requirement', MotorRequirementController::class);
+
+            // Electrical Control Category
+            Route::resource('/electrical-control', ElectricalController::class);
+
+            // AC Frequency Drive Category
+            Route::resource('/ac-frequency-drive', AcFrequencyDriveController::class);
+
+            // Bearing Category
+            Route::resource('/bearing', BearingController::class);
+
+            // Pneumatic Category
+            Route::resource('/pneumatic', PneumaticController::class);
+
+            // Motor Make Category
+            Route::resource('/make-motor', MakeMotorController::class);
+
+            // Capacity Category
+            Route::resource('/capacity', CapacityController::class);
+
+            // Blade Category
+            Route::resource('/blade', BladeController::class);
+
+            // Blower Category
+            Route::resource('/blowers', BlowerController::class);
+
+            // Feeding Hooper Capacity Category
+            Route::resource('/feeding_hooper_capacities', FeedingHooperCapacityController::class);
+
+            // Rotary Air Lock Valve Category
+            Route::resource('/rotary-air-lock-valves', RotaryAirLockValveController::class);
+
+            // ===== AJAX OPTION ROUTES =====
+            Route::controller(ApplicationController::class)
+                ->prefix('/options')
+                ->group(function () {
+                    Route::get('/applications/{id}', 'applicationOptionsByMachine')
+                        ->name('application.options');
+                });
+
+            Route::controller(ModeleController::class)
+                ->prefix('/options')
+                ->group(function () {
+                    Route::get('/models/{id}', 'getModelsByMachineId')
+                        ->name('model.options');
+                    Route::get('/models/application/{machine_id}/{application_id}', 'getModelsByApplicationId')
+                        ->name('model.options.byApplication');
+                });
+        });
+    });
+
+    // ========== REPORTS ==========
     Route::middleware(['can:report_view'])->group(function () {
-      Route::prefix('/report')->group(function () {
-        Route::controller(ReportQuotationController::class)->group(function () {
-          Route::get('/quotations', 'quotationReport')->name('quotation.report');
-        });
+        Route::prefix('/report')->group(function () {
 
-        Route::controller(ReportLeadController::class)->group(function () {
-          Route::get('/leads', 'leadReport')->name('lead.report');
-        });
+            Route::controller(ReportQuotationController::class)
+                ->group(function () {
+                    Route::get('/quotations', 'quotationReport')->name('quotation.report');
+                });
 
-        Route::controller(ReportCustomerController::class)->group(function () {
-          Route::get('/customers', 'customerReport')->name('customer.report');
+            Route::controller(ReportLeadController::class)
+                ->group(function () {
+                    Route::get('/leads', 'leadReport')->name('lead.report');
+                });
+
+            Route::controller(ReportCustomerController::class)
+                ->group(function () {
+                    Route::get('/customers', 'customerReport')->name('customer.report');
+                });
+
+            Route::controller(ReportSaleOrderController::class)
+                ->group(function () {
+                    Route::get('/sale-order', 'saleOrderReport')->name('saleOrder.report');
+                });
         });
-        Route::controller(ReportSaleOrderController::class)->group(function () {
-          Route::get('/sale-order', 'saleOrderReport')->name('saleOrder.report');
-        });
-      });
     });
 
-    // Reminders Routes
+    // ========== REMINDERS ==========
     Route::middleware(['can:reminder_view'])->group(function () {
-      Route::controller(ReminderController::class)->group(function () {
-        Route::get('/reminder/today', 'remiderToday')->name('reminder.today');
-        Route::get('/reminder/read/{id}', 'readAt')->name('reminder.read');
-        Route::delete('remider/destroy/{id}', 'reminderDestroy')->name('reminder.destroy');
-      });
+        Route::controller(ReminderController::class)
+            ->prefix('/reminder')
+            ->group(function () {
+                Route::get('/today', 'remiderToday')->name('reminder.today');
+                Route::get('/read/{id}', 'readAt')->name('reminder.read');
+                Route::delete('/{id}/destroy', 'reminderDestroy')->name('reminder.destroy');
+            });
     });
 
-    // Dashboard Routes
+    // ========== NOTIFICATIONS ==========
+    Route::controller(NotificationController::class)
+        ->prefix('/notification')
+        ->group(function () {
+            Route::get('/quotation-todays-count', 'countQuotationReminder')
+                ->middleware('can:quotation_view')
+                ->name('notification.quotationReminder');
+        });
+
+    // ========== DASHBOARD ==========
     Route::middleware(['can:dashboard_view'])->group(function () {
-      Route::controller(DashBoardController::class)->prefix('/dashboard')->group(function () {
-        Route::get('/index', 'dashboard')->name('dashboard.index');
-        Route::get('/users-summary', 'summary')->name('dashbord.user');
-      });
+        Route::controller(DashBoardController::class)
+            ->prefix('/dashboard')
+            ->group(function () {
+                Route::get('/index', 'dashboard')->name('dashboard.index');
+                Route::get('/users-summary', 'summary')->name('dashboard.userSummary');
+            });
     });
 
-    // Sale Orders Routes
+    // ========== SALE ORDERS ==========
     Route::middleware(['can:sale_order_view'])->group(function () {
-      Route::resource('/sale-order', SaleOrderController::class);
-      Route::get('/sale-order/{id}/account-pdf', [SaleOrderController::class, 'downloadAccountPdf'])->name('sale-order.account-pdf');
-      Route::get('/sale-order/{id}/advance-pdf', [SaleOrderController::class, 'downloadAdvancePaymentPdf'])->name('sale-order.advance-pdf');
-      Route::get('/sale-order/{id}/account-details', [SaleOrderController::class, 'getAccountDetails'])->name('getAccountDetails');
-      Route::post('/quotation-verify', [QuotationController::class, 'isVerified'])->name('admin.quotation.verify');
-      Route::prefix('sale-order/')->group(function () {
-        Route::resource('/order-acceptence-letter', AdvancePaymentLetterController::class);
-        Route::put('order-acceptance-update/{id}', [OrderAccpetanceLetterController::class, 'update'])->name('orderaceptance.update');
-        Route::get('order-acceptance-letter/index', [OrderAccpetanceLetterController::class, 'index'])->name('orderaceptance.index');
-        Route::get('order-acceptance-letter/show/{id}', [OrderAccpetanceLetterController::class, 'show'])->name('orderaceptance.show');
-        Route::get('order-acceptance-letter/pdf/{id}', [OrderAccpetanceLetterController::class, 'downloadOalPdf'])->name('orderaceptance.pdf');
-        Route::controller(SaleOrderController::class)->group(function () {
-          Route::get('advance-payment/index', 'advanceIndex')->name('total_order_advance.index');
-          Route::get('advance-payment/edit/{id}', 'advancePaymentEdit')->name('total_order_advance.index.edit');
-        });
-      });
+
+        Route::resource('/sale-order', SaleOrderController::class);
+
+        Route::controller(SaleOrderController::class)
+            ->prefix('/sale-order')
+            ->group(function () {
+                Route::get('/{id}/account-pdf', 'downloadAccountPdf')
+                    ->name('sale-order.accountPdf');
+                Route::get('/{id}/advance-pdf', 'downloadAdvancePaymentPdf')
+                    ->name('sale-order.advancePdf');
+                Route::get('/{id}/account-details', 'getAccountDetails')
+                    ->name('sale-order.accountDetails');
+            });
+
+        // Order Acceptance Letter Routes
+        Route::resource('/order-acceptance-letter', OrderAccpetanceLetterController::class);
+
+        Route::controller(OrderAccpetanceLetterController::class)
+            ->prefix('/order-acceptance-letter')
+            ->group(function () {
+                Route::put('/{id}/update', 'update')->name('orderAcceptance.update');
+                Route::get('/{id}/pdf', 'downloadOalPdf')->name('orderAcceptance.pdf');
+            });
+
+        // Advance Payment Routes
+        Route::controller(SaleOrderController::class)
+            ->prefix('/advance-payment')
+            ->group(function () {
+                Route::get('/', 'advanceIndex')->name('advancePayment.index');
+                Route::get('/{id}/edit', 'advancePaymentEdit')->name('advancePayment.edit');
+            });
     });
 
-    // Email Routes
+    // ========== EMAIL MANAGEMENT ==========
     Route::middleware(['can:mail_view'])->group(function () {
-      Route::resource('/mail', EmailController::class);
-      Route::get('mail/application/{applicationId}', [EmailController::class, 'applicatonEmail']);
+        Route::resource('/mail', EmailController::class);
+
+        Route::controller(EmailController::class)
+            ->prefix('/mail')
+            ->group(function () {
+                Route::get('/application/{applicationId}', 'applicatonEmail')
+                    ->name('mail.application');
+            });
     });
 
-    // Email Send Routes
+    // ========== EMAIL SENDING ==========
     Route::middleware(['can:mail_send'])->group(function () {
-      Route::prefix('/email-send')->controller(SendEmailController::class)->group(function () {
-        Route::post('/quotation', 'sendMail')->name('quotation.send.mail');
-      });
-      Route::get('/emails/send', [EmailController_2::class, 'create'])->name('emails.create');
-      Route::post('/emails/send', [EmailController_2::class, 'send'])->name('emails.send');
+
+        Route::controller(SendEmailController::class)
+            ->prefix('/email-send')
+            ->group(function () {
+                Route::post('/quotation', 'sendMail')->name('quotation.sendMail');
+            });
+
+        Route::controller(EmailController_2::class)
+            ->prefix('/emails')
+            ->group(function () {
+                Route::get('/send', 'create')->name('emails.create');
+                Route::post('/send', 'send')->name('emails.send');
+                Route::post('/fetch-recipients', 'fetchRecipients')->name('emails.fetchRecipients');
+                Route::get('/get-template/{id}', 'getTemplate')->name('emails.getTemplate');
+            });
     });
 
-    // Email Templates Routes
+    // ========== EMAIL TEMPLATES ==========
     Route::middleware(['can:email_template_view'])->group(function () {
-      Route::resource('email-templates', EmailTemplateController::class);
-      Route::post('email-templates/{emailTemplate}/preview', [EmailTemplateController::class, 'preview'])->name('email-templates.preview');
-      Route::post('email-templates/{emailTemplate}/send-test', [EmailTemplateController::class, 'sendTest'])->name('email-templates.sendTest');
-      Route::resource('email-template', EmailTemplateController_2::class);
+
+        Route::resource('/email-templates', EmailTemplateController::class);
+
+        Route::controller(EmailTemplateController::class)
+            ->prefix('/email-templates')
+            ->group(function () {
+                Route::post('/{emailTemplate}/preview', 'preview')
+                    ->name('email-templates.preview');
+                Route::post('/{emailTemplate}/send-test', 'sendTest')
+                    ->name('email-templates.sendTest');
+            });
+
+        Route::resource('/email-template', EmailTemplateController_2::class);
     });
 
-    // Bank Details Routes
+    // ========== BANK DETAILS ==========
     Route::middleware(['can:bank_view'])->group(function () {
-      Route::prefix('/bank')->group(function () {
-        Route::controller(App\Http\Controllers\Bank\BankDetailController::class)->group(function () {
-          Route::get('/details', 'index')->name('bank.details');
-          Route::post('/details/update', 'update')->name('bank.details.update');
+        Route::controller(BankDetailController::class)
+            ->prefix('/bank')
+            ->group(function () {
+                Route::get('/details', 'index')->name('bank.details');
+                Route::post('/details/update', 'update')->name('bank.details.update');
+            });
+    });
+
+    // ========== ROLES & PERMISSIONS (Admin Panel) ==========
+    Route::prefix('/admin')
+        ->name('admin.')
+        ->group(function () {
+
+            // Roles Management
+            Route::middleware(['can:role_view'])->group(function () {
+                Route::resource('/role', RoleController::class);
+            });
+
+            // Permissions Management
+            Route::middleware(['can:permission_view'])->group(function () {
+                Route::resource('/permission', PermissionController::class);
+            });
+
+            // Users Management
+            Route::middleware(['can:user_view'])->group(function () {
+                Route::resource('/users', UserController::class);
+            });
         });
-      });
-    });
 
-    // Roles & Permissions Routes
-    Route::middleware(['can:role_view'])->prefix('/admin')->name('admin.')->group(function () {
-      Route::resource('/role', RoleController::class);
-    });
+    // ========== REGIONS & STATES (AJAX) ==========
+    Route::controller(RegionController::class)
+        ->prefix('/api')
+        ->group(function () {
+            Route::get('/states/{region_id}', 'getStates')->name('api.getStates');
+        });
 
-    Route::middleware(['can:permission_view'])->prefix('/admin')->name('admin.')->group(function () {
-      Route::resource('/permission', PermissionController::class);
-    });
+    // ========== CUSTOMER DATA FETCHING (AJAX) ==========
+    Route::controller(CustomerController::class)
+        ->prefix('/api')
+        ->group(function () {
+            Route::get('/customers/{customerId}', 'customerDetail')
+                ->name('api.customer.detail');
+        });
 
-    Route::middleware(['can:user_view'])->prefix('/admin')->name('admin.')->group(function () {
-      Route::resource('/users', UserController::class);
-    });
+    // ========== SALE ORDERS DATA FETCHING (AJAX) ==========
+    Route::controller(SaleOrderController::class)
+        ->prefix('/api')
+        ->group(function () {
+            Route::get('/customers/{id}/sale-orders', 'saleOrdersByCustomer')
+                ->name('api.customers.saleOrders');
+            Route::get('/customers/{id}/quotations', 'quotationsByCustomer')
+                ->name('api.customers.quotations');
+        });
 
-    // Notification Routes
-    Route::controller(NotificationController::class)->prefix('/notification')->group(function () {
-      Route::get('/quotation-todays-count', 'countQuotationReminder');
-    });
-
-    // Customer Data Fetch Routes
-    Route::get('/get-customer/{customerId}', [CustomerController::class, 'customerDetail'])->name('fetch.customer');
-    Route::get('/api/customers/{id}/sale-orders', [SaleOrderController::class, 'saleOrdersByCustomer'])->name('api.customers.sale-orders');
-    Route::get('/api/customers/{id}/quotations', [SaleOrderController::class, 'quotationsByCustomer'])->name('api.customers.quotations');
-    // Email Helper Routes
-    Route::post('/emails/fetch-recipients', [EmailController_2::class, 'fetchRecipients'])->name('emails.fetchRecipients');
-    Route::get('/emails/get-template/{id}', [EmailController_2::class, 'getTemplate'])->name('emails.getTemplate');
-
-    Route::get('/get-states/{region_id}', [RegionController::class, 'getStates']);
-
-    Route::get('/privacy-poliyc', function () {
-      return view('');
-    });
-  });
 });
+
+/*
+|--------------------------------------------------------------------------
+| NOTES FOR DEVELOPERS
+|--------------------------------------------------------------------------
+|
+| 1. PERMISSION HANDLING:
+|    - Use 'can:permission_name' middleware directly in route groups
+|    - This replaces nested routes and prevents 403 errors
+|    - Ensure permissions are properly defined in database
+|
+| 2. ROUTE NAMING CONVENTIONS:
+|    - Use dot notation for nested resources: 'customer.followup.edit'
+|    - Use snake_case for route names
+|    - Use kebab-case for URL segments
+|
+| 3. API ROUTES:
+|    - All AJAX/API data fetching routes are prefixed with '/api'
+|    - These should NOT have authentication restrictions beyond 'auth'
+|    - Add specific 'can:' middleware only if needed
+|
+| 4. COMMON ISSUES & FIXES:
+|    - 403 Error: Check user has proper role + permission assigned
+|    - Route not found: Verify route name and HTTP method
+|    - Permission denied: Check permission middleware spelling
+|
+| 5. TESTING PERMISSIONS:
+|    - Use /debug endpoint to see user roles & permissions
+|    - Verify permission names match route middleware
+|    - Check RoleHasPermissions table in database
+|
+*/
