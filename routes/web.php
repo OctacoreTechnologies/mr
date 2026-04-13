@@ -126,46 +126,46 @@ Route::middleware(['auth'])->group(function () {
 
 
     // Products / Categories Routes
-      Route::resource('/product', ProductController::class);
+    Route::resource('/product', ProductController::class);
 
-      Route::prefix('/categories')->group(function () {
-        Route::controller(MachineTypeController::class)->group(function () {
-          Route::get('/machine-type', 'index')->name('machine-type.index');
-          Route::get('/machine-type/{id}/edit', 'edit')->name('machine-type.edit');
-          Route::post('/machine-type/store', 'store')->name('machine-type.store');
-          Route::put('/machine-type/update/{id}', 'update')->name('machine-type.update');
-          Route::delete('/machine-type/delete/{id}', 'destroy')->name('machine-type.destroy');
-          Route::get('/get-machines/{machineTypeId}', 'getMachines')->name('getmachines');
-        });
-
-        Route::controller(MachineController::class)->group(function () {
-          Route::get('/machine', 'index')->name('machine.index');
-          Route::get('/machine/create', 'createe')->name('machine.create');
-          Route::post('/machine/store', 'store')->name('machine.store');
-          Route::get('/machine/{id}/edit', 'edit')->name('machine.edit');
-          Route::put('/machine/update/{id}', 'update')->name('machine.update');
-          Route::delete('/machine/delete/{id}', 'destroy')->name('machine.destroy');
-        });
-        Route::resource('/model', ModeleController::class);
-        Route::resource('/material-to-process', MaterialToProcessController::class);
-        Route::resource('/batch', BatchController::class);
-        Route::resource('/mixing-tool', MixingToolController::class);
-        Route::resource('/motor-requirement', MotorRequirementController::class);
-        Route::resource('/electrical-control', ElectricalController::class);
-        Route::resource('/ac-frequency-drive', AcFrequencyDriveController::class);
-        Route::resource('/bearing', BearingController::class);
-        Route::resource('/pneumatic', PneumaticController::class);
-        Route::resource('/make-motor', MakeMotorController::class);
-        Route::resource('/capacity', CapacityController::class);
-        Route::resource("/blade", BladeController::class);
-        Route::resource('/blowers', BlowerController::class);
-        Route::resource('/feeding_hooper_capacities', FeedingHooperCapacityController::class);
-        Route::resource('/rotary-air-lock-valves', RotaryAirLockValveController::class);
-        Route::get('/options/applications/{id}', [ApplicationController::class, 'applicationOptionsByMachine'])->name('application.options');
-        Route::get('/options/models/application/{machine_id}/{application_id}', [ModeleController::class, 'getModelsByApplicationId'])->name('model.options');
-        Route::get('/options/models/{id}', [ModeleController::class, 'getModelsByMachineId'])->name('model.options');
+    Route::prefix('/categories')->group(function () {
+      Route::controller(MachineTypeController::class)->group(function () {
+        Route::get('/machine-type', 'index')->name('machine-type.index');
+        Route::get('/machine-type/{id}/edit', 'edit')->name('machine-type.edit');
+        Route::post('/machine-type/store', 'store')->name('machine-type.store');
+        Route::put('/machine-type/update/{id}', 'update')->name('machine-type.update');
+        Route::delete('/machine-type/delete/{id}', 'destroy')->name('machine-type.destroy');
+        Route::get('/get-machines/{machineTypeId}', 'getMachines')->name('getmachines');
       });
-  
+
+      Route::controller(MachineController::class)->group(function () {
+        Route::get('/machine', 'index')->name('machine.index');
+        Route::get('/machine/create', 'createe')->name('machine.create');
+        Route::post('/machine/store', 'store')->name('machine.store');
+        Route::get('/machine/{id}/edit', 'edit')->name('machine.edit');
+        Route::put('/machine/update/{id}', 'update')->name('machine.update');
+        Route::delete('/machine/delete/{id}', 'destroy')->name('machine.destroy');
+      });
+      Route::resource('/model', ModeleController::class);
+      Route::resource('/material-to-process', MaterialToProcessController::class);
+      Route::resource('/batch', BatchController::class);
+      Route::resource('/mixing-tool', MixingToolController::class);
+      Route::resource('/motor-requirement', MotorRequirementController::class);
+      Route::resource('/electrical-control', ElectricalController::class);
+      Route::resource('/ac-frequency-drive', AcFrequencyDriveController::class);
+      Route::resource('/bearing', BearingController::class);
+      Route::resource('/pneumatic', PneumaticController::class);
+      Route::resource('/make-motor', MakeMotorController::class);
+      Route::resource('/capacity', CapacityController::class);
+      Route::resource("/blade", BladeController::class);
+      Route::resource('/blowers', BlowerController::class);
+      Route::resource('/feeding_hooper_capacities', FeedingHooperCapacityController::class);
+      Route::resource('/rotary-air-lock-valves', RotaryAirLockValveController::class);
+      Route::get('/options/applications/{id}', [ApplicationController::class, 'applicationOptionsByMachine'])->name('application.options');
+      Route::get('/options/models/application/{machine_id}/{application_id}', [ModeleController::class, 'getModelsByApplicationId'])->name('model.options');
+      Route::get('/options/models/{id}', [ModeleController::class, 'getModelsByMachineId'])->name('model.options');
+    });
+
 
     // Reports Routes
     Route::middleware(['can:report_view'])->group(function () {
@@ -279,6 +279,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/get-customer/{customerId}', [CustomerController::class, 'customerDetail'])->name('fetch.customer');
     Route::get('/api/customers/{id}/sale-orders', [SaleOrderController::class, 'saleOrdersByCustomer'])->name('api.customers.sale-orders');
     Route::get('/api/customers/{id}/quotations', [SaleOrderController::class, 'quotationsByCustomer'])->name('api.customers.quotations');
+    Route::get('/debug', function () {
+      return [
+        'roles' =>Auth::user()->getRoleNames(),
+        'permissions' => Auth::user()->getAllPermissions()->pluck('name'),
+      ];
+    });
 
     // Email Helper Routes
     Route::post('/emails/fetch-recipients', [EmailController_2::class, 'fetchRecipients'])->name('emails.fetchRecipients');
