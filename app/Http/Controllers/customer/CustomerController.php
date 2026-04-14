@@ -99,8 +99,8 @@ class CustomerController extends Controller
 
         $customer = Customer::findOrFail($id);
         $data = $request->validated();
-        if($data['status'] === 'qualified') {
-             $data['type'] = 'customer';
+        if (isset($data['status']) && $data['status'] === 'qualified') {
+            $data['type'] = 'customer';
         }
         $customer->update($data);
 
@@ -149,8 +149,8 @@ class CustomerController extends Controller
         );
     }
 
-    public function getCustomerExcelSample(){
-         return Excel::download(new SampleCustomerImport(), 'customers_sample.xlsx');
+    public function getCustomerExcelSample()
+    {
+        return Excel::download(new SampleCustomerImport(), 'customers_sample.xlsx');
     }
 }
-      

@@ -7,201 +7,241 @@ use App\Http\Requests\StoreCustomerFollowUpRequest;
 use App\Http\Requests\UpdateCustomerFollowUpRequest;
 use App\Models\Customer;
 use App\Models\CustomerFollowUp;
+use App\Models\CustomerFollowUpDocument;
 use App\Models\Reminder;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerFollowUpController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    /* ────────────────────────────────────────────
+     |  STORE  (quick AJAX from quotation page)
+     ──────────────────────────────────────────── */
     public function store(StoreCustomerFollowUpRequest $request)
     {
         CustomerFollowUp::create($request->validated());
         return response()->json([
-            'status' => true,
-            'message' => 'Follow Up Quotation is  added successfully'
+            'status'  => true,
+            'message' => 'Follow-up added successfully.',
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    /* ────────────────────────────────────────────
+     |  SHOW  (check existence – AJAX)
+     ──────────────────────────────────────────── */
     public function show(string $id)
     {
-        $followUpQuotation = CustomerFollowUp::find($id);
-        if (!empty($followUpQuotation)) {
-            return response()->json([
-                'status' => true
-            ]);
+        $exists = CustomerFollowUp::find($id);
+        return response()->json(['status' => (bool) $exists]);
+    }
+
+    /* ────────────────────────────────────────────
+     |  EDIT  (render follow-up edit page)
+     ──────────────────────────────────────────── */
+    public function CustomerfollowUpEdit(Request $request, string $customerId)
+    {
+        $query = CustomerFollowUp::where('customer_id', $customerId)
+                                 ->with('documents');
+
+        if ($request->filled('quotation_id')) {
+            $query->where('quotation_id', $request->query('quotation_id'));
         }
-        return response()->json([
-            'status' => false,
-            'message' => 'Not Found'
+
+        // History = all records (oldest first for timeline)
+        $followups  = (clone $query)->orderBy('created_at')->get();
+
+        // Editable rows = same records newest first
+        $ofollowups = (clone $query)->orderByDesc('created_at')->get();
+
+        return view('followups.edit', [
+            'followups'   => $followups,
+            'ofollowups'  => $ofollowups,
+            'customer_id' => $customerId,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
-
-    public function CustomerfollowUpEdit(Request $request, string $customerId)
-    {
-        if ($request->has('quotation_id')) {
-            $quotationId = $request->query('quotation_id');
-            $quotationFollowUps = CustomerFollowUp::where('customer_id', $customerId)
-                ->where('quotation_id', $quotationId);
-        } else {
-              $quotationFollowUps = CustomerFollowUp::where('customer_id', $customerId);
-        }
-
-
-        return response()->view('followups.edit', [
-            'followups' => $quotationFollowUps->get(),
-            'ofollowups' => $quotationFollowUps->orderByDesc('created_at')->get(),
-            'customer_id' => $customerId,
-        ]); 
-    }
-
+    /* ────────────────────────────────────────────
+     |  UPDATE  (save all follow-up rows + docs)
+     ──────────────────────────────────────────── */
     public function CustomerfollowUpStore(UpdateCustomerFollowUpRequest $request, string $customerId)
     {
         $validated = $request->validated();
-        $previousFollowUps = CustomerFollowUp::where('customer_id', $customerId)->get();
 
-        // Delete followups not present in the form
-        foreach ($previousFollowUps as $previousFollowUp) {
-            if (!in_array($previousFollowUp->id, $validated['follow_up_id'])) {
-                // Also delete old reminders
-                Reminder::where([
-                    ['type_id', '=', $customerId],
-                    ['type', '=', 'quotation followup'],
-                    ['model', '=', 'Customer'],
-                    ['sent_date', '=', $previousFollowUp->next_follow_up_date],
-                ])->delete();
+        DB::beginTransaction();
 
-                $previousFollowUp->delete();
-            }
-        }
-
-        // Loop over followups
-        foreach ($validated['follow_up_date'] as $index => $followDate) {
-            $nextDate = $validated['next_follow_up_date'][$index] ?? null;
-            if ($nextDate) {
-                try {
-                    // Convert from 12-hour AM/PM format to 24-hour MySQL datetime
-                    $nextDate = Carbon::createFromFormat('Y-m-d h:i A', $nextDate)->format('Y-m-d H:i:s');
-                } catch (\Exception $e) {
-                    // Fallback or log error if parsing fails
-                    $nextDate = null;
+        try {
+            /* ── 1. Delete documents explicitly marked for removal ── */
+            if (!empty($validated['delete_document_ids'])) {
+                $docsToDelete = CustomerFollowUpDocument::whereIn('id', $validated['delete_document_ids'])->get();
+                foreach ($docsToDelete as $doc) {
+                    Storage::disk('public')->delete($doc->file_path);
+                    $doc->delete();
                 }
-            } else {
-                $convernextDatetedDate = null;
             }
 
+            /* ── 2. Delete follow-up rows that were removed from form ── */
+            $submittedIds      = array_filter($validated['follow_up_id'] ?? [], fn($v) => !is_null($v));
+            $previousFollowUps = CustomerFollowUp::where('customer_id', $customerId)->get();
 
-            if (is_null($validated['follow_up_id'][$index])) {
-                // New follow-up
-                CustomerFollowUp::create([
-                    'customer_id' => $customerId,
-                    'quotation_id' => $validated['quotation_id'] ?? null,
-                    'follow_up_date' => $followDate,
-                    'notes' => $validated['notes'][$index],
-                    'next_follow_up_date' => $nextDate,
-                ]);
-
-                if (!is_null($nextDate)) {
-                    Reminder::create([
-                        'type_id' => $customerId,
-                        'type' => 'quotation followup',
-                        'data' => 'Customer Quotation Followup',
-                        'model' => 'Customer',
-                        'sent_date' => $nextDate,
-                    ]);
-                }
-            } else {
-                // Existing follow-up
-                $followUp = CustomerFollowUp::findOrFail($validated['follow_up_id'][$index]);
-
-                $oldDate = $followUp->next_follow_up_date;
-
-                $followUp->update([
-                    'follow_up_date' => $followDate,
-                    // 'quotation_id' => $validated['quotation_id'] ?? null,
-                    'notes' => $validated['notes'][$index],
-                    'next_follow_up_date' => $nextDate,
-                ]);
-
-                if ($oldDate != $nextDate) {
-                    // Delete old reminder
+            foreach ($previousFollowUps as $prev) {
+                if (!in_array($prev->id, $submittedIds)) {
+                    // Delete all documents for this follow-up
+                    foreach ($prev->documents as $doc) {
+                        Storage::disk('public')->delete($doc->file_path);
+                    }
+                    // Delete related reminders
                     Reminder::where([
                         ['type_id', '=', $customerId],
-                        ['type', '=', 'quotation followup'],
-                        ['model', '=', 'Customer'],
-                        ['sent_date', '=', $oldDate],
+                        ['type',    '=', 'quotation followup'],
+                        ['model',   '=', 'Customer'],
+                        ['sent_date', '=', $prev->next_follow_up_date],
                     ])->delete();
 
-                    // Create new reminder
-                    if (!is_null($nextDate)) {
-                        Reminder::create([
-                            'type_id' => $customerId,
-                            'type' => 'quotation followup',
-                            'data' => 'Customer Quotation Followup',
-                            'model' => 'Customer',
-                            'sent_date' => $nextDate,
-                        ]);
-                    }
+                    $prev->delete();
                 }
             }
+
+            /* ── 3. Upsert follow-up rows ── */
+            foreach ($validated['follow_up_date'] as $index => $followDate) {
+
+                // Parse next follow-up date (12-hr AM/PM → MySQL)
+                $rawNext  = $validated['next_follow_up_date'][$index] ?? null;
+                $nextDate = $this->parseDate($rawNext);
+                $followDateParsed = $this->parseDate($followDate);
+
+                $isNew = is_null($validated['follow_up_id'][$index]);
+
+                if ($isNew) {
+                    /* ── Create new follow-up ── */
+                    $followUp = CustomerFollowUp::create([
+                        'customer_id'        => $customerId,
+                        'quotation_id'       => $validated['quotation_id'] ?? null,
+                        'follow_up_date'     => $followDateParsed,
+                        'notes'              => $validated['notes'][$index],
+                        'next_follow_up_date' => $nextDate,
+                    ]);
+
+                    if (!is_null($nextDate)) {
+                        $this->createReminder($customerId, $nextDate);
+                    }
+                } else {
+                    /* ── Update existing follow-up ── */
+                    $followUp = CustomerFollowUp::findOrFail($validated['follow_up_id'][$index]);
+                    $oldDate  = $followUp->next_follow_up_date;
+
+                    $followUp->update([
+                        'follow_up_date'      => $followDateParsed,
+                        'notes'               => $validated['notes'][$index],
+                        'next_follow_up_date' => $nextDate,
+                    ]);
+
+                    // Sync reminder if date changed
+                    if ($oldDate != $nextDate) {
+                        Reminder::where([
+                            ['type_id',   '=', $customerId],
+                            ['type',      '=', 'quotation followup'],
+                            ['model',     '=', 'Customer'],
+                            ['sent_date', '=', $oldDate],
+                        ])->delete();
+
+                        if (!is_null($nextDate)) {
+                            $this->createReminder($customerId, $nextDate);
+                        }
+                    }
+                }
+
+                /* ── 4. Upload new documents for this row ── */
+                $newFiles = $request->file("documents.{$index}") ?? [];
+                foreach ($newFiles as $file) {
+                    if (!$file || !$file->isValid()) continue;
+
+                    $ext      = strtolower($file->getClientOriginalExtension());
+                    $path     = $file->store("followup_documents/{$customerId}/{$followUp->id}", 'public');
+
+                    CustomerFollowUpDocument::create([
+                        'follow_up_id'  => $followUp->id,
+                        'original_name' => $file->getClientOriginalName(),
+                        'file_path'     => $path,
+                        'file_type'     => $ext,
+                        'file_size'     => $file->getSize(),
+                        'uploaded_by'   => Auth::id(),
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            Log::error('CustomerFollowUp update failed', ['error' => $e->getMessage()]);
+            return redirect()->back()
+                             ->withInput()
+                             ->with('error', 'Something went wrong. Please try again.');
         }
 
-        return redirect()->back()->with('success', 'Quotation Follow-Up updated successfully.');
+        return redirect()->back()->with('success', 'Follow-up updated successfully.');
     }
 
+    /* ────────────────────────────────────────────
+     |  DELETE DOCUMENT  (AJAX)
+     ──────────────────────────────────────────── */
+    public function deleteDocument(Request $request, int $docId)
+    {
+        $doc = CustomerFollowUpDocument::findOrFail($docId);
+        Storage::disk('public')->delete($doc->file_path);
+        $doc->delete();
+
+        return response()->json(['status' => true, 'message' => 'Document deleted.']);
+    }
+
+    /* ────────────────────────────────────────────
+     |  SHOW (customer follow-up list page)
+     ──────────────────────────────────────────── */
     public function customerFollowUp(string $customerId)
     {
-        $customerFollowUps = CustomerFollowUp::where('customer_id', $customerId)->get();
-        // return $customerFollowUps;
-        $customer = Customer::findOrFail($customerId);
-        return response()->view('followups.show', [
-            'followups' => $customerFollowUps,
-            'customer' => $customer
+        $customer    = Customer::findOrFail($customerId);
+        $followUps   = CustomerFollowUp::where('customer_id', $customerId)
+                                       ->with('documents')
+                                       ->orderByDesc('created_at')
+                                       ->get();
+
+        return view('followups.show', [
+            'followups' => $followUps,
+            'customer'  => $customer,
+        ]);
+    }
+
+    /* ────────────────────────────────────────────
+     |  HELPERS
+     ──────────────────────────────────────────── */
+
+    /** Parse date string from flatpickr (12-hr AM/PM) safely */
+    private function parseDate(?string $date): ?string
+    {
+        if (!$date) return null;
+
+        $formats = ['Y-m-d h:i A', 'Y-m-d H:i:s', 'Y-m-d H:i'];
+        foreach ($formats as $format) {
+            try {
+                return Carbon::createFromFormat($format, trim($date))->format('Y-m-d H:i:s');
+            } catch (\Exception) {}
+        }
+        return null;
+    }
+
+    /** Create a reminder record */
+    private function createReminder(string $customerId, string $sentDate): void
+    {
+        Reminder::create([
+            'type_id'   => $customerId,
+            'type'      => 'quotation followup',
+            'data'      => 'Customer Quotation Followup',
+            'model'     => 'Customer',
+            'sent_date' => $sentDate,
         ]);
     }
 }

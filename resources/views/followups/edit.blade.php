@@ -4,6 +4,7 @@
 
 @php
     $quotation_id = request()->query('quotation_id') ?? null;
+    $allowedExts  = ['pdf','xls','xlsx','csv','doc','docx','jpg','jpeg','png','gif','webp','svg','zip','rar'];
 @endphp
 
 @section('content_header')
@@ -20,22 +21,34 @@
 
 @section('content')
 
-{{-- Validation Errors --}}
-@if ($errors->any())
-    <div class="alert alert-danger mb-3">
-        <i class="fas fa-exclamation-circle mr-2"></i>
-        <div>
-            <strong>Please fix the following errors:</strong>
-            <ul class="mb-0 mt-1 pl-3">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+{{-- ── Flash Messages ── --}}
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    </div>
+@endif
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+        <i class="fas fa-exclamation-circle mr-2"></i> {{ session('error') }}
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
     </div>
 @endif
 
-{{-- ── Follow-up History (Collapsible) ── --}}
+{{-- ── Validation Errors ── --}}
+@if ($errors->any())
+    <div class="alert alert-danger mb-3">
+        <i class="fas fa-exclamation-circle mr-2"></i>
+        <strong>Please fix the following errors:</strong>
+        <ul class="mb-0 mt-1 pl-3">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+{{-- ══ FOLLOW-UP HISTORY ══ --}}
 <div class="crm-index-card mb-4">
     <div class="card-header fu-history-toggle" id="historyToggle" title="Click to expand / collapse">
         <h3 class="card-title mb-0">
@@ -49,7 +62,6 @@
             <i class="fas fa-chevron-down fu-chevron" id="historyChevron"></i>
         </div>
     </div>
-
     <div class="fu-history-body" id="historyBody" style="display:none;">
         @if($followups->isEmpty())
             <div style="padding:16px 20px;">
@@ -65,7 +77,8 @@
                             <th>#</th>
                             <th>Follow-Up Date</th>
                             <th>Notes</th>
-                            <th>Next Follow-Up Date</th>
+                            <th>Next Follow-Up</th>
+                            <th>Documents</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,6 +98,16 @@
                                         {{ \Carbon\Carbon::parse($followup->next_follow_up_date)->format('d M Y, h:i A') }}
                                     </span>
                                 </td>
+                                <td>
+                                    @if($followup->documents->count())
+                                        <span class="fu-doc-badge">
+                                            <i class="fas fa-paperclip"></i>
+                                            {{ $followup->documents->count() }}
+                                        </span>
+                                    @else
+                                        <span class="text-muted" style="font-size:.8rem;">—</span>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -94,24 +117,35 @@
     </div>
 </div>
 
-{{-- ── Follow-up Form ── --}}
-<div class="crm-card" style="margin-bottom: 80px;">{{-- bottom margin for sticky bar --}}
+{{-- ══ FOLLOW-UP FORM ══ --}}
+<div class="crm-card" style="margin-bottom: 90px;">
     <div class="crm-card-header">
         <h3 class="card-title">
             <i class="fas fa-edit"></i> Manage Follow-up Entries
         </h3>
-        <span class="fu-entry-count" id="entryCount"></span>
+        <div class="d-flex align-items-center" style="gap: 10px;">
+            <span class="fu-entry-count" id="entryCount"></span>
+            <button type="button" class="btn btn-sm btn-outline-light" id="addRowBtn">
+                <i class="fas fa-plus"></i> Add Entry
+            </button>
+        </div>
     </div>
 
     <div class="crm-card-body">
-        <form action="{{ route('followup.update', $customer_id) }}" method="POST" id="followupForm">
+        <form action="{{ route('followup.update', $customer_id) }}"
+              method="POST"
+              id="followupForm"
+              enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
+            {{-- Hidden: document IDs to delete (populated by JS) --}}
+            <div id="deleteDocInputs"></div>
+
             <div id="followup-container">
 
-                {{-- New (blank) row --}}
-                <div class="followup-row followup-row--new">
+                {{-- ── NEW (blank) row ── --}}
+                <div class="followup-row followup-row--new" data-index="0">
                     <div class="followup-row-header">
                         <span class="followup-row-label">
                             <i class="fas fa-plus-circle"></i> New Entry
@@ -120,46 +154,134 @@
                             <i class="fas fa-trash"></i> Remove
                         </button>
                     </div>
-                    <input type="hidden" name="follow_up_id[]">
+
+                    <input type="hidden" name="follow_up_id[]" value="">
                     <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
+
                     <div class="row">
                         <div class="col-md-6">
-                            <x-adminlte-input type="date" name="follow_up_date[]" label="Follow-Up Date" fgroup-class="mb-3" />
+                            <x-adminlte-input type="text"
+                                name="follow_up_date[]"
+                                label="Follow-Up Date"
+                                fgroup-class="mb-3"
+                                class="date-time" />
                         </div>
                         <div class="col-md-6">
-                            <x-adminlte-input type="text" name="next_follow_up_date[]" label="Next Follow-Up Date" fgroup-class="mb-3" />
+                            <x-adminlte-input type="text"
+                                name="next_follow_up_date[]"
+                                label="Next Follow-Up Date"
+                                fgroup-class="mb-3"
+                                class="date-time" />
                         </div>
                         <div class="col-md-12">
-                            <x-adminlte-textarea name="notes[]" label="Notes" fgroup-class="mb-0"></x-adminlte-textarea>
+                            <x-adminlte-textarea name="notes[]" label="Notes" fgroup-class="mb-3"></x-adminlte-textarea>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="fu-doc-upload-area" data-index="0">
+                                <div class="fu-dropzone" id="dropzone-0">
+                                    <i class="fas fa-cloud-upload-alt fu-drop-icon"></i>
+                                    <p class="fu-drop-text">Drag & drop files or <span class="fu-drop-link">browse</span></p>
+                                    <p class="fu-drop-hint">PDF, Excel, Word, Images, ZIP — max 20 MB each</p>
+                                    <input type="file"
+                                           name="documents[0][]"
+                                           class="fu-file-input"
+                                           multiple
+                                           accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.svg,.zip,.rar">
+                                </div>
+                                <div class="fu-file-list" id="fileList-0"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                {{-- Existing rows --}}
+                {{-- ── Existing rows ── --}}
                 @foreach ($ofollowups as $index => $followup)
-                    <div class="followup-row">
+                    @php $rowIdx = $index + 1; @endphp
+                    <div class="followup-row" data-index="{{ $rowIdx }}">
                         <div class="followup-row-header">
                             <span class="followup-row-label">
                                 <i class="fas fa-calendar-check"></i> Entry #{{ $index + 1 }}
+                                @if($followup->documents->count())
+                                    <span class="fu-doc-badge ml-2">
+                                        <i class="fas fa-paperclip"></i> {{ $followup->documents->count() }}
+                                    </span>
+                                @endif
                             </span>
                             <button type="button" class="crm-remove-btn remove-followup">
                                 <i class="fas fa-trash"></i> Remove
                             </button>
                         </div>
+
                         <input type="hidden" name="follow_up_id[]" value="{{ $followup->id }}">
                         <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
+
                         <div class="row">
                             <div class="col-md-6">
-                                <x-adminlte-input type="date" name="follow_up_date[]" label="Follow-Up Date"
-                                    value="{{ $followup->follow_up_date }}" fgroup-class="mb-3" />
+                                <x-adminlte-input type="text"
+                                    name="follow_up_date[]"
+                                    label="Follow-Up Date"
+                                    value="{{ $followup->follow_up_date }}"
+                                    fgroup-class="mb-3"
+                                    class="date-time" />
                             </div>
                             <div class="col-md-6">
-                                <x-adminlte-input type="datetime-local" name="next_follow_up_date[]"
+                                <x-adminlte-input type="text"
+                                    name="next_follow_up_date[]"
                                     label="Next Follow-Up Date"
-                                    value="{{ $followup->next_follow_up_date }}" fgroup-class="mb-3" />
+                                    value="{{ $followup->next_follow_up_date }}"
+                                    fgroup-class="mb-3"
+                                    class="date-time" />
                             </div>
                             <div class="col-md-12">
-                                <x-adminlte-textarea name="notes[]" label="Notes" fgroup-class="mb-0">{{ $followup->notes }}</x-adminlte-textarea>
+                                <x-adminlte-textarea name="notes[]" label="Notes" fgroup-class="mb-3">{{ $followup->notes }}</x-adminlte-textarea>
+                            </div>
+
+                            {{-- ── Existing Documents ── --}}
+                            @if($followup->documents->count())
+                                <div class="col-md-12 mb-3">
+                                    <label class="fu-doc-section-label">
+                                        <i class="fas fa-folder-open"></i> Existing Documents
+                                    </label>
+                                    <div class="fu-existing-docs" id="existingDocs-{{ $rowIdx }}">
+                                        @foreach($followup->documents as $doc)
+                                            <div class="fu-doc-chip" id="docChip-{{ $doc->id }}">
+                                                <i class="{{ $doc->icon_class }} fu-chip-icon"></i>
+                                                <div class="fu-chip-info">
+                                                    <a href="{{ Storage::url($doc->file_path) }}"
+                                                       target="_blank"
+                                                       class="fu-chip-name"
+                                                       title="{{ $doc->original_name }}">
+                                                        {{ Str::limit($doc->original_name, 30, '...') }}
+                                                    </a>
+                                                    <span class="fu-chip-meta">{{ $doc->human_size }} · {{ strtoupper($doc->file_type) }}</span>
+                                                </div>
+                                                <button type="button"
+                                                        class="fu-chip-delete"
+                                                        data-doc-id="{{ $doc->id }}"
+                                                        title="Remove document">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            {{-- ── New Document Upload ── --}}
+                            <div class="col-md-12">
+                                <div class="fu-doc-upload-area" data-index="{{ $rowIdx }}">
+                                    <div class="fu-dropzone" id="dropzone-{{ $rowIdx }}">
+                                        <i class="fas fa-cloud-upload-alt fu-drop-icon"></i>
+                                        <p class="fu-drop-text">Drag & drop or <span class="fu-drop-link">browse</span> to add more files</p>
+                                        <p class="fu-drop-hint">PDF, Excel, Word, Images, ZIP — max 20 MB each</p>
+                                        <input type="file"
+                                               name="documents[{{ $rowIdx }}][]"
+                                               class="fu-file-input"
+                                               multiple
+                                               accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.svg,.zip,.rar">
+                                    </div>
+                                    <div class="fu-file-list" id="fileList-{{ $rowIdx }}"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -178,10 +300,10 @@
             <span id="stickyInfo">— entries to save</span>
         </div>
         <div class="fu-sticky-actions">
-            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary btn-sm">
                 <i class="fas fa-times"></i> Cancel
             </a>
-            <button type="submit" form="followupForm" class="btn btn-primary">
+            <button type="submit" form="followupForm" class="btn btn-primary btn-sm">
                 <i class="fas fa-save"></i> Save Changes
             </button>
         </div>
@@ -194,230 +316,245 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('style/common.css') }}">
     <link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
-    <style>
-        /* ─── History collapsible header ─── */
-        .fu-history-toggle {
-            display: flex !important;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            user-select: none;
-        }
-        .fu-history-toggle:hover { opacity: .92; }
-
-        .fu-count-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: 8px;
-            min-width: 22px;
-            height: 22px;
-            padding: 0 6px;
-            border-radius: 20px;
-            background: rgba(255,255,255,.25);
-            color: #fff;
-            font-size: .72rem;
-            font-weight: 700;
-        }
-        .fu-toggle-hint {
-            font-size: .73rem;
-            font-weight: 500;
-            color: rgba(255,255,255,.72);
-        }
-        .fu-chevron {
-            color: rgba(255,255,255,.85);
-            font-size: .85rem;
-            transition: transform .25s ease;
-        }
-        .fu-chevron.open { transform: rotate(180deg); }
-
-        /* ─── Scrollable table container — max 300px ─── */
-        .fu-table-scroll {
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 0 20px 14px;
-            border-top: 1px solid var(--crm-border);
-        }
-        .fu-table-scroll::-webkit-scrollbar { width: 4px; }
-        .fu-table-scroll::-webkit-scrollbar-thumb {
-            background: var(--crm-primary);
-            border-radius: 4px;
-        }
-
-        /* ─── Form card header pill ─── */
-        .fu-entry-count {
-            font-family: var(--crm-mono);
-            font-size: .74rem;
-            font-weight: 600;
-            color: rgba(255,255,255,.8);
-            background: rgba(255,255,255,.15);
-            padding: 3px 10px;
-            border-radius: 20px;
-        }
-
-        /* ─── Follow-up rows ─── */
-        .followup-row {
-            background: var(--crm-bg);
-            border: 1.5px solid var(--crm-border);
-            border-radius: var(--crm-radius);
-            padding: 18px 18px 14px;
-            margin-bottom: 14px;
-            transition: border-color var(--crm-transition), box-shadow var(--crm-transition);
-        }
-        .followup-row:hover {
-            border-color: var(--crm-primary);
-            box-shadow: 0 2px 12px rgba(37,99,235,.08);
-        }
-        .followup-row--new {
-            border-color: var(--crm-primary);
-            background: var(--crm-primary-light);
-        }
-        .followup-row-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-        .followup-row-label {
-            font-family: var(--crm-font);
-            font-size: .76rem;
-            font-weight: 700;
-            letter-spacing: .06em;
-            text-transform: uppercase;
-            color: var(--crm-primary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .crm-remove-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 4px 11px;
-            font-family: var(--crm-font);
-            font-size: .76rem;
-            font-weight: 600;
-            color: var(--crm-danger);
-            background: #fee2e2;
-            border: 1.5px solid transparent;
-            border-radius: var(--crm-radius-sm);
-            cursor: pointer;
-            transition: all var(--crm-transition);
-        }
-        .crm-remove-btn:hover {
-            border-color: var(--crm-danger);
-            box-shadow: 0 2px 8px rgba(220,38,38,.2);
-            transform: translateY(-1px);
-        }
-
-        /* ─── Date cell ─── */
-        .crm-date-cell {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: .84rem;
-        }
-        .crm-date-cell i { color: var(--crm-primary); font-size: .78rem; }
-
-        /* ─── STICKY BAR ─── */
-        .fu-sticky-bar {
-            position: fixed;
-            bottom: 0;
-            left: 250px; /* AdminLTE sidebar width */
-            right: 0;
-            z-index: 1030;
-            background: var(--crm-card-bg);
-            border-top: 2px solid var(--crm-primary);
-            box-shadow: 0 -4px 20px rgba(37,99,235,.13);
-            padding: 11px 28px;
-            transition: left .3s ease;
-        }
-        /* Collapsed sidebar */
-        .sidebar-collapse .fu-sticky-bar { left: 74px; }
-        /* Mobile */
-        @media (max-width: 767px) {
-            .fu-sticky-bar { left: 0 !important; padding: 10px 16px; }
-            .fu-sticky-info { display: none; }
-        }
-
-        .fu-sticky-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-        .fu-sticky-info {
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            font-family: var(--crm-font);
-            font-size: .82rem;
-            color: var(--crm-text-muted);
-        }
-        .fu-sticky-info i { color: var(--crm-primary); }
-        .fu-sticky-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* ─── Flatpickr ─── */
-        .flatpickr-calendar {
-            font-family: var(--crm-font) !important;
-            border-radius: var(--crm-radius) !important;
-            box-shadow: 0 8px 24px rgba(0,0,0,.1) !important;
-            border: 1.5px solid var(--crm-border) !important;
-        }
-        .flatpickr-day.selected,
-        .flatpickr-day.selected:hover {
-            background: var(--crm-primary) !important;
-            border-color: var(--crm-primary) !important;
-        }
-        .flatpickr-day:hover { background: var(--crm-primary-light) !important; }
-    </style>
+    <link rel="stylesheet" href="{{ asset('style/customerFollowup.css') }}">
 @endpush
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+    <script src="{{ asset('js/followup.js') }}">
+    document.addEventListener('DOMContentLoaded', function () {
 
-            /* ── History toggle ── */
-            const toggle  = document.getElementById('historyToggle');
-            const body    = document.getElementById('historyBody');
-            const chevron = document.getElementById('historyChevron');
-            const hint    = document.getElementById('toggleHint');
+        /* ─── File-type → icon map ─── */
+        const iconMap = {
+            pdf:  'fas fa-file-pdf text-danger',
+            xls:  'fas fa-file-excel text-success',
+            xlsx: 'fas fa-file-excel text-success',
+            csv:  'fas fa-file-csv text-success',
+            doc:  'fas fa-file-word text-primary',
+            docx: 'fas fa-file-word text-primary',
+            jpg:  'fas fa-file-image text-warning',
+            jpeg: 'fas fa-file-image text-warning',
+            png:  'fas fa-file-image text-warning',
+            gif:  'fas fa-file-image text-warning',
+            webp: 'fas fa-file-image text-warning',
+            svg:  'fas fa-file-image text-warning',
+            zip:  'fas fa-file-archive text-secondary',
+            rar:  'fas fa-file-archive text-secondary',
+        };
 
-            toggle.addEventListener('click', function () {
-                const open = body.style.display !== 'none';
-                body.style.display = open ? 'none' : 'block';
-                chevron.classList.toggle('open', !open);
-                hint.textContent = open ? 'Click to expand' : 'Click to collapse';
-            });
+        function getIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            return iconMap[ext] || 'fas fa-file text-muted';
+        }
 
-            /* ── Remove row (delegated) ── */
-            document.getElementById('followup-container').addEventListener('click', function (e) {
-                if (e.target.closest('.remove-followup')) {
-                    e.target.closest('.followup-row').remove();
-                    updateCount();
+        function humanSize(bytes) {
+            if (bytes >= 1048576) return (bytes / 1048576).toFixed(2) + ' MB';
+            return (bytes / 1024).toFixed(1) + ' KB';
+        }
+
+        /* ─── Initialise dropzone for a row index ─── */
+        function initDropzone(idx) {
+            const zone     = document.getElementById(`dropzone-${idx}`);
+            const listEl   = document.getElementById(`fileList-${idx}`);
+            if (!zone) return;
+
+            const fileInput = zone.querySelector('.fu-file-input');
+            let   fileStore = [];   // DataTransfer accumulator
+
+            function renderList() {
+                listEl.innerHTML = '';
+                fileStore.forEach((file, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'fu-file-item';
+                    item.innerHTML = `
+                        <i class="${getIcon(file.name)}"></i>
+                        <span class="fu-file-item-name" title="${file.name}">${file.name.length > 25 ? file.name.slice(0, 22) + '...' : file.name}</span>
+                        <span class="fu-file-item-size">${humanSize(file.size)}</span>
+                        <button type="button" class="fu-file-item-remove" data-i="${i}" title="Remove"><i class="fas fa-times"></i></button>
+                    `;
+                    listEl.appendChild(item);
+                });
+
+                // Sync fileInput files via DataTransfer
+                const dt = new DataTransfer();
+                fileStore.forEach(f => dt.items.add(f));
+                fileInput.files = dt.files;
+            }
+
+            listEl.addEventListener('click', function (e) {
+                const btn = e.target.closest('.fu-file-item-remove');
+                if (btn) {
+                    fileStore.splice(parseInt(btn.dataset.i), 1);
+                    renderList();
                 }
             });
 
-            /* ── Entry count ── */
-            function updateCount() {
-                const n = document.querySelectorAll('#followup-container .followup-row').length;
-                document.getElementById('entryCount').textContent = n + (n === 1 ? ' entry' : ' entries');
-                document.getElementById('stickyInfo').textContent = n + (n === 1 ? ' entry to save' : ' entries to save');
-            }
-            updateCount();
-
-            /* ── Flatpickr ── */
-            flatpickr("input[name='next_follow_up_date[]']", {
-                enableTime: true,
-                dateFormat: "Y-m-d h:i K",
-                time_24hr: false
+            fileInput.addEventListener('change', function () {
+                Array.from(this.files).forEach(f => fileStore.push(f));
+                renderList();
             });
 
+            zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+            zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+            zone.addEventListener('drop', function (e) {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                Array.from(e.dataTransfer.files).forEach(f => fileStore.push(f));
+                renderList();
+            });
+        }
+
+        /* Init all visible dropzones */
+        document.querySelectorAll('.fu-dropzone').forEach(zone => {
+            const idx = zone.closest('[data-index]').dataset.index;
+            initDropzone(parseInt(idx));
         });
+
+        /* ─── Delete existing document (AJAX) ─── */
+        let rowDeleteTracker = {};  // track locally removed doc IDs per row
+
+        document.addEventListener('click', function (e) {
+            const btn = e.target.closest('.fu-chip-delete');
+            if (!btn) return;
+
+            const docId = btn.dataset.docId;
+            const chip  = document.getElementById(`docChip-${docId}`);
+            if (!chip) return;
+
+            if (!confirm('Remove this document?')) return;
+
+            chip.classList.add('removing');
+
+            fetch(`customer/followup-document/${docId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.status) {
+                    chip.remove();
+                } else {
+                    chip.classList.remove('removing');
+                    alert('Failed to delete document.');
+                }
+            })
+            .catch(() => {
+                chip.classList.remove('removing');
+                alert('Network error. Please try again.');
+            });
+        });
+
+        /* ─── History toggle ─── */
+        const toggle  = document.getElementById('historyToggle');
+        const body    = document.getElementById('historyBody');
+        const chevron = document.getElementById('historyChevron');
+        const hint    = document.getElementById('toggleHint');
+
+        toggle.addEventListener('click', function () {
+            const open = body.style.display !== 'none';
+            body.style.display  = open ? 'none' : 'block';
+            chevron.classList.toggle('open', !open);
+            hint.textContent = open ? 'Click to expand' : 'Click to collapse';
+        });
+
+        /* ─── Remove row ─── */
+        document.getElementById('followup-container').addEventListener('click', function (e) {
+            if (e.target.closest('.remove-followup')) {
+                const row = e.target.closest('.followup-row');
+                if (document.querySelectorAll('#followup-container .followup-row').length <= 1) {
+                    alert('At least one follow-up entry is required.');
+                    return;
+                }
+                row.remove();
+                updateCount();
+            }
+        });
+
+        /* ─── Add new row ─── */
+        let nextIdx = {{ $ofollowups->count() + 1 }};
+
+        document.getElementById('addRowBtn').addEventListener('click', function () {
+            const html = `
+            <div class="followup-row followup-row--new" data-index="${nextIdx}">
+                <div class="followup-row-header">
+                    <span class="followup-row-label">
+                        <i class="fas fa-plus-circle"></i> New Entry
+                    </span>
+                    <button type="button" class="crm-remove-btn remove-followup">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
+                </div>
+                <input type="hidden" name="follow_up_id[]" value="">
+                <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label>Follow-Up Date</label>
+                            <input type="text" name="follow_up_date[]" class="form-control date-time-new">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label>Next Follow-Up Date</label>
+                            <input type="text" name="next_follow_up_date[]" class="form-control date-time-new">
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group mb-3">
+                            <label>Notes</label>
+                            <textarea name="notes[]" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="fu-doc-upload-area" data-index="${nextIdx}">
+                            <div class="fu-dropzone" id="dropzone-${nextIdx}">
+                                <i class="fas fa-cloud-upload-alt fu-drop-icon"></i>
+                                <p class="fu-drop-text">Drag & drop or <span class="fu-drop-link">browse</span></p>
+                                <p class="fu-drop-hint">PDF, Excel, Word, Images, ZIP — max 20 MB each</p>
+                                <input type="file" name="documents[${nextIdx}][]" class="fu-file-input" multiple
+                                    accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.svg,.zip,.rar">
+                            </div>
+                            <div class="fu-file-list" id="fileList-${nextIdx}"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+            document.getElementById('followup-container').insertAdjacentHTML('afterbegin', html);
+
+            // Init flatpickr on new fields
+            document.querySelectorAll('.date-time-new').forEach(el => {
+                flatpickr(el, {
+                    enableTime: true,
+                    dateFormat: "Y-m-d h:i K",
+                    time_24hr: false,
+                });
+                el.classList.remove('date-time-new');
+            });
+
+            initDropzone(nextIdx);
+            nextIdx++;
+            updateCount();
+        });
+
+        /* ─── Entry count ─── */
+        function updateCount() {
+            const n = document.querySelectorAll('#followup-container .followup-row').length;
+            document.getElementById('entryCount').textContent = n + (n === 1 ? ' entry' : ' entries');
+            document.getElementById('stickyInfo').textContent = n + (n === 1 ? ' entry to save' : ' entries to save');
+        }
+        updateCount();
+
+        /* ─── Flatpickr init ─── */
+        flatpickr(".date-time", {
+            enableTime: true,
+            dateFormat: "Y-m-d h:i K",
+            time_24hr: false,
+        });
+
+    });
     </script>
 @stop

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('customer_follow_ups', function (Blueprint $table) {
             $table->id();
             $table->string('customer_id',24);
-            $table->date('follow_up_date')->nullable();
+            $table->dateTime('follow_up_date')->nullable();
             $table->dateTime('next_follow_up_date')->nullable();
             $table->string('notes');
             $table->softDeletes();

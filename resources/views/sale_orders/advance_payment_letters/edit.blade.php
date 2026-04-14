@@ -20,20 +20,22 @@
 
     <div class="card shadow-sm">
         <div class="card-header bg-primary text-white">
-           <h3 class="card-title"><i class="fas fa-plus-circle"></i> Edit Order Information</h3>
+            <h3 class="card-title"><i class="fas fa-plus-circle"></i> Edit Order Information</h3>
         </div>
 
         <div class="card-body">
             <div class="row">
                 {{-- Quotation --}}
                 <div class="col-md-3 mb-3">
-                    <x-adminlte-input value="{{ $saleOrder->work_order_no }}" label="Work Order No" name="purchase_order_no" readonly />
+                    <x-adminlte-input value="{{ $saleOrder->work_order_no }}" label="Work Order No"
+                        name="purchase_order_no" readonly />
                 </div>
                 <div class="col-md-3 mb-3">
                     <x-adminlte-input value="{{ $saleOrder->quotation->reference_no ?? '' }}" label="Quotation"
                         name="quotation" readonly onclick="showQuotationDetailsModal()" style="cursor:pointer;" />
                     <input type="hidden" value="{{ $saleOrder->quotation_id }}" name="quotation_id" />
-                    <input type="hidden" name="customer_name" value="{{$saleOrder->quotation->customer->company_name ?? 'N/A'}}">
+                    <input type="hidden" name="customer_name"
+                        value="{{$saleOrder->quotation->customer->company_name ?? 'N/A'}}">
                 </div>
 
                 {{--<div class="col-md-3 mb-3">
@@ -63,26 +65,26 @@
 
 
                 {{-- Order Date --}}
-              {{--<div class="col-md-3 mb-3">
+                {{--<div class="col-md-3 mb-3">
                     <label for="order_date">Order Date <span class="text-primary">*</span></label>
                     <input type="date" name="order_date" class="form-control" value="{{ $saleOrder->order_date}}"
                         required>
                 </div>--}}
 
                 {{-- Delivery Date --}}
-              <div class="col-md-3 mb-3">
+                <div class="col-md-3 mb-3">
                     <label for="delivery_date">Delivery Date</label>
                     <input type="date" name="delivery_date" class="form-control" value="{{$saleOrder->delivery_date}}">
-                </div> 
+                </div>
 
                 {{-- Status --}}
                 {{-- <div class="col-md-3 mb-3">
                     <label for="status">Order Status</label>
                     <select name="status" class="form-control">
                         @foreach(['pending', 'processing', 'shipped', 'delivered', 'canceled'] as $status)
-                            <option value="{{ $status }}" {{ $saleOrder->status == $status ? 'selected' : '' }}>
-                                {{ ucfirst($status) }}
-                            </option>
+                        <option value="{{ $status }}" {{ $saleOrder->status == $status ? 'selected' : '' }}>
+                            {{ ucfirst($status) }}
+                        </option>
                         @endforeach
                     </select>
                 </div> --}}
@@ -99,13 +101,14 @@
                 </div>
 
                 {{-- Payment Status --}}
-              {{-- <div class="col-md-3 mb-3">
+                {{-- <div class="col-md-3 mb-3">
                     <label for="payment_status">Payment Status</label>
                     <select name="payment_status" class="form-control">
                         @foreach(['Paid', 'Unpaid', 'Half Paid'] as $status)
-                            <option value="{{ strtolower($status) }}" {{ $saleOrder->payment_status == strtolower($status) ? 'selected' : '' }}>
-                                {{ $status }}
-                            </option>
+                        <option value="{{ strtolower($status) }}" {{ $saleOrder->payment_status == strtolower($status) ?
+                            'selected' : '' }}>
+                            {{ $status }}
+                        </option>
                         @endforeach
                     </select>
                 </div>--}}
@@ -113,7 +116,8 @@
                 <div class="col-md-3 mb-3">
                     <label for="transporation_payment">Transporation Payment</label>
                     <select name="transporation_payment" class="form-control" id="transporationpayment">
-                        <option value="0" {{ $saleOrder->transporation_payment == "0" ? 'selected' : '' }}>Mr Will Pay</option>
+                        <option value="0" {{ $saleOrder->transporation_payment == "0" ? 'selected' : '' }}>Mr Will Pay
+                        </option>
                         <option value="1" {{ $saleOrder->transporation_payment == "1" ? 'selected' : '' }}>To Pay</option>
                     </select>
                 </div>
@@ -134,22 +138,23 @@
                         value="{{ $saleOrder->tax ?? '18' }}" id="tax" />
                 </div>
 
-                <div class="col-md-3 mb-3" >
+                <div class="col-md-3 mb-3">
                     <x-adminlte-select label="Discount Type" name="discount_type" value="{{ $saleOrder->discount }}"
                         id="discountType">
                         <option value="none" {{ $saleOrder->discount_type == "none" ? 'selected' : '' }}>None </option>
-                        <option value="amount" {{ $saleOrder->discount_type == "amount" ? 'selected' : '' }}>Amount</option>
+                        <option value="amount" {{ $saleOrder->discount_type == "amount" ? 'selected' : '' }}>Amount
+                        </option>
                         <option value="percentage" {{ $saleOrder->discount_type == "percentage" ? 'selected' : '' }}>
                             Percentage</option>
                     </x-adminlte-select>
                 </div>
                 <div class="form-group col-md-3 mb-3" id="discountPercentage">
-                    <x-adminlte-input type="number" label="Discount(%)" id="discount_percentage" name="discount_percentage" value="{{ $saleOrder->discount_percentage }}"
-                        />
+                    <x-adminlte-input type="number" label="Discount(%)" id="discount_percentage"
+                        name="discount_percentage" value="{{ $saleOrder->discount_percentage }}" />
                 </div>
                 <div class="form-group col-md-3 mb-3" id="discountAmount">
-                    <x-adminlte-input type="number" label="Discount Amount" id="discount_amount" name="discount_amount" value="{{ $saleOrder->discount_amount }}"
-                         />
+                    <x-adminlte-input type="number" label="Discount Amount" id="discount_amount" name="discount_amount"
+                        value="{{ $saleOrder->discount_amount }}" />
                 </div>
 
 
@@ -158,24 +163,25 @@
                         id="discount" />
                 </div> -->
                 <div class="col-md-3 mb-2" id="insuranceDiv">
-                       <x-adminlte-input type="number" label="Insurance" name="insurance" value="{{ $saleOrder->insurance }}"
-                        id="insurance" />
+                    <x-adminlte-input type="number" label="Insurance" name="insurance"
+                        value="{{ $saleOrder->insurance }}" id="insurance" />
                 </div>
                 <div class="col-md-3 mb-2" id="packingDiv">
-                       <x-adminlte-input type="number" label="Packing" name="packging" value="{{ $saleOrder->packging }}"
+                    <x-adminlte-input type="number" label="Packing" name="packging" value="{{ $saleOrder->packging }}"
                         id="packing" />
                 </div>
 
                 <div class="col-md-3 mb-3">
                     <x-adminlte-input type="number" id="ledger-grand-total-amount" label="Grand Total"
                         name="grand_total" value="{{ $saleOrder->grand_total }}" readonly />
-                    <input type="hidden" name="advanace_payment" value="{{ $saleOrder->advanace_payment ?? '0'  }}" id="total_advanace_amount" />    
+                    <input type="hidden" name="advanace_payment" value="{{ $saleOrder->advanace_payment ?? '0'  }}"
+                        id="total_advanace_amount" />
                 </div>
                 {{--<div class="col-md-3 mb-3">
                     <x-adminlte-input type="number" label="Total Advanace Payment" name="advanace_payment"
                         id="total_advanace_amount" value="{{ $saleOrder->advanace_payment ?? '0' }}" />
                 </div>--}}
-              {{--  <div class="col-md-3 mb-3">
+                {{-- <div class="col-md-3 mb-3">
                     <x-adminlte-input type="date" label="Advanace Payment Date" name="advance_payment_date"
                         id="advance_payment_date" value="{{ $saleOrder->advance_payment_date }}" />
                 </div>--}}
@@ -189,7 +195,7 @@
                 </div>
                 <div class="col-md-4 mb-3">
                     <x-adminlte-input type="text" label="Payment  Condition" name="payment_term_condition"
-                        value="{{ $saleOrder->payment_term_condition??'40% Advance & 60% Before Dispatch' }}" />
+                        value="{{ $saleOrder->payment_term_condition ?? '40% Advance & 60% Before Dispatch' }}" />
                 </div>
 
                 {{-- Notes --}}
@@ -198,7 +204,7 @@
                     <textarea name="remarks" rows="3" class="form-control"
                         placeholder="Add any comments or instructions...">{{ $saleOrder->remarks }}</textarea>
                 </div>
-              {{--  <div class="col-md-6 mb-3">
+                {{-- <div class="col-md-6 mb-3">
                     <label for="address">Customer Address</label>
                     <textarea name="address" rows="3" class="form-control"
                         placeholder="Add   address here...">{{ $saleOrder->address ?? $saleOrder->quotation->customer->address_line_1 ?? '' }}</textarea>
@@ -216,14 +222,14 @@
             <!-- <hr> -->
 
             {{-- Ledger Section --}}
-          <!-- <h5><i class="fas fa-rupee-sign"></i>Advance Payment Ledger</h5> -->
-        <h5 class="d-flex justify-content-between align-items-center">
-            <span><i class="fas fa-rupee-sign"></i> Advance Payment Ledger</span>
-        
-            <button type="button" class="btn btn-sm btn-outline-primary" id="printLedgerPdf">
-                <i class="fas fa-print"></i> Print Ledger
-            </button>
-        </h5>
+            <!-- <h5><i class="fas fa-rupee-sign"></i>Advance Payment Ledger</h5> -->
+            <h5 class="d-flex justify-content-between align-items-center">
+                <span><i class="fas fa-rupee-sign"></i> Advance Payment Ledger</span>
+
+                <button type="button" class="btn btn-sm btn-outline-primary" id="printLedgerPdf">
+                    <i class="fas fa-print"></i> Print Ledger
+                </button>
+            </h5>
             <div class="table-responsive">
                 <table class="table table-bordered" id="ledger_table">
                     <thead class="thead-light">
@@ -234,7 +240,8 @@
                             <th>Transaction ID</th>
                             <th>Remarks</th>
                             <th>
-                                <button type="button" data-pay="before" class="btn btn-sm btn-success" id="addLedgerRow">
+                                <button type="button" data-pay="before" class="btn btn-sm btn-success"
+                                    id="addLedgerRow">
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </th>
@@ -242,47 +249,47 @@
                     </thead>
                     <tbody>
                         @foreach ($saleOrder->payments as $index => $payment)
-                          @if ($payment->type == "before") 
-                            <tr>
+                            @if ($payment->type == "before")
+                                <tr>
 
-                                <td>
-                                    <input type="hidden" value="before" name="payments[{{ $index }}][type]"/>
-                                    <input type="date" name="payments[{{ $index }}][date]" class="form-control"
-                                        value="{{ $payment->payment_date }}" required>
-                                </td>
-                                <td>
-                                    <input type="number" step="0.01" name="payments[{{ $index }}][amount]"
-                                        class="form-control amount-input" value="{{ $payment->amount }}" required>
-                                </td>
-                                <td>
-                                    <select name="payments[{{ $index }}][mode]" class="form-control payment-mode"
-                                        data-row="{{ $index }}" required>
-                                        <option value="">Select</option>
-                                        <option value="cash" {{ $payment->mode === 'cash' ? 'selected' : '' }}>Cash</option>
-                                        <option value="online" {{ $payment->mode === 'online' ? 'selected' : '' }}>Online
-                                        </option>
-                                        <option value="other" {{ $payment->mode === 'other' ? 'selected' : '' }}>Other
-                                        </option>
-                                    </select>
-                                </td>
+                                    <td>
+                                        <input type="hidden" value="before" name="payments[{{ $index }}][type]" />
+                                        <input type="date" name="payments[{{ $index }}][date]" class="form-control"
+                                            value="{{ $payment->payment_date }}" required>
+                                    </td>
+                                    <td>
+                                        <input type="number" step="0.01" name="payments[{{ $index }}][amount]"
+                                            class="form-control amount-input" value="{{ $payment->amount }}" required>
+                                    </td>
+                                    <td>
+                                        <select name="payments[{{ $index }}][mode]" class="form-control payment-mode"
+                                            data-row="{{ $index }}" required>
+                                            <option value="">Select</option>
+                                            <option value="cash" {{ $payment->mode === 'cash' ? 'selected' : '' }}>Cash</option>
+                                            <option value="online" {{ $payment->mode === 'online' ? 'selected' : '' }}>Online
+                                            </option>
+                                            <option value="other" {{ $payment->mode === 'other' ? 'selected' : '' }}>Other
+                                            </option>
+                                        </select>
+                                    </td>
 
-                                <td>
-                                    <input type="text" name="payments[{{ $index }}][transaction_id]"
-                                        class="form-control transaction-id {{ $payment->mode === 'online' ? '' : 'd-none' }}"
-                                        value="{{ $payment->transaction_id }}" placeholder="Enter Transaction ID">
-                                </td>
-                                <td>
-                                    <textarea name="payments[{{ $index }}][remarks]"
-                                        class="form-control remarks {{ $payment->mode === 'other' ? '' : 'd-none' }}"
-                                        placeholder="Enter Remarks">{{ $payment->remarks }}</textarea>
-                                </td>
-                                <td class="text-center">
-                                    <button type="button" class="btn btn-sm btn-primary removeLedgerRow">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                          @endif  
+                                    <td>
+                                        <input type="text" name="payments[{{ $index }}][transaction_id]"
+                                            class="form-control transaction-id {{ $payment->mode === 'online' ? '' : 'd-none' }}"
+                                            value="{{ $payment->transaction_id }}" placeholder="Enter Transaction ID">
+                                    </td>
+                                    <td>
+                                        <textarea name="payments[{{ $index }}][remarks]"
+                                            class="form-control remarks {{ $payment->mode === 'other' ? '' : 'd-none' }}"
+                                            placeholder="Enter Remarks">{{ $payment->remarks }}</textarea>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-primary removeLedgerRow">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                     <tfoot>
@@ -291,7 +298,7 @@
                             <td id="ledger-grand-total-amounts" class="text-left font-weight-bold">
                                 ₹{{$saleOrder->grand_total}}</td>
                         </tr>
-                      {{--  <tr>
+                        {{-- <tr>
                             <td colspan="5" class="text-right font-weight-bold">Paid in Advance:</td>
                             <td id="ledger-advance-total-amount" class="text-left font-weight-bold">₹0.00</td>
                         </tr>--}}
@@ -333,20 +340,20 @@
 
                 <table class="table table-bordered table-sm">
                     @php
-$tax = $saleOrder->tax ?? 0;
-$taxAmount = (($saleOrder->total_amount + $saleOrder->transporation_charge) * $tax) / 100;
+                        $tax = $saleOrder->tax ?? 0;
+                        $taxAmount = (($saleOrder->total_amount + $saleOrder->transporation_charge) * $tax) / 100;
 
-$grandTotal = $saleOrder->total_amount + $taxAmount;
-$totalTransporation = 0;
-$totalFreight = 0;
+                        $grandTotal = $saleOrder->total_amount + $taxAmount;
+                        $totalTransporation = 0;
+                        $totalFreight = 0;
 
-foreach ($saleOrder->payments as $payment) {
-    if ($payment->type == 'transportation') {
-        $totalTransporation += $payment->amount;
-    } else if ($payment->type == 'freight') {
-        $totalFreight += $payment->amount;
-    }
-}
+                        foreach ($saleOrder->payments as $payment) {
+                            if ($payment->type == 'transportation') {
+                                $totalTransporation += $payment->amount;
+                            } else if ($payment->type == 'freight') {
+                                $totalFreight += $payment->amount;
+                            }
+                        }
 
                     @endphp
                     <tbody>
@@ -409,7 +416,8 @@ foreach ($saleOrder->payments as $payment) {
                         </tr>
                         <tr>
                             <th>15. Balance Payment</th>
-                            <td>{{format_indian_number($saleOrder->grand_total - $saleOrder->advanace_payment ?? 'N/A') }}</td>
+                            <td>{{format_indian_number($saleOrder->grand_total - $saleOrder->advanace_payment ?? 'N/A') }}
+                            </td>
                         </tr>
                         <tr>
                             <th>16. Freight</th>
@@ -448,12 +456,12 @@ foreach ($saleOrder->payments as $payment) {
         </thead>
         <tbody>
             @foreach($saleOrder->payments as $payment)
-            <tr>
-                <td>{{ $payment->payment_date }}</td>
-                <td>{{ $payment->amount }}</td>
-                <td>{{ ucfirst($payment->mode) }}</td>
-                <td>{{ $payment->transaction_id }}</td>
-            </tr>
+                <tr>
+                    <td>{{ $payment->payment_date }}</td>
+                    <td>{{ $payment->amount }}</td>
+                    <td>{{ ucfirst($payment->mode) }}</td>
+                    <td>{{ $payment->transaction_id }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>
@@ -468,22 +476,22 @@ foreach ($saleOrder->payments as $payment) {
         .remarks.d-none {
             display: none !important;
         }
+
         #ledgerPrintArea table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-  }
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
 
- #ledgerPrintArea th,
- #ledgerPrintArea td {
-     border: 1px solid #000;
-     padding: 6px;
- }
+        #ledgerPrintArea th,
+        #ledgerPrintArea td {
+            border: 1px solid #000;
+            padding: 6px;
+        }
 
- #ledgerPrintArea h2 {
-     margin-bottom: 10px;
- }
- 
+        #ledgerPrintArea h2 {
+            margin-bottom: 10px;
+        }
     </style>
 @endpush
 
@@ -495,44 +503,44 @@ foreach ($saleOrder->payments as $payment) {
 @push('js')
     <script src="{{ asset('js/sale_order.js') }}"></script>
     <script>
- document.getElementById('printLedgerPdf').addEventListener('click', function() {
+        document.getElementById('printLedgerPdf').addEventListener('click', function () {
 
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
 
-    // Header
-    doc.setFontSize(16);
-    doc.text("Advance Payment Ledger", 14, 20);
+            // Header
+            doc.setFontSize(16);
+            doc.text("Advance Payment Ledger", 14, 20);
 
-    // Order Info
-    doc.setFontSize(12);
-    doc.text(`Work Order No: ${document.querySelector('input[name="purchase_order_no"]').value}`, 14, 30);
-    doc.text(`Customer Name: ${document.querySelector('input[name="customer_name"]').value}`, 14, 36);
+            // Order Info
+            doc.setFontSize(12);
+            doc.text(`Work Order No: ${document.querySelector('input[name="purchase_order_no"]').value}`, 14, 30);
+            doc.text(`Customer Name: ${document.querySelector('input[name="customer_name"]').value}`, 14, 36);
 
-    // Table Data
-    let payments = [];
-    const rows = document.querySelectorAll('#ledger_table tbody tr');
-    rows.forEach((row) => {
-        let date = row.querySelector('input[name*="[date]"]').value;
-        let amount = row.querySelector('input[name*="[amount]"]').value;
-        let mode = row.querySelector('select[name*="[mode]"]').value;
-        let transaction = row.querySelector('input[name*="[transaction_id]"]').value || '';
-        payments.push([date, amount, mode, transaction]);
-    });
+            // Table Data
+            let payments = [];
+            const rows = document.querySelectorAll('#ledger_table tbody tr');
+            rows.forEach((row) => {
+                let date = row.querySelector('input[name*="[date]"]').value;
+                let amount = row.querySelector('input[name*="[amount]"]').value;
+                let mode = row.querySelector('select[name*="[mode]"]').value;
+                let transaction = row.querySelector('input[name*="[transaction_id]"]').value || '';
+                payments.push([date, amount, mode, transaction]);
+            });
 
-    // autoTable
-    doc.autoTable({
-        startY: 45,
-        head: [['Payment Date', 'Amount', 'Mode', 'Transaction ID']],
-        body: payments,
-        theme: 'grid',
-        headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
-        styles: { fontSize: 10 },
-    });
+            // autoTable
+            doc.autoTable({
+                startY: 45,
+                head: [['Payment Date', 'Amount', 'Mode', 'Transaction ID']],
+                body: payments,
+                theme: 'grid',
+                headStyles: { fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold' },
+                styles: { fontSize: 10 },
+            });
 
-    // Save PDF
-    doc.save(`Advance_Payment_Ledger_${new Date().getTime()}.pdf`);
-});
+            // Save PDF
+            doc.save(`Advance_Payment_Ledger_${new Date().getTime()}.pdf`);
+        });
 
     </script>
 @endpush

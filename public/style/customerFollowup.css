@@ -1,0 +1,323 @@
+
+        /* ─── History toggle ─── */
+        .fu-history-toggle {
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+        }
+        .fu-history-toggle:hover { opacity: .92; }
+
+        .fu-count-badge, .fu-doc-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: .72rem;
+            font-weight: 700;
+        }
+        .fu-count-badge {
+            margin-left: 8px;
+            background: rgba(255,255,255,.25);
+            color: #fff;
+        }
+        .fu-doc-badge {
+            background: #dbeafe;
+            color: var(--crm-primary, #2563eb);
+            gap: 4px;
+        }
+        .fu-toggle-hint {
+            font-size: .73rem;
+            font-weight: 500;
+            color: rgba(255,255,255,.72);
+        }
+        .fu-chevron {
+            color: rgba(255,255,255,.85);
+            font-size: .85rem;
+            transition: transform .25s ease;
+        }
+        .fu-chevron.open { transform: rotate(180deg); }
+
+        /* ─── Scrollable table ─── */
+        .fu-table-scroll {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 0 20px 14px;
+            border-top: 1px solid var(--crm-border, #e5e7eb);
+        }
+        .fu-table-scroll::-webkit-scrollbar { width: 4px; }
+        .fu-table-scroll::-webkit-scrollbar-thumb {
+            background: var(--crm-primary, #2563eb);
+            border-radius: 4px;
+        }
+
+        /* ─── Entry count pill ─── */
+        .fu-entry-count {
+            font-size: .74rem;
+            font-weight: 600;
+            color: rgba(255,255,255,.8);
+            background: rgba(255,255,255,.15);
+            padding: 3px 10px;
+            border-radius: 20px;
+        }
+
+        /* ─── Follow-up rows ─── */
+        .followup-row {
+            background: var(--crm-bg, #f9fafb);
+            border: 1.5px solid var(--crm-border, #e5e7eb);
+            border-radius: var(--crm-radius, 8px);
+            padding: 18px 18px 14px;
+            margin-bottom: 16px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .followup-row:hover {
+            border-color: var(--crm-primary, #2563eb);
+            box-shadow: 0 2px 12px rgba(37,99,235,.08);
+        }
+        .followup-row--new {
+            border-color: var(--crm-primary, #2563eb);
+            background: #eff6ff;
+        }
+        .followup-row-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .followup-row-label {
+            font-size: .76rem;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: var(--crm-primary, #2563eb);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .crm-remove-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 11px;
+            font-size: .76rem;
+            font-weight: 600;
+            color: #dc2626;
+            background: #fee2e2;
+            border: 1.5px solid transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .crm-remove-btn:hover {
+            border-color: #dc2626;
+            box-shadow: 0 2px 8px rgba(220,38,38,.2);
+            transform: translateY(-1px);
+        }
+
+        .crm-date-cell {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .84rem;
+        }
+        .crm-date-cell i { color: var(--crm-primary, #2563eb); font-size: .78rem; }
+
+        /* ─── Document Upload Area ─── */
+        .fu-doc-section-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .78rem;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .fu-dropzone {
+            position: relative;
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color .2s, background .2s;
+            background: #fff;
+        }
+        .fu-dropzone:hover,
+        .fu-dropzone.drag-over {
+            border-color: var(--crm-primary, #2563eb);
+            background: #eff6ff;
+        }
+        .fu-drop-icon {
+            font-size: 1.8rem;
+            color: #94a3b8;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .fu-drop-text {
+            margin: 0 0 4px;
+            font-size: .84rem;
+            color: #64748b;
+        }
+        .fu-drop-link {
+            color: var(--crm-primary, #2563eb);
+            font-weight: 600;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .fu-drop-hint {
+            margin: 0;
+            font-size: .74rem;
+            color: #94a3b8;
+        }
+        .fu-file-input {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* ─── New file preview list (queued) ─── */
+        .fu-file-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .fu-file-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px 10px 5px 8px;
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: .78rem;
+            color: #374151;
+            max-width: 220px;
+        }
+        .fu-file-item i { font-size: .85rem; }
+        .fu-file-item-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+        }
+        .fu-file-item-size { color: #9ca3af; font-size: .72rem; }
+        .fu-file-item-remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #dc2626;
+            padding: 0 2px;
+            font-size: .8rem;
+        }
+        .fu-file-item-remove:hover { transform: scale(1.2); }
+
+        /* ─── Existing document chips ─── */
+        .fu-existing-docs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .fu-doc-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            transition: border-color .2s, box-shadow .2s;
+            max-width: 280px;
+        }
+        .fu-doc-chip:hover {
+            border-color: var(--crm-primary, #2563eb);
+            box-shadow: 0 2px 8px rgba(37,99,235,.09);
+        }
+        .fu-doc-chip.removing {
+            opacity: .4;
+            pointer-events: none;
+            transition: opacity .3s;
+        }
+        .fu-chip-icon { font-size: 1.1rem; }
+        .fu-chip-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .fu-chip-name {
+            font-size: .8rem;
+            font-weight: 600;
+            color: #1e293b;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+        .fu-chip-name:hover { text-decoration: underline; color: var(--crm-primary, #2563eb); }
+        .fu-chip-meta { font-size: .7rem; color: #94a3b8; }
+        .fu-chip-delete {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #dc2626;
+            font-size: .8rem;
+            padding: 2px 4px;
+            border-radius: 4px;
+            flex-shrink: 0;
+            transition: background .15s;
+        }
+        .fu-chip-delete:hover { background: #fee2e2; }
+
+        /* ─── Sticky bar ─── */
+        .fu-sticky-bar {
+            position: fixed;
+            bottom: 0;
+            left: 250px;
+            right: 0;
+            z-index: 1030;
+            background: var(--crm-card-bg, #fff);
+            border-top: 2px solid var(--crm-primary, #2563eb);
+            box-shadow: 0 -4px 20px rgba(37,99,235,.13);
+            padding: 11px 28px;
+            transition: left .3s ease;
+        }
+        .sidebar-collapse .fu-sticky-bar { left: 74px; }
+        @media (max-width: 767px) {
+            .fu-sticky-bar { left: 0 !important; padding: 10px 16px; }
+            .fu-sticky-info { display: none; }
+        }
+        .fu-sticky-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .fu-sticky-info {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: .82rem;
+            color: #6b7280;
+        }
+        .fu-sticky-info i { color: var(--crm-primary, #2563eb); }
+        .fu-sticky-actions { display: flex; align-items: center; gap: 10px; }
+
+        /* ─── Flatpickr ─── */
+        .flatpickr-calendar {
+            font-family: inherit !important;
+            border-radius: 8px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,.1) !important;
+            border: 1.5px solid #e5e7eb !important;
+        }
+        .flatpickr-day.selected,
+        .flatpickr-day.selected:hover {
+            background: var(--crm-primary, #2563eb) !important;
+            border-color: var(--crm-primary, #2563eb) !important;
+        }

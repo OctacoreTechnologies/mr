@@ -1,100 +1,606 @@
 @extends('layouts.app')
 
-@section('title', "Follow Ups for " . $customer->name)
+@section('title', "Follow-Ups — " . $customer->company_name)
 
 @section('content_header')
-    <h1 class="text-center text-dark font-weight-bold">
-        <i class="fas fa-user-tie mr-2"></i> Follow Ups for {{ $customer->name }}
+<div class="crm-page-header">
+    <h1>
+        <i class="fas fa-comments"></i>
+        Follow-Up History
     </h1>
+    <a href="{{ url()->previous() }}" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</div>
 @stop
 
 @section('content')
 
-    <x-alert-components class="my-3" />
+<x-alert-components class="my-3" />
 
-    <!-- Customer Details (Optional) -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-header bg-info text-white">
-            <h4 class="card-title mb-0">
-                <i class="fas fa-info-circle mr-2"></i> Customer Details
-            </h4>
-        </div>
-        <div class="card-body">
-            <p><strong>Name:</strong> {{ $customer->company_name }}</p>
-            <p><strong>Email:</strong> {{ $customer->contact_person_1_email??'N.A' }}</p>
-            <p><strong>Phone:</strong> {{ $customer->contact_no }}</p>
+{{-- ══ CUSTOMER PROFILE BANNER ══ --}}
+<div class="fu-profile-banner mb-4">
+    <div class="fu-profile-avatar">
+        {{ strtoupper(substr($customer->company_name ?? $customer->name, 0, 2)) }}
+    </div>
+    <div class="fu-profile-info">
+        <h2 class="fu-profile-name">{{ $customer->company_name ?? $customer->name }}</h2>
+        <div class="fu-profile-meta">
+            @if($customer->contact_person_1_email)
+                <span class="fu-meta-item">
+                    <i class="fas fa-envelope"></i>
+                    {{ $customer->contact_person_1_email }}
+                </span>
+            @endif
+            @if($customer->contact_no)
+                <span class="fu-meta-item">
+                    <i class="fas fa-phone"></i>
+                    {{ $customer->contact_no }}
+                </span>
+            @endif
         </div>
     </div>
-
-    <!-- Follow-Up List (Simple Grid Layout) -->
-    <div class="card shadow-lg border-0 rounded-lg">
-        <div class="card-header bg-gradient-primary text-white rounded-top">
-            <h3 class="card-title mb-0">
-                <i class="fas fa-comments mr-2"></i> Follow-Up Communication
-            </h3>
+    <div class="fu-profile-stats">
+        <div class="fu-stat">
+            <span class="fu-stat-value">{{ $followups->count() }}</span>
+            <span class="fu-stat-label">Total Follow-Ups</span>
         </div>
+        @php
+            $latestNext = $followups->whereNotNull('next_follow_up_date')->sortByDesc('next_follow_up_date')->first();
+        @endphp
+        @if($latestNext)
+            <div class="fu-stat">
+                <span class="fu-stat-value fu-stat-date">
+                    {{ \Carbon\Carbon::parse($latestNext->next_follow_up_date)->format('d M') }}
+                </span>
+                <span class="fu-stat-label">Next Follow-Up</span>
+            </div>
+        @endif
+        <div class="fu-stat">
+            <span class="fu-stat-value">
+                {{ $followups->sum(fn($f) => $f->documents->count()) }}
+            </span>
+            <span class="fu-stat-label">Documents</span>
+        </div>
+    </div>
+</div>
 
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Follow-Up Date</th>
-                            <th>Notes</th>
-                            <th>Next Follow-Up Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($followups as $index => $followup)
-                            <tr>
-                                <td>{{ $index + 1 }}</td>
-                                <td>
-                                    <i class="fas fa-calendar-day mr-2 text-muted"></i>
-                                    {{ \Carbon\Carbon::parse($followup->follow_up_date)->format('d M Y h:i A') }}
-                                </td>
-                                <td>{{ Str::limit($followup->notes, 60, '...') }}</td>
-                                <td>
-                                    <i class="fas fa-calendar-alt mr-2 text-muted"></i>
-                                    {{ \Carbon\Carbon::parse($followup->next_follow_up_date)->format('d M Y h:i A') }}
-                                </td>
-                            
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+{{-- ══ FOLLOW-UP TIMELINE ══ --}}
+@if($followups->isEmpty())
+    <div class="fu-empty-state">
+        <div class="fu-empty-icon"><i class="fas fa-calendar-times"></i></div>
+        <h4>No Follow-Ups Yet</h4>
+        <p>No follow-up records have been added for this customer.</p>
+    </div>
+@else
+    <div class="fu-timeline-wrapper">
+
+        {{-- Timeline vertical line --}}
+        <div class="fu-timeline-line"></div>
+
+        @foreach ($followups as $index => $followup)
+        @php
+            $isLast  = $index === $followups->count() - 1;
+            $isPast  = \Carbon\Carbon::parse($followup->next_follow_up_date)->isPast();
+            $isToday = \Carbon\Carbon::parse($followup->next_follow_up_date)->isToday();
+            $docCount = $followup->documents->count();
+        @endphp
+
+        <div class="fu-timeline-item {{ $isLast ? 'fu-timeline-item--latest' : '' }}">
+
+            {{-- ── Node ── --}}
+            <div class="fu-timeline-node {{ $isLast ? 'fu-node--active' : '' }}">
+                <span class="fu-node-number">{{ $followups->count() - $index }}</span>
+            </div>
+
+            {{-- ── Card ── --}}
+            <div class="fu-timeline-card">
+
+                <div class="fu-card-header">
+                    <div class="fu-card-dates">
+                        <span class="fu-date-pill fu-date-pill--followup">
+                            <i class="fas fa-calendar-day"></i>
+                            {{ \Carbon\Carbon::parse($followup->follow_up_date)->format('d M Y, h:i A') }}
+                        </span>
+                        <i class="fas fa-long-arrow-alt-right fu-arrow-sep"></i>
+                        <span class="fu-date-pill {{ $isPast && !$isToday ? 'fu-date-pill--past' : ($isToday ? 'fu-date-pill--today' : 'fu-date-pill--next') }}">
+                            <i class="fas fa-calendar-alt"></i>
+                            {{ \Carbon\Carbon::parse($followup->next_follow_up_date)->format('d M Y, h:i A') }}
+                            @if($isToday)
+                                <span class="fu-today-tag">Today</span>
+                            @endif
+                        </span>
+                    </div>
+                    <div class="fu-card-badges">
+                        @if($docCount)
+                            <span class="fu-badge fu-badge--doc">
+                                <i class="fas fa-paperclip"></i> {{ $docCount }} {{ Str::plural('file', $docCount) }}
+                            </span>
+                        @endif
+                        @if($isPast && !$isToday)
+                            <span class="fu-badge fu-badge--past">Completed</span>
+                        @elseif($isToday)
+                            <span class="fu-badge fu-badge--today">Due Today</span>
+                        @else
+                            <span class="fu-badge fu-badge--upcoming">Upcoming</span>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- Notes --}}
+                <div class="fu-notes-body" id="notesBody-{{ $index }}">
+                    <div class="fu-notes-short" id="notesShort-{{ $index }}">
+                        {{ Str::limit($followup->notes, 160, '') }}
+                        @if(strlen($followup->notes) > 160)
+                            <span class="fu-notes-ellipsis">…</span>
+                            <button class="fu-readmore-btn" data-idx="{{ $index }}">Read more</button>
+                        @endif
+                    </div>
+                    @if(strlen($followup->notes) > 160)
+                        <div class="fu-notes-full" id="notesFull-{{ $index }}" style="display:none;">
+                            {{ $followup->notes }}
+                            <button class="fu-readmore-btn" data-idx="{{ $index }}" data-full="1">Show less</button>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Documents --}}
+                @if($docCount)
+                    <div class="fu-docs-section">
+                        <div class="fu-docs-label">
+                            <i class="fas fa-folder-open"></i> Attachments
+                        </div>
+                        <div class="fu-docs-grid">
+                            @foreach($followup->documents as $doc)
+                                <a href="{{ Storage::url($doc->file_path) }}"
+                                   target="_blank"
+                                   class="fu-doc-tile"
+                                   title="{{ $doc->original_name }}">
+                                    @if($doc->is_image)
+                                        <div class="fu-doc-thumb">
+                                            <img src="{{ Storage::url($doc->file_path) }}"
+                                                 alt="{{ $doc->original_name }}"
+                                                 loading="lazy">
+                                        </div>
+                                    @else
+                                        <div class="fu-doc-icon-wrap">
+                                            <i class="{{ $doc->icon_class }}"></i>
+                                        </div>
+                                    @endif
+                                    <div class="fu-doc-tile-info">
+                                        <span class="fu-doc-tile-name">{{ Str::limit($doc->original_name, 22, '…') }}</span>
+                                        <span class="fu-doc-tile-meta">{{ $doc->human_size }} · {{ strtoupper($doc->file_type) }}</span>
+                                    </div>
+                                    <div class="fu-doc-tile-hover">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+                <div class="fu-card-footer">
+                    <span class="fu-footer-meta">
+                        <i class="fas fa-clock"></i>
+                        Added {{ \Carbon\Carbon::parse($followup->created_at)->diffForHumans() }}
+                    </span>
+                </div>
+
             </div>
         </div>
+        @endforeach
+
     </div>
+@endif
 
 @stop
 
 @push('css')
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
     <style>
-        .card-title {
+
+        /* ══ PAGE HEADER ══ */
+        .crm-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* ══ PROFILE BANNER ══ */
+        .fu-profile-banner {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--crm-card-bg, #fff);
+            border: 1.5px solid var(--crm-border, #e5e7eb);
+            border-radius: var(--crm-radius, 10px);
+            padding: 22px 28px;
+            box-shadow: 0 2px 12px rgba(37,99,235,.07);
+        }
+        .fu-profile-avatar {
+            flex-shrink: 0;
+            width: 62px;
+            height: 62px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--crm-primary, #2563eb), #3b82f6);
+            color: #fff;
             font-size: 1.3rem;
-            font-weight: bold;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: .04em;
+            box-shadow: 0 4px 14px rgba(37,99,235,.3);
         }
-        .table th, .table td {
-            vertical-align: middle !important;
-            text-align: left;
+        .fu-profile-info { flex: 1; min-width: 0; }
+        .fu-profile-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--crm-text, #111827);
+            margin: 0 0 6px;
         }
-        .table td {
-            font-size: 0.9rem;
+        .fu-profile-meta { display: flex; flex-wrap: wrap; gap: 14px; }
+        .fu-meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: .82rem;
+            color: var(--crm-text-muted, #6b7280);
         }
-        .table th {
-            background-color: #f8f9fa;
+        .fu-meta-item i { color: var(--crm-primary, #2563eb); font-size: .76rem; }
+
+        .fu-profile-stats {
+            display: flex;
+            gap: 24px;
+            flex-shrink: 0;
+        }
+        .fu-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        .fu-stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--crm-primary, #2563eb);
+            line-height: 1;
+        }
+        .fu-stat-date { font-size: 1.1rem; }
+        .fu-stat-label {
+            font-size: .7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--crm-text-muted, #9ca3af);
+        }
+
+        /* ══ EMPTY STATE ══ */
+        .fu-empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--crm-card-bg, #fff);
+            border: 1.5px dashed var(--crm-border, #e5e7eb);
+            border-radius: var(--crm-radius, 10px);
+        }
+        .fu-empty-icon {
+            font-size: 3rem;
+            color: #cbd5e1;
+            margin-bottom: 14px;
+        }
+        .fu-empty-state h4 { color: #374151; font-weight: 700; }
+        .fu-empty-state p  { color: #9ca3af; font-size: .88rem; }
+
+        /* ══ TIMELINE WRAPPER ══ */
+        .fu-timeline-wrapper {
+            position: relative;
+            padding-left: 44px;
+        }
+        .fu-timeline-line {
+            position: absolute;
+            left: 17px;
+            top: 12px;
+            bottom: 12px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--crm-primary, #2563eb) 0%, #e2e8f0 100%);
+            border-radius: 2px;
+        }
+
+        /* ══ TIMELINE ITEM ══ */
+        .fu-timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+        }
+
+        /* ── Node ── */
+        .fu-timeline-node {
+            position: absolute;
+            left: -36px;
+            top: 14px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--crm-card-bg, #fff);
+            border: 2.5px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .68rem;
+            font-weight: 800;
+            color: #94a3b8;
+            z-index: 1;
+            transition: border-color .2s, color .2s;
+        }
+        .fu-node--active {
+            border-color: var(--crm-primary, #2563eb);
+            color: var(--crm-primary, #2563eb);
+            background: #eff6ff;
+            box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+        }
+
+        /* ── Card ── */
+        .fu-timeline-card {
+            flex: 1;
+            background: var(--crm-card-bg, #fff);
+            border: 1.5px solid var(--crm-border, #e5e7eb);
+            border-radius: var(--crm-radius, 10px);
+            overflow: hidden;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .fu-timeline-card:hover {
+            border-color: var(--crm-primary, #2563eb);
+            box-shadow: 0 4px 18px rgba(37,99,235,.10);
+        }
+        .fu-timeline-item--latest .fu-timeline-card {
+            border-color: var(--crm-primary, #2563eb);
+            box-shadow: 0 4px 18px rgba(37,99,235,.10);
+        }
+
+        /* ── Card Header ── */
+        .fu-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 13px 16px 10px;
+            border-bottom: 1px solid var(--crm-border, #f1f5f9);
+            background: var(--crm-bg, #f9fafb);
+        }
+        .fu-card-dates {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .fu-date-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: .76rem;
             font-weight: 600;
         }
-        .table td i {
+        .fu-date-pill--followup {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        .fu-date-pill--next {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        .fu-date-pill--today {
+            background: #fef3c7;
+            color: #d97706;
+            animation: fu-pulse 2s infinite;
+        }
+        .fu-date-pill--past {
+            background: #f1f5f9;
+            color: #94a3b8;
+        }
+        @keyframes fu-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(217,119,6,.3); }
+            50%       { box-shadow: 0 0 0 5px rgba(217,119,6,.0); }
+        }
+        .fu-today-tag {
+            background: #d97706;
+            color: #fff;
+            font-size: .62rem;
+            font-weight: 800;
+            padding: 1px 5px;
+            border-radius: 4px;
+            letter-spacing: .04em;
+        }
+        .fu-arrow-sep { color: #cbd5e1; font-size: .82rem; }
+
+        .fu-card-badges { display: flex; align-items: center; gap: 6px; }
+        .fu-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: .71rem;
+            font-weight: 700;
+            letter-spacing: .03em;
+        }
+        .fu-badge--doc      { background: #ede9fe; color: #7c3aed; }
+        .fu-badge--past     { background: #dcfce7; color: #16a34a; }
+        .fu-badge--today    { background: #fef3c7; color: #d97706; }
+        .fu-badge--upcoming { background: #dbeafe; color: #1d4ed8; }
+
+        /* ── Notes ── */
+        .fu-notes-body {
+            padding: 14px 16px;
+            font-size: .875rem;
+            line-height: 1.65;
+            color: var(--crm-text, #374151);
+        }
+        .fu-readmore-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-size: .78rem;
+            font-weight: 700;
+            color: var(--crm-primary, #2563eb);
+            text-decoration: underline;
+            margin-left: 4px;
+        }
+        .fu-notes-ellipsis { color: #9ca3af; }
+
+        /* ── Documents ── */
+        .fu-docs-section {
+            padding: 12px 16px 14px;
+            border-top: 1px solid var(--crm-border, #f1f5f9);
+            background: #fafbfd;
+        }
+        .fu-docs-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .73rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+        .fu-docs-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .fu-doc-tile {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 10px;
+            background: #fff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            text-decoration: none;
+            max-width: 200px;
+            transition: border-color .2s, box-shadow .2s, transform .15s;
+            overflow: hidden;
+        }
+        .fu-doc-tile:hover {
+            border-color: var(--crm-primary, #2563eb);
+            box-shadow: 0 3px 12px rgba(37,99,235,.13);
+            transform: translateY(-1px);
+        }
+        .fu-doc-thumb {
+            width: 36px;
+            height: 36px;
+            border-radius: 5px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .fu-doc-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .fu-doc-icon-wrap {
+            width: 36px;
+            height: 36px;
+            border-radius: 5px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .fu-doc-tile-info {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .fu-doc-tile-name {
+            font-size: .78rem;
+            font-weight: 600;
+            color: #1e293b;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .fu-doc-tile-meta {
+            font-size: .68rem;
+            color: #94a3b8;
+        }
+        .fu-doc-tile-hover {
+            position: absolute;
+            inset: 0;
+            background: rgba(37,99,235,.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity .2s;
             font-size: 1rem;
+            color: var(--crm-primary, #2563eb);
+        }
+        .fu-doc-tile:hover .fu-doc-tile-hover { opacity: 1; }
+
+        /* ── Card Footer ── */
+        .fu-card-footer {
+            padding: 7px 16px;
+            border-top: 1px solid var(--crm-border, #f1f5f9);
+            background: var(--crm-bg, #f9fafb);
+        }
+        .fu-footer-meta {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: .74rem;
+            color: #94a3b8;
+        }
+        .fu-footer-meta i { font-size: .7rem; }
+
+        /* ══ RESPONSIVE ══ */
+        @media (max-width: 767px) {
+            .fu-profile-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 14px;
+                padding: 16px;
+            }
+            .fu-profile-stats {
+                width: 100%;
+                justify-content: space-around;
+                padding-top: 12px;
+                border-top: 1px solid var(--crm-border, #e5e7eb);
+            }
+            .fu-card-header { flex-direction: column; align-items: flex-start; }
+            .fu-card-dates  { flex-direction: column; gap: 4px; }
+            .fu-arrow-sep   { display: none; }
         }
     </style>
 @endpush
 
 @push('js')
     <script>
-        $(function () {
+        document.addEventListener('DOMContentLoaded', function () {
+
+            /* ── Read more / less toggle ── */
+            document.querySelectorAll('.fu-readmore-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const idx  = this.dataset.idx;
+                    const full = this.dataset.full;
+                    document.getElementById(`notesShort-${idx}`).style.display = full ? 'block' : 'none';
+                    document.getElementById(`notesFull-${idx}`).style.display  = full ? 'none'  : 'block';
+                });
+            });
+
+            /* ── Tooltip ── */
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>

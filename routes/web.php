@@ -117,7 +117,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/previewform', 'previewForm')->name('quotation.previewForm');
                 Route::post('/preview', 'preview')->name('quotation.preview');
                 Route::post('/status', 'updateStatus')->name('quotation.update.status');
- 
+
                 // Routes WITH {id} parameter (MUST come last!)
                 Route::get('/{id}/audits', 'audits')->name('quotation.audits');
                 Route::get('/{id}/reorder', 'reorder')->name('quotation.reorder');
@@ -125,7 +125,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/{id}/edit-form', 'full_edit')->name('quotation.fullEditForm');
                 Route::put('/{id}/full-update', 'full_update')->name('quotation.fullUpdate');
             });
-            Route::resource('/quotation', QuotationController::class);
+        Route::resource('/quotation', QuotationController::class);
 
         // Quotation Verification (used in sale orders)
         Route::post('admin/quotation-verify', [QuotationController::class, 'isVerified'])
@@ -150,6 +150,12 @@ Route::middleware(['auth'])->group(function () {
                     ->name('followup.update');
                 Route::get('/followup/show/{customerId}', 'customerFollowUp')
                     ->name('followup.customers.show');
+                Route::delete('/followup-document/{docId}', 'deleteDocument')
+                    ->name('followup.document.delete');
+
+                // Customer follow-up list view
+                Route::get('/customer/{customerId}/followup', 'customerFollowUp')
+                    ->name('followup.show');
             });
 
         Route::post('/import', [CustomerController::class, 'import'])
@@ -453,7 +459,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/customers/{id}/quotations', 'quotationsByCustomer')
                 ->name('api.customers.quotations');
         });
-
 });
 
 /*
