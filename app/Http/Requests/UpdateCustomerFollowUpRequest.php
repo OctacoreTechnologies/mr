@@ -22,7 +22,7 @@ class UpdateCustomerFollowUpRequest extends FormRequest
             'next_follow_up_date'       => ['required', 'array'],
             'next_follow_up_date.*'     => ['required', 'string'],
             'notes'                     => ['required', 'array'],
-            'notes.*'                   => ['required', 'string', 'max:2000'],
+            'notes.*'                   => ['required', 'string'],
 
             // Documents
             'documents'                 => ['nullable', 'array'],

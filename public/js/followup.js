@@ -1,24 +1,106 @@
 /**
  * followup-edit.js
- * Place this file at: public/js/followup-edit.js
+ * Place at: public/js/followup-edit.js
  *
- * Blade variables are passed via window.FollowUpConfig (defined inline in blade).
- * This file contains ZERO {{ }} Blade syntax — pure JavaScript only.
+ * Features:
+ *  - Quill rich text editor (bullets, numbering, bold, italic, links)
+ *  - Drag & drop file upload with live preview
+ *  - AJAX document delete
+ *  - Dynamic add/remove rows
+ *  - Flatpickr date-time pickers
+ *
+ * NOTE: Zero Blade {{ }} syntax here.
+ * All PHP values come from window.FollowUpConfig (defined inline in blade).
  */
 
 document.addEventListener('DOMContentLoaded', function () {
 
     /* ══════════════════════════════════════════
-    |  CONFIG — read all Blade values from here
+    |  1. CONFIG
     ══════════════════════════════════════════ */
-    const CONFIG = window.FollowUpConfig || {};
+    const CONFIG        = window.FollowUpConfig || {};
     const CSRF_TOKEN    = CONFIG.csrfToken    || '';
     const QUOTATION_ID  = CONFIG.quotationId  || '';
     const DELETE_URL    = CONFIG.deleteDocUrl || '/customer/followup-document';
     let   nextIdx       = CONFIG.initialCount || 1;
 
     /* ══════════════════════════════════════════
-    |  FILE TYPE → ICON MAP
+    |  2. QUILL TOOLBAR CONFIG
+    |  Reused for every editor instance
+    ══════════════════════════════════════════ */
+    const QUILL_TOOLBAR = [
+        [{ 'header': [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+        [{ 'indent': '-1' }, { 'indent': '+1' }],
+        ['link'],
+        [{ 'color': [] }, { 'background': [] }],
+        ['clean'],
+    ];
+
+    /**
+     * Initialise a Quill editor for a given row index.
+     * Reads existing HTML from the sibling hidden textarea's data-content.
+     * On any change, syncs HTML back to that hidden textarea.
+     *
+     * @param {number|string} idx
+     */
+    function initQuill(idx) {
+        const editorEl = document.getElementById('quill-' + idx);
+        if (!editorEl) return;
+
+        // Find the hidden textarea in the same .fu-editor-wrap
+        const wrap      = editorEl.closest('.fu-editor-wrap');
+        const hiddenTA  = wrap ? wrap.querySelector('.fu-notes-hidden') : null;
+        if (!hiddenTA) return;
+
+        // Read pre-existing HTML content (for existing rows)
+        const existingHtml = hiddenTA.dataset.content
+            ? decodeHTMLEntities(hiddenTA.dataset.content)
+            : '';
+
+        const quill = new Quill(editorEl, {
+            theme:       'snow',
+            modules:     { toolbar: QUILL_TOOLBAR },
+            placeholder: 'Enter discussion points, action items, key decisions...',
+        });
+
+        // Set existing content
+        if (existingHtml) {
+            quill.clipboard.dangerouslyPasteHTML(existingHtml);
+        }
+
+        // Sync editor HTML → hidden textarea on every change
+        quill.on('text-change', function () {
+            hiddenTA.value = quill.getSemanticHTML();
+        });
+
+        // Also sync once on init so the value is ready even without editing
+        hiddenTA.value = existingHtml || '';
+
+        return quill;
+    }
+
+    /**
+     * Decode HTML entities from a string (e.g. &lt; → <).
+     * Used to safely restore htmlspecialchars-encoded PHP output.
+     * @param {string} str
+     * @returns {string}
+     */
+    function decodeHTMLEntities(str) {
+        const txt = document.createElement('textarea');
+        txt.innerHTML = str;
+        return txt.value;
+    }
+
+    /* Init all Quill editors already in the DOM */
+    document.querySelectorAll('.fu-quill-editor').forEach(function (el) {
+        const idx = el.id.replace('quill-', '');
+        initQuill(idx);
+    });
+
+    /* ══════════════════════════════════════════
+    |  3. FILE-TYPE → ICON MAP
     ══════════════════════════════════════════ */
     const iconMap = {
         pdf:  'fas fa-file-pdf text-danger',
@@ -37,57 +119,34 @@ document.addEventListener('DOMContentLoaded', function () {
         rar:  'fas fa-file-archive text-secondary',
     };
 
-    /**
-     * Get Font Awesome icon class from filename extension.
-     * @param {string} filename
-     * @returns {string}
-     */
     function getIcon(filename) {
         const ext = filename.split('.').pop().toLowerCase();
         return iconMap[ext] || 'fas fa-file text-muted';
     }
 
-    /**
-     * Convert bytes to human-readable size string.
-     * @param {number} bytes
-     * @returns {string}
-     */
     function humanSize(bytes) {
         if (bytes >= 1_048_576) return (bytes / 1_048_576).toFixed(2) + ' MB';
         return (bytes / 1024).toFixed(1) + ' KB';
     }
 
-    /**
-     * Truncate a string to maxLen chars.
-     * @param {string} str
-     * @param {number} maxLen
-     * @returns {string}
-     */
-    function truncate(str, maxLen = 25) {
-        return str.length > maxLen ? str.slice(0, maxLen - 3) + '...' : str;
+    function truncate(str, max) {
+        max = max || 25;
+        return str.length > max ? str.slice(0, max - 3) + '...' : str;
     }
 
     /* ══════════════════════════════════════════
-    |  DROPZONE — init for a given row index
+    |  4. DROPZONE
     ══════════════════════════════════════════ */
-
-    /**
-     * Initialises drag-drop + file preview for a row.
-     * @param {number} idx  — the data-index value of the row
-     */
     function initDropzone(idx) {
         const zone   = document.getElementById('dropzone-' + idx);
         const listEl = document.getElementById('fileList-' + idx);
-
         if (!zone || !listEl) return;
 
         const fileInput = zone.querySelector('.fu-file-input');
-        let   fileStore = [];   // accumulated File objects
+        let   fileStore = [];
 
-        /* ── Render queued files ── */
         function renderList() {
             listEl.innerHTML = '';
-
             fileStore.forEach(function (file, i) {
                 const item = document.createElement('div');
                 item.className = 'fu-file-item';
@@ -100,14 +159,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     '</button>';
                 listEl.appendChild(item);
             });
-
-            // Sync with the actual <input type="file">
             const dt = new DataTransfer();
             fileStore.forEach(function (f) { dt.items.add(f); });
             fileInput.files = dt.files;
         }
 
-        /* ── Remove a queued file ── */
         listEl.addEventListener('click', function (e) {
             const btn = e.target.closest('.fu-file-item-remove');
             if (btn) {
@@ -116,20 +172,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        /* ── Native file input change ── */
         fileInput.addEventListener('change', function () {
             Array.from(this.files).forEach(function (f) { fileStore.push(f); });
             renderList();
         });
 
-        /* ── Drag & drop ── */
-        zone.addEventListener('dragover', function (e) {
-            e.preventDefault();
-            zone.classList.add('drag-over');
-        });
-        zone.addEventListener('dragleave', function () {
-            zone.classList.remove('drag-over');
-        });
+        zone.addEventListener('dragover',  function (e) { e.preventDefault(); zone.classList.add('drag-over'); });
+        zone.addEventListener('dragleave', function ()  { zone.classList.remove('drag-over'); });
         zone.addEventListener('drop', function (e) {
             e.preventDefault();
             zone.classList.remove('drag-over');
@@ -138,14 +187,35 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /* Init all dropzones already in the DOM */
+    /* Init all dropzones in DOM */
     document.querySelectorAll('.fu-dropzone').forEach(function (zone) {
         const row = zone.closest('[data-index]');
         if (row) initDropzone(parseInt(row.dataset.index, 10));
     });
 
     /* ══════════════════════════════════════════
-    |  DELETE EXISTING DOCUMENT  (AJAX)
+    |  5. SYNC QUILL → HIDDEN TEXTAREA before submit
+    |  (Safety net: ensures latest content is captured)
+    ══════════════════════════════════════════ */
+    const form = document.getElementById('followupForm');
+    if (form) {
+        form.addEventListener('submit', function () {
+            // Each Quill editor syncs on text-change already,
+            // but if user submits without editing we force-sync here.
+            document.querySelectorAll('.fu-quill-editor').forEach(function (el) {
+                const qlInstance = Quill.find(el);
+                if (!qlInstance) return;
+                const wrap     = el.closest('.fu-editor-wrap');
+                const hiddenTA = wrap ? wrap.querySelector('.fu-notes-hidden') : null;
+                if (hiddenTA) {
+                    hiddenTA.value = qlInstance.getSemanticHTML();
+                }
+            });
+        });
+    }
+
+    /* ══════════════════════════════════════════
+    |  6. DELETE EXISTING DOCUMENT  (AJAX)
     ══════════════════════════════════════════ */
     document.addEventListener('click', function (e) {
         const btn = e.target.closest('.fu-chip-delete');
@@ -156,15 +226,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!chip) return;
 
         if (!confirm('Remove this document?')) return;
-
         chip.classList.add('removing');
 
         fetch(DELETE_URL + '/' + docId, {
             method:  'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': CSRF_TOKEN,
-                'Accept':       'application/json',
-            },
+            headers: { 'X-CSRF-TOKEN': CSRF_TOKEN, 'Accept': 'application/json' },
         })
         .then(function (r) { return r.json(); })
         .then(function (data) {
@@ -177,12 +243,12 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(function () {
             chip.classList.remove('removing');
-            alert('Network error. Please check your connection and try again.');
+            alert('Network error. Please check your connection.');
         });
     });
 
     /* ══════════════════════════════════════════
-    |  HISTORY TOGGLE
+    |  7. HISTORY TOGGLE
     ══════════════════════════════════════════ */
     const toggleEl  = document.getElementById('historyToggle');
     const bodyEl    = document.getElementById('historyBody');
@@ -199,27 +265,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* ══════════════════════════════════════════
-    |  REMOVE ROW
+    |  8. REMOVE ROW
     ══════════════════════════════════════════ */
     const container = document.getElementById('followup-container');
 
     if (container) {
         container.addEventListener('click', function (e) {
             if (!e.target.closest('.remove-followup')) return;
-
-            const allRows = container.querySelectorAll('.followup-row');
-            if (allRows.length <= 1) {
+            if (container.querySelectorAll('.followup-row').length <= 1) {
                 alert('At least one follow-up entry is required.');
                 return;
             }
-
             e.target.closest('.followup-row').remove();
             updateCount();
         });
     }
 
     /* ══════════════════════════════════════════
-    |  ADD NEW ROW
+    |  9. ADD NEW ROW (with Quill + Dropzone)
     ══════════════════════════════════════════ */
     const addRowBtn = document.getElementById('addRowBtn');
 
@@ -236,10 +299,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             '<i class="fas fa-trash"></i> Remove' +
                         '</button>' +
                     '</div>' +
-
                     '<input type="hidden" name="follow_up_id[]" value="">' +
                     '<input type="hidden" name="quotation_id" value="' + QUOTATION_ID + '">' +
-
                     '<div class="row">' +
                         '<div class="col-md-6">' +
                             '<div class="form-group mb-3">' +
@@ -253,12 +314,20 @@ document.addEventListener('DOMContentLoaded', function () {
                                 '<input type="text" name="next_follow_up_date[]" class="form-control fu-date-new">' +
                             '</div>' +
                         '</div>' +
+
+                        /* ── Rich text notes ── */
                         '<div class="col-md-12">' +
-                            '<div class="form-group mb-3">' +
-                                '<label>Notes</label>' +
-                                '<textarea name="notes[]" class="form-control" rows="3" placeholder="Enter follow-up notes..."></textarea>' +
+                            '<div class="fu-editor-wrap mb-3">' +
+                                '<label class="fu-editor-label">' +
+                                    '<i class="fas fa-align-left"></i> Notes' +
+                                    '<span class="fu-editor-hint">Format with bullets, numbering, bold etc.</span>' +
+                                '</label>' +
+                                '<textarea name="notes[]" class="fu-notes-hidden" style="display:none;"></textarea>' +
+                                '<div class="fu-quill-editor" id="quill-' + nextIdx + '"></div>' +
                             '</div>' +
                         '</div>' +
+
+                        /* ── Dropzone ── */
                         '<div class="col-md-12">' +
                             '<div class="fu-doc-upload-area" data-index="' + nextIdx + '">' +
                                 '<div class="fu-dropzone" id="dropzone-' + nextIdx + '">' +
@@ -267,8 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     '<p class="fu-drop-hint">PDF, Excel, Word, Images, ZIP — max 20 MB each</p>' +
                                     '<input type="file"' +
                                         ' name="documents[' + nextIdx + '][]"' +
-                                        ' class="fu-file-input"' +
-                                        ' multiple' +
+                                        ' class="fu-file-input" multiple' +
                                         ' accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.svg,.zip,.rar">' +
                                 '</div>' +
                                 '<div class="fu-file-list" id="fileList-' + nextIdx + '"></div>' +
@@ -279,39 +347,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
             container.insertAdjacentHTML('afterbegin', html);
 
-            /* Init flatpickr on the two new date fields */
+            /* Init flatpickr on new date inputs */
             container.querySelectorAll('.fu-date-new').forEach(function (el) {
-                flatpickr(el, {
-                    enableTime: true,
-                    dateFormat: 'Y-m-d h:i K',
-                    time_24hr:  false,
-                });
-                el.classList.remove('fu-date-new'); // prevent double-init
+                flatpickr(el, { enableTime: true, dateFormat: 'Y-m-d h:i K', time_24hr: false });
+                el.classList.remove('fu-date-new');
             });
 
+            /* Init Quill on new editor */
+            initQuill(nextIdx);
+
+            /* Init dropzone */
             initDropzone(nextIdx);
+
             nextIdx++;
             updateCount();
         });
     }
 
     /* ══════════════════════════════════════════
-    |  ENTRY COUNT  (sticky bar + header pill)
+    |  10. ENTRY COUNT
     ══════════════════════════════════════════ */
     function updateCount() {
         if (!container) return;
-        const n          = container.querySelectorAll('.followup-row').length;
-        const label      = n === 1 ? ' entry' : ' entries';
-        const countEl    = document.getElementById('entryCount');
-        const stickyEl   = document.getElementById('stickyInfo');
-        if (countEl)  countEl.textContent  = n + label;
-        if (stickyEl) stickyEl.textContent = n + label + ' to save';
+        const n       = container.querySelectorAll('.followup-row').length;
+        const label   = n === 1 ? ' entry' : ' entries';
+        const countEl = document.getElementById('entryCount');
+        const stickyEl = document.getElementById('stickyInfo');
+        if (countEl)   countEl.textContent  = n + label;
+        if (stickyEl)  stickyEl.textContent = n + label + ' to save';
     }
-
     updateCount();
 
     /* ══════════════════════════════════════════
-    |  FLATPICKR — init existing date fields
+    |  11. FLATPICKR  — existing date fields
     ══════════════════════════════════════════ */
     flatpickr('.date-time', {
         enableTime: true,

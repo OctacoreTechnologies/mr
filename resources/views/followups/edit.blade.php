@@ -1,12 +1,11 @@
 @extends('layouts.app')
-
+ 
 @section('title', 'Edit Follow-up')
-
+ 
 @php
     $quotation_id = request()->query('quotation_id') ?? null;
-    $allowedExts  = ['pdf','xls','xlsx','csv','doc','docx','jpg','jpeg','png','gif','webp','svg','zip','rar'];
 @endphp
-
+ 
 @section('content_header')
 <div class="crm-page-header">
     <h1>
@@ -18,9 +17,9 @@
     </a>
 </div>
 @stop
-
+ 
 @section('content')
-
+ 
 {{-- ── Flash Messages ── --}}
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
@@ -34,7 +33,7 @@
         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
     </div>
 @endif
-
+ 
 {{-- ── Validation Errors ── --}}
 @if ($errors->any())
     <div class="alert alert-danger mb-3">
@@ -47,7 +46,7 @@
         </ul>
     </div>
 @endif
-
+ 
 {{-- ══ FOLLOW-UP HISTORY ══ --}}
 <div class="crm-index-card mb-4">
     <div class="card-header fu-history-toggle" id="historyToggle" title="Click to expand / collapse">
@@ -91,7 +90,12 @@
                                         {{ \Carbon\Carbon::parse($followup->follow_up_date)->format('d M Y, h:i A') }}
                                     </span>
                                 </td>
-                                <td>{{ Str::limit($followup->notes, 60, '...') }}</td>
+                                <td>
+                                    {{-- Render formatted HTML safely --}}
+                                    <div class="fu-notes-preview">
+                                        {!! Str::limit(strip_tags($followup->notes), 80, '...') !!}
+                                    </div>
+                                </td>
                                 <td>
                                     <span class="crm-date-cell">
                                         <i class="fas fa-calendar-alt"></i>
@@ -116,7 +120,7 @@
         @endif
     </div>
 </div>
-
+ 
 {{-- ══ FOLLOW-UP FORM ══ --}}
 <div class="crm-card" style="margin-bottom: 90px;">
     <div class="crm-card-header">
@@ -130,7 +134,7 @@
             </button>
         </div>
     </div>
-
+ 
     <div class="crm-card-body">
         <form action="{{ route('followup.update', $customer_id) }}"
               method="POST"
@@ -138,13 +142,10 @@
               enctype="multipart/form-data">
             @csrf
             @method('PUT')
-
-            {{-- Hidden: document IDs to delete (populated by JS) --}}
-            <div id="deleteDocInputs"></div>
-
+ 
             <div id="followup-container">
-
-                {{-- ── NEW (blank) row ── --}}
+ 
+                {{-- ══ NEW (blank) row ══ --}}
                 <div class="followup-row followup-row--new" data-index="0">
                     <div class="followup-row-header">
                         <span class="followup-row-label">
@@ -154,10 +155,8 @@
                             <i class="fas fa-trash"></i> Remove
                         </button>
                     </div>
-
                     <input type="hidden" name="follow_up_id[]" value="">
                     <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
-
                     <div class="row">
                         <div class="col-md-6">
                             <x-adminlte-input type="text"
@@ -173,9 +172,22 @@
                                 fgroup-class="mb-3"
                                 class="date-time" />
                         </div>
+ 
+                        {{-- ── Rich Text Notes ── --}}
                         <div class="col-md-12">
-                            <x-adminlte-textarea name="notes[]" label="Notes" fgroup-class="mb-3"></x-adminlte-textarea>
+                            <div class="fu-editor-wrap mb-3">
+                                <label class="fu-editor-label">
+                                    <i class="fas fa-align-left"></i> Notes
+                                    <span class="fu-editor-hint">Format your discussion points with bullets, numbering, bold etc.</span>
+                                </label>
+                                {{-- Hidden input — stores HTML on submit --}}
+                                <textarea name="notes[]" class="fu-notes-hidden" style="display:none;"></textarea>
+                                {{-- Quill editor container --}}
+                                <div class="fu-quill-editor" id="quill-0"></div>
+                            </div>
                         </div>
+ 
+                        {{-- ── Document Upload ── --}}
                         <div class="col-md-12">
                             <div class="fu-doc-upload-area" data-index="0">
                                 <div class="fu-dropzone" id="dropzone-0">
@@ -193,8 +205,8 @@
                         </div>
                     </div>
                 </div>
-
-                {{-- ── Existing rows ── --}}
+ 
+                {{-- ══ Existing rows ══ --}}
                 @foreach ($ofollowups as $index => $followup)
                     @php $rowIdx = $index + 1; @endphp
                     <div class="followup-row" data-index="{{ $rowIdx }}">
@@ -211,10 +223,10 @@
                                 <i class="fas fa-trash"></i> Remove
                             </button>
                         </div>
-
+ 
                         <input type="hidden" name="follow_up_id[]" value="{{ $followup->id }}">
                         <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
-
+ 
                         <div class="row">
                             <div class="col-md-6">
                                 <x-adminlte-input type="text"
@@ -232,10 +244,23 @@
                                     fgroup-class="mb-3"
                                     class="date-time" />
                             </div>
+ 
+                            {{-- ── Rich Text Notes (with existing content) ── --}}
                             <div class="col-md-12">
-                                <x-adminlte-textarea name="notes[]" label="Notes" fgroup-class="mb-3">{{ $followup->notes }}</x-adminlte-textarea>
+                                <div class="fu-editor-wrap mb-3">
+                                    <label class="fu-editor-label">
+                                        <i class="fas fa-align-left"></i> Notes
+                                        <span class="fu-editor-hint">Format your discussion points with bullets, numbering, bold etc.</span>
+                                    </label>
+                                    {{-- Existing HTML content stored here, JS will read it --}}
+                                    <textarea name="notes[]"
+                                              class="fu-notes-hidden"
+                                              data-content="{{ htmlspecialchars($followup->notes, ENT_QUOTES) }}"
+                                              style="display:none;"></textarea>
+                                    <div class="fu-quill-editor" id="quill-{{ $rowIdx }}"></div>
+                                </div>
                             </div>
-
+ 
                             {{-- ── Existing Documents ── --}}
                             @if($followup->documents->count())
                                 <div class="col-md-12 mb-3">
@@ -266,8 +291,8 @@
                                     </div>
                                 </div>
                             @endif
-
-                            {{-- ── New Document Upload ── --}}
+ 
+                            {{-- ── Upload New Documents ── --}}
                             <div class="col-md-12">
                                 <div class="fu-doc-upload-area" data-index="{{ $rowIdx }}">
                                     <div class="fu-dropzone" id="dropzone-{{ $rowIdx }}">
@@ -286,14 +311,14 @@
                         </div>
                     </div>
                 @endforeach
-
+ 
             </div>{{-- /followup-container --}}
         </form>
     </div>
 </div>
-
+ 
 {{-- ══ STICKY SAVE BAR ══ --}}
-<div class="fu-sticky-bar" id="stickyBar">
+<div class="fu-sticky-bar">
     <div class="fu-sticky-inner">
         <div class="fu-sticky-info">
             <i class="fas fa-layer-group"></i>
@@ -309,11 +334,13 @@
         </div>
     </div>
 </div>
-
+ 
 @stop
+
 
 @push('css')
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('style/common.css') }}">
     <link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
     <link rel="stylesheet" href="{{ asset('style/customerFollowup.css') }}">
@@ -321,6 +348,15 @@
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+     <script>
+        window.FollowUpConfig = {
+            csrfToken:    '{{ csrf_token() }}',
+            quotationId:  '{{ $quotation_id ?? "" }}',
+            initialCount: {{ $ofollowups->count() + 1 }},
+            deleteDocUrl: '{{ url("customer/followup-document") }}',
+        };
+    </script>
     <script src="{{ asset('js/followup.js') }}">
     </script>
 @stop
