@@ -25,7 +25,7 @@ public function countQuotationReminder()
     //     ->count();
     $now = Carbon::now('Asia/Kolkata'); // Current date and time
 
-      $totalQuotationNotification =  Reminder::whereDate('sent_date', $now->toDateString())
+      $totalQuotationNotification =  Reminder::where('sent_date','<=',$now->toDateString())
         ->whereTime('sent_date', '<=', $now->toTimeString()) // Ensure time is less than or equal to now
         ->orderByDesc('created_at')
         ->count();
