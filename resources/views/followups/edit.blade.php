@@ -8,10 +8,7 @@
  
 @section('content_header')
 <div class="crm-page-header">
-    <h1>
-        <i class="fas fa-calendar-check"></i>
-        Quotation Follow-ups
-    </h1>
+    <h1><i class="fas fa-calendar-check"></i> Customer Follow-ups</h1>
     <a href="{{ url()->previous() }}" class="btn btn-outline-primary btn-sm">
         <i class="fas fa-arrow-left"></i> Back
     </a>
@@ -22,34 +19,32 @@
  
 {{-- ── Flash Messages ── --}}
 @if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+    <div class="alert alert-success alert-dismissible fade show mb-3">
         <i class="fas fa-check-circle mr-2"></i> {{ session('success') }}
         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
     </div>
 @endif
 @if(session('error'))
-    <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show mb-3">
         <i class="fas fa-exclamation-circle mr-2"></i> {{ session('error') }}
         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
     </div>
 @endif
- 
-{{-- ── Validation Errors ── --}}
 @if ($errors->any())
     <div class="alert alert-danger mb-3">
         <i class="fas fa-exclamation-circle mr-2"></i>
         <strong>Please fix the following errors:</strong>
         <ul class="mb-0 mt-1 pl-3">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
+            @foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach
         </ul>
     </div>
 @endif
  
-{{-- ══ FOLLOW-UP HISTORY ══ --}}
+{{-- ══════════════════════════════════════════
+     FOLLOW-UP HISTORY (Collapsible)
+══════════════════════════════════════════ --}}
 <div class="crm-index-card mb-4">
-    <div class="card-header fu-history-toggle" id="historyToggle" title="Click to expand / collapse">
+    <div class="card-header fu-history-toggle" id="historyToggle">
         <h3 class="card-title mb-0">
             <i class="fas fa-history"></i> Follow-up History
             @if(!$followups->isEmpty())
@@ -61,6 +56,7 @@
             <i class="fas fa-chevron-down fu-chevron" id="historyChevron"></i>
         </div>
     </div>
+ 
     <div class="fu-history-body" id="historyBody" style="display:none;">
         @if($followups->isEmpty())
             <div style="padding:16px 20px;">
@@ -69,65 +65,121 @@
                 </div>
             </div>
         @else
-            <div class="fu-table-scroll">
-                <table class="table table-striped mb-0">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Follow-Up Date</th>
-                            <th>Notes</th>
-                            <th>Next Follow-Up</th>
-                            <th>Documents</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($followups as $index => $followup)
-                            <tr>
-                                <td class="sr-no">{{ $index + 1 }}</td>
-                                <td>
-                                    <span class="crm-date-cell">
-                                        <i class="fas fa-calendar-day"></i>
-                                        {{ \Carbon\Carbon::parse($followup->follow_up_date)->format('d M Y, h:i A') }}
-                                    </span>
-                                </td>
-                                <td>
-                                    {{-- Render formatted HTML safely --}}
-                                    <div class="fu-notes-preview">
-                                        {!! Str::limit(strip_tags($followup->notes), 80, '...') !!}
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="crm-date-cell">
-                                        <i class="fas fa-calendar-alt"></i>
-                                        {{ \Carbon\Carbon::parse($followup->next_follow_up_date)->format('d M Y, h:i A') }}
-                                    </span>
-                                </td>
-                                <td>
-                                    @if($followup->documents->count())
-                                        <span class="fu-doc-badge">
-                                            <i class="fas fa-paperclip"></i>
-                                            {{ $followup->documents->count() }}
-                                        </span>
-                                    @else
-                                        <span class="text-muted" style="font-size:.8rem;">—</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="fu-history-list">
+                @foreach ($followups as $hi => $hfu)
+                @php
+                    $hDocCount = $hfu->documents->count();
+                @endphp
+ 
+                {{-- ── History Item ── --}}
+                <div class="fu-history-item" id="histItem-{{ $hi }}">
+ 
+                    {{-- Summary row (always visible) --}}
+                    <div class="fu-history-summary" data-hi="{{ $hi }}">
+                        <div class="fu-history-summary-left">
+                            <span class="fu-history-num">{{ $hi + 1 }}</span>
+                            <div class="fu-history-dates">
+                                <span class="fu-hist-date-pill fu-hist-date-pill--fu">
+                                    <i class="fas fa-calendar-day"></i>
+                                    {{ \Carbon\Carbon::parse($hfu->follow_up_date)->format('d M Y, h:i A') }}
+                                </span>
+                                <i class="fas fa-arrow-right fu-hist-arrow"></i>
+                                <span class="fu-hist-date-pill fu-hist-date-pill--next">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    {{ \Carbon\Carbon::parse($hfu->next_follow_up_date)->format('d M Y, h:i A') }}
+                                </span>
+                            </div>
+                            @if($hDocCount)
+                                <span class="fu-hist-doc-badge">
+                                    <i class="fas fa-paperclip"></i> {{ $hDocCount }}
+                                </span>
+                            @endif
+                        </div>
+                        <button class="fu-hist-expand-btn" data-hi="{{ $hi }}" title="View full details">
+                            <i class="fas fa-chevron-down fu-hist-chevron" id="histChev-{{ $hi }}"></i>
+                        </button>
+                    </div>
+ 
+                    {{-- Detail panel (expand/collapse) --}}
+                    <div class="fu-history-detail" id="histDetail-{{ $hi }}" style="display:none;">
+ 
+                        {{-- Full Notes --}}
+                        <div class="fu-hist-section">
+                            <div class="fu-hist-section-label">
+                                <i class="fas fa-file-alt"></i> Discussion Notes
+                            </div>
+                            @if($hfu->notes)
+                                <div class="fu-rich-content fu-hist-notes">
+                                   {!! $hfu->notes !!}
+                                </div>
+                            @else
+                                <p class="fu-hist-empty">No notes added.</p>
+                            @endif
+                        </div>
+ 
+                        {{-- Documents --}}
+                        @if($hDocCount)
+                        <div class="fu-hist-section">
+                            <div class="fu-hist-section-label">
+                                <i class="fas fa-folder-open"></i> Attached Documents
+                                <span class="fu-hist-doc-count">{{ $hDocCount }} {{ Str::plural('file', $hDocCount) }}</span>
+                            </div>
+                            <div class="fu-hist-docs-grid">
+                                @foreach($hfu->documents as $hdoc)
+                                    <a href="{{ Storage::url($hdoc->file_path) }}"
+                                       target="_blank"
+                                       class="fu-hist-doc-tile"
+                                       title="{{ $hdoc->original_name }}">
+                                        @if($hdoc->is_image)
+                                            <div class="fu-hist-doc-thumb">
+                                                <img src="{{ Storage::url($hdoc->file_path) }}"
+                                                     alt="{{ $hdoc->original_name }}"
+                                                     loading="lazy">
+                                            </div>
+                                        @else
+                                            <div class="fu-hist-doc-icon">
+                                                <i class="{{ $hdoc->icon_class }}"></i>
+                                            </div>
+                                        @endif
+                                        <div class="fu-hist-doc-info">
+                                            <span class="fu-hist-doc-name" title="{{ $hdoc->original_name }}">
+                                                {{ Str::limit($hdoc->original_name, 26, '…') }}
+                                            </span>
+                                            <span class="fu-hist-doc-meta">
+                                                {{ $hdoc->human_size }} · {{ strtoupper($hdoc->file_type) }}
+                                            </span>
+                                        </div>
+                                        <span class="fu-hist-doc-dl"><i class="fas fa-download"></i></span>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                        @else
+                            <div class="fu-hist-section">
+                                <div class="fu-hist-section-label">
+                                    <i class="fas fa-folder-open"></i> Attached Documents
+                                </div>
+                                <p class="fu-hist-empty">No documents attached.</p>
+                            </div>
+                        @endif
+ 
+                    </div>{{-- /fu-history-detail --}}
+                </div>{{-- /fu-history-item --}}
+                @endforeach
             </div>
         @endif
     </div>
 </div>
  
-{{-- ══ FOLLOW-UP FORM ══ --}}
+{{-- ══════════════════════════════════════════
+     FOLLOW-UP FORM
+══════════════════════════════════════════ --}}
 <div class="crm-card" style="margin-bottom: 90px;">
     <div class="crm-card-header">
         <h3 class="card-title">
             <i class="fas fa-edit"></i> Manage Follow-up Entries
         </h3>
-        <div class="d-flex align-items-center" style="gap: 10px;">
+        <div class="d-flex align-items-center" style="gap:10px;">
             <span class="fu-entry-count" id="entryCount"></span>
             <button type="button" class="btn btn-sm btn-outline-light" id="addRowBtn">
                 <i class="fas fa-plus"></i> Add Entry
@@ -145,7 +197,7 @@
  
             <div id="followup-container">
  
-                {{-- ══ NEW (blank) row ══ --}}
+                {{-- ── NEW blank row ── --}}
                 <div class="followup-row followup-row--new" data-index="0">
                     <div class="followup-row-header">
                         <span class="followup-row-label">
@@ -159,46 +211,31 @@
                     <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
                     <div class="row">
                         <div class="col-md-6">
-                            <x-adminlte-input type="text"
-                                name="follow_up_date[]"
-                                label="Follow-Up Date"
-                                fgroup-class="mb-3"
-                                class="date-time" />
+                            <x-adminlte-input type="text" name="follow_up_date[]"
+                                label="Follow-Up Date" fgroup-class="mb-3" class="date-time"/>
                         </div>
                         <div class="col-md-6">
-                            <x-adminlte-input type="text"
-                                name="next_follow_up_date[]"
-                                label="Next Follow-Up Date"
-                                fgroup-class="mb-3"
-                                class="date-time" />
+                            <x-adminlte-input type="text" name="next_follow_up_date[]"
+                                label="Next Follow-Up Date" fgroup-class="mb-3" class="date-time"/>
                         </div>
- 
-                        {{-- ── Rich Text Notes ── --}}
                         <div class="col-md-12">
                             <div class="fu-editor-wrap mb-3">
                                 <label class="fu-editor-label">
                                     <i class="fas fa-align-left"></i> Notes
-                                    <span class="fu-editor-hint">Format your discussion points with bullets, numbering, bold etc.</span>
+                                    <span class="fu-editor-hint">Bullets, numbering, bold — format discussion points</span>
                                 </label>
-                                {{-- Hidden input — stores HTML on submit --}}
                                 <textarea name="notes[]" class="fu-notes-hidden" style="display:none;"></textarea>
-                                {{-- Quill editor container --}}
                                 <div class="fu-quill-editor" id="quill-0"></div>
                             </div>
                         </div>
- 
-                        {{-- ── Document Upload ── --}}
                         <div class="col-md-12">
-                            <div class="fu-doc-upload-area" data-index="0">
+                            <div class="fu-doc-upload-area">
                                 <div class="fu-dropzone" id="dropzone-0">
                                     <i class="fas fa-cloud-upload-alt fu-drop-icon"></i>
                                     <p class="fu-drop-text">Drag & drop files or <span class="fu-drop-link">browse</span></p>
                                     <p class="fu-drop-hint">PDF, Excel, Word, Images, ZIP — max 20 MB each</p>
-                                    <input type="file"
-                                           name="documents[0][]"
-                                           class="fu-file-input"
-                                           multiple
-                                           accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.svg,.zip,.rar">
+                                    <input type="file" name="documents[]" class="fu-file-input" multiple
+                                        accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.svg,.zip,.rar">
                                 </div>
                                 <div class="fu-file-list" id="fileList-0"></div>
                             </div>
@@ -206,110 +243,102 @@
                     </div>
                 </div>
  
-                {{-- ══ Existing rows ══ --}}
+                {{-- ── Existing rows ── --}}
                 @foreach ($ofollowups as $index => $followup)
-                    @php $rowIdx = $index + 1; @endphp
-                    <div class="followup-row" data-index="{{ $rowIdx }}">
-                        <div class="followup-row-header">
-                            <span class="followup-row-label">
-                                <i class="fas fa-calendar-check"></i> Entry #{{ $index + 1 }}
-                                @if($followup->documents->count())
-                                    <span class="fu-doc-badge ml-2">
-                                        <i class="fas fa-paperclip"></i> {{ $followup->documents->count() }}
-                                    </span>
-                                @endif
-                            </span>
-                            <button type="button" class="crm-remove-btn remove-followup">
-                                <i class="fas fa-trash"></i> Remove
-                            </button>
+                @php $rowIdx = $index + 1; @endphp
+                <div class="followup-row" data-index="{{ $rowIdx }}">
+                    <div class="followup-row-header">
+                        <span class="followup-row-label">
+                            <i class="fas fa-calendar-check"></i> Entry #{{ $index + 1 }}
+                            @if($followup->documents->count())
+                                <span class="fu-doc-badge ml-2">
+                                    <i class="fas fa-paperclip"></i> {{ $followup->documents->count() }}
+                                </span>
+                            @endif
+                        </span>
+                        <button type="button" class="crm-remove-btn remove-followup">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+ 
+                    <input type="hidden" name="follow_up_id[]" value="{{ $followup->id }}">
+                    <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
+ 
+                    <div class="row">
+                        <div class="col-md-6">
+                            <x-adminlte-input type="text" name="follow_up_date[]"
+                                label="Follow-Up Date" value="{{ $followup->follow_up_date }}"
+                                fgroup-class="mb-3" class="date-time"/>
+                        </div>
+                        <div class="col-md-6">
+                            <x-adminlte-input type="text" name="next_follow_up_date[]"
+                                label="Next Follow-Up Date" value="{{ $followup->next_follow_up_date }}"
+                                fgroup-class="mb-3" class="date-time"/>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="fu-editor-wrap mb-3">
+                                <label class="fu-editor-label">
+                                    <i class="fas fa-align-left"></i> Notes
+                                    <span class="fu-editor-hint">Bullets, numbering, bold — format discussion points</span>
+                                </label>
+                                <textarea name="notes[]" class="fu-notes-hidden"
+                                    data-content="{{ htmlspecialchars($followup->notes ?? '', ENT_QUOTES) }}"
+                                    style="display:none;"></textarea>
+                                <div class="fu-quill-editor" id="quill-{{ $rowIdx }}"></div>
+                            </div>
                         </div>
  
-                        <input type="hidden" name="follow_up_id[]" value="{{ $followup->id }}">
-                        <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
- 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <x-adminlte-input type="text"
-                                    name="follow_up_date[]"
-                                    label="Follow-Up Date"
-                                    value="{{ $followup->follow_up_date }}"
-                                    fgroup-class="mb-3"
-                                    class="date-time" />
-                            </div>
-                            <div class="col-md-6">
-                                <x-adminlte-input type="text"
-                                    name="next_follow_up_date[]"
-                                    label="Next Follow-Up Date"
-                                    value="{{ $followup->next_follow_up_date }}"
-                                    fgroup-class="mb-3"
-                                    class="date-time" />
-                            </div>
- 
-                            {{-- ── Rich Text Notes (with existing content) ── --}}
-                            <div class="col-md-12">
-                                <div class="fu-editor-wrap mb-3">
-                                    <label class="fu-editor-label">
-                                        <i class="fas fa-align-left"></i> Notes
-                                        <span class="fu-editor-hint">Format your discussion points with bullets, numbering, bold etc.</span>
-                                    </label>
-                                    {{-- Existing HTML content stored here, JS will read it --}}
-                                    <textarea name="notes[]"
-                                              class="fu-notes-hidden"
-                                              data-content="{{ htmlspecialchars($followup->notes, ENT_QUOTES) }}"
-                                              style="display:none;"></textarea>
-                                    <div class="fu-quill-editor" id="quill-{{ $rowIdx }}"></div>
-                                </div>
-                            </div>
- 
-                            {{-- ── Existing Documents ── --}}
-                            @if($followup->documents->count())
-                                <div class="col-md-12 mb-3">
-                                    <label class="fu-doc-section-label">
-                                        <i class="fas fa-folder-open"></i> Existing Documents
-                                    </label>
-                                    <div class="fu-existing-docs" id="existingDocs-{{ $rowIdx }}">
-                                        @foreach($followup->documents as $doc)
-                                            <div class="fu-doc-chip" id="docChip-{{ $doc->id }}">
-                                                <i class="{{ $doc->icon_class }} fu-chip-icon"></i>
-                                                <div class="fu-chip-info">
-                                                    <a href="{{ Storage::url($doc->file_path) }}"
-                                                       target="_blank"
-                                                       class="fu-chip-name"
-                                                       title="{{ $doc->original_name }}">
-                                                        {{ Str::limit($doc->original_name, 30, '...') }}
-                                                    </a>
-                                                    <span class="fu-chip-meta">{{ $doc->human_size }} · {{ strtoupper($doc->file_type) }}</span>
-                                                </div>
-                                                <button type="button"
-                                                        class="fu-chip-delete"
-                                                        data-doc-id="{{ $doc->id }}"
-                                                        title="Remove document">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                            </div>
-                                        @endforeach
+                        {{-- Existing documents --}}
+                        @if($followup->documents->count())
+                        <div class="col-md-12 mb-3">
+                            <label class="fu-doc-section-label">
+                                <i class="fas fa-folder-open"></i> Existing Documents
+                            </label>
+                            <div class="fu-existing-docs">
+                                @foreach($followup->documents as $doc)
+                                <div class="fu-doc-chip" id="docChip-{{ $doc->id }}">
+                                    <i class="{{ $doc->icon_class }} fu-chip-icon"></i>
+                                    <div class="fu-chip-info">
+                                        <a href="{{ Storage::url($doc->file_path) }}"
+                                           target="_blank" class="fu-chip-name"
+                                           title="{{ $doc->original_name }}">
+                                            {{ Str::limit($doc->original_name, 30, '...') }}
+                                        </a>
+                                        <span class="fu-chip-meta">{{ $doc->human_size }} · {{ strtoupper($doc->file_type) }}</span>
                                     </div>
+                                    <button type="button" class="fu-chip-delete"
+                                            data-doc-id="{{ $doc->id }}" title="Remove document">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
-                            @endif
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
  
-                            {{-- ── Upload New Documents ── --}}
-                            <div class="col-md-12">
-                                <div class="fu-doc-upload-area" data-index="{{ $rowIdx }}">
-                                    <div class="fu-dropzone" id="dropzone-{{ $rowIdx }}">
-                                        <i class="fas fa-cloud-upload-alt fu-drop-icon"></i>
-                                        <p class="fu-drop-text">Drag & drop or <span class="fu-drop-link">browse</span> to add more files</p>
-                                        <p class="fu-drop-hint">PDF, Excel, Word, Images, ZIP — max 20 MB each</p>
-                                        <input type="file"
-                                               name="documents[{{ $rowIdx }}][]"
-                                               class="fu-file-input"
-                                               multiple
-                                               accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.svg,.zip,.rar">
-                                    </div>
-                                    <div class="fu-file-list" id="fileList-{{ $rowIdx }}"></div>
+                        {{-- New document upload --}}
+                        <div class="col-md-12">
+                            <label class="fu-doc-section-label">
+                                <i class="fas fa-cloud-upload-alt"></i> Add More Documents
+                            </label>
+                            <div class="fu-doc-upload-area">
+                                <div class="fu-dropzone" id="dropzone-{{ $rowIdx }}">
+                                    <i class="fas fa-cloud-upload-alt fu-drop-icon"></i>
+                                    <p class="fu-drop-text">Drag & drop or <span class="fu-drop-link">browse</span></p>
+                                    <p class="fu-drop-hint">PDF, Excel, Word, Images, ZIP — max 20 MB each</p>
+                                    {{--
+                                        IMPORTANT: name="documents[]" — generic array.
+                                        JS will re-index to documents[N][] on submit
+                                        so it matches the sequential PHP loop index.
+                                    --}}
+                                    <input type="file" name="documents[]" class="fu-file-input" multiple
+                                        accept=".pdf,.xls,.xlsx,.csv,.doc,.docx,.jpg,.jpeg,.png,.gif,.webp,.svg,.zip,.rar">
                                 </div>
+                                <div class="fu-file-list" id="fileList-{{ $rowIdx }}"></div>
                             </div>
                         </div>
                     </div>
+                </div>
                 @endforeach
  
             </div>{{-- /followup-container --}}
@@ -336,7 +365,6 @@
 </div>
  
 @stop
-
 
 @push('css')
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">

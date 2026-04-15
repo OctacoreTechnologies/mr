@@ -96,7 +96,7 @@ class CustomerFollowUpController extends Controller
                     // Delete related reminders
                     Reminder::where([
                         ['type_id', '=', $customerId],
-                        ['type',    '=', 'quotation followup'],
+                        ['type',    '=', 'Customer followup'],
                         ['model',   '=', 'Customer'],
                         ['sent_date', '=', $prev->next_follow_up_date],
                     ])->delete();

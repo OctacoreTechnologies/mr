@@ -22,7 +22,7 @@ class ReminderController extends Controller
    //      ->get();
      $now = Carbon::now('Asia/Kolkata'); // Current date and time
 
-      $reminders = Reminder::whereDate('sent_date', $now->toDateString())
+      $reminders = Reminder::where('sent_date','<=', $now)
         ->whereTime('sent_date', '<=', $now->toTimeString()) // Ensure time is less than or equal to now
         ->orderByDesc('created_at')
         ->get();

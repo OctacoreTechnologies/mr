@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('customer_id',24);
             $table->dateTime('follow_up_date')->nullable();
             $table->dateTime('next_follow_up_date')->nullable();
-            $table->string('notes');
+            $table->longText('notes');
             $table->softDeletes();
             $table->timestamps();
         });
