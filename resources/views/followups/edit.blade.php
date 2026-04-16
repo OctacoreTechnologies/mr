@@ -3,7 +3,10 @@
 @section('title', 'Edit Follow-up')
  
 @php
-    $quotation_id = request()->query('quotation_id') ?? null;
+    $quotation_id    =    request()->query('quotation_id') ?? null;
+    $opportunity_id  =    request()->query('opportunity_id') ?? null;
+    $type            =    request()->query('type') ?? null;  
+
 @endphp
  
 @section('content_header')
@@ -209,6 +212,8 @@
                     </div>
                     <input type="hidden" name="follow_up_id[]" value="">
                     <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
+                    <input type="hidden" name="opportunity_id" value="{{ $opportunity_id }}">
+                    <input type="hidden" name="type" value="{{ $type }}">
                     <div class="row">
                         <div class="col-md-6">
                             <x-adminlte-input type="text" name="follow_up_date[]"
@@ -262,7 +267,8 @@
                     </div>
  
                     <input type="hidden" name="follow_up_id[]" value="{{ $followup->id }}">
-                    <input type="hidden" name="quotation_id" value="{{ $quotation_id }}">
+                    <input type="hidden" name="quotation_id" value="{{ $followup->quotation_id }}">
+                    <input type="hidden" name="opportunity_id" value="{{ $opportunity_id??$followup->opportunity_id }}"> 
  
                     <div class="row">
                         <div class="col-md-6">
@@ -381,6 +387,7 @@
         window.FollowUpConfig = {
             csrfToken:    '{{ csrf_token() }}',
             quotationId:  '{{ $quotation_id ?? "" }}',
+            opportunityId:  '{{ $opportunity_id ?? "" }}',
             initialCount: {{ $ofollowups->count() + 1 }},
             deleteDocUrl: '{{ url("customer/followup-document") }}',
         };

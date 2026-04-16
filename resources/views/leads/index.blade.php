@@ -90,7 +90,7 @@
                             {{-- Follow Up --}}
                             <td>
                             @can('followup_customer')
-                                <a href="{{ route('followup.edit', $lead->id) }}"
+                                <a href="{{ route('followup.edit', $lead->id) }}?type='lead'"
                                    class="btn btn-sm btn-outline-primary"
                                    target="_blank">
                                     <i class="fas fa-phone-alt"></i> Follow Up

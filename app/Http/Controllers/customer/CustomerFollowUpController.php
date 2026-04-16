@@ -74,6 +74,7 @@ class CustomerFollowUpController extends Controller
         DB::beginTransaction();
 
         try {
+          
             /* ── 1. Delete documents explicitly marked for removal ── */
             if (!empty($validated['delete_document_ids'])) {
                 $docsToDelete = CustomerFollowUpDocument::whereIn('id', $validated['delete_document_ids'])->get();
@@ -120,6 +121,7 @@ class CustomerFollowUpController extends Controller
                     $followUp = CustomerFollowUp::create([
                         'customer_id'        => $customerId,
                         'quotation_id'       => $validated['quotation_id'] ?? null,
+                        'opportunity_id'     => $validated['opportunity_id'] ?? null,
                         'follow_up_date'     => $followDateParsed,
                         'notes'              => $validated['notes'][$index],
                         'next_follow_up_date' => $nextDate,
@@ -180,7 +182,7 @@ class CustomerFollowUpController extends Controller
             Log::error('CustomerFollowUp update failed', ['error' => $e->getMessage()]);
             return redirect()->back()
                              ->withInput()
-                             ->with('error', 'Something went wrong. Please try again.');
+                             ->with('error', "Something went wrong. Please try again. $e");
         }
 
         return redirect()->back()->with('success', 'Follow-up updated successfully.');
@@ -238,8 +240,8 @@ class CustomerFollowUpController extends Controller
     {
         Reminder::create([
             'type_id'   => $customerId,
-            'type'      => 'quotation followup',
-            'data'      => 'Customer Quotation Followup',
+            'type'      => 'followup',
+            'data'      => 'Customer Followup',
             'model'     => 'Customer',
             'sent_date' => $sentDate,
         ]);

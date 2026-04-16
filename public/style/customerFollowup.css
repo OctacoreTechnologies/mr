@@ -457,7 +457,7 @@
 
         /* ══ RICH CONTENT (shared) ══ */
         .fu-rich-content {
-            font-size: .875rem;
+            /* font-size: .875rem; */
             line-height: 1.7;
             color: #1e293b;
            overflow-wrap:break-word;

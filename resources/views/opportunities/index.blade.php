@@ -6,6 +6,7 @@
         'Priority',
         'Stage',
         'Type',
+        'Follow Up',
         ['label' => 'Actions', 'no-export' => true],
     ];
     $i = 1;
@@ -104,6 +105,15 @@
                                 @else
                                     <span class="text-muted">—</span>
                                 @endif
+                            </td>
+                            <td>
+                              @can('followup_customer')
+                                <a href="{{ route('followup.edit', $opportunity->customer_id) }}?type='opportunity'&opportunity_id={{ $opportunity->id }}"
+                                   class="btn btn-sm btn-outline-primary"
+                                   target="_blank">
+                                    <i class="fas fa-phone-alt"></i> Follow Up
+                                </a>
+                               @endcan
                             </td>
 
                             {{-- Actions --}}

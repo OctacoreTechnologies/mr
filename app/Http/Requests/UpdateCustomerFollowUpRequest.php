@@ -15,6 +15,11 @@ class UpdateCustomerFollowUpRequest extends FormRequest
     {
         return [
             'quotation_id'              => ['nullable', 'string', 'max:24'],
+            // 'quotation_id.*'            => ['nullable'],
+            'opportunity_id'            => ['nullable', 'string', 'max:24'],
+            // 'opportunity_id.*'          => ['nullable'],
+            'type'                      => ['nullable', 'string'],
+            'type.*'                    => ['nullable'],
             'follow_up_id'              => ['required', 'array'],
             'follow_up_id.*'            => ['nullable'],
             'follow_up_date'            => ['required', 'array'],
