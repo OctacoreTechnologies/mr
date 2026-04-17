@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\remiders;
+namespace App\Http\Controllers\reminders;
 
 use App\Http\Controllers\Controller;
 use App\Models\Quotation;

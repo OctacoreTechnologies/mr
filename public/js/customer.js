@@ -64,4 +64,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initial render when page loads
     renderContactPersons();
+
+    const billTo = document.getElementById("billTo");
+    const shipTo = document.getElementById("shipTo");
+    const checkbox = document.getElementById("sameAddress");
+
+    checkbox.addEventListener("change", function () {
+        if (this.checked) {
+            shipTo.value = billTo.value;
+            shipTo.setAttribute("readonly", true);
+        } else {
+            shipTo.removeAttribute("readonly");
+        }
+    });
+
+    billTo.addEventListener("input", function () {
+        if (checkbox.checked) {
+            shipTo.value = billTo.value;
+        }
+    });
 });

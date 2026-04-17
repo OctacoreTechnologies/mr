@@ -56,7 +56,8 @@
                         <x-adminlte-select name="country" label="Select Country" class="country-select">
                             @foreach ($countries as $country)
                                 <option value="{{ strtolower($country->country) }}" data-code="{{ $country->country_code }}">
-                                    {{ $country->country }}</option>
+                                    {{ $country->country }}
+                                </option>
                             @endforeach
                         </x-adminlte-select>
                     </div>
@@ -127,12 +128,19 @@
                     <!-- Address Lines -->
                     <div class="col-md-4">
                         <x-adminlte-textarea name="address_line_1" label="Address (Bill To)"
-                            placeholder="Enter Address Line 1"
+                            placeholder="Enter Address Line 1" id="billTo"
                             fgroup-class="mb-3">{{ old('address_line_1') }}</x-adminlte-textarea>
                     </div>
                     <div class="col-md-4">
+                        <div class="form-check mb-2">
+                            <input type="checkbox" id="sameAddress" class="form-check-input">
+                            <label for="sameAddress" class="form-check-label">
+                                Same as Bill To
+                            </label>
+                        </div>
+
                         <x-adminlte-textarea name="address_line_2" label="Address (Ship To)"
-                            placeholder="Enter Address Line 2"
+                            placeholder="Enter Address Line 2" id="shipTo"
                             fgroup-class="mb-3">{{ old('address_line_2') }}</x-adminlte-textarea>
                     </div>
 

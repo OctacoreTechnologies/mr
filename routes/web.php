@@ -36,7 +36,7 @@ use App\Http\Controllers\order_acceptance_letter\OrderAccpetanceLetterController
 use App\Http\Controllers\product\ProductController;
 use App\Http\Controllers\quotation\QuotationController;
 use App\Http\Controllers\region\RegionController;
-use App\Http\Controllers\remiders\ReminderController;
+use App\Http\Controllers\reminders\ReminderController;
 use App\Http\Controllers\reports\ReportCustomerController;
 use App\Http\Controllers\reports\ReportLeadController;
 use App\Http\Controllers\reports\ReportQuotationController;

@@ -300,7 +300,7 @@
         <td class="bs-left">
             <div class="sec-lbl">&#9632;&nbsp;Bill To</div>
             <div class="addr">
-                <span class="b">M/s. {{ $saleOrder->quotation->customer->contact_person_1_name ?? '' }}</span><br>
+                <span class="b">M/s. {{ $saleOrder->quotation->customer->company_name ?? '' }}</span><br>
                 {{ $saleOrder->quotation->customer->address_line_1 ?? '' }},
                 {{ $saleOrder->quotation->customer->city ?? '' }},
                 {{ $saleOrder->quotation->customer->state ?? '' }}
@@ -317,8 +317,8 @@
         <td class="bs-right">
             <div class="sec-lbl">&#9632;&nbsp;Ship To</div>
             <div class="addr">
-                <span class="b">M/s. {{ $saleOrder->quotation->customer->contact_person_2_name ?? $saleOrder->quotation->customer->contact_person_1_name }}</span><br>
-                {{ $saleOrder->quotation->customer->address_line_2 ?? $saleOrder->quotation->customer->address_line_1 }}
+                <span class="b">M/s. {{ $saleOrder->quotation->customer->company_name ?? $saleOrder->quotation->customer->contact_person_1_name }}</span><br>
+                 {{ $saleOrder->quotation->customer->address_line_2  }}
             </div>
             <table class="kv">
                 <tr><td>Kind Attn.</td><td>{{ $saleOrder->followedBy->name ?? '–' }}</td></tr>
