@@ -760,3 +760,862 @@
             background: var(--crm-primary, #2563eb) !important;
             border-color: var(--crm-primary, #2563eb) !important;
         }
+
+        /* ═══════════════════════════════════════════════════════════
+   FOLLOW-UP HISTORY TABLE
+   — Notes & Documents always visible, no expand/collapse
+   ═══════════════════════════════════════════════════════════ */
+
+/* Table wrapper */
+.fu-hist-table-wrap {
+    overflow-x: auto;
+    border-radius: 0 0 6px 6px;
+}
+
+/* Table base */
+.fu-hist-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    table-layout: fixed;
+}
+
+/* Column widths */
+.fu-th-num   { width: 50px;  }
+.fu-th-date  { width: 160px; }
+.fu-th-notes { width: auto;  }       /* takes remaining space */
+.fu-th-docs  { width: 260px; }
+
+/* ── Header ── */
+.fu-hist-table thead tr {
+    background: #3c5a99;
+    color: #fff;
+}
+
+.fu-th {
+    padding: 12px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    border: none;
+}
+
+/* ── Body rows ── */
+.fu-hist-row {
+    border-bottom: 1px solid #e8eaf0;
+    vertical-align: top;
+    transition: background 0.15s;
+}
+
+.fu-hist-row:hover {
+    background: #f5f7ff;
+}
+
+.fu-hist-row:last-child {
+    border-bottom: none;
+}
+
+.fu-hist-row:nth-child(even) {
+    background: #fafbff;
+}
+
+.fu-hist-row:nth-child(even):hover {
+    background: #f0f3ff;
+}
+
+/* All cells */
+.fu-td {
+    padding: 14px;
+    vertical-align: top;
+    border-right: 1px solid #e8eaf0;
+}
+
+.fu-td:last-child {
+    border-right: none;
+}
+
+/* ── # number cell ── */
+.fu-td-num {
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #3c5a99;
+    padding-top: 18px;
+}
+
+/* ── Date cells ── */
+.fu-td-date {
+    white-space: nowrap;
+}
+
+.fu-date-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.fu-date-pill--blue {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+.fu-date-pill--blue i {
+    color: #1d4ed8;
+    font-size: 12px;
+}
+
+.fu-date-pill--amber {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.fu-date-pill--amber i {
+    color: #d97706;
+    font-size: 12px;
+}
+
+.fu-time-lbl {
+    font-size: 11.5px;
+    color: #888;
+    margin-top: 5px;
+    padding-left: 4px;
+}
+
+/* ── Notes cell ── */
+.fu-td-notes {
+    min-width: 200px;
+}
+
+.fu-notes-body {
+    color: #333;
+    line-height: 1.65;
+    font-size: 13.5px;
+    word-break: break-word;
+}
+
+/* Quill-generated content */
+.fu-notes-body p          { margin: 0 0 6px; }
+.fu-notes-body p:last-child { margin-bottom: 0; }
+.fu-notes-body ul,
+.fu-notes-body ol         { margin: 4px 0 6px 20px; padding: 0; }
+.fu-notes-body li         { margin-bottom: 3px; }
+.fu-notes-body strong     { font-weight: 600; color: #111; }
+.fu-notes-body em         { color: #555; }
+.fu-notes-body blockquote {
+    border-left: 3px solid #c8d0e7;
+    margin: 8px 0;
+    padding: 4px 10px;
+    color: #666;
+    font-style: italic;
+}
+.fu-notes-body h1, .fu-notes-body h2,
+.fu-notes-body h3, .fu-notes-body h4 {
+    margin: 8px 0 4px;
+    font-weight: 600;
+    color: #222;
+}
+.fu-notes-body a {
+    color: #3c5a99;
+    text-decoration: none;
+}
+.fu-notes-body a:hover {
+    text-decoration: underline;
+}
+
+/* ── Documents cell ── */
+.fu-td-docs {
+    vertical-align: top;
+    min-width: 200px;
+}
+
+.fu-docs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Individual doc card */
+.fu-doc-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: #f8f9fc;
+    border: 1px solid #e2e5f0;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    overflow: hidden;
+}
+
+.fu-doc-card:hover {
+    background: #eef1ff;
+    border-color: #3c5a99;
+    box-shadow: 0 2px 6px rgba(60, 90, 153, 0.12);
+    text-decoration: none;
+    color: #333;
+}
+
+/* Image thumbnail */
+.fu-doc-thumb {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #e8eaf0;
+}
+
+.fu-doc-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Non-image icon */
+.fu-doc-icon-wrap {
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 4px;
+    background: #e8eaf0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #3c5a99;
+}
+
+/* File name + size */
+.fu-doc-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fu-doc-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #2d3748;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fu-doc-size {
+    font-size: 11.5px;
+    color: #999;
+    white-space: nowrap;
+}
+
+/* Download icon */
+.fu-doc-dl {
+    flex-shrink: 0;
+    color: #aaa;
+    font-size: 13px;
+    transition: color 0.2s;
+}
+
+.fu-doc-card:hover .fu-doc-dl {
+    color: #3c5a99;
+}
+
+/* Empty placeholder */
+.fu-empty {
+    color: #bbb;
+    font-size: 14px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .fu-hist-table {
+        table-layout: auto;
+    }
+
+    .fu-th-docs {
+        width: 200px;
+    }
+
+    .fu-doc-thumb,
+    .fu-doc-icon-wrap {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    .fu-th, .fu-td {
+        padding: 10px 8px;
+        font-size: 12px;
+    }
+
+    .fu-date-pill {
+        font-size: 11px;
+        padding: 4px 7px;
+    }
+
+    .fu-doc-card {
+        padding: 6px 8px;
+    }
+
+    .fu-doc-thumb,
+    .fu-doc-icon-wrap {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+    }
+}
+/* ═══════════════════════════════════════════════════
+   FOLLOW-UP HISTORY — Header toggle + Table styles
+   ═══════════════════════════════════════════════════ */
+
+/* ── Header ── */
+.fu-hist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.2s;
+}
+
+.fu-hist-header:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.fu-hist-toggle-hint {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
+}
+
+.fu-hist-chevron {
+    font-size: 15px;
+    color: #fff;
+    transition: transform 0.3s ease;
+}
+
+/* ── Table wrapper ── */
+.fu-hist-table-wrap {
+    overflow-x: auto;
+}
+
+/* ── Table base ── */
+.fu-hist-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    table-layout: fixed;
+}
+
+/* Column widths */
+.fu-th-num   { width: 50px; }
+.fu-th-date  { width: 155px; }
+.fu-th-notes { width: auto; }
+.fu-th-docs  { width: 250px; }
+
+/* ── Header row ── */
+.fu-hist-table thead tr {
+    background: #3c5a99;
+    color: #fff;
+}
+
+.fu-th {
+    padding: 11px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    border: none;
+}
+
+/* ── Body rows ── */
+.fu-hist-row {
+    border-bottom: 1px solid #e8eaf0;
+    vertical-align: top;
+    transition: background 0.15s;
+}
+
+.fu-hist-row:hover {
+    background: #f5f7ff;
+}
+
+.fu-hist-row:last-child {
+    border-bottom: none;
+}
+
+.fu-hist-row:nth-child(even) {
+    background: #fafbff;
+}
+
+.fu-hist-row:nth-child(even):hover {
+    background: #f0f3ff;
+}
+
+/* ── Cells ── */
+.fu-td {
+    padding: 13px 14px;
+    vertical-align: top;
+    border-right: 1px solid #e8eaf0;
+}
+
+.fu-td:last-child {
+    border-right: none;
+}
+
+/* # */
+.fu-td-num {
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #3c5a99;
+    padding-top: 17px;
+}
+
+/* Date */
+.fu-td-date { white-space: nowrap; }
+
+.fu-date-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.fu-date-pill--blue  { background:#dbeafe; color:#1d4ed8; }
+.fu-date-pill--blue i { color:#1d4ed8; font-size:11px; }
+.fu-date-pill--amber { background:#fef3c7; color:#92400e; }
+.fu-date-pill--amber i { color:#d97706; font-size:11px; }
+
+.fu-time-lbl {
+    font-size: 11.5px;
+    color: #888;
+    margin-top: 5px;
+    padding-left: 4px;
+}
+
+/* Notes */
+.fu-td-notes { min-width: 180px; }
+
+.fu-notes-body {
+    color: #333;
+    line-height: 1.65;
+    font-size: 13.5px;
+    word-break: break-word;
+}
+
+.fu-notes-body p              { margin: 0 0 5px; }
+.fu-notes-body p:last-child   { margin-bottom: 0; }
+.fu-notes-body ul,
+.fu-notes-body ol             { margin: 3px 0 5px 20px; padding: 0; }
+.fu-notes-body li             { margin-bottom: 3px; }
+.fu-notes-body strong         { font-weight: 600; color: #111; }
+.fu-notes-body em             { color: #555; }
+.fu-notes-body blockquote     {
+    border-left: 3px solid #c8d0e7;
+    margin: 6px 0;
+    padding: 3px 10px;
+    color: #666;
+    font-style: italic;
+}
+.fu-notes-body h1, .fu-notes-body h2,
+.fu-notes-body h3, .fu-notes-body h4 {
+    margin: 6px 0 3px;
+    font-weight: 600;
+    color: #222;
+}
+.fu-notes-body a { color:#3c5a99; text-decoration:none; }
+.fu-notes-body a:hover { text-decoration:underline; }
+
+/* Documents */
+.fu-td-docs { min-width: 200px; }
+
+.fu-docs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.fu-doc-card {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 10px;
+    background: #f8f9fc;
+    border: 1px solid #e2e5f0;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.fu-doc-card:hover {
+    background: #eef1ff;
+    border-color: #3c5a99;
+    box-shadow: 0 2px 6px rgba(60,90,153,0.12);
+    text-decoration: none;
+    color: #333;
+}
+
+.fu-doc-thumb,
+.fu-doc-icon-wrap {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #e8eaf0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fu-doc-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.fu-doc-icon-wrap {
+    font-size: 20px;
+    color: #3c5a99;
+}
+
+.fu-doc-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fu-doc-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #2d3748;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fu-doc-size {
+    font-size: 11px;
+    color: #999;
+    white-space: nowrap;
+}
+
+.fu-doc-dl {
+    flex-shrink: 0;
+    color: #bbb;
+    font-size: 12px;
+    transition: color 0.2s;
+}
+
+.fu-doc-card:hover .fu-doc-dl {
+    color: #3c5a99;
+}
+
+/* Empty */
+.fu-empty {
+    color: #bbb;
+    font-size: 13px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .fu-hist-table { table-layout: auto; }
+    .fu-th-docs    { width: 180px; }
+
+    .fu-doc-thumb,
+    .fu-doc-icon-wrap { width: 34px; height: 34px; font-size: 16px; }
+
+    .fu-th, .fu-td { padding: 9px 8px; font-size: 12px; }
+    .fu-date-pill  { font-size: 11px; padding: 4px 7px; }
+}
+
+/* ═══════════════════════════════════════════════════
+   FOLLOW-UP HISTORY — Header toggle + Table styles
+   ═══════════════════════════════════════════════════ */
+
+/* ── Header ── */
+.fu-hist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.2s;
+}
+
+.fu-hist-header:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.fu-hist-toggle-hint {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    font-style: italic;
+}
+
+.fu-hist-chevron {
+    font-size: 15px;
+    color: #fff;
+    transition: transform 0.3s ease;
+}
+
+/* ── Table wrapper ── */
+.fu-hist-table-wrap {
+    overflow-x: auto;
+}
+
+/* ── Table base ── */
+.fu-hist-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+    table-layout: fixed;
+}
+
+/* Column widths */
+.fu-th-num   { width: 50px; }
+.fu-th-date  { width: 155px; }
+.fu-th-notes { width: auto; }
+.fu-th-docs  { width: 250px; }
+
+/* ── Header row ── */
+.fu-hist-table thead tr {
+    background: #3c5a99;
+    color: #fff;
+}
+
+.fu-th {
+    padding: 11px 14px;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    border: none;
+}
+
+/* ── Body rows ── */
+.fu-hist-row {
+    border-bottom: 1px solid #e8eaf0;
+    vertical-align: top;
+    transition: background 0.15s;
+}
+
+.fu-hist-row:hover {
+    background: #f5f7ff;
+}
+
+.fu-hist-row:last-child {
+    border-bottom: none;
+}
+
+.fu-hist-row:nth-child(even) {
+    background: #fafbff;
+}
+
+.fu-hist-row:nth-child(even):hover {
+    background: #f0f3ff;
+}
+
+/* ── Cells ── */
+.fu-td {
+    padding: 13px 14px;
+    vertical-align: top;
+    border-right: 1px solid #e8eaf0;
+}
+
+.fu-td:last-child {
+    border-right: none;
+}
+
+/* # */
+.fu-td-num {
+    text-align: center;
+    font-weight: 700;
+    font-size: 15px;
+    color: #3c5a99;
+    padding-top: 17px;
+}
+
+/* Date */
+.fu-td-date { white-space: nowrap; }
+
+.fu-date-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.fu-date-pill--blue  { background:#dbeafe; color:#1d4ed8; }
+.fu-date-pill--blue i { color:#1d4ed8; font-size:11px; }
+.fu-date-pill--amber { background:#fef3c7; color:#92400e; }
+.fu-date-pill--amber i { color:#d97706; font-size:11px; }
+
+.fu-time-lbl {
+    font-size: 11.5px;
+    color: #888;
+    margin-top: 5px;
+    padding-left: 4px;
+}
+
+/* Notes */
+.fu-td-notes { min-width: 180px; }
+
+.fu-notes-body {
+    color: #333;
+    line-height: 1.65;
+    font-size: 13.5px;
+    word-break: break-word;
+}
+
+.fu-notes-body p              { margin: 0 0 5px; }
+.fu-notes-body p:last-child   { margin-bottom: 0; }
+.fu-notes-body ul,
+.fu-notes-body ol             { margin: 3px 0 5px 20px; padding: 0; }
+.fu-notes-body li             { margin-bottom: 3px; }
+.fu-notes-body strong         { font-weight: 600; color: #111; }
+.fu-notes-body em             { color: #555; }
+.fu-notes-body blockquote     {
+    border-left: 3px solid #c8d0e7;
+    margin: 6px 0;
+    padding: 3px 10px;
+    color: #666;
+    font-style: italic;
+}
+.fu-notes-body h1, .fu-notes-body h2,
+.fu-notes-body h3, .fu-notes-body h4 {
+    margin: 6px 0 3px;
+    font-weight: 600;
+    color: #222;
+}
+.fu-notes-body a { color:#3c5a99; text-decoration:none; }
+.fu-notes-body a:hover { text-decoration:underline; }
+
+/* Documents */
+.fu-td-docs { min-width: 200px; }
+
+.fu-docs-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.fu-doc-card {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 10px;
+    background: #f8f9fc;
+    border: 1px solid #e2e5f0;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #333;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+}
+
+.fu-doc-card:hover {
+    background: #eef1ff;
+    border-color: #3c5a99;
+    box-shadow: 0 2px 6px rgba(60,90,153,0.12);
+    text-decoration: none;
+    color: #333;
+}
+
+.fu-doc-thumb,
+.fu-doc-icon-wrap {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #e8eaf0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fu-doc-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.fu-doc-icon-wrap {
+    font-size: 20px;
+    color: #3c5a99;
+}
+
+.fu-doc-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.fu-doc-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #2d3748;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fu-doc-size {
+    font-size: 11px;
+    color: #999;
+    white-space: nowrap;
+}
+
+.fu-doc-dl {
+    flex-shrink: 0;
+    color: #bbb;
+    font-size: 12px;
+    transition: color 0.2s;
+}
+
+.fu-doc-card:hover .fu-doc-dl {
+    color: #3c5a99;
+}
+
+/* Empty */
+.fu-empty {
+    color: #bbb;
+    font-size: 13px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .fu-hist-table { table-layout: auto; }
+    .fu-th-docs    { width: 180px; }
+
+    .fu-doc-thumb,
+    .fu-doc-icon-wrap { width: 34px; height: 34px; font-size: 16px; }
+
+    .fu-th, .fu-td { padding: 9px 8px; font-size: 12px; }
+    .fu-date-pill  { font-size: 11px; padding: 4px 7px; }
+}

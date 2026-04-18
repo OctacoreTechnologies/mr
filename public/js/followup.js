@@ -16,6 +16,24 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
+     /* ── JS: header click = expand/collapse ── */
+
+    (function () {
+    var header   = document.getElementById('fuHistHeader');
+    var body     = document.getElementById('fuHistBody');
+    var chevron  = document.getElementById('fuHistChevron');
+    var hint     = document.getElementById('fuHistHint');
+    var open     = false;
+ 
+    header.addEventListener('click', function () {
+        open = !open;
+        body.style.display    = open ? 'block' : 'none';
+        chevron.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
+        hint.textContent      = open ? 'Click to collapse' : 'Click to expand';
+    });
+  })();
+
+
     /* ════════════════════════════════════════
     |  1.  CONFIG  (Blade bridge)
     ════════════════════════════════════════ */
