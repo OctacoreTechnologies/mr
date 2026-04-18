@@ -341,7 +341,7 @@ return [
 
         [
             'text' => 'Today',
-            'url'  => 'reminder/today',
+            'url'  => 'notification/today',
             'icon' => 'fas fa-calendar-day',
             'can' => 'reminder_view',
 

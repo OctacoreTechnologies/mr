@@ -73,4 +73,9 @@ class Customer extends Model
             $query->orderBy('company_name', 'asc');
         });
     }
+
+    public function notifications()
+    {
+        return $this->morphMany(Notification::class, 'notifiable');
+    }
 }

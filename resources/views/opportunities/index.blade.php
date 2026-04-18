@@ -1,15 +1,15 @@
 @php
-    $heads = [
-        'Sr.No',
-        'Name',
-        'Date',
-        'Priority',
-        'Stage',
-        'Type',
-        'Follow Up',
-        ['label' => 'Actions', 'no-export' => true],
-    ];
-    $i = 1;
+$heads = [
+    'Sr.No',
+    'Name',
+    'Date',
+    'Priority',
+    'Stage',
+    'Type',
+    'Follow Up',
+    ['label' => 'Actions', 'no-export' => true],
+];
+$i = 1;
 @endphp
 
 @extends('layouts.app')
@@ -45,115 +45,114 @@
             <div class="table-responsive">
                 <x-adminlte-datatable id="opportunityTable" :heads="$heads" striped hoverable with-buttons>
                     @foreach ($opportunities as $opportunity)
-                        <tr>
-                            <td class="sr-no">{{ $i++ }}</td>
+                                            <tr>
+                                                <td class="sr-no">{{ $i++ }}</td>
 
-                            <td>{{ $opportunity->customer->company_name ?? '—' }}</td>
+                                                <td>{{ $opportunity->customer->company_name ?? '—' }}</td>
 
-                            <td>{{ $opportunity->created_at ? \Carbon\Carbon::parse($opportunity->created_at)->format('d M Y') : '—' }}</td>
+                                                <td>{{ $opportunity->created_at ? \Carbon\Carbon::parse($opportunity->created_at)->format('d M Y') : '—' }}</td>
 
-                            <td>
-                                @php
-                                    $priority = $opportunity->priority ?? null;
-                                    $priorityBadge = match($priority) {
-                                        'high' => 'crm-badge-high',
-                                        'medium' => 'crm-badge-medium',
-                                        'low' => 'crm-badge-low',
-                                        default => '',
-                                    };
-                                    $priorityLabel = $priority ? ucfirst($priority) : '—';
-                                    echo '<span class="crm-badge ' . $priorityBadge . '">' . $priorityLabel . '</span>';
-                                @endphp
-                            </td>
+                                                <td>
+                                                    @php
+                        $priority = $opportunity->priority ?? null;
+                        $priorityBadge = match ($priority) {
+                            'high' => 'crm-badge-high',
+                            'medium' => 'crm-badge-medium',
+                            'low' => 'crm-badge-low',
+                            default => '',
+                        };
+                        $priorityLabel = $priority ? ucfirst($priority) : '—';
+                        echo '<span class="crm-badge ' . $priorityBadge . '">' . $priorityLabel . '</span>';
+                                                    @endphp
+                                                </td>
 
-                            {{-- Stage badge --}}
-                            <td>
-                                @php
-                                    $stage = $opportunity->stage ?? null;
-                                    $stageBadge = match($stage) {
-                                        // 'qualification' => 'crm-badge-qualification',
-                                        'proposal'      => 'crm-badge-proposal',
-                                        'quoted'   => 'crm-badge-negotiation',
-                                        'won'           => 'crm-badge-closed-won',
-                                        'closed_lost'   => 'crm-badge-closed-lost',
-                                        default         => '',
-                                    };
-                                    $stageLabel = $stage ? ucfirst(str_replace('_', ' ', $stage)) : '—';
-                                @endphp
-                                @if($stage)
-                                    <span class="crm-badge {{ $stageBadge }}">{{ $stageLabel }}</span>
-                                @else
-                                    <span class="text-muted">—</span>
-                                @endif
-                            </td>
+                                                {{-- Stage badge --}}
+                                                <td>
+                                                    @php
+                        $stage = $opportunity->stage ?? null;
+                        $stageBadge = match ($stage) {
+                            // 'qualification' => 'crm-badge-qualification',
+                            'proposal' => 'crm-badge-proposal',
+                            'quoted' => 'crm-badge-negotiation',
+                            'won' => 'crm-badge-closed-won',
+                            'closed_lost' => 'crm-badge-closed-lost',
+                            default => '',
+                        };
+                        $stageLabel = $stage ? ucfirst(str_replace('_', ' ', $stage)) : '—';
+                                                    @endphp
+                                                    @if($stage)
+                                                        <span class="crm-badge {{ $stageBadge }}">{{ $stageLabel }}</span>
+                                                    @else
+                                                        <span class="text-muted">—</span>
+                                                    @endif
+                                                </td>
 
-                            {{-- Type badge --}}
-                            <td>
-                                @php
-                                    $type = $opportunity->type ?? null;
-                                    $typeBadge = match($type) {
-                                        'new_enquiry' => 'crm-badge-new-business',
-                                        'upsell'       => 'crm-badge-upsell',
-                                        'cross_sell'   => 'crm-badge-cross-sell',
-                                        'renewal'      => 'crm-badge-renewal',
-                                        default        => '',
-                                    };
-                                    $typeLabel = $type ? ucfirst(str_replace('_', ' ', $type)) : '—';
-                                @endphp
-                                @if($type)
-                                    <span class="crm-badge {{ $typeBadge }}">{{ $typeLabel }}</span>
-                                @else
-                                    <span class="text-muted">—</span>
-                                @endif
-                            </td>
-                            <td>
-                              @can('followup_customer')
-                                <a href="{{ route('followup.edit', $opportunity->customer_id) }}?type='opportunity'&opportunity_id={{ $opportunity->id }}"
-                                   class="btn btn-sm btn-outline-primary"
-                                   target="_blank">
-                                    <i class="fas fa-phone-alt"></i> Follow Up
-                                </a>
-                               @endcan
-                            </td>
+                                                {{-- Type badge --}}
+                                                <td>
+                                                    @php
+                        $type = $opportunity->type ?? null;
+                        $typeBadge = match ($type) {
+                            'new_enquiry' => 'crm-badge-new-business',
+                            'upsell' => 'crm-badge-upsell',
+                            'cross_sell' => 'crm-badge-cross-sell',
+                            'renewal' => 'crm-badge-renewal',
+                            default => '',
+                        };
+                        $typeLabel = $type ? ucfirst(str_replace('_', ' ', $type)) : '—';
+                                                    @endphp
+                                                    @if($type)
+                                                        <span class="crm-badge {{ $typeBadge }}">{{ $typeLabel }}</span>
+                                                    @else
+                                                        <span class="text-muted">—</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                  @can('followup_customer')
+                                                    <a href="{{ route('followup.edit', $opportunity->customer_id) }}?type=opportunity&opportunity_id={{ $opportunity->id }}"
+                                                        class="btn btn-sm btn-outline-primary" target="_blank">
+                                                        <i class="fas fa-phone-alt"></i> Follow Up
+                                                    </a>
+                                                   @endcan
+                                                </td>
 
-                            {{-- Actions --}}
-                            <td>
-                                <div class="btn-group btn-group-sm" role="group">
+                                                {{-- Actions --}}
+                                                <td>
+                                                    <div class="btn-group btn-group-sm" role="group">
 
-                                    @can('opportunity_edit')
-                                     <a href="{{ route('opportunity.edit', $opportunity->id) }}"
-                                        class="btn btn-default text-primary"
-                                        title="Edit">
-                                        <i class="fas fa-pen"></i>
-                                     </a>
-                                    @endcan
+                                                        @can('opportunity_edit')
+                                                         <a href="{{ route('opportunity.edit', $opportunity->id) }}"
+                                                            class="btn btn-default text-primary"
+                                                            title="Edit">
+                                                            <i class="fas fa-pen"></i>
+                                                         </a>
+                                                        @endcan
 
-                                    {{-- Delete --}}
-                                    @can('opportunity_delete')
-                                       <form action="{{ route('opportunity.destroy', $opportunity->id) }}"
-                                           method="POST" class="d-inline-block"
-                                           onsubmit="return confirm('Are you sure you want to delete this opportunity?');">
-                                           @csrf
-                                           @method('DELETE')
-                                           <button type="submit"
-                                               class="btn btn-default text-danger"
-                                               title="Delete">
-                                               <i class="fas fa-trash"></i>
-                                           </button>
-                                       </form>
-                                    @endcan
+                                                        {{-- Delete --}}
+                                                        @can('opportunity_delete')
+                                                           <form action="{{ route('opportunity.destroy', $opportunity->id) }}"
+                                                               method="POST" class="d-inline-block"
+                                                               onsubmit="return confirm('Are you sure you want to delete this opportunity?');">
+                                                               @csrf
+                                                               @method('DELETE')
+                                                               <button type="submit"
+                                                                   class="btn btn-default text-danger"
+                                                                   title="Delete">
+                                                                   <i class="fas fa-trash"></i>
+                                                               </button>
+                                                           </form>
+                                                        @endcan
 
-                                    @can('opportunity_show')
-                                     <a href="{{ route('opportunity.show', $opportunity->id) }}"
-                                        class="btn btn-default text-teal"
-                                        title="View Details">
-                                        <i class="fas fa-eye"></i>
-                                     </a>
-                                    @endcan
+                                                        @can('opportunity_show')
+                                                         <a href="{{ route('opportunity.show', $opportunity->id) }}"
+                                                            class="btn btn-default text-teal"
+                                                            title="View Details">
+                                                            <i class="fas fa-eye"></i>
+                                                         </a>
+                                                        @endcan
 
-                                </div>
-                            </td>
-                        </tr>
+                                                    </div>
+                                                </td>
+                                            </tr>
                     @endforeach
                 </x-adminlte-datatable>
             </div>

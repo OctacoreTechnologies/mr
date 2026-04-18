@@ -294,13 +294,21 @@ Route::middleware(['auth'])->group(function () {
 
     // ========== REMINDERS ==========
     Route::middleware(['can:reminder_view'])->group(function () {
-        Route::controller(ReminderController::class)
-            ->prefix('/reminder')
-            ->group(function () {
-                Route::get('/today', 'remiderToday')->name('reminder.today');
-                Route::get('/read/{id}', 'readAt')->name('reminder.read');
-                Route::delete('/{id}/destroy', 'reminderDestroy')->name('reminder.destroy');
-            });
+        // Route::controller(ReminderController::class)
+        //     ->prefix('/reminder')
+        //     ->group(function () {
+        //         Route::get('/today', 'remiderToday')->name('reminder.today');
+        //         Route::get('/read/{id}', 'readAt')->name('reminder.read');
+        //         Route::delete('/{id}/destroy', 'reminderDestroy')->name('reminder.destroy');
+        //     });
+        
+        Route::controller(NotificationController::class)
+              ->prefix('/notification')
+              ->group(function(){
+                Route::get('/today','index')->name('notification.index');
+                Route::delete('/{id}','destroy')->name('notification.destroy');
+              });
+                                              
     });
 
     // ========== NOTIFICATIONS ==========
