@@ -17,7 +17,8 @@ class PermissionController extends Controller
     public function index()
     {
         $permissions = Permission::orderByDesc('created_at')->get();
-        return response()->view('permissions.index', compact('permissions'));
+        $assignedCount = Permission::has('roles')->count();
+        return response()->view('permissions.index', compact('permissions','assignedCount'));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\RoleAndPermission;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
@@ -18,7 +19,13 @@ class RoleController extends Controller
     public function index()
     {
         $roles=Role::orderByDesc('created_at')->paginate(5);
-        return response()->view('roles.index',compact('roles'));
+
+        $totalPermissions = Role::with('permissions')
+                                            ->get()->sum(fn($r) => $r->permissions->count());
+
+        $totalUsers = User::role(Role::pluck('name'))->count();
+
+        return response()->view('roles.index',compact('roles','totalPermissions','totalUsers'));
     }
 
     /**
