@@ -26,6 +26,7 @@ class StoreCustomerRequest extends FormRequest
             'location_type' => 'nullable|string|max:255',
             'lead_source'=>'nullable|string|max:255',
             'lead_source_remark'=>'nullable|string|max:255',
+            'source'=>'required',
             'country' => 'nullable|string|max:255',
             'region' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',

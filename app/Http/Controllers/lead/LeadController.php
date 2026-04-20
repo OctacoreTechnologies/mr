@@ -29,7 +29,7 @@ class LeadController extends Controller
         $startDate = now()->month >= 4 ? Carbon::create($currentYear, 4, 1) : Carbon::create($currentYear - 1, 4, 1);
         $endDate = $startDate->copy()->addYear()->subDay();
         $leads = Customer::whereBetween('created_at', [$startDate, $endDate])
-            ->where('type', 'lead')->orderByDesc('created_at')->get();
+            ->where('source', 'lead')->orderByDesc('created_at')->get();
 
         return response()->view('leads.index', [
             "leads" => $leads,

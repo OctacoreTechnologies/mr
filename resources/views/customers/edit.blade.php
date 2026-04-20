@@ -29,6 +29,7 @@
                 <div class="row p-4">
                     <!-- Location Type -->
                     <div class="col-md-6">
+                        <input type="hidden" name="source" value="customer">
                         <x-adminlte-select name="location_type" label="Location Type" fgroup-class="mb-3">
                             <option value="domestic" {{ $customer->location_type == 'domestic' ? 'selected' : '' }}>Domestic
                             </option>

@@ -24,6 +24,7 @@
                 <input type="hidden" name="type" value="lead">
 
                 <div class="col-md-6">
+                      <input type="hidden" name="source" value="lead">
                     <x-adminlte-select name="lead_source" id="lead_source" label="Lead Source" fgroup-class="mb-3">
                         <option value="web" {{ old('lead_source', $lead->lead_source) == 'web' ? 'selected' : '' }}>Web</option>
                         <option value="referral" {{ old('lead_source', $lead->lead_source) == 'referral' ? 'selected' : '' }}>Referral</option>

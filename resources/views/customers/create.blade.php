@@ -29,6 +29,7 @@
                 @csrf
                 <div class="row">
                     <input type="hidden" name="type" value="customer">
+                    <input type="hidden" name="source" value="customer">
                     <!-- Location Type -->
                     <div class="col-md-4">
                         <x-adminlte-select name="location_type" label="Location Type" fgroup-class="mb-3">
