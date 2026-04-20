@@ -129,7 +129,7 @@
                         <td>
                           @can('followup_customer')
                             <a class="btn btn-default text-primary btn-group-sm"
-                                href="{{ route('followup.edit', $quotation->customer_id) }}?quotation_id={{ $quotation->id }}&type='quotation'"
+                                href="{{ route('followup.edit', $quotation->customer_id) }}?type=quotation&quotation_id={{ $quotation->id }}"
                                 title="Follow Up"
                                 style="width:auto !important;padding:6px 10px !important;gap:5px;">
                                 <i class="fas fa-calendar-check"></i>
