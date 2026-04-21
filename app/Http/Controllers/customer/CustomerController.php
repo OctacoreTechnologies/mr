@@ -50,6 +50,9 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $data = $request->validated();
+        if (isset($data['status']) && $data['status'] === 'qualified') {
+            $data['type'] = 'customer';
+        }
         $customer = Customer::create($data);
 
         // Redirect based on submitted type (customer vs lead)
