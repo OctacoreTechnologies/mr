@@ -24,8 +24,8 @@ class UpdateCustomerFollowUpRequest extends FormRequest
             'follow_up_id.*'            => ['nullable'],
             'follow_up_date'            => ['required', 'array'],
             'follow_up_date.*'          => ['required', 'string'],
-            'next_follow_up_date'       => ['required', 'array'],
-            'next_follow_up_date.*'     => ['required', 'string'],
+            'next_follow_up_date'       => ['nullable', 'array'],
+            'next_follow_up_date.*'     => ['nullable', 'string'],
             'notes'                     => ['required', 'array'],
             'notes.*'                   => ['required', 'string'],
 
