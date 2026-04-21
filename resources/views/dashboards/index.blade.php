@@ -37,7 +37,7 @@
                 'color' => '#6f42c1',
                 'button' => 'Track Opportunities',
                 'sub' => [
-                    ['label' => 'New Enquiry', 'value' => (clone $opportunities)->where('type', 'new_business')->count()],
+                    ['label' => 'New Enquiry', 'value' => (clone $opportunities)->where('type', 'new_enquiry')->count()],
                     ['label' => 'Upsell', 'value' => (clone $opportunities)->where('type', 'upsell')->count()],
                     ['label' => 'Cross Sell', 'value' => (clone $opportunities)->where('type', 'cross_sell')->count()],
                     ['label' => 'Renewal', 'value' => (clone $opportunities)->where('type', 'renewal')->count()],
