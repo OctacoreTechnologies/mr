@@ -26,7 +26,7 @@ public function dashboard(){
 
     // Fetch quotations, leads, and customers based on created_at within the financial year
     $quotations = Quotation::whereBetween('created_at', [$startDate, $endDate])->get();
-    $leads = Customer::where('type', 'lead')->whereBetween('created_at', [$startDate, $endDate])->get();
+    $leads = Customer::where('source', 'lead')->whereBetween('created_at', [$startDate, $endDate])->get();
     $opportunities=Opportunity::whereBetween('created_at',[$startDate, $endDate])->get();
     $baseQuery = Customer::where('type','customer')->whereBetween('created_at', [$startDate, $endDate]);
     
