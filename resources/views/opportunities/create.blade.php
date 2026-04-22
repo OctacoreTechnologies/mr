@@ -91,7 +91,7 @@
 
                 {{-- Assigned To --}}
                 <div class="col-md-6">
-                    <x-adminlte-select name="assigned_to" label="Assigned To" fgroup-class="mb-3">
+                    <x-adminlte-select name="followed_by" label="Assigned To" fgroup-class="mb-3">
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}" {{ old('assigned_to') == $user->id ? 'selected' : '' }}>
                                 {{ $user->name }}

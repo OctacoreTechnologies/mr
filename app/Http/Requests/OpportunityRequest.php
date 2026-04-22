@@ -26,6 +26,7 @@ class OpportunityRequest extends FormRequest
             // 'lead_id' => 'required|exists:leads,id', 
             // 'name' => 'required|string|max:255',
             'customer_id' => 'required|exists:customers,id',
+            'followed_by' => 'nullable|exists:users,id', 
             'amount' => 'nullable|numeric|min:0', 
             'description' => 'nullable|string',
             'stage' => 'required', 

@@ -93,13 +93,28 @@ class User extends Authenticatable
         return $this->hasMany(\App\Models\Lead::class, 'user_id');
     }
 
+    public function opportuniy()
+    {
+        return $this->hasMany(\App\Models\Opportunity::class, 'user_id');
+    }
+
     /**
      * Get all leads followed by this user
      */
     public function leadFollows()
     {
-        return $this->hasMany(\App\Models\Lead::class, 'followed_by');
+        return $this->hasMany(\App\Models\Customer::class, 'followed_by')
+            ->where('source', 'lead');
     }
+
+    /**
+     * Get all opportunities followed by this user
+     */
+    public function opportunityFollows()
+    {
+        return $this->hasMany(\App\Models\Opportunity::class, 'followed_by');
+    }
+
 
     /**
      * Get all sale orders followed by this user
@@ -114,7 +129,8 @@ class User extends Authenticatable
      */
     public function customerFollows()
     {
-        return $this->hasMany(\App\Models\Customer::class, 'followed_by');
+        return $this->hasMany(\App\Models\Customer::class, 'followed_by')
+            ->where('source', 'customer');
     }
 
     /**
@@ -412,10 +428,10 @@ class User extends Authenticatable
      */
     public function followedItemsCount(): int
     {
-        return $this->leadFollows()->count() + 
-               $this->customerFollows()->count() + 
-               $this->quotationFollows()->count() + 
-               $this->saleOrderFollows()->count();
+        return $this->leadFollows()->count() +
+            $this->customerFollows()->count() +
+            $this->quotationFollows()->count() +
+            $this->saleOrderFollows()->count();
     }
 
     /**
