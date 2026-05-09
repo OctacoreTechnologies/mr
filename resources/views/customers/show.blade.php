@@ -86,6 +86,19 @@
             </div>
         </div>
 
+        {{-- show visiting card --}}
+        @if($customer->visiting_card)
+            <div class="mt-4">
+                <h5 class="crm-section-title">Visiting Card</h5>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="crm-detail-box">
+                            <img src="{{ asset($customer->visiting_card) }}" alt="Visiting Card" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
 
          {{-- Address --}}
         <div class="mt-4">

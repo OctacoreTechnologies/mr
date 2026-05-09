@@ -16,7 +16,7 @@
     </div>
 
     <div class="crm-card-body">
-        <form method="POST" action="{{ route('customer.update', $lead->id) }}">
+        <form method="POST" action="{{ route('customer.update', $lead->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -120,6 +120,18 @@
                 <div class="col-md-6">
                     <x-adminlte-input name="pincode" value="{{ old('pincode', $lead->pincode) }}" label="Pincode"
                         placeholder="Enter Pincode" fgroup-class="mb-3" disable-feedback />
+                </div>
+
+                {{-- edit visiting card --}}
+                <div class="col-md-6">
+                    @if ($lead->visiting_card)
+                        <div class="mb-3">
+                            <label class="crm-label">Existing Visiting Card</label><br>
+                            <a href="{{ asset($lead->visiting_card) }}" target="_blank">
+                                <img src="{{ asset($lead->visiting_card) }}" alt="Visiting Card" class="img-thumbnail" style="max-width: 150px;">
+                            </a>
+                        </div>
+                    @endif
                 </div>
 
                 <!-- Company Name -->

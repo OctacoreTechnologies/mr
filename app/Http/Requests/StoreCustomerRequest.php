@@ -24,9 +24,9 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'location_type' => 'nullable|string|max:255',
-            'lead_source'=>'nullable|string|max:255',
-            'lead_source_remark'=>'nullable|string|max:255',
-            'source'=>'required',
+            'lead_source' => 'nullable|string|max:255',
+            'lead_source_remark' => 'nullable|string|max:255',
+            'source' => 'required',
             'country' => 'nullable|string|max:255',
             'region' => 'nullable|string|max:255',
             'state' => 'nullable|string|max:255',
@@ -69,6 +69,7 @@ class StoreCustomerRequest extends FormRequest
             'contact_person_6_email' => 'nullable|email|max:255',
 
             'gst' => 'nullable|string|max:255',
+            'visiting_card' => 'nullable|file|mimes:jpeg,jpg,png,gif,svg|max:2048',
             'remark' => 'nullable|string|max:500',
             'status' => 'nullable|string|in:new,contacted,qualified,disqualified',
             'followed_by' => 'required|exists:users,id',

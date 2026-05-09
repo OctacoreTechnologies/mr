@@ -25,7 +25,7 @@
         </div>
 
         <div class="card-body p-4">
-            <form method="POST" action="{{ route('customer.store') }}">
+            <form method="POST" action="{{ route('customer.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <input type="hidden" name="type" value="customer">
@@ -98,6 +98,10 @@
                     <div class="col-md-4">
                         <x-adminlte-input name="pincode" value="{{ old('pincode') }}" label="Pincode"
                             placeholder="Enter Pincode" fgroup-class="mb-3" disable-feedback />
+                    </div>
+                    {{-- Upload Visiting Card --}}
+                    <div class="col-md-4">
+                        <x-adminlte-input name="visiting_card" type="file" label="Visiting Card" fgroup-class="mb-3" />
                     </div>
 
                     <!-- Company Name -->

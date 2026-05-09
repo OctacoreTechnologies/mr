@@ -196,7 +196,7 @@
  
             <div id="followup-container">
  
-                {{-- ── NEW blank row ── --}}
+                {{-- ── NEW blank row ── -
                 <div class="followup-row followup-row--new" data-index="0">
                     <div class="followup-row-header">
                         <span class="followup-row-label">
@@ -242,7 +242,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>--}}
  
                 {{-- ── Existing rows ── --}}
                 @foreach ($ofollowups as $index => $followup)

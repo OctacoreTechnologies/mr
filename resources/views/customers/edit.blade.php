@@ -23,7 +23,7 @@
         </h3>
     </div>
         <div class="card-body">
-            <form method="POST" action="{{ route('customer.update', $customer->id) }}">
+            <form method="POST" action="{{ route('customer.update', $customer->id) }}" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="row p-4">
@@ -106,6 +106,11 @@
                         @error('pincode')
                             <p class="text text-danger">{{ $message }}</p>
                         @enderror
+                    </div>
+
+                    {{-- visting card upload edit --}}
+                    <div class="col-md-6">
+                        <x-adminlte-input name="visiting_card" type="file" label="Visiting Card" fgroup-class="mb-3" />
                     </div>
 
                     <!-- Company Name -->

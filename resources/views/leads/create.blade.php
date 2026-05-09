@@ -19,7 +19,7 @@
 
         <div class="crm-card-body">
 
-            <form method="POST" action="{{ route('customer.store') }}">
+            <form method="POST" action="{{ route('customer.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 <input type="hidden" name="type" value="lead">
@@ -122,6 +122,11 @@
                     <div class="col-md-6">
                         <x-adminlte-input name="pincode" value="{{ old('pincode') }}" label="Pincode"
                             placeholder="Enter Pincode" fgroup-class="mb-3" />
+                    </div>
+
+                    {{-- upload visting card  --}}
+                    <div class="col-md-6">
+                        <x-adminlte-input name="visiting_card" type="file" label="Visiting Card" fgroup-class="mb-3" />
                     </div>
 
                 </div>

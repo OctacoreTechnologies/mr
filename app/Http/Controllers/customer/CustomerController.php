@@ -53,6 +53,17 @@ class CustomerController extends Controller
         if (isset($data['status']) && $data['status'] === 'qualified') {
             $data['type'] = 'customer';
         }
+        // visiting card upload handling
+        if ($request->hasFile('visiting_card')) {
+
+            $file = $request->file('visiting_card');
+
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('uploads/visiting_cards'), $filename);
+
+            $data['visiting_card'] = 'uploads/visiting_cards/' . $filename;
+        }
         $customer = Customer::create($data);
 
         // Redirect based on submitted type (customer vs lead)
@@ -104,6 +115,17 @@ class CustomerController extends Controller
         $data = $request->validated();
         if (isset($data['status']) && $data['status'] === 'qualified') {
             $data['type'] = 'customer';
+        }
+        // visiting card upload handling
+        if ($request->hasFile('visiting_card')) {
+
+            $file = $request->file('visiting_card');
+
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('uploads/visiting_cards'), $filename);
+
+            $data['visiting_card'] = 'uploads/visiting_cards/' . $filename;
         }
         $customer->update($data);
 
