@@ -60,28 +60,63 @@
 
             <div class="row">
 
-                @for ($i = 1; $i <= 6; $i++)
-                    @php
-                        $name = $customer->{'contact_person_'.$i.'_name'};
-                    @endphp
+                @php
+                    $contactPersons = $customer->contact_persons ?? [];
+                @endphp
 
-                    @if($name)
-                        <div class="col-md-6 mb-3">
-                            <div class="crm-detail-box">
-                                <strong class="d-block mb-1">
-                                    <i class="fas fa-user"></i> Contact Person {{ $i }}
-                                </strong>
+                @foreach ($contactPersons as $i => $person)
 
-                                <div class="crm-detail-value">
-                                    <div><b>Name:</b> {{ $name }}</div>
-                                    <div><b>Designation:</b> {{ $customer->{'contact_person_'.$i.'_designation'} }}</div>
-                                    <div><b>Email:</b> {{ $customer->{'contact_person_'.$i.'_email'} }}</div>
-                                    <div><b>Contact:</b> {{ $customer->{'contact_person_'.$i.'_contact'} }}</div>
+                    <div class="col-md-6 mb-3">
+                        <div class="crm-detail-box">
+
+                            <strong class="d-block mb-1">
+                                <i class="fas fa-user"></i> Contact Person {{ $i + 1 }}
+                            </strong>
+
+                            <div class="crm-detail-value">
+
+                                <div>
+                                    <b>Name:</b>
+                                    {{ $person['name'] ?? '-' }}
                                 </div>
+
+                                <div>
+                                    <b>Designation:</b>
+                                    {{ $person['designation'] ?? '-' }}
+                                </div>
+
+                                {{-- Emails --}}
+                                <div>
+                                    <b>Email:</b>
+                                    @php
+                                        $emails = $person['email'] ?? [];
+                                        if (is_string($emails)) {
+                                            $emails = explode(',', $emails);
+                                        }
+                                    @endphp
+
+                                    {{ implode(', ', $emails) ?: '-' }}
+                                </div>
+
+                                {{-- Phones --}}
+                                <div>
+                                    <b>Contact:</b>
+                                    @php
+                                        $contacts = $person['contact'] ?? [];
+                                        if (is_string($contacts)) {
+                                            $contacts = explode(',', $contacts);
+                                        }
+                                    @endphp
+
+                                    {{ implode(', ', $contacts) ?: '-' }}
+                                </div>
+
                             </div>
+
                         </div>
-                    @endif
-                @endfor
+                    </div>
+
+                @endforeach
 
             </div>
         </div>
@@ -100,7 +135,7 @@
             </div>
         @endif
 
-         {{-- Address --}}
+        {{-- Address --}}
         <div class="mt-4">
             <h5 class="crm-section-title">Address</h5>
 
@@ -174,38 +209,38 @@
 @stop
 
 @push('css')
-<link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
-<style>
-    .crm-detail-box {
-        background: var(--crm-bg);
-        border: 1px solid var(--crm-border);
-        border-radius: 8px;
-        padding: 10px 12px;
-        height: 100%;
-    }
+    <link rel="stylesheet" href="{{ asset('style/commonindex.css') }}">
+    <style>
+        .crm-detail-box {
+            background: var(--crm-bg);
+            border: 1px solid var(--crm-border);
+            border-radius: 8px;
+            padding: 10px 12px;
+            height: 100%;
+        }
 
-    .crm-detail-label {
-        font-size: .7rem;
-        text-transform: uppercase;
-        font-weight: 700;
-        color: var(--crm-text-muted);
-        display: block;
-        margin-bottom: 3px;
-    }
+        .crm-detail-label {
+            font-size: .7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--crm-text-muted);
+            display: block;
+            margin-bottom: 3px;
+        }
 
-    .crm-detail-value {
-        font-size: .85rem;
-        color: var(--crm-text);
-        font-weight: 500;
-        word-break: break-word;
-    }
+        .crm-detail-value {
+            font-size: .85rem;
+            color: var(--crm-text);
+            font-weight: 500;
+            word-break: break-word;
+        }
 
-    .crm-section-title {
-        font-size: .85rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        color: var(--crm-text-muted);
-        text-transform: uppercase;
-    }
-</style>
+        .crm-section-title {
+            font-size: .85rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--crm-text-muted);
+            text-transform: uppercase;
+        }
+    </style>
 @endpush

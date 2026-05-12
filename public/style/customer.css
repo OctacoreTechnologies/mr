@@ -82,3 +82,283 @@
         .select2-readonly .select2-selection__arrow {
             opacity: 0.4;
         }
+
+        .crm-section-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+        }
+
+        .crm-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 0.875rem 1.25rem;
+            border-bottom: 1px solid #e5e7eb;
+            /* color: #f9fafb; */
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+
+        .crm-section-header .sec-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffffe3;
+        }
+
+        .crm-section-body {
+            padding: 1.25rem;
+        }
+
+        .crm-field-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .crm-form-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .crm-form-grid-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .crm-form-grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .crm-field-wrap {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .crm-input,
+        .crm-select,
+        .crm-textarea {
+            width: 100%;
+            font-size: 13px;
+            padding: 8px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background: #fff;
+            color: #111827;
+            outline: none;
+            font-family: inherit;
+            transition: border-color 0.15s;
+        }
+
+        .crm-input:focus,
+        .crm-select:focus,
+        .crm-textarea:focus {
+            border-color: #6b7280;
+            box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.12);
+        }
+
+        .crm-textarea {
+            resize: vertical;
+            min-height: 72px;
+        }
+
+        /* Person cards */
+        .person-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 0.875rem;
+        }
+
+        .person-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.875rem;
+        }
+
+        .person-badge {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: #EFF6FF;
+            color: #1D4ED8;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-remove-person {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            background: transparent;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .btn-remove-person:hover {
+            background: #FEF2F2;
+            color: #DC2626;
+            border-color: #FECACA;
+        }
+
+        /* Multi-entry */
+        .multi-entry {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .multi-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .multi-row input {
+            flex: 1;
+        }
+
+        .btn-add-entry,
+        .btn-remove-entry {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background: transparent;
+            cursor: pointer;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+
+        .btn-add-entry {
+            color: #1D4ED8;
+            border-color: #BFDBFE;
+        }
+
+        .btn-add-entry:hover {
+            background: #EFF6FF;
+        }
+
+        .btn-remove-entry {
+            color: #6b7280;
+        }
+
+        .btn-remove-entry:hover {
+            background: #FEF2F2;
+            color: #DC2626;
+            border-color: #FECACA;
+        }
+
+        .person-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.875rem;
+        }
+
+        /* Person count control */
+        .np-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .np-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .np-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #374151;
+            line-height: 1;
+        }
+
+        .np-btn:hover {
+            background: #f3f4f6;
+        }
+
+        .np-count {
+            font-size: 15px;
+            font-weight: 600;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .crm-divider {
+            border: none;
+            border-top: 1px solid #e5e7eb;
+            margin: 1rem 0;
+        }
+
+        .crm-form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1.25rem;
+        }
+
+        .btn-primary-crm {
+            padding: 9px 28px;
+            border-radius: 6px;
+            border: none;
+            background: #1D4ED8;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-primary-crm:hover {
+            background: #1E40AF;
+        }
+
+        .btn-cancel-crm {
+            padding: 9px 20px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background: transparent;
+            color: #6b7280;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .btn-cancel-crm:hover {
+            background: #f3f4f6;
+        }
+
+        @media(max-width: 768px) {
+
+            .crm-form-grid-3,
+            .crm-form-grid-2,
+            .person-grid {
+                grid-template-columns: 1fr;
+            }
+        }

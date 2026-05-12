@@ -50,6 +50,8 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $data = $request->validated();
+
+  
         if (isset($data['status']) && $data['status'] === 'qualified') {
             $data['type'] = 'customer';
         }
@@ -113,6 +115,9 @@ class CustomerController extends Controller
 
         $customer = Customer::findOrFail($id);
         $data = $request->validated();
+
+
+        
         if (isset($data['status']) && $data['status'] === 'qualified') {
             $data['type'] = 'customer';
         }

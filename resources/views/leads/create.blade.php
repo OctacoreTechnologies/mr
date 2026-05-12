@@ -1,273 +1,260 @@
 @extends('layouts.app')
 
-@section('title', 'Lead Create')
+@section('title', 'Create Lead')
+
+@push('css')
+<link rel="stylesheet" href="{{ asset('style/customer.css') }}">
+@endpush
 
 @section('content_header')
-<a href="{{ route('lead.index') }}" class="text-primary"><i class="fas fa-arrow-left"></i> Home</a>
+<div style="display:flex;align-items:center;justify-content:space-between;padding:0.5rem 0">
+    <h1 style="font-size:20px;font-weight:500;display:flex;align-items:center;gap:10px;margin:0">
+        <i class="fas fa-user-plus" style="color:#6b7280"></i> Create Lead
+    </h1>
+    <a href="{{ route('lead.index') }}"
+        style="display:flex;align-items:center;gap:6px;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid #d1d5db;background:#fff;color:#6b7280;text-decoration:none">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
+</div>
 @stop
 
 @section('content')
+    <x-alert-components class="my-3" />
 
-    <x-alert-components class="mb-3" />
-
-    <div class="crm-card">
-        <div class="crm-card-header">
-            <h3 class="card-title">
-                <i class="fas fa-building"></i> Lead Information
-            </h3>
-        </div>
-
-        <div class="crm-card-body">
-
-            <form method="POST" action="{{ route('customer.store') }}" enctype="multipart/form-data">
-                @csrf
-
-                <input type="hidden" name="type" value="lead">
-
-                {{-- ── Lead Source ── --}}
-                <p class="crm-section">Lead Source</p>
-
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <input type="hidden" name="source" value="lead">
-                        <x-adminlte-select name="lead_source" id="lead_source" label="Lead Source" fgroup-class="mb-3">
-                            <option value="web" {{ old('lead_source') == 'web' ? 'selected' : '' }}>Web</option>
-                            <option value="referral" {{ old('lead_source') == 'referral' ? 'selected' : '' }}>Referral
-                            </option>
-                            <option value="cold_call" {{ old('lead_source') == 'cold_call' ? 'selected' : '' }}>Cold Call
-                            </option>
-                            <option value="social_media" {{ old('lead_source') == 'social_media' ? 'selected' : '' }}>Social
-                                Media</option>
-                            <option value="other" {{ old('lead_source') == 'other' ? 'selected' : '' }}>Other</option>
-                        </x-adminlte-select>
-                        @error('lead_source')
-                            <p class="text-danger">{{ $message }}</p>
-                        @enderror
+    <form method="POST" action="{{ route('customer.store') }}" enctype="multipart/form-data" id="customerForm">
+        @csrf
+        <input type="hidden" name="type" value="lead">
+        <input type="hidden" name="source" value="lead">
+            <div class="crm-section-card">
+                <div class="crm-section-header">
+                    <div class="sec-title">
+                        <i class="fas fa-map-marker-alt"></i> Lead Source
                     </div>
-
-                    <div class="col-md-6" id="lead_source_remark_div"
-                        style="display: {{ old('lead_source') == 'other' ? 'block' : 'none' }};">
-                        <x-adminlte-textarea name="lead_source_remark" label="Lead Source Remark"
-                            placeholder="Enter any remarks regarding the lead source"
-                            fgroup-class="mb-3">{{ old('lead_source_remark') }}</x-adminlte-textarea>
-                    </div>
-
                 </div>
-
-                {{-- ── Location Details ── --}}
-                <p class="crm-section">Location Details</p>
-
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <x-adminlte-select name="location_type" label="Location Type" fgroup-class="mb-3">
-                            <option value="international">International</option>
-                            <option value="domestic">Domestic</option>
-                        </x-adminlte-select>
+                <div class="crm-section-body">
+                    <div class="crm-form-grid crm-form-grid-3">
+                        <div class="crm-field-wrap">
+                            <label class="crm-field-label">Lead Source <span style="color:#DC2626">*</span></label>
+                            <select name="lead_source" id="lead_source" class="crm-select" required>
+                                <option value="web" {{ old('lead_source') == 'web' ? 'selected' : '' }}>Web</option>
+                                <option value="referral" {{ old('lead_source') == 'referral' ? 'selected' : '' }}>Referral
+                                </option>
+                                <option value="cold_call" {{ old('lead_source') == 'cold_call' ? 'selected' : '' }}>Cold Call
+                                </option>
+                                <option value="social_media" {{ old('lead_source') == 'social_media' ? 'selected' : '' }}>Social
+                                    Media</option>
+                                <option value="other" {{ old('lead_source') == 'other' ? 'selected' : '' }}>Other</option>
+                            </select>
+                        </div>
+                        <div class="crm-field-wrap" id="lead_source_remark_div" style="display: none;">
+                            <label class="crm-field-label">Lead Source Remark</label>
+                            <input type="text" name="lead_source_remark" id="lead_source_remark"
+                                value="{{ old('lead_source_remark') }}" class="crm-input" placeholder="Enter lead source remark">
+                        </div>
                     </div>
+                </div>
+            </div>
 
-                    <div class="col-md-6">
-                        <x-adminlte-select name="continent" label="Select Continent" fgroup-class="mb-3">
-                            <option value="">--Please choose an option--</option>
-                            <option value="africa">Africa</option>
-                            <option value="antarctica">Antarctica</option>
-                            <option value="asia">Asia</option>
-                            <option value="europe">Europe</option>
-                            <option value="north_america">North America</option>
-                            <option value="oceania">Oceania</option>
-                            <option value="south_america">South America</option>
-                        </x-adminlte-select>
+        {{-- ============================================================ --}}
+        {{-- LOCATION SECTION --}}
+        {{-- ============================================================ --}}
+        <div class="crm-section-card">
+            <div class="crm-section-header">
+                <div class="sec-title">
+                    <i class="fas fa-map-marker-alt"></i> Location information
+                </div>
+            </div>
+            <div class="crm-section-body">
+                <div class="crm-form-grid crm-form-grid-3">
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Location type</label>
+                        <select name="location_type" id="location_type" class="crm-select">
+                            <option value="international" {{ old('location_type') == 'international' ? 'selected' : '' }}>International</option>
+                            <option value="domestic" {{ old('location_type') == 'domestic' ? 'selected' : '' }}>Domestic</option>
+                        </select>
                     </div>
-
-                    <div class="col-md-6">
-                        <x-adminlte-select name="country" label="Select Country" class="country-select">
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Continent <span style="color:#DC2626">*</span></label>
+                        <select name="continent" id="continent" class="crm-select" required>
+                            <option value="">— select —</option>
+                            <option value="africa" {{ old('continent') == 'africa' ? 'selected' : '' }}>Africa</option>
+                            <option value="antarctica" {{ old('continent') == 'antarctica' ? 'selected' : '' }}>Antarctica</option>
+                            <option value="asia" {{ old('continent') == 'asia' ? 'selected' : '' }}>Asia</option>
+                            <option value="europe" {{ old('continent') == 'europe' ? 'selected' : '' }}>Europe</option>
+                            <option value="north_america" {{ old('continent') == 'north_america' ? 'selected' : '' }}>North America</option>
+                            <option value="oceania" {{ old('continent') == 'oceania' ? 'selected' : '' }}>Oceania</option>
+                            <option value="south_america" {{ old('continent') == 'south_america' ? 'selected' : '' }}>South America</option>
+                        </select>
+                    </div>
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Country</label>
+                        <select name="country" id="country" class="crm-select country-select">
                             @foreach ($countries as $country)
-                                <option value="{{ strtolower($country->country) }}" data-code="{{ $country->country_code }}">
+                                <option value="{{ strtolower($country->country) }}"
+                                    data-code="{{ $country->country_code }}"
+                                    {{ old('country') == strtolower($country->country) ? 'selected' : '' }}>
                                     {{ $country->country }}
                                 </option>
                             @endforeach
-                        </x-adminlte-select>
+                        </select>
                     </div>
-
-                    <div class="col-md-6">
-                        <label>Region</label>
-                        <select name="region" id="region" class="form-control select2">
+                    <div class="crm-field-wrap" id="regionGroup">
+                        <label class="crm-field-label">Region</label>
+                        <select name="region" id="region" class="crm-select">
                             @foreach ($regions as $region)
-                                <option value="{{ old('region', $region->name) }}" data-region-id="{{ $region->id }}">
+                                <option value="{{ $region->name }}" data-region-id="{{ $region->id }}"
+                                    {{ old('region') == $region->name ? 'selected' : '' }}>
                                     {{ $region->name }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
-
-                    <div class="col-md-6" id="stateGroup">
-                        <x-adminlte-select name="state" label="State" fgroup-class="mb-3">
+                    <div class="crm-field-wrap" id="stateGroup">
+                        <label class="crm-field-label">State</label>
+                        <select name="state" id="state" class="crm-select">
                             @foreach ($states as $state)
-                                <option value="{{ $state->name }}">{{ $state->name }}</option>
+                                <option value="{{ $state->name }}" {{ old('state') == $state->name ? 'selected' : '' }}>
+                                    {{ $state->name }}
+                                </option>
                             @endforeach
-                        </x-adminlte-select>
+                        </select>
                     </div>
-
-                    <div class="col-md-6">
-                        <x-adminlte-input name="city" value="{{ old('city') }}" label="City" placeholder="Enter City"
-                            fgroup-class="mb-3" />
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">City</label>
+                        <input type="text" name="city" value="{{ old('city') }}" class="crm-input" placeholder="Enter city">
                     </div>
-
-                    <div class="col-md-6">
-                        <x-adminlte-input name="area" value="{{ old('area') }}" label="Area" placeholder="Enter Area"
-                            fgroup-class="mb-3" />
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Area</label>
+                        <input type="text" name="area" value="{{ old('area') }}" class="crm-input" placeholder="Enter area">
                     </div>
-
-                    <div class="col-md-6">
-                        <x-adminlte-input name="pincode" value="{{ old('pincode') }}" label="Pincode"
-                            placeholder="Enter Pincode" fgroup-class="mb-3" />
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Pincode</label>
+                        <input type="text" name="pincode" value="{{ old('pincode') }}" class="crm-input" placeholder="Enter pincode">
                     </div>
+                </div>
+            </div>
+        </div>
 
-                    {{-- upload visting card  --}}
-                    <div class="col-md-6">
-                        <x-adminlte-input name="visiting_card" type="file" label="Visiting Card" fgroup-class="mb-3" />
+        {{-- ============================================================ --}}
+        {{-- COMPANY SECTION --}}
+        {{-- ============================================================ --}}
+        <div class="crm-section-card">
+            <div class="crm-section-header">
+                <div class="sec-title">
+                    <i class="fas fa-building"></i> Company information
+                </div>
+            </div>
+            <div class="crm-section-body">
+                <div class="crm-form-grid crm-form-grid-3">
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Company name</label>
+                        <input type="text" name="company_name" value="{{ old('company_name') }}" class="crm-input" placeholder="Enter company name">
                     </div>
-
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">GST number</label>
+                        <input type="text" name="gst" value="{{ old('gst') }}" class="crm-input" placeholder="Enter GST number">
+                    </div>
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Visiting card</label>
+                        <input type="file" name="visiting_card" class="crm-input" accept=".jpg,.jpeg,.png,.gif,.svg">
+                    </div>
                 </div>
 
-                {{-- ── Company Details ── --}}
-                <p class="crm-section">Company Details</p>
+                <hr class="crm-divider">
 
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <x-adminlte-input name="company_name" value="{{ old('company_name') }}" label="Company Name"
-                            placeholder="Enter Company Name" fgroup-class="mb-3" />
+                <div class="crm-form-grid crm-form-grid-2">
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Address (bill to)</label>
+                        <textarea name="address_line_1" id="billTo" class="crm-textarea" placeholder="Enter billing address">{{ old('address_line_1') }}</textarea>
                     </div>
-
-                    <div class="col-md-6">
-                        <x-adminlte-input name="gst" value="{{ old('gst') }}" label="GST Number"
-                            placeholder="Enter GST Number" fgroup-class="mb-3" />
-                    </div>
-
-                    <div class="col-md-6">
-                        <x-adminlte-textarea name="address_line_1" label="Address (Bill To)" fgroup-class="mb-3"
-                            id="billTo">
-                            {{ old('address_line_1') }}
-                        </x-adminlte-textarea>
-                    </div>
-
-                    <div class="col-md-6">
-                        <!-- Checkbox -->
-                        <div class="form-check mb-2">
-                            <input type="checkbox" id="sameAddress" class="form-check-input">
-                            <label for="sameAddress" class="form-check-label">
-                                Same as Bill To
+                    <div class="crm-field-wrap">
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+                            <label class="crm-field-label" style="margin-bottom:0">Address (ship to)</label>
+                            <label style="display:flex;align-items:center;gap:5px;font-size:12px;color:#6b7280;cursor:pointer;font-weight:normal;margin-bottom:0">
+                                <input type="checkbox" id="sameAddress" style="margin:0"> same as bill to
                             </label>
                         </div>
-
-                        <x-adminlte-textarea name="address_line_2" label="Address Line 2 (Ship To)" fgroup-class="mb-3"
-                            id="shipTo">
-                            {{ old('address_line_2') }}
-                        </x-adminlte-textarea>
+                        <textarea name="address_line_2" id="shipTo" class="crm-textarea" placeholder="Enter shipping address">{{ old('address_line_2') }}</textarea>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                {{-- ── Contact Persons ── --}}
-                <p class="crm-section">Contact Persons</p>
-
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <x-adminlte-select name="no_of_persons" id="no_of_persons" label="No. Of Contact Person's">
-                            @for ($i = 1; $i <= 6; $i++)
-                                <option value="{{ $i }}">{{ $i }}</option>
-                            @endfor
-                        </x-adminlte-select>
-                    </div>
-
-                    <div class="row col-12" id="contact_person_fields">
-
-                        <div class="col-md-6">
-                            <x-adminlte-input name="contact_person_1_name" value="{{ old('contact_person_1_name') }}"
-                                label="Contact Person 1 Name" fgroup-class="mb-3" />
-                        </div>
-
-                        <div class="col-md-6">
-                            <x-adminlte-input name="contact_person_1_designation"
-                                value="{{ old('contact_person_1_designation') }}" label="Contact Person 1 Designation"
-                                fgroup-class="mb-3" />
-                        </div>
-
-                        <div class="col-md-6">
-                            <x-adminlte-input name="contact_person_1_contact" value="{{ old('contact_person_1_contact') }}"
-                                label="Contact Person 1 Contact" fgroup-class="mb-3" class="contact-number" />
-                        </div>
-
-                        <div class="col-md-6">
-                            <x-adminlte-input name="contact_person_1_email" value="{{ old('contact_person_1_email') }}"
-                                label="Contact Person 1 Email" fgroup-class="mb-3" />
-                        </div>
-
-                    </div>
-
+        {{-- ============================================================ --}}
+        {{-- CONTACT PERSONS SECTION --}}
+        {{-- ============================================================ --}}
+        <div class="crm-section-card">
+            <div class="crm-section-header">
+                <div class="sec-title">
+                    <i class="fas fa-users"></i> Contact persons
                 </div>
+                <div class="np-wrap">
+                    <span class="np-label">Persons:</span>
+                    <button type="button" class="np-btn" id="decreaseBtn" aria-label="Remove person">&#8722;</button>
+                    <span class="np-count" id="personCount">1</span>
+                    <button type="button" class="np-btn" id="increaseBtn" aria-label="Add person">&#43;</button>
+                </div>
+            </div>
+            <div class="crm-section-body">
+                <div id="contactPersonsContainer"></div>
+            </div>
+        </div>
 
-                {{-- ── Status & Remarks ── --}}
-                <p class="crm-section">Status & Remarks</p>
-
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <x-adminlte-select name="status" label="Status" fgroup-class="mb-3">
-                            <option value="new" {{ old('status') == 'new' ? 'selected' : '' }}>New</option>
-                            <option value="contacted" {{ old('status') == 'contacted' ? 'selected' : '' }}>Contacted</option>
-                            <option value="qualified" {{ old('status') == 'qualified' ? 'selected' : '' }}>Qualified</option>
-                            <option value="disqualified" {{ old('status') == 'disqualified' ? 'selected' : '' }}>Disqualified
-                            </option>
-                        </x-adminlte-select>
+        {{-- ============================================================ --}}
+        {{-- STATUS & REMARKS SECTION --}}
+        {{-- ============================================================ --}}
+        <div class="crm-section-card">
+            <div class="crm-section-header">
+                <div class="sec-title">
+                    <i class="fas fa-sticky-note"></i> Status & remarks
+                </div>
+            </div>
+            <div class="crm-section-body">
+                <div class="crm-form-grid crm-form-grid-3">
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Lead status</label>
+                        <select name="customer_status" class="crm-select">
+                            <option value="lead" {{ old('customer_status') == 'lead' ? 'selected' : '' }}>Lead</option>
+                            <option value="quoted" {{ old('customer_status') == 'quoted' ? 'selected' : '' }}>Quoted</option>
+                            <option value="existing" {{ old('customer_status') == 'existing' ? 'selected' : '' }}>Existing</option>
+                        </select>
                     </div>
-
-                    <div class="col-md-6">
-                        <x-adminlte-select name="followed_by" label="Followed By" fgroup-class="mb-3">
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Followed by <span style="color:#DC2626">*</span></label>
+                        <select name="followed_by" class="crm-select" required>
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}" {{ Auth::id() == $user->id ? 'selected' : '' }}>
                                     {{ $user->name }}
                                 </option>
                             @endforeach
-                        </x-adminlte-select>
+                        </select>
                     </div>
 
-                    <div class="col-md-6">
-                        <x-adminlte-textarea name="remark" label="Remark 1"
-                            fgroup-class="mb-3">{{ old('remark') }}</x-adminlte-textarea>
+
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Remark 1</label>
+                        <textarea name="remark" class="crm-textarea" placeholder="Enter remarks">{{ old('remark') }}</textarea>
+                    </div>
+                    <div class="crm-field-wrap">
+                        <label class="crm-field-label">Remark 2</label>
+                        <textarea name="remark2" class="crm-textarea" placeholder="Enter additional remarks">{{ old('remark2') }}</textarea>
                     </div>
 
-                    <div class="col-md-6">
-                        <x-adminlte-textarea name="remark2" label="Remark 2"
-                            fgroup-class="mb-3">{{ old('remark2') }}</x-adminlte-textarea>
-                    </div>
 
                 </div>
-
-                {{-- ── Actions ── --}}
-                <div class="crm-form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-check-circle"></i> Submit
-                    </button>
-
-                    <button type="button" class="btn btn-outline-secondary" onclick="window.history.back();">
-                        <i class="fas fa-times"></i> Cancel
-                    </button>
-                </div>
-
-            </form>
-
+            </div>
         </div>
-    </div>
 
+        <div class="crm-form-actions">
+            <button type="submit" class="btn-primary-crm">
+                <i class="fas fa-save"></i> Submit
+            </button>
+            <button type="button" class="btn-cancel-crm" onclick="window.history.back()">
+                Cancel
+            </button>
+        </div>
+    </form>
 @endsection
-
-@push('css')
-    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
-@endpush
-
 @push('js')
     <script>
         const leadSource = document.getElementById('lead_source');

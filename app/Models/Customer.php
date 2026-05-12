@@ -11,6 +11,10 @@ class Customer extends Model
     use LogsUserActivity;
     protected $guarded = [];
 
+    protected $casts = [
+        'contact_persons' => 'array',
+    ];
+
 
     public function opportunities()
     {

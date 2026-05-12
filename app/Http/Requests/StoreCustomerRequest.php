@@ -38,35 +38,37 @@ class StoreCustomerRequest extends FormRequest
             'type' => 'nullable|string|in:customer,lead',
             'address_line_1' => 'nullable|string|max:255',
             'address_line_2' => 'nullable|string|max:255',
-            'contact_person_1_name' => 'nullable|string|max:255',
-            'contact_person_1_designation' => 'nullable|string|max:255',
-            'contact_person_1_email' => 'nullable|email|max:255',
-            'contact_person_1_contact' => 'nullable|string|max:255',
 
-            'contact_person_2_name' => 'nullable|string|max:255',
-            'contact_person_2_designation' => 'nullable|string|max:255',
-            'contact_person_2_contact' => 'nullable|string|max:255',
-            'contact_person_2_email' => 'nullable|email|max:255',
 
-            'contact_person_3_name' => 'nullable|string|max:255',
-            'contact_person_3_designation' => 'nullable|string|max:255',
-            'contact_person_3_contact' => 'nullable|string|max:255',
-            'contact_person_3_email' => 'nullable|email|max:255',
+            // 'contact_person_1_name' => 'nullable|string|max:255',
+            // 'contact_person_1_designation' => 'nullable|string|max:255',
+            // 'contact_person_1_email' => 'nullable|email|max:255',
+            // 'contact_person_1_contact' => 'nullable|string|max:255',
 
-            'contact_person_4_name' => 'nullable|string|max:255',
-            'contact_person_4_designation' => 'nullable|string|max:255',
-            'contact_person_4_contact' => 'nullable|string|max:255',
-            'contact_person_4_email' => 'nullable|email|max:255',
+            // 'contact_person_2_name' => 'nullable|string|max:255',
+            // 'contact_person_2_designation' => 'nullable|string|max:255',
+            // 'contact_person_2_contact' => 'nullable|string|max:255',
+            // 'contact_person_2_email' => 'nullable|email|max:255',
 
-            'contact_person_5_name' => 'nullable|string|max:255',
-            'contact_person_5_designation' => 'nullable|string|max:255',
-            'contact_person_5_contact' => 'nullable|string|max:255',
-            'contact_person_5_email' => 'nullable|email|max:255',
+            // 'contact_person_3_name' => 'nullable|string|max:255',
+            // 'contact_person_3_designation' => 'nullable|string|max:255',
+            // 'contact_person_3_contact' => 'nullable|string|max:255',
+            // 'contact_person_3_email' => 'nullable|email|max:255',
 
-            'contact_person_6_name' => 'nullable|string|max:255',
-            'contact_person_6_designation' => 'nullable|string|max:255',
-            'contact_person_6_contact' => 'nullable|string|max:255',
-            'contact_person_6_email' => 'nullable|email|max:255',
+            // 'contact_person_4_name' => 'nullable|string|max:255',
+            // 'contact_person_4_designation' => 'nullable|string|max:255',
+            // 'contact_person_4_contact' => 'nullable|string|max:255',
+            // 'contact_person_4_email' => 'nullable|email|max:255',
+
+            // 'contact_person_5_name' => 'nullable|string|max:255',
+            // 'contact_person_5_designation' => 'nullable|string|max:255',
+            // 'contact_person_5_contact' => 'nullable|string|max:255',
+            // 'contact_person_5_email' => 'nullable|email|max:255',
+
+            // 'contact_person_6_name' => 'nullable|string|max:255',
+            // 'contact_person_6_designation' => 'nullable|string|max:255',
+            // 'contact_person_6_contact' => 'nullable|string|max:255',
+            // 'contact_person_6_email' => 'nullable|email|max:255',
 
             'gst' => 'nullable|string|max:255',
             'visiting_card' => 'nullable|file|mimes:jpeg,jpg,png,gif,svg|max:2048',
@@ -81,7 +83,19 @@ class StoreCustomerRequest extends FormRequest
             // 'email6' =>'nullable|email',
             'remark2' => 'nullable|string',
             'customer_status' => 'nullable|string|in:lead,quoted,existing',
+            'contact_persons' => 'nullable|array',
 
+            'contact_persons.*.name' => 'nullable|string|max:255',
+
+            'contact_persons.*.designation' => 'nullable|string|max:255',
+
+            'contact_persons.*.email' => 'nullable|array',
+
+            'contact_persons.*.email.*' => 'nullable|email|max:255',
+
+            'contact_persons.*.contact' => 'nullable|array',
+
+            'contact_persons.*.contact.*' => 'nullable|string|max:255',
         ];
     }
 }
