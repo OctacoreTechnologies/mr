@@ -225,11 +225,13 @@
         <div class="crm-section-body">
             <div class="crm-form-grid crm-form-grid-3">
                 <div class="crm-field-wrap">
-                    <label class="crm-field-label">Customer status</label>
-                    <select name="customer_status" class="crm-select">
-                        <option value="lead"     {{ $lead->customer_status == 'lead'     ? 'selected' : '' }}>Lead</option>
-                        <option value="quoted"   {{ $lead->customer_status == 'quoted'   ? 'selected' : '' }}>Quoted</option>
-                        <option value="existing" {{ $lead->customer_status == 'existing' ? 'selected' : '' }}>Existing</option>
+                    <label class="crm-field-label">Status</label>
+                    <select name="status" class="crm-select">
+                        <option value="new"     {{ $lead->status == 'new'     ? 'selected' : '' }}>New</option>
+                        <option value="contacted"   {{ $lead->status == 'contacted'   ? 'selected' : '' }}>Contacted</option>
+                        <option value="qualified" {{ $lead->status == 'qualified' ? 'selected' : '' }}>Qualified</option>
+                        <option value="disqualified" {{ $lead->status == 'disqualified' ? 'selected' : '' }}>Disqualified
+                        </option>
                     </select>
                 </div>
                 <div class="crm-field-wrap">
