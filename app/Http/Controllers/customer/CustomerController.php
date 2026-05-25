@@ -66,6 +66,8 @@ class CustomerController extends Controller
 
             $data['visiting_card'] = 'uploads/visiting_cards/' . $filename;
         }
+        $data = $this->fillContactPerson1($data);
+
         $customer = Customer::create($data);
 
         // Redirect based on submitted type (customer vs lead)
@@ -132,6 +134,8 @@ class CustomerController extends Controller
 
             $data['visiting_card'] = 'uploads/visiting_cards/' . $filename;
         }
+        $data = $this->fillContactPerson1($data);
+
         $customer->update($data);
 
         // Redirect based on submitted type (customer vs lead)
@@ -182,5 +186,18 @@ class CustomerController extends Controller
     public function getCustomerExcelSample()
     {
         return Excel::download(new SampleCustomerImport(), 'customers_sample.xlsx');
+    }
+
+    private function fillContactPerson1(array $data): array
+    {
+        $persons = $data['contact_persons'] ?? [];
+        if (!empty($persons)) {
+            $first = $persons[0];
+            $data['contact_person_1_name']        = $first['name'] ?? null;
+            $data['contact_person_1_designation'] = $first['designation'] ?? null;
+            $data['contact_person_1_email']       = !empty($first['email']) ? $first['email'][0] : null;
+            $data['contact_person_1_contact']     = !empty($first['contact']) ? $first['contact'][0] : null;
+        }
+        return $data;
     }
 }
