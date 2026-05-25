@@ -73,7 +73,7 @@ class CustomerFollowUpController extends Controller
         }
 
         // History = all records (oldest first for timeline)
-        $followups  = (clone $query)->orderBy('created_at')->get();
+        $followups  = (clone $query)->orderByDesc('created_at')->get();
 
         // Editable rows = same records newest first
         $ofollowups = (clone $query)->orderByDesc('created_at')->get();
