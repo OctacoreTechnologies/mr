@@ -46,7 +46,7 @@
                                 <option value="other" {{ old('lead_source') == 'other' ? 'selected' : '' }}>Other</option>
                             </select>
                         </div>
-                        <div class="crm-field-wrap" id="lead_source_remark_div" style="display: none;">
+                        <div class="crm-field-wrap" id="lead_source_remark_div" style="display: {{ old('lead_source') == 'other' ? 'block' : 'none' }};">
                             <label class="crm-field-label">Lead Source Remark</label>
                             <input type="text" name="lead_source_remark" id="lead_source_remark"
                                 value="{{ old('lead_source_remark') }}" class="crm-input" placeholder="Enter lead source remark">
@@ -225,7 +225,7 @@
                         <label class="crm-field-label">Followed by <span style="color:#DC2626">*</span></label>
                         <select name="followed_by" class="crm-select" required>
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}" {{ Auth::id() == $user->id ? 'selected' : '' }}>
+                                <option value="{{ $user->id }}" {{ old('followed_by', Auth::id()) == $user->id ? 'selected' : '' }}>
                                     {{ $user->name }}
                                 </option>
                             @endforeach
@@ -272,6 +272,11 @@
             }
         });
     </script>
-    <script src={{ asset('js/customer.js') }}></script>
-    <script src={{ asset('js/country.js') }}></script>
+    @if(old('contact_persons'))
+    <script>
+        window.EXISTING_PERSONS = @json(array_values(old('contact_persons')));
+    </script>
+    @endif
+    <script src="{{ asset('js/customer.js') }}"></script>
+    <script src="{{ asset('js/country.js') }}"></script>
 @endpush

@@ -194,7 +194,7 @@
                     <label class="crm-field-label">Followed by <span style="color:#DC2626">*</span></label>
                     <select name="followed_by" class="crm-select" required>
                         @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{ Auth::id() == $user->id ? 'selected' : '' }}>
+                            <option value="{{ $user->id }}" {{ (old('followed_by', Auth::id()) == $user->id) ? 'selected' : '' }}>
                                 {{ $user->name }}
                             </option>
                         @endforeach
@@ -236,6 +236,11 @@
 @endpush
 
 @push('js')
+@if(old('contact_persons'))
+<script>
+    window.EXISTING_PERSONS = @json(array_values(old('contact_persons')));
+</script>
+@endif
 <script src="{{ asset('js/customer.js') }}"></script>
 <script src="{{ asset('js/country.js') }}"></script>
 @endpush

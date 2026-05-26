@@ -67,21 +67,21 @@
                 <div class="crm-field-wrap">
                     <label class="crm-field-label">Location type</label>
                     <select name="location_type" id="location_type" class="crm-select">
-                        <option value="international" {{ $lead->location_type == 'international' ? 'selected' : '' }}>International</option>
-                        <option value="domestic" {{ $lead->location_type == 'domestic' ? 'selected' : '' }}>Domestic</option>
+                        <option value="international" {{ old('location_type', $lead->location_type) == 'international' ? 'selected' : '' }}>International</option>
+                        <option value="domestic" {{ old('location_type', $lead->location_type) == 'domestic' ? 'selected' : '' }}>Domestic</option>
                     </select>
                 </div>
                 <div class="crm-field-wrap">
                     <label class="crm-field-label">Continent <span style="color:#DC2626">*</span></label>
                     <select name="continent" id="continent" class="crm-select" required>
                         <option value="">— select —</option>
-                        <option value="africa" {{ $lead->continent == 'africa' ? 'selected' : '' }}>Africa</option>
-                        <option value="antarctica" {{ $lead->continent == 'antarctica' ? 'selected' : '' }}>Antarctica</option>
-                        <option value="asia" {{ $lead->continent == 'asia' ? 'selected' : '' }}>Asia</option>
-                        <option value="europe" {{ $lead->continent == 'europe' ? 'selected' : '' }}>Europe</option>
-                        <option value="north_america" {{ $lead->continent == 'north_america' ? 'selected' : '' }}>North America</option>
-                        <option value="oceania" {{ $lead->continent == 'oceania' ? 'selected' : '' }}>Oceania</option>
-                        <option value="south_america" {{ $lead->continent == 'south_america' ? 'selected' : '' }}>South America</option>
+                        <option value="africa" {{ old('continent', $lead->continent) == 'africa' ? 'selected' : '' }}>Africa</option>
+                        <option value="antarctica" {{ old('continent', $lead->continent) == 'antarctica' ? 'selected' : '' }}>Antarctica</option>
+                        <option value="asia" {{ old('continent', $lead->continent) == 'asia' ? 'selected' : '' }}>Asia</option>
+                        <option value="europe" {{ old('continent', $lead->continent) == 'europe' ? 'selected' : '' }}>Europe</option>
+                        <option value="north_america" {{ old('continent', $lead->continent) == 'north_america' ? 'selected' : '' }}>North America</option>
+                        <option value="oceania" {{ old('continent', $lead->continent) == 'oceania' ? 'selected' : '' }}>Oceania</option>
+                        <option value="south_america" {{ old('continent', $lead->continent) == 'south_america' ? 'selected' : '' }}>South America</option>
                     </select>
                 </div>
                 <div class="crm-field-wrap">
@@ -90,7 +90,7 @@
                         @foreach ($countries as $country)
                             <option value="{{ strtolower($country->country) }}"
                                 data-code="{{ $country->country_code }}"
-                                {{ strtolower($country->country) == strtolower($lead->country ?? '') ? 'selected' : '' }}>
+                                {{ old('country', strtolower($lead->country ?? '')) == strtolower($country->country) ? 'selected' : '' }}>
                                 {{ $country->country }}
                             </option>
                         @endforeach
@@ -102,7 +102,7 @@
                         @foreach ($regions as $region)
                             <option value="{{ $region->name }}"
                                 data-region-id="{{ $region->id }}"
-                                {{ $lead->region == $region->name ? 'selected' : '' }}>
+                                {{ old('region', $lead->region) == $region->name ? 'selected' : '' }}>
                                 {{ $region->name }}
                             </option>
                         @endforeach
@@ -113,7 +113,7 @@
                     <select name="state" id="state" class="crm-select">
                         @foreach ($states as $state)
                             <option value="{{ $state->name }}"
-                                {{ strtolower($state->name) == strtolower($lead->state ?? '') ? 'selected' : '' }}>
+                                {{ old('state', strtolower($lead->state ?? '')) == strtolower($state->name) ? 'selected' : '' }}>
                                 {{ $state->name }}
                             </option>
                         @endforeach
@@ -227,10 +227,10 @@
                 <div class="crm-field-wrap">
                     <label class="crm-field-label">Status</label>
                     <select name="status" class="crm-select">
-                        <option value="new"     {{ $lead->status == 'new'     ? 'selected' : '' }}>New</option>
-                        <option value="contacted"   {{ $lead->status == 'contacted'   ? 'selected' : '' }}>Contacted</option>
-                        <option value="qualified" {{ $lead->status == 'qualified' ? 'selected' : '' }}>Qualified</option>
-                        <option value="disqualified" {{ $lead->status == 'disqualified' ? 'selected' : '' }}>Disqualified
+                        <option value="new"          {{ old('status', $lead->status) == 'new'          ? 'selected' : '' }}>New</option>
+                        <option value="contacted"   {{ old('status', $lead->status) == 'contacted'   ? 'selected' : '' }}>Contacted</option>
+                        <option value="qualified"   {{ old('status', $lead->status) == 'qualified'   ? 'selected' : '' }}>Qualified</option>
+                        <option value="disqualified" {{ old('status', $lead->status) == 'disqualified' ? 'selected' : '' }}>Disqualified
                         </option>
                     </select>
                 </div>
@@ -238,7 +238,7 @@
                     <label class="crm-field-label">Followed by <span style="color:#DC2626">*</span></label>
                     <select name="followed_by" class="crm-select" required>
                         @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{ $lead->followed_by == $user->id ? 'selected' : '' }}>
+                            <option value="{{ $user->id }}" {{ old('followed_by', $lead->followed_by) == $user->id ? 'selected' : '' }}>
                                 {{ $user->name }}
                             </option>
                         @endforeach
@@ -275,7 +275,7 @@
 
 @push('js')
 <script>
-    window.EXISTING_PERSONS = @json($lead->contact_persons ?? []);
+    window.EXISTING_PERSONS = @json(old('contact_persons') ? array_values(old('contact_persons')) : ($lead->contact_persons ?? []));
 </script>
 
 <script src="{{ asset('js/customer.js') }}"></script>
