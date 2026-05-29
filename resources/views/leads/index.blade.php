@@ -1,14 +1,12 @@
 @php
     $heads = [
-        'Sr.No',
-        'Company Name',
-        'Email', 
-        'Status',
+        '#',
+        'Company',
+        'Email',
         'Phone',
-        'FollowUp',
-        ['label' => 'Actions', 'no-export' => false],
+        'Status',
+        ['label' => 'Actions', 'no-export' => true, 'width' => 14],
     ];
-    $srno = 1;
 @endphp
 
 @extends('layouts.app')
@@ -16,152 +14,258 @@
 @section('title', 'Leads')
 
 @section('content_header')
-<div class="crm-page-header">
-    <h1>
-        <i class="fas fa-users"></i>
-        Leads
-    </h1>
-    @can('lead_create')
-     <a href="{{ route('lead.create') }}" class="btn btn-primary btn-sm">
-        <i class="fas fa-plus-circle"></i> Create Lead
-     </a>
-    @endcan
-</div>
+    <div class="crm-page-header">
+        <h1>
+            <i class="fas fa-funnel-dollar"></i> Leads
+        </h1>
+        @can('lead_create')
+            <a href="{{ route('lead.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Create Lead
+            </a>
+        @endcan
+    </div>
 @stop
 
 @section('content')
 
-<x-alert-components class="mb-3" />
+    <x-alert-components class="my-3" />
 
-<div class="crm-card">
-    <div class="crm-card-header">
-        <h3 class="card-title">
-            <i class="fas fa-users"></i> Lead List
-        </h3>
+    {{-- Summary Cards --}}
+    @php
+        $total          = $leads->count();
+        $newCount       = $leads->where('status', 'new')->count();
+        $contacted      = $leads->where('status', 'contacted')->count();
+        $qualified      = $leads->where('status', 'qualified')->count();
+        $disqualified   = $leads->where('status', 'disqualified')->count();
+    @endphp
+
+    <div class="row mb-4">
+        <div class="col-6 col-md mb-3 mb-md-0">
+            <div class="ci-stat">
+                <div class="ci-stat-icon" style="background:#eff6ff; color:#2563eb"><i class="fas fa-layer-group"></i></div>
+                <div class="ci-stat-body">
+                    <div class="ci-stat-num">{{ $total }}</div>
+                    <div class="ci-stat-text">Total</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md mb-3 mb-md-0">
+            <div class="ci-stat">
+                <div class="ci-stat-icon" style="background:#fffbeb; color:#d97706"><i class="fas fa-star"></i></div>
+                <div class="ci-stat-body">
+                    <div class="ci-stat-num">{{ $newCount }}</div>
+                    <div class="ci-stat-text">New</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md mb-3 mb-md-0">
+            <div class="ci-stat">
+                <div class="ci-stat-icon" style="background:#f0f9ff; color:#0284c7"><i class="fas fa-headset"></i></div>
+                <div class="ci-stat-body">
+                    <div class="ci-stat-num">{{ $contacted }}</div>
+                    <div class="ci-stat-text">Contacted</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md">
+            <div class="ci-stat">
+                <div class="ci-stat-icon" style="background:#f0fdf4; color:#16a34a"><i class="fas fa-check-circle"></i></div>
+                <div class="ci-stat-body">
+                    <div class="ci-stat-num">{{ $qualified }}</div>
+                    <div class="ci-stat-text">Qualified</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md mt-3 mt-md-0">
+            <div class="ci-stat">
+                <div class="ci-stat-icon" style="background:#fff1f2; color:#e11d48"><i class="fas fa-times-circle"></i></div>
+                <div class="ci-stat-body">
+                    <div class="ci-stat-num">{{ $disqualified }}</div>
+                    <div class="ci-stat-text">Disqualified</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="crm-card-body">
+    {{-- Leads Table --}}
+    <div class="crm-card">
+        <div class="crm-card-header">
+            <h3 class="card-title"><i class="fas fa-list"></i> Lead List</h3>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <x-adminlte-datatable id="leadTable" :heads="$heads" striped hoverable with-buttons>
+                    @foreach ($leads as $key => $lead)
+                        @php
+                            $words    = preg_split('/\s+/', trim($lead->company_name));
+                            $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
+                            $colors   = ['#3b82f6','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#84cc16'];
+                            $bg       = $colors[$key % count($colors)];
 
-        <div class="table-responsive">
-            <table id="leadTable" class="table table-sm table-striped">
-                <thead>
-                    <tr>
-                        @foreach ($heads as $head)
-                            @if(is_array($head))
-                                <th>{{ $head['label'] }}</th>
-                            @else
-                                <th>{{ $head }}</th>
-                            @endif
-                        @endforeach
-                    </tr>
-                </thead>
+                            $statusMap = [
+                                'new'          => ['ci-new',          'New'],
+                                'contacted'    => ['ci-contacted',    'Contacted'],
+                                'qualified'    => ['ci-qualified',    'Qualified'],
+                                'disqualified' => ['ci-disqualified', 'Disqualified'],
+                            ];
+                            [$stClass, $stLabel] = $statusMap[$lead->status]
+                                ?? ['ci-other', ucfirst($lead->status)];
+                        @endphp
+                        <tr>
+                            <td class="text-muted" style="font-size:.8rem">{{ $key + 1 }}</td>
 
-                <tbody>
-                    @foreach ($leads as $lead)
-                        <tr class="{{ $lead->status }}">
-                            <td>{{ $srno++ }}</td>
-
-                            <td>{{ $lead->company_name }}</td>
-
-                            <td>{{ $lead->contact_person_1_email }}</td>
-
-                            {{-- Status --}}
+                            {{-- Company --}}
                             <td>
-                                @php
-                                    $statusClass = match($lead->status) {
-                                        'new' => 'badge badge-warning',
-                                        'contacted' => 'badge badge-info',
-                                        'qualified' => 'badge badge-success',
-                                        'disqualified' => 'badge badge-danger',
-                                        default => 'badge badge-secondary',
-                                    };
-                                @endphp
+                                <div class="d-flex align-items-center" style="gap:10px">
+                                    <div class="ci-avatar" style="background:{{ $bg }}">{{ $initials }}</div>
+                                    <strong>{{ $lead->company_name }}</strong>
+                                </div>
+                            </td>
 
-                                <span class="{{ $statusClass }}">
-                                    {{ ucfirst($lead->status) }}
-                                </span>
+                            {{-- Email --}}
+                            <td class="text-muted" style="font-size:.85rem">
+                                {{ $lead->contact_person_1_email ?? '—' }}
                             </td>
 
                             {{-- Phone --}}
-                            <td class="format-number">
-                                {{ $lead->contact_person_1_contact }}
+                            <td class="text-muted" style="font-size:.85rem">
+                                {{ $lead->contact_person_1_contact ?? '—' }}
                             </td>
 
-                            {{-- Follow Up --}}
+                            {{-- Status --}}
                             <td>
-                            @can('followup_customer')
-                                <a href="{{ route('followup.edit', $lead->id) }}?type='lead'"
-                                   class="btn btn-sm btn-outline-primary"
-                                   target="_blank">
-                                    <i class="fas fa-phone-alt"></i> Follow Up
-                                </a>
-                            @endcan
+                                <span class="ci-badge {{ $stClass }}">{{ $stLabel }}</span>
                             </td>
 
                             {{-- Actions --}}
                             <td>
-                                <nobr>
+                                <div class="ci-actions">
 
-                                   @can('lead_edit')
-                                     <a href="{{ route('lead.edit', $lead->id) }}"
-                                       class="btn btn-sm btn-outline-primary">
-                                        <i class="fas fa-edit"></i>
-                                     </a>
+                                    @can('followup_customer')
+                                        <a href="{{ route('followup.edit', $lead->id) }}?type='lead'"
+                                           class="ci-btn" style="color:#2563eb" title="Follow Up"
+                                           target="_blank">
+                                            <i class="fas fa-phone-alt"></i>
+                                        </a>
                                     @endcan
-                                    {{-- Delete --}}
+
+                                    @can('lead_show')
+                                        <a href="{{ route('customer.show', $lead->id) }}"
+                                           class="ci-btn" style="color:#0284c7" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                    @endcan
+
+                                    @can('lead_edit')
+                                        <a href="{{ route('lead.edit', $lead->id) }}"
+                                           class="ci-btn" style="color:#d97706" title="Edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    @endcan
+
+                                    @if ($lead->sale_formats_count() != 0)
+                                        <a href="{{ route('sale-formats.show', $lead->sale_formats->id) }}"
+                                           class="ci-btn" style="color:#7c3aed" title="View Sale Formats">
+                                            <i class="fas fa-file-alt"></i>
+                                        </a>
+                                    @else
+                                        <a href="{{ route('sale-formats.create', ['customer_id' => $lead->id]) }}"
+                                           class="ci-btn" style="color:#2563eb" title="New Sale Format">
+                                            <i class="fas fa-plus-square"></i>
+                                        </a>
+                                    @endif
 
                                     @can('lead_delete')
-                                      <form action="{{ route('customer.destroy', $lead->id) }}"
-                                            method="POST"
-                                            class="d-inline-block">
-                                          @csrf
-                                          @method('DELETE')
-                                          <button class="btn btn-sm btn-outline-danger delete-project"
-                                                  data-url="{{ route('customer.destroy', $lead->id) }}"
-                                                  onclick="return confirm('Are you sure you want to delete this lead?')">
-                                              <i class="fas fa-trash-alt"></i>
-                                          </button>
-                                      </form>
+                                        <form action="{{ route('customer.destroy', $lead->id) }}"
+                                              method="POST" class="d-inline m-0 p-0">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button"
+                                                    class="ci-btn delete-lead"
+                                                    style="color:#e11d48" title="Delete">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
                                     @endcan
 
-                                   @can('lead_show')
-                                       <a href="{{ route('customer.show', $lead->id) }}"
-                                          class="btn btn-sm btn-outline-secondary">
-                                           <i class="fas fa-eye"></i>
-                                       </a>
-                                    @endcan
-
-                                </nobr>
+                                </div>
                             </td>
-
                         </tr>
                     @endforeach
-                </tbody>
-            </table>
+                </x-adminlte-datatable>
+            </div>
         </div>
-
     </div>
-</div>
 
 @stop
 
 @push('css')
-<link rel="stylesheet" href="{{ asset('style/common.css') }}">
+    <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+    <style>
+        /* Summary cards */
+        .ci-stat {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            box-shadow: 0 1px 4px rgba(0,0,0,.05);
+            height: 100%;
+        }
+        .ci-stat-icon {
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .ci-stat-num  { font-size: 1.5rem; font-weight: 700; line-height: 1; color: #1e293b; }
+        .ci-stat-text { font-size: .72rem; font-weight: 600; text-transform: uppercase;
+                        letter-spacing: .05em; color: #94a3b8; margin-top: 3px; }
+
+        /* Avatar */
+        .ci-avatar {
+            width: 32px; height: 32px; border-radius: 7px;
+            color: #fff; font-size: .7rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Status badges */
+        .ci-badge {
+            display: inline-block;
+            font-size: .72rem; font-weight: 600;
+            padding: 3px 10px; border-radius: 20px;
+        }
+        .ci-new          { background: #fef9c3; color: #854d0e; }
+        .ci-contacted    { background: #e0f2fe; color: #0369a1; }
+        .ci-qualified    { background: #dcfce7; color: #15803d; }
+        .ci-disqualified { background: #ffe4e6; color: #be123c; }
+        .ci-other        { background: #f1f5f9; color: #64748b; }
+
+        /* Action buttons */
+        .ci-actions { display: flex; align-items: center; gap: 2px; }
+        .ci-btn {
+            width: 28px; height: 28px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 6px; border: none; background: transparent;
+            cursor: pointer; font-size: .82rem;
+            text-decoration: none !important;
+            transition: background .15s;
+        }
+        .ci-btn:hover { background: #f1f5f9; }
+    </style>
 @endpush
 
 @push('js')
-<script>
-    $(document).ready(function () {
-
-        $('#leadTable').DataTable({
-            paging: true,
-            searching: true,
-            ordering: true,
-            info: true,
-            lengthChange: true,
-            pageLength: 10
+    <script>
+        $(document).on('click', '.delete-lead', function () {
+            const form = $(this).closest('form');
+            if (confirm('Delete this lead? This cannot be undone.')) {
+                form.submit();
+            }
         });
-
-    });
-</script>
+    </script>
 @endpush

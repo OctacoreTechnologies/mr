@@ -82,4 +82,15 @@ class Customer extends Model
     {
         return $this->morphMany(Notification::class, 'notifiable');
     }
+
+    public function sale_formats()
+    {
+        return $this->hasOne(SaleFormat::class, 'customer_id');
+    }
+
+    public function sale_formats_count(): int
+    {
+        return $this->sale_formats()->count();
+    }
+ 
 }

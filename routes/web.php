@@ -45,6 +45,7 @@ use App\Http\Controllers\RoleAndPermission\PermissionController;
 use App\Http\Controllers\RoleAndPermission\RoleController;
 use App\Http\Controllers\sale_orders\AdvancePaymentLetterController;
 use App\Http\Controllers\sale_orders\SaleOrderController;
+use App\Http\Controllers\SaleFormat\SaleFormatController;
 use App\Http\Controllers\Term\TermConditionController;
 use App\Http\Controllers\user\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -301,14 +302,13 @@ Route::middleware(['auth'])->group(function () {
         //         Route::get('/read/{id}', 'readAt')->name('reminder.read');
         //         Route::delete('/{id}/destroy', 'reminderDestroy')->name('reminder.destroy');
         //     });
-        
+
         Route::controller(NotificationController::class)
-              ->prefix('/notification')
-              ->group(function(){
-                Route::get('/today','index')->name('notification.index');
-                Route::delete('/{id}','destroy')->name('notification.destroy');
-              });
-                                              
+            ->prefix('/notification')
+            ->group(function () {
+                Route::get('/today', 'index')->name('notification.index');
+                Route::delete('/{id}', 'destroy')->name('notification.destroy');
+            });
     });
 
     // ========== NOTIFICATIONS ==========
@@ -467,6 +467,19 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/customers/{id}/quotations', 'quotationsByCustomer')
                 ->name('api.customers.quotations');
         });
+    // Customer of saleformat routes
+    // Sale Format CRUD routes
+
+    Route::get('sale-formats/{saleFormat}/pdf', [SaleFormatController::class, 'pdf'])->name('sale-formats.pdf');
+    Route::resource('sale-formats', SaleFormatController::class);
+   
+
+    // ─── Customer ke andar se Sale Formats dekhna ─────────────────────────────────
+    // e.g. /customers/5/sale-formats
+    Route::get('customers/{customer}/sale-formats', function (App\Models\Customer $customer) {
+        $saleFormats = $customer->saleFormats()->with('customer')->latest()->paginate(15);
+        return view('sale_formats.index', compact('saleFormats', 'customer'));
+    })->name('customers.sale-formats.index');
 });
 
 /*
