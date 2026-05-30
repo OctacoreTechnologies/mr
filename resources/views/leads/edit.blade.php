@@ -159,7 +159,7 @@
                 </div>
                 <div class="crm-field-wrap">
                     <label class="crm-field-label">Visiting card</label>
-                    <input type="file" name="visiting_card" class="crm-input" accept=".jpg,.jpeg,.png,.gif,.svg">
+                    <input type="file" name="visiting_card" class="crm-input" accept=".jpg,.jpeg,.png,.gif,.svg,.pdf,.xls,.xlsx,.csv,.doc,.docx,.zip,.rar">
                     @if($lead->visiting_card)
                         <div class="visiting-card-preview">
                             <img src="{{ asset($lead->visiting_card) }}" alt="Visiting Card">

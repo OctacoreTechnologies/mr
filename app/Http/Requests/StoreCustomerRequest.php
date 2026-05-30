@@ -71,7 +71,7 @@ class StoreCustomerRequest extends FormRequest
             // 'contact_person_6_email' => 'nullable|email|max:255',
 
             'gst' => 'nullable|string|max:255',
-            'visiting_card' => 'nullable|file|mimes:jpeg,jpg,png,gif,svg|max:2048',
+            'visiting_card' => 'nullable|file|mimes:pdf,xls,xlsx,csv,doc,docx,jpg,jpeg,png,gif,webp,svg,zip,rar|max:2048',
             'remark' => 'nullable|string|max:500',
             'status' => 'nullable|string|in:new,contacted,qualified,disqualified',
             'followed_by' => 'required|exists:users,id',
