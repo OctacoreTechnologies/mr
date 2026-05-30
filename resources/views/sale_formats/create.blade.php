@@ -18,7 +18,7 @@
 
 <x-alert-components class="my-3" />
 
-<form action="{{ route('sale-formats.store') }}" method="POST" id="saleFormatForm">
+<form action="{{ route('sale-formats.store') }}" method="POST" id="saleFormatForm" enctype="multipart/form-data">
     @csrf
 
     @include('sale_formats._form')

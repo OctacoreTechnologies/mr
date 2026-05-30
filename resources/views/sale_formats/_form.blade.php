@@ -43,7 +43,7 @@
 
             <div class="crm-field-wrap">
                 <label class="crm-field-label">
-                    Sale Date <span style="color:#DC2626">*</span>
+                   Date <span style="color:#DC2626">*</span>
                 </label>
                 <input type="date" name="sale_date"
                        class="crm-input @error('sale_date') is-invalid @enderror"
@@ -53,17 +53,12 @@
                 @enderror
             </div>
 
-            <div class="crm-field-wrap">
-                <label class="crm-field-label">Status</label>
-                <select name="status" class="crm-select">
-                    @foreach(['draft' => 'Draft', 'approved' => 'Approved', 'rejected' => 'Rejected'] as $val => $label)
-                        <option value="{{ $val }}"
-                            {{ old('status', $saleFormat->status ?? 'draft') === $val ? 'selected' : '' }}>
-                            {{ $label }}
-                        </option>
-                    @endforeach
-                </select>
+              <div class="crm-field-wrap">
+                        <label class="crm-field-label">Upload File</label>
+                        <input type="file" name="upload_file_path" class="crm-input" accept=".jpg,.jpeg,.png,.gif,.svg">
             </div>
+
+    
 
         </div>
     </div>

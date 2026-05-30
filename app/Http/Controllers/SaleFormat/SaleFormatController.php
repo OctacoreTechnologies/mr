@@ -53,6 +53,17 @@ class SaleFormatController extends Controller
         unset($validated['requirements']);
         $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
 
+         if ($request->hasFile('upload_file_path')) {
+
+            $file = $request->file('upload_file_path');
+
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('uploads/sale_formats'), $filename);
+
+            $validated['upload_file_path'] = 'uploads/sale_formats/' . $filename;
+        }
+
         $saleFormat = SaleFormat::create($validated);
         $this->syncRequirements($saleFormat, $request->input('requirements', []));
 
@@ -101,6 +112,17 @@ class SaleFormatController extends Controller
         $validated = $request->validated();
         unset($validated['requirements']);
         $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
+
+        if ($request->hasFile('upload_file_path')) {
+    
+                $file = $request->file('upload_file_path');
+    
+                $filename = time() . '.' . $file->getClientOriginalExtension();
+    
+                $file->move(public_path('uploads/sale_formats'), $filename);
+    
+                $validated['upload_file_path'] = 'uploads/sale_formats/' . $filename;
+        }
 
         $saleFormat->update($validated);
         $this->syncRequirements($saleFormat, $request->input('requirements', []));

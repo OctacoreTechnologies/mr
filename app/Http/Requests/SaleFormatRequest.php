@@ -27,7 +27,7 @@ class SaleFormatRequest extends FormRequest
             'remark'         => 'nullable|string',
             'prepared_by'    => 'nullable|string|max:255',
             'approved_by'    => 'nullable|string|max:255',
-            'status'         => 'required|in:draft,approved,rejected',
+            'upload_file_path' =>'nullable|file|mimes:jpeg,jpg,png,gif,svg|max:2048',
             'requirements'   => 'nullable|array',
             'requirements.*' => 'nullable|string|max:500',
         ];

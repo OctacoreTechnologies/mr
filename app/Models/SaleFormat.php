@@ -21,6 +21,7 @@ class SaleFormat extends Model
         'remark',
         'prepared_by',
         'approved_by',
+        'upload_file_path',
         'status',
     ];
 
