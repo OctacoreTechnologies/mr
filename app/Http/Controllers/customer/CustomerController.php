@@ -67,8 +67,7 @@ class CustomerController extends Controller
             $data['visiting_card'] = 'uploads/visiting_cards/' . $filename;
         }
         $data = $this->fillContactPerson1($data);
-
-        $customer = Customer::create($data);
+        Customer::create($data);
 
         // Redirect based on submitted type (customer vs lead)
         $type = $request->input('type', 'customer');

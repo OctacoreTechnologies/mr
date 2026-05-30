@@ -200,10 +200,10 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="crm-field-wrap">
+                {{-- <div class="crm-field-wrap">
                     <label class="crm-field-label">Lead source</label>
                     <input type="text" name="lead_source" value="{{ old('lead_source') }}" class="crm-input" placeholder="Lead source">
-                </div>
+                </div> --}}
                 <div class="crm-field-wrap">
                     <label class="crm-field-label">Remark 1</label>
                     <textarea name="remark" class="crm-textarea" placeholder="Enter remarks">{{ old('remark') }}</textarea>
