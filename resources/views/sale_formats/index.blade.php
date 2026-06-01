@@ -105,6 +105,10 @@
                                class="btn text-primary" title="View">
                                 <i class="fas fa-eye"></i>
                             </a>
+                            <a href="{{ route('sale-formats.pdf', $sf) }}" target="_blank"
+                               class="btn text-danger" title="PDF">
+                                <i class="fas fa-file-pdf"></i>
+                            </a>
                             <a href="{{ route('sale-formats.edit', $sf) }}"
                                class="btn text-warning" title="Edit">
                                 <i class="fas fa-edit"></i>
