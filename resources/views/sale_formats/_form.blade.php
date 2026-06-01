@@ -53,13 +53,6 @@
                 @enderror
             </div>
 
-              <div class="crm-field-wrap">
-                        <label class="crm-field-label">Upload File</label>
-                        <input type="file" name="upload_file_path" class="crm-input" accept=".jpg,.jpeg,.png,.gif,.svg">
-            </div>
-
-    
-
         </div>
     </div>
 </div>
@@ -112,6 +105,47 @@
             </div>
 
         </div>
+
+        {{-- ── Multiple File Upload ── --}}
+        <div class="crm-field-wrap mt-3">
+            <label class="crm-field-label">
+                <i class="fas fa-paperclip"></i> Upload Files
+                <small style="color:#64748b;font-weight:400"> (JPG, PNG, PDF — multiple allowed)</small>
+            </label>
+
+            {{-- Show existing files in edit mode --}}
+            @if($isEdit && !empty($saleFormat->upload_file_path))
+            <div id="existing-files-list" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px">
+                @foreach((array)$saleFormat->upload_file_path as $filePath)
+                @php $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION)); @endphp
+                <div class="existing-file-item" style="position:relative;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem">
+                    <input type="hidden" name="existing_files[]" value="{{ $filePath }}">
+                    @if(in_array($ext, ['jpg','jpeg','png','gif','svg']))
+                        <img src="{{ asset($filePath) }}" style="height:40px;width:40px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0">
+                    @else
+                        <i class="fas fa-file-pdf" style="font-size:1.6rem;color:#dc2626"></i>
+                    @endif
+                    <span style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ basename($filePath) }}</span>
+                    <button type="button" class="remove-existing-file"
+                            style="background:none;border:none;color:#dc2626;cursor:pointer;padding:0;line-height:1;font-size:1rem;flex-shrink:0"
+                            title="Remove">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            <input type="file" name="upload_files[]" id="upload_files"
+                   class="crm-input"
+                   accept=".jpg,.jpeg,.png,.gif,.svg,.pdf"
+                   multiple>
+            <small style="color:#94a3b8;font-size:.75rem">Multiple files select karne ke liye Ctrl+Click karein</small>
+
+            {{-- New file preview --}}
+            <div id="new-files-preview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px"></div>
+        </div>
+
     </div>
 </div>
 
@@ -247,8 +281,8 @@
 
         <div class="crm-field-wrap mb-3">
             <label class="crm-field-label">Remark</label>
-            <textarea name="remark" rows="3" class="crm-textarea"
-                      placeholder="Koi notes ya special instructions...">{{ old('remark', $saleFormat->remark ?? '') }}</textarea>
+            <textarea name="remark" id="remark-ta" style="display:none;">{{ old('remark', $saleFormat->remark ?? '') }}</textarea>
+            <div id="quill-remark" style="width:100%;min-height:150px;background:#fff;border-radius:6px;"></div>
         </div>
 
         <div class="crm-form-grid crm-form-grid-2">
@@ -271,7 +305,14 @@
     </div>
 </div>
 
+@push('css')
+  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+
+@endpush
 @push('js')
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script>
 (function () {
 
@@ -391,6 +432,89 @@
     });
 
     reIndexDetails();
+
+    // ── Quill editor for Remark ──────────────────────────────────────────────
+    var remarkTA = document.getElementById('remark-ta');
+    var quillEl  = document.getElementById('quill-remark');
+
+    if (remarkTA && quillEl && typeof Quill !== 'undefined') {
+        var remarkEditor = new Quill(quillEl, {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, 3, false] }],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    [{ indent: '-1' }, { indent: '+1' }],
+                    ['link'],
+                    [{ color: [] }, { background: [] }],
+                    ['clean'],
+                ]
+            },
+            placeholder: 'Koi notes ya special instructions...',
+        });
+
+        var existingRemark = remarkTA.value.trim();
+        if (existingRemark) remarkEditor.clipboard.dangerouslyPasteHTML(existingRemark);
+
+        remarkEditor.on('text-change', function () {
+            remarkTA.value = remarkEditor.getSemanticHTML();
+        });
+
+        var saleForm = document.getElementById('saleFormatForm');
+        if (saleForm) {
+            saleForm.addEventListener('submit', function () {
+                remarkTA.value = remarkEditor.getSemanticHTML();
+            });
+        }
+    }
+
+    // ── Existing files: remove button ────────────────────────────────────────
+    var existingList = document.getElementById('existing-files-list');
+    if (existingList) {
+        existingList.addEventListener('click', function (e) {
+            var btn = e.target.closest('.remove-existing-file');
+            if (!btn) return;
+            var item = btn.closest('.existing-file-item');
+            // Disable hidden input so it won't be submitted
+            var hiddenInput = item.querySelector('input[type="hidden"]');
+            if (hiddenInput) hiddenInput.disabled = true;
+            item.style.opacity = '0.35';
+            item.style.textDecoration = 'line-through';
+            btn.disabled = true;
+        });
+    }
+
+    // ── New file input: preview selected files ───────────────────────────────
+    var fileInput   = document.getElementById('upload_files');
+    var previewArea = document.getElementById('new-files-preview');
+
+    if (fileInput && previewArea) {
+        fileInput.addEventListener('change', function () {
+            previewArea.innerHTML = '';
+            Array.from(this.files).forEach(function (file) {
+                var item = document.createElement('div');
+                item.style.cssText = 'display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;font-size:.82rem';
+
+                var isPdf = file.type === 'application/pdf';
+                if (isPdf) {
+                    item.innerHTML = '<i class="fas fa-file-pdf" style="font-size:1.4rem;color:#dc2626"></i>';
+                } else {
+                    var img = document.createElement('img');
+                    img.style.cssText = 'height:40px;width:40px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0';
+                    img.src = URL.createObjectURL(file);
+                    item.appendChild(img);
+                }
+
+                var name = document.createElement('span');
+                name.style.cssText = 'max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
+                name.textContent = file.name;
+                item.appendChild(name);
+
+                previewArea.appendChild(item);
+            });
+        });
+    }
 
 })();
 </script>

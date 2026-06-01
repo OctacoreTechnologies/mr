@@ -132,6 +132,19 @@ body {
     background: #f0f6fc;
 }
 
+/* ── Remark (Quill HTML reset) ────────────────────────────── */
+.remark-body p          { margin: 0 0 3px 0; padding: 0; line-height: 1.55; }
+.remark-body p:last-child { margin-bottom: 0; }
+.remark-body ul,
+.remark-body ol         { margin: 2px 0 3px 0; padding-left: 16px; }
+.remark-body li         { margin: 1px 0; line-height: 1.55; }
+.remark-body ul > li    { list-style-type: disc; }
+.remark-body ol > li    { list-style-type: decimal; }
+.remark-body strong     { font-weight: bold; }
+.remark-body em         { font-style: italic; }
+.remark-body u          { text-decoration: underline; }
+.remark-body h1, .remark-body h2, .remark-body h3 { margin: 3px 0 2px 0; }
+
 /* ── Sign-off ─────────────────────────────────────────────── */
 .signoff-table { border: none; width: 100%; margin-top: 10px; }
 .signoff-table td { border: none; padding: 0; vertical-align: top; gap: 20px; }
@@ -287,10 +300,36 @@ body {
 
     {{-- ── Remark ───────────────────────────────────────────────────────── --}}
     @if($saleFormat->remark)
+    @php
+        $inlineStyles = [
+            'p'  => 'margin:0 0 3px 0;padding:0;line-height:1.5;font-size:11px;color:#333;',
+            'ul' => 'list-style-type:disc;margin:2px 0 4px 0;padding-left:14px;',
+            'ol' => 'list-style-type:decimal;margin:2px 0 4px 0;padding-left:14px;',
+            'li' => 'margin:1px 0;line-height:1.5;font-size:11px;color:#333;',
+            'h1' => 'font-size:13px;font-weight:bold;margin:3px 0 2px 0;padding:0;color:#333;',
+            'h2' => 'font-size:12px;font-weight:bold;margin:3px 0 2px 0;padding:0;color:#333;',
+            'h3' => 'font-size:11px;font-weight:bold;margin:3px 0 2px 0;padding:0;color:#333;',
+        ];
+        $remarkHtml = preg_replace_callback(
+            '/<(p|ul|ol|li|h[123])\b([^>]*)>/i',
+            function ($m) use ($inlineStyles) {
+                $tag   = strtolower($m[1]);
+                $attrs = $m[2];
+                $add   = $inlineStyles[$tag] ?? '';
+                if (preg_match('/style="([^"]*)"/i', $attrs, $sm)) {
+                    $attrs = preg_replace('/style="[^"]*"/i', 'style="' . $sm[1] . ';' . $add . '"', $attrs);
+                } else {
+                    $attrs .= ' style="' . $add . '"';
+                }
+                return '<' . $tag . $attrs . '>';
+            },
+            $saleFormat->remark
+        );
+    @endphp
     <div class="divider-thin"></div>
     <div class="sec-head">Remark</div>
-    <div style="font-size:11px; color:#333; line-height:1.65; padding:8px 11px; border:1px solid #d8e4f0;">
-        {{ $saleFormat->remark }}
+    <div style="font-size:11px;color:#333;padding:8px 11px;border:1px solid #d8e4f0;">
+        {!! $remarkHtml !!}
     </div>
     @endif
 

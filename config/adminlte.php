@@ -396,6 +396,12 @@ return [
                     'icon' => 'fas fa-file-alt',
                     'can' => 'sale_order_view',
                 ],
+                [
+                    'text' => 'Sale Format',
+                    'url' => '/sale-formats',
+                    'icon' => 'fas fa-file-alt',
+                    // 'can' => 'sale_format_view',
+                ],
             ],
         ],
 

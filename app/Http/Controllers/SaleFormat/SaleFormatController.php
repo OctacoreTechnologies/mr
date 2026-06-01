@@ -15,19 +15,15 @@ class SaleFormatController extends Controller
     public function index(Request $request)
     {
         $query = SaleFormat::with('customer')
+            ->withCount('requirements')
             ->latest();
 
         if ($request->filled('customer_id')) {
             $query->forCustomer($request->customer_id);
         }
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $saleFormats = $query->paginate(15)->withQueryString();
+        $saleFormats = $query->get();
         $customers   = Customer::orderBy('company_name')->get();
-        
 
         return view('sale_formats.index', compact('saleFormats', 'customers'));
     }
@@ -50,19 +46,18 @@ class SaleFormatController extends Controller
     public function store(SaleFormatRequest $request)
     {
         $validated = $request->validated();
-        unset($validated['requirements']);
+        unset($validated['requirements'], $validated['upload_files'], $validated['existing_files']);
         $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
 
-         if ($request->hasFile('upload_file_path')) {
-
-            $file = $request->file('upload_file_path');
-
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-
-            $file->move(public_path('uploads/sale_formats'), $filename);
-
-            $validated['upload_file_path'] = 'uploads/sale_formats/' . $filename;
+        $filePaths = [];
+        if ($request->hasFile('upload_files')) {
+            foreach ($request->file('upload_files') as $file) {
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads/sale_formats'), $filename);
+                $filePaths[] = 'uploads/sale_formats/' . $filename;
+            }
         }
+        $validated['upload_file_path'] = !empty($filePaths) ? $filePaths : null;
 
         $saleFormat = SaleFormat::create($validated);
         $this->syncRequirements($saleFormat, $request->input('requirements', []));
@@ -110,19 +105,19 @@ class SaleFormatController extends Controller
     public function update(SaleFormatRequest $request, SaleFormat $saleFormat)
     {
         $validated = $request->validated();
-        unset($validated['requirements']);
+        unset($validated['requirements'], $validated['upload_files'], $validated['existing_files']);
         $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
 
-        if ($request->hasFile('upload_file_path')) {
-    
-                $file = $request->file('upload_file_path');
-    
-                $filename = time() . '.' . $file->getClientOriginalExtension();
-    
+        // Keep existing files that were not removed + append newly uploaded files
+        $filePaths = array_values(array_filter($request->input('existing_files', [])));
+        if ($request->hasFile('upload_files')) {
+            foreach ($request->file('upload_files') as $file) {
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                 $file->move(public_path('uploads/sale_formats'), $filename);
-    
-                $validated['upload_file_path'] = 'uploads/sale_formats/' . $filename;
+                $filePaths[] = 'uploads/sale_formats/' . $filename;
+            }
         }
+        $validated['upload_file_path'] = !empty($filePaths) ? $filePaths : null;
 
         $saleFormat->update($validated);
         $this->syncRequirements($saleFormat, $request->input('requirements', []));

@@ -26,8 +26,9 @@ class SaleFormat extends Model
     ];
 
     protected $casts = [
-        'sale_date'    => 'date',
-        'sale_details' => 'array',
+        'sale_date'        => 'date',
+        'sale_details'     => 'array',
+        'upload_file_path' => 'array',
     ];
 
     // ─── Relationships ────────────────────────────────────────────────────────

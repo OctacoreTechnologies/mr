@@ -36,6 +36,7 @@ class LeadRequest extends FormRequest
             'notes' => 'nullable|string|max:1000',
             'followed_by' => 'required|exists:users,id',
             'remark2' => 'nullable',
+            'visiting_card' => 'nullable|file|mimes:pdf,xls,xlsx,csv,doc,docx,jpg,jpeg,png,gif,webp,svg,zip,rar|max:2048',
 
         ];
     }

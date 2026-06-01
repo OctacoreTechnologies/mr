@@ -1,3 +1,14 @@
+@php
+    $heads = [
+        'Sr.No',
+        'Customer',
+        'Date',
+        'Prepared By',
+        ['label' => 'Actions', 'no-export' => true, 'width' => 10],
+    ];
+    $i = 0;
+@endphp
+
 @extends('layouts.app')
 
 @section('title', 'Sale Formats')
@@ -23,147 +34,96 @@
 
 <x-alert-components class="my-3" />
 
-{{-- ── Filters ────────────────────────────────────────────────────────────── --}}
-@if(!isset($customer))
-<div class="crm-index-card mb-3">
-    <div class="card-header">
-        <h3 class="card-title"><i class="fas fa-filter"></i> Filters</h3>
-    </div>
-    <div class="card-body">
-        <form method="GET" action="{{ route('sale-formats.index') }}">
-            <div class="row g-2 align-items-end">
-                <div class="col-md-4">
-                    <label class="crm-field-label">Customer</label>
-                    <select name="customer_id" class="crm-select">
-                        <option value="">— All Customers —</option>
-                        @foreach($customers as $c)
-                            <option value="{{ $c->id }}" {{ request('customer_id') == $c->id ? 'selected' : '' }}>
-                                {{ $c->company_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="crm-field-label">Status</label>
-                    <select name="status" class="crm-select">
-                        <option value="">— All Status —</option>
-                        <option value="draft"    {{ request('status') == 'draft'    ? 'selected' : '' }}>Draft</option>
-                        <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                        <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                    </select>
-                </div>
-                <div class="col-md-auto">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i> Filter
-                    </button>
-                    <a href="{{ route('sale-formats.index') }}" class="btn btn-outline-secondary">
-                        <i class="fas fa-times"></i> Reset
-                    </a>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-@endif
-
-{{-- ── Table ─────────────────────────────────────────────────────────────── --}}
 <div class="crm-index-card">
     <div class="card-header">
         <h3 class="card-title"><i class="fas fa-list"></i> Sale Format List</h3>
         <div class="card-tools">
-            <span class="badge badge-light text-dark">
-                {{ $saleFormats->total() }} records
+            <span class="badge badge-light text-dark" style="font-size:.75rem">
+                {{ $saleFormats->count() }} records
             </span>
         </div>
     </div>
-    <div class="card-body p-0">
+    <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-hover mb-0" id="saleFormatsTable">
-                <thead>
-                    <tr>
-                        <th style="width:50px">#</th>
-                        <th>Customer</th>
-                        <th>Date</th>
-                        <th>Application</th>
-                        <th>Model</th>
-                        <th>Requirements</th>
-                        <th>Prepared By</th>
-                        <th>Status</th>
-                        <th class="text-center" style="width:130px">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($saleFormats as $sf)
-                    <tr>
-                        <td class="text-muted small">{{ $sf->id }}</td>
-                        <td>
-                            <a href="{{ route('customers.sale-formats.index', $sf->customer_id) }}"
-                               class="font-weight-600 text-primary text-decoration-none">
-                                {{ $sf->customer->company_name ?? '—' }}
-                            </a>
-                        </td>
-                        <td>{{ $sf->sale_date->format('d-m-Y') }}</td>
-                        <td>{{ $sf->application ?? '—' }}</td>
-                        <td>{{ $sf->model ?? '—' }}</td>
-                        <td class="text-center">
-                            @php $reqCount = $sf->requirements_count ?? $sf->requirements->count(); @endphp
-                            @if($reqCount > 0)
-                                <span class="badge badge-info">{{ $reqCount }}</span>
-                            @else
-                                <span class="text-muted">—</span>
-                            @endif
-                        </td>
-                        <td>{{ $sf->prepared_by ?? '—' }}</td>
-                        <td>
-                            @php
-                                $badge = match($sf->status) {
-                                    'approved' => 'success',
-                                    'rejected' => 'danger',
-                                    default    => 'warning',
-                                };
-                            @endphp
-                            <span class="badge badge-{{ $badge }} text-capitalize">{{ $sf->status }}</span>
-                        </td>
-                        <td class="text-center">
-                            <div class="btn-group btn-group-sm">
-                                <a href="{{ route('sale-formats.show', $sf) }}"
-                                   class="btn text-primary" title="View">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="{{ route('sale-formats.edit', $sf) }}"
-                                   class="btn text-warning" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{ route('sale-formats.destroy', $sf) }}" method="POST"
-                                      class="d-inline" id="del-{{ $sf->id }}">
-                                    @csrf @method('DELETE')
-                                    <button type="button"
-                                            class="btn text-danger"
-                                            title="Delete"
-                                            onclick="confirmDelete({{ $sf->id }})">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
+            <x-adminlte-datatable id="saleFormatsTable" :heads="$heads" striped hoverable with-buttons>
+                @foreach($saleFormats as $sf)
+                @php
+                    $firstDetail = collect($sf->sale_details ?? [])->first();
+                 
+                
+
+                    $words    = preg_split('/\s+/', trim($sf->customer->company_name ?? ''));
+                    $initials = strtoupper(
+                        substr($words[0] ?? '', 0, 1) .
+                        (isset($words[1]) ? substr($words[1], 0, 1) : '')
+                    );
+                    $colors = ['#3b82f6','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#84cc16'];
+                    $bg     = $colors[$i % count($colors)];
+                @endphp
+                <tr>
+                    {{-- Sr No --}}
+                    <td class="sr-no">{{ ++$i }}</td>
+
+                    {{-- Customer --}}
+                    <td style="min-width:170px;max-width:220px">
+                        <a href="{{ route('customers.sale-formats.index', $sf->customer_id) }}"
+                           class="text-decoration-none"
+                           style="display:flex;align-items:center;gap:9px">
+                            <div style="width:30px;height:30px;border-radius:7px;background:{{ $bg }};
+                                        color:#fff;font-size:.68rem;font-weight:700;flex-shrink:0;
+                                        display:flex;align-items:center;justify-content:center">
+                                {{ $initials }}
                             </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="9" class="text-center text-muted py-5">
-                            <i class="fas fa-folder-open fa-2x mb-2 d-block"></i>
-                            Koi sale format nahi mila.
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                            <span style="font-weight:600;color:#1e293b;overflow:hidden;
+                                         white-space:nowrap;text-overflow:ellipsis;display:block;max-width:160px"
+                                  title="{{ $sf->customer->company_name ?? '' }}">
+                                {{ $sf->customer->company_name ?? '—' }}
+                            </span>
+                        </a>
+                    </td>
+
+                    {{-- Date --}}
+                    <td style="white-space:nowrap;font-size:.84rem;color:#64748b">
+                        {{ $sf->sale_date->format('d M Y') }}
+                    </td>
+
+               
+
+
+                    {{-- Prepared By --}}
+                    <td style="max-width:140px">
+                        <span style="display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:.85rem"
+                              title="{{ $sf->prepared_by }}">
+                            {{ $sf->prepared_by ?? '—' }}
+                        </span>
+                    </td>
+
+                    {{-- Actions --}}
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a href="{{ route('sale-formats.show', $sf) }}"
+                               class="btn text-primary" title="View">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{{ route('sale-formats.edit', $sf) }}"
+                               class="btn text-warning" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ route('sale-formats.destroy', $sf) }}" method="POST"
+                                  class="d-inline" id="del-{{ $sf->id }}">
+                                @csrf @method('DELETE')
+                                <button type="button" class="btn text-danger" title="Delete"
+                                        onclick="confirmDelete({{ $sf->id }})">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @endforeach
+            </x-adminlte-datatable>
         </div>
     </div>
-    @if($saleFormats->hasPages())
-    <div class="card-footer">
-        {{ $saleFormats->withQueryString()->links() }}
-    </div>
-    @endif
 </div>
 
 @endsection
