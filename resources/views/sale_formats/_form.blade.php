@@ -24,7 +24,7 @@
                 </label>
                 <select id="customer_id" name="customer_id"
                         class="crm-select @error('customer_id') is-invalid @enderror">
-                    <option value="">— Customer Select Karo —</option>
+                    <option value="">— Select a Customer —</option>
                     @foreach($customers as $c)
                         @php
                             $cpJson = $c->contact_persons;
@@ -75,12 +75,12 @@
         </div>
         <div style="display:flex;align-items:center;gap:10px">
             <small style="color:#64748b;font-weight:400;font-size:.78rem">
-                Customer select karte hi auto-fill hoga
+                Contact persons will auto-fill when a customer is selected.
             </small>
             <button type="button" id="sf-add-person"
                     class="btn btn-sm btn-outline-primary"
                     style="font-size:.75rem;padding:4px 10px">
-                <i class="fas fa-plus"></i> Person Add Karo
+                <i class="fas fa-plus"></i> Add Person
             </button>
         </div>
     </div>
@@ -88,55 +88,60 @@
         <div id="sf-persons-container"></div>
         <div id="sf-no-person"
              style="color:#94a3b8;font-size:.84rem;text-align:center;padding:18px 0;display:none">
-            Koi contact person nahi hai — upar button se add karo
+            No contact persons added yet. Click <strong>Add Person</strong> to begin.
         </div>
     </div>
+</div>
 
-        {{-- ── Multiple File Upload ── --}}
-        <div class="crm-field-wrap mt-3">
-            <label class="crm-field-label">
-                <i class="fas fa-paperclip"></i> Upload Files
-                <small style="color:#64748b;font-weight:400"> (JPG, PNG, PDF — multiple allowed)</small>
-            </label>
-
-            {{-- Show existing files in edit mode --}}
-            @if($isEdit && !empty($saleFormat->upload_file_path))
-            <div id="existing-files-list" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px">
-                @foreach((array)$saleFormat->upload_file_path as $filePath)
-                @php $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION)); @endphp
-                <div class="existing-file-item" style="position:relative;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem">
-                    <input type="hidden" name="existing_files[]" value="{{ $filePath }}">
-                    @if(in_array($ext, ['jpg','jpeg','png','gif','svg']))
-                        <img src="{{ asset($filePath) }}" style="height:40px;width:40px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0">
-                    @else
-                        <i class="fas fa-file-pdf" style="font-size:1.6rem;color:#dc2626"></i>
-                    @endif
-                    <span style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ basename($filePath) }}</span>
-                    <button type="button" class="remove-existing-file"
-                            style="background:none;border:none;color:#dc2626;cursor:pointer;padding:0;line-height:1;font-size:1rem;flex-shrink:0"
-                            title="Remove">
-                        <i class="fas fa-times-circle"></i>
-                    </button>
-                </div>
-                @endforeach
-            </div>
-            @endif
-
-            <input type="file" name="upload_files[]" id="upload_files"
-                   class="crm-input"
-                   accept=".jpg,.jpeg,.png,.gif,.svg,.pdf"
-                   multiple>
-            <small style="color:#94a3b8;font-size:.75rem">Multiple files select karne ke liye Ctrl+Click karein</small>
-
-            {{-- New file preview --}}
-            <div id="new-files-preview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:8px"></div>
+{{-- ══════════════════════════════════════════════════
+     SECTION 3: Upload Files
+══════════════════════════════════════════════════ --}}
+<div class="crm-section-card">
+    <div class="crm-section-header">
+        <div class="sec-title">
+            <i class="fas fa-paperclip"></i> Upload Files
         </div>
+        <small style="color:#64748b;font-weight:400;font-size:.78rem">JPG, PNG, PDF — multiple files allowed</small>
+    </div>
+    <div class="crm-section-body">
+
+        {{-- Show existing files in edit mode --}}
+        @if($isEdit && !empty($saleFormat->upload_file_path))
+        <div id="existing-files-list" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+            @foreach((array)$saleFormat->upload_file_path as $filePath)
+            @php $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION)); @endphp
+            <div class="existing-file-item" style="position:relative;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem">
+                <input type="hidden" name="existing_files[]" value="{{ $filePath }}">
+                @if(in_array($ext, ['jpg','jpeg','png','gif','svg']))
+                    <img src="{{ asset($filePath) }}" style="height:40px;width:40px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0">
+                @else
+                    <i class="fas fa-file-pdf" style="font-size:1.6rem;color:#dc2626"></i>
+                @endif
+                <span style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ basename($filePath) }}</span>
+                <button type="button" class="remove-existing-file"
+                        style="background:none;border:none;color:#dc2626;cursor:pointer;padding:0;line-height:1;font-size:1rem;flex-shrink:0"
+                        title="Remove file">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+            @endforeach
+        </div>
+        @endif
+
+        <input type="file" name="upload_files[]" id="upload_files"
+               class="crm-input"
+               accept=".jpg,.jpeg,.png,.gif,.svg,.pdf"
+               multiple>
+        <small style="color:#94a3b8;font-size:.75rem">To select multiple files, hold <kbd>Ctrl</kbd> while clicking.</small>
+
+        {{-- New file preview --}}
+        <div id="new-files-preview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px"></div>
 
     </div>
 </div>
 
 {{-- ══════════════════════════════════════════════════
-     SECTION 3: Sale Details
+     SECTION 4: Sale Details
 ══════════════════════════════════════════════════ --}}
 <div class="crm-section-card">
     <div class="crm-section-header">
@@ -208,7 +213,7 @@
 </div>
 
 {{-- ══════════════════════════════════════════════════
-     SECTION 4: Requirements
+     SECTION 5: Requirements
 ══════════════════════════════════════════════════ --}}
 <div class="crm-section-card">
     <div class="crm-section-header">
@@ -255,7 +260,7 @@
 </div>
 
 {{-- ══════════════════════════════════════════════════
-     SECTION 5: Remark & Sign-off
+     SECTION 6: Remark & Sign-off
 ══════════════════════════════════════════════════ --}}
 <div class="crm-section-card">
     <div class="crm-section-header">
@@ -339,7 +344,7 @@
                 return '<div class="sf-multi-row">' +
                     '<input type="' + type + '" name="contact_persons[' + idx + '][' + field + '][]"' +
                     ' class="crm-input sf-multi-input" placeholder="' + ph + '" value="' + esc(v) + '">' +
-                    '<button type="button" class="sf-btn-rm-entry" title="Hatao">&times;</button>' +
+                    '<button type="button" class="sf-btn-rm-entry" title="Remove">&times;</button>' +
                     '</div>';
             }).join('');
         }
@@ -352,7 +357,7 @@
             div.innerHTML =
                 '<div class="sf-person-header">' +
                     '<span class="sf-person-badge">Contact Person ' + (idx + 1) + '</span>' +
-                    '<button type="button" class="sf-btn-rm-person">Hatao</button>' +
+                    '<button type="button" class="sf-btn-rm-person">Remove</button>' +
                 '</div>' +
                 '<div class="sf-person-grid">' +
                     '<div class="crm-field-wrap">' +
@@ -369,12 +374,12 @@
                 '<div class="sf-multi-wrap">' +
                     '<label class="crm-field-label"><i class="fas fa-phone" style="width:14px"></i> Contact Numbers</label>' +
                     '<div class="sf-multi-list" data-field="contact">' + multiRows(idx, 'contact', data.contact) + '</div>' +
-                    '<button type="button" class="sf-btn-add-entry" data-field="contact">+ Contact Add Karo</button>' +
+                    '<button type="button" class="sf-btn-add-entry" data-field="contact">+ Add Contact Number</button>' +
                 '</div>' +
                 '<div class="sf-multi-wrap">' +
                     '<label class="crm-field-label"><i class="fas fa-envelope" style="width:14px"></i> Email Addresses</label>' +
                     '<div class="sf-multi-list" data-field="email">' + multiRows(idx, 'email', data.email) + '</div>' +
-                    '<button type="button" class="sf-btn-add-entry" data-field="email">+ Email Add Karo</button>' +
+                    '<button type="button" class="sf-btn-add-entry" data-field="email">+ Add Email Address</button>' +
                 '</div>';
             return div;
         }
@@ -435,7 +440,7 @@
                     ' name="contact_persons[' + idx2 + '][' + field + '][]"' +
                     ' class="crm-input sf-multi-input"' +
                     ' placeholder="' + (isEmail ? 'email@example.com' : '+91 00000 00000') + '">' +
-                    '<button type="button" class="sf-btn-rm-entry" title="Hatao">&times;</button>';
+                    '<button type="button" class="sf-btn-rm-entry" title="Remove">&times;</button>';
                 mList.appendChild(row);
                 row.querySelector('input').focus();
             }
@@ -588,7 +593,7 @@
                     ['clean'],
                 ]
             },
-            placeholder: 'Koi notes ya special instructions...',
+            placeholder: 'Enter any additional notes or special instructions...',
         });
 
         var existingRemark = remarkTA.value.trim();
