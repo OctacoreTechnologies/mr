@@ -12,22 +12,19 @@ class SaleFormat extends Model
 
     protected $fillable = [
         'customer_id',
-        'cp_name',
-        'cp_designation',
-        'cp_contact',
-        'cp_email',
+        'contact_persons',
         'sale_date',
         'sale_details',
         'remark',
         'prepared_by',
         'approved_by',
         'upload_file_path',
-        'status',
     ];
 
     protected $casts = [
         'sale_date'        => 'date',
         'sale_details'     => 'array',
+        'contact_persons'  => 'array',
         'upload_file_path' => 'array',
     ];
 

@@ -15,10 +15,13 @@ class SaleFormatRequest extends FormRequest
     {
         return [
             'customer_id'    => 'required|exists:customers,id',
-            'cp_name'        => 'nullable|string|max:255',
-            'cp_designation' => 'nullable|string|max:255',
-            'cp_contact'     => 'nullable|string|max:50',
-            'cp_email'       => 'nullable|email|max:255',
+            'contact_persons'                => 'nullable|array',
+            'contact_persons.*.name'         => 'nullable|string|max:255',
+            'contact_persons.*.designation'  => 'nullable|string|max:255',
+            'contact_persons.*.contact'      => 'nullable|array',
+            'contact_persons.*.contact.*'    => 'nullable|string|max:255',
+            'contact_persons.*.email'        => 'nullable|array',
+            'contact_persons.*.email.*'      => 'nullable|email|max:255',
             'sale_date'      => 'required|date',
             'sale_details'                => 'nullable|array',
             'sale_details.*.application'  => 'nullable|string|max:255',

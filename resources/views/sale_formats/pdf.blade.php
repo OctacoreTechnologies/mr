@@ -226,40 +226,46 @@ body {
         @endif
     </table>
 
-    {{-- ── Contact Person ──────────────────────────────────────────────── --}}
-    @if($saleFormat->cp_name || $saleFormat->cp_contact || $saleFormat->cp_email || $saleFormat->cp_designation)
+    {{-- ── Contact Persons ─────────────────────────────────────────────── --}}
+    @php $cpPersons = $saleFormat->contact_persons ?? []; @endphp
+    @if(!empty($cpPersons))
     <div class="divider-thin"></div>
     <div class="sec-head">Contact Person</div>
+    @foreach($cpPersons as $i => $cp)
+    @if($i > 0)<div style="height:6px"></div>@endif
     <table class="info-table">
-        @if($saleFormat->cp_name)
+        @if(!empty($cp['name']))
         <tr>
-            <td class="info-lbl">Contact Person</td>
+            <td class="info-lbl">{{ count($cpPersons) > 1 ? 'Contact ' . ($i + 1) : 'Contact Person' }}</td>
             <td class="info-sep">:</td>
-            <td class="info-val-bold">{{ $saleFormat->cp_name }}</td>
+            <td class="info-val-bold">{{ $cp['name'] }}</td>
         </tr>
         @endif
-        @if($saleFormat->cp_designation)
+        @if(!empty($cp['designation']))
         <tr>
             <td class="info-lbl">Designation</td>
             <td class="info-sep">:</td>
-            <td class="info-val">{{ $saleFormat->cp_designation }}</td>
+            <td class="info-val">{{ $cp['designation'] }}</td>
         </tr>
         @endif
-        @if($saleFormat->cp_contact)
+        @php $contacts = array_filter($cp['contact'] ?? []); @endphp
+        @if(!empty($contacts))
         <tr>
             <td class="info-lbl">Contact No.</td>
             <td class="info-sep">:</td>
-            <td class="info-val">{{ $saleFormat->cp_contact }}</td>
+            <td class="info-val">{{ implode(' / ', $contacts) }}</td>
         </tr>
         @endif
-        @if($saleFormat->cp_email)
+        @php $emails = array_filter($cp['email'] ?? []); @endphp
+        @if(!empty($emails))
         <tr>
             <td class="info-lbl">E-Mail ID</td>
             <td class="info-sep">:</td>
-            <td class="info-val-link">{{ $saleFormat->cp_email }}</td>
+            <td class="info-val-link">{{ implode(' / ', $emails) }}</td>
         </tr>
         @endif
     </table>
+    @endforeach
     @endif
 
     {{-- ── Sale Details ────────────────────────────────────────────────── --}}

@@ -26,11 +26,19 @@
                         class="crm-select @error('customer_id') is-invalid @enderror">
                     <option value="">— Customer Select Karo —</option>
                     @foreach($customers as $c)
+                        @php
+                            $cpJson = $c->contact_persons;
+                            if (empty($cpJson) && ($c->contact_person_1_name ?? null)) {
+                                $cpJson = [[
+                                    'name'        => $c->contact_person_1_name,
+                                    'designation' => $c->contact_person_1_designation ?? '',
+                                    'contact'     => $c->contact_person_1_contact ? [$c->contact_person_1_contact] : [],
+                                    'email'       => $c->contact_person_1_email   ? [$c->contact_person_1_email]   : [],
+                                ]];
+                            }
+                        @endphp
                         <option value="{{ $c->id }}"
-                            data-cp-name="{{ $c->contact_person_1_name ?? '' }}"
-                            data-cp-designation="{{ $c->contact_person_1_designation ?? '' }}"
-                            data-cp-email="{{ $c->contact_person_1_email ?? '' }}"
-                            data-cp-contact="{{ $c->contact_person_1_contact ?? '' }}"
+                            data-contact-persons="{{ json_encode($cpJson ?? []) }}"
                             {{ old('customer_id', $saleFormat->customer_id ?? $selectedCustomer?->id) == $c->id ? 'selected' : '' }}>
                             {{ $c->company_name }}
                         </option>
@@ -58,53 +66,31 @@
 </div>
 
 {{-- ══════════════════════════════════════════════════
-     SECTION 2: Contact Person
+     SECTION 2: Contact Persons (multiple)
 ══════════════════════════════════════════════════ --}}
 <div class="crm-section-card">
     <div class="crm-section-header">
         <div class="sec-title">
-            <i class="fas fa-user"></i> Contact Person
+            <i class="fas fa-users"></i> Contact Persons
         </div>
-        <small style="color:#64748b;font-weight:400;font-size:.78rem">
-            Customer select karte hi auto-fill hoga
-        </small>
+        <div style="display:flex;align-items:center;gap:10px">
+            <small style="color:#64748b;font-weight:400;font-size:.78rem">
+                Customer select karte hi auto-fill hoga
+            </small>
+            <button type="button" id="sf-add-person"
+                    class="btn btn-sm btn-outline-primary"
+                    style="font-size:.75rem;padding:4px 10px">
+                <i class="fas fa-plus"></i> Person Add Karo
+            </button>
+        </div>
     </div>
     <div class="crm-section-body">
-        <div class="crm-form-grid crm-form-grid-2">
-
-            <div class="crm-field-wrap">
-                <label class="crm-field-label">Name</label>
-                <input type="text" id="cp_name" name="cp_name"
-                       class="crm-input"
-                       placeholder="Contact person name"
-                       value="{{ old('cp_name', $saleFormat->cp_name ?? '') }}">
-            </div>
-
-            <div class="crm-field-wrap">
-                <label class="crm-field-label">Designation</label>
-                <input type="text" id="cp_designation" name="cp_designation"
-                       class="crm-input"
-                       placeholder="Job title"
-                       value="{{ old('cp_designation', $saleFormat->cp_designation ?? '') }}">
-            </div>
-
-            <div class="crm-field-wrap">
-                <label class="crm-field-label">Contact Number</label>
-                <input type="text" id="cp_contact" name="cp_contact"
-                       class="crm-input"
-                       placeholder="+91 00000 00000"
-                       value="{{ old('cp_contact', $saleFormat->cp_contact ?? '') }}">
-            </div>
-
-            <div class="crm-field-wrap">
-                <label class="crm-field-label">Email</label>
-                <input type="email" id="cp_email" name="cp_email"
-                       class="crm-input"
-                       placeholder="email@example.com"
-                       value="{{ old('cp_email', $saleFormat->cp_email ?? '') }}">
-            </div>
-
+        <div id="sf-persons-container"></div>
+        <div id="sf-no-person"
+             style="color:#94a3b8;font-size:.84rem;text-align:center;padding:18px 0;display:none">
+            Koi contact person nahi hai — upar button se add karo
         </div>
+    </div>
 
         {{-- ── Multiple File Upload ── --}}
         <div class="crm-field-wrap mt-3">
@@ -306,9 +292,25 @@
 </div>
 
 @push('css')
-  <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
-
+<link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+<style>
+.sf-person-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:14px}
+.sf-person-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.sf-person-badge{background:#2563eb;color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:4px 12px}
+.sf-btn-rm-person{background:none;border:1px solid #fca5a5;color:#dc2626;border-radius:5px;font-size:.75rem;padding:3px 10px;cursor:pointer}
+.sf-btn-rm-person:hover{background:#fee2e2}
+.sf-person-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:576px){.sf-person-grid{grid-template-columns:1fr}}
+.sf-multi-wrap{margin-bottom:12px}
+.sf-multi-list{display:flex;flex-direction:column;gap:6px;margin-top:6px;margin-bottom:6px}
+.sf-multi-row{display:flex;align-items:center;gap:8px}
+.sf-multi-input{flex:1}
+.sf-btn-rm-entry{background:none;border:none;color:#dc2626;font-size:1.15rem;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0}
+.sf-btn-rm-entry:hover{color:#b91c1c}
+.sf-btn-add-entry{background:none;border:1px dashed #93c5fd;color:#3b82f6;border-radius:5px;font-size:.76rem;padding:4px 10px;cursor:pointer;margin-top:2px}
+.sf-btn-add-entry:hover{background:#eff6ff;border-color:#3b82f6}
+</style>
 @endpush
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -316,27 +318,162 @@
 <script>
 (function () {
 
-    // ── Auto-fill contact person from customer dropdown ──────────────────────
-    var customerSel = document.getElementById('customer_id');
+    // ── Contact Persons Manager ──────────────────────────────────────────────
+    (function () {
+        var container  = document.getElementById('sf-persons-container');
+        var noMsg      = document.getElementById('sf-no-person');
+        var addBtn     = document.getElementById('sf-add-person');
+        var customerSel = document.getElementById('customer_id');
 
-    function fillCP(opt) {
-        document.getElementById('cp_name').value        = opt.dataset.cpName        || '';
-        document.getElementById('cp_designation').value = opt.dataset.cpDesignation || '';
-        document.getElementById('cp_email').value       = opt.dataset.cpEmail       || '';
-        document.getElementById('cp_contact').value     = opt.dataset.cpContact     || '';
-    }
+        var initData = @json(old('contact_persons', $saleFormat->contact_persons ?? []));
 
-    customerSel.addEventListener('change', function () {
-        var cpName = document.getElementById('cp_name').value.trim();
-        if (!cpName) {
-            fillCP(this.options[this.selectedIndex]);
+        function esc(s) {
+            return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         }
-    });
 
-    // On page load: if customer selected and cp_name is empty, auto-fill
-    if (customerSel.value && !document.getElementById('cp_name').value.trim()) {
-        fillCP(customerSel.options[customerSel.selectedIndex]);
-    }
+        function multiRows(idx, field, values) {
+            if (!values || values.length === 0) values = [''];
+            var type = field === 'email' ? 'email' : 'text';
+            var ph   = field === 'email' ? 'email@example.com' : '+91 00000 00000';
+            return values.map(function (v) {
+                return '<div class="sf-multi-row">' +
+                    '<input type="' + type + '" name="contact_persons[' + idx + '][' + field + '][]"' +
+                    ' class="crm-input sf-multi-input" placeholder="' + ph + '" value="' + esc(v) + '">' +
+                    '<button type="button" class="sf-btn-rm-entry" title="Hatao">&times;</button>' +
+                    '</div>';
+            }).join('');
+        }
+
+        function makeCard(idx, data) {
+            data = data || {};
+            var div = document.createElement('div');
+            div.className = 'sf-person-card';
+            div.dataset.index = idx;
+            div.innerHTML =
+                '<div class="sf-person-header">' +
+                    '<span class="sf-person-badge">Contact Person ' + (idx + 1) + '</span>' +
+                    '<button type="button" class="sf-btn-rm-person">Hatao</button>' +
+                '</div>' +
+                '<div class="sf-person-grid">' +
+                    '<div class="crm-field-wrap">' +
+                        '<label class="crm-field-label">Name</label>' +
+                        '<input type="text" name="contact_persons[' + idx + '][name]" class="crm-input"' +
+                        ' placeholder="Contact person name" value="' + esc(data.name) + '">' +
+                    '</div>' +
+                    '<div class="crm-field-wrap">' +
+                        '<label class="crm-field-label">Designation</label>' +
+                        '<input type="text" name="contact_persons[' + idx + '][designation]" class="crm-input"' +
+                        ' placeholder="Job title" value="' + esc(data.designation) + '">' +
+                    '</div>' +
+                '</div>' +
+                '<div class="sf-multi-wrap">' +
+                    '<label class="crm-field-label"><i class="fas fa-phone" style="width:14px"></i> Contact Numbers</label>' +
+                    '<div class="sf-multi-list" data-field="contact">' + multiRows(idx, 'contact', data.contact) + '</div>' +
+                    '<button type="button" class="sf-btn-add-entry" data-field="contact">+ Contact Add Karo</button>' +
+                '</div>' +
+                '<div class="sf-multi-wrap">' +
+                    '<label class="crm-field-label"><i class="fas fa-envelope" style="width:14px"></i> Email Addresses</label>' +
+                    '<div class="sf-multi-list" data-field="email">' + multiRows(idx, 'email', data.email) + '</div>' +
+                    '<button type="button" class="sf-btn-add-entry" data-field="email">+ Email Add Karo</button>' +
+                '</div>';
+            return div;
+        }
+
+        function reindex() {
+            container.querySelectorAll('.sf-person-card').forEach(function (card, i) {
+                card.dataset.index = i;
+                card.querySelector('.sf-person-badge').textContent = 'Contact Person ' + (i + 1);
+                card.querySelectorAll('input[name^="contact_persons["]').forEach(function (inp) {
+                    inp.name = inp.name.replace(/contact_persons\[\d+\]/, 'contact_persons[' + i + ']');
+                });
+            });
+        }
+
+        function updateMsg() {
+            noMsg.style.display = container.querySelectorAll('.sf-person-card').length ? 'none' : 'block';
+        }
+
+        function addPerson(data) {
+            var idx = container.querySelectorAll('.sf-person-card').length;
+            container.appendChild(makeCard(idx, data || {}));
+            updateMsg();
+        }
+
+        // Event delegation
+        container.addEventListener('click', function (e) {
+            var rmPerson = e.target.closest('.sf-btn-rm-person');
+            if (rmPerson) {
+                rmPerson.closest('.sf-person-card').remove();
+                reindex();
+                updateMsg();
+                return;
+            }
+
+            var rmEntry = e.target.closest('.sf-btn-rm-entry');
+            if (rmEntry) {
+                var list = rmEntry.closest('.sf-multi-list');
+                var rows = list.querySelectorAll('.sf-multi-row');
+                if (rows.length > 1) {
+                    rmEntry.closest('.sf-multi-row').remove();
+                } else {
+                    list.querySelector('.sf-multi-input').value = '';
+                }
+                return;
+            }
+
+            var addEntry = e.target.closest('.sf-btn-add-entry');
+            if (addEntry) {
+                var field = addEntry.dataset.field;
+                var card  = addEntry.closest('.sf-person-card');
+                var idx2  = card.dataset.index;
+                var mList = card.querySelector('.sf-multi-list[data-field="' + field + '"]');
+                var row   = document.createElement('div');
+                row.className = 'sf-multi-row';
+                var isEmail = field === 'email';
+                row.innerHTML =
+                    '<input type="' + (isEmail ? 'email' : 'text') + '"' +
+                    ' name="contact_persons[' + idx2 + '][' + field + '][]"' +
+                    ' class="crm-input sf-multi-input"' +
+                    ' placeholder="' + (isEmail ? 'email@example.com' : '+91 00000 00000') + '">' +
+                    '<button type="button" class="sf-btn-rm-entry" title="Hatao">&times;</button>';
+                mList.appendChild(row);
+                row.querySelector('input').focus();
+            }
+        });
+
+        addBtn.addEventListener('click', function () { addPerson(); });
+
+        // Auto-fill from customer dropdown
+        function fillFromCustomer(opt) {
+            try {
+                var data = JSON.parse(opt.dataset.contactPersons || '[]');
+                if (data && data.length) {
+                    container.innerHTML = '';
+                    data.forEach(function (p) { addPerson(p); });
+                    updateMsg();
+                }
+            } catch (e) {}
+        }
+
+        customerSel.addEventListener('change', function () {
+            var hasNames = Array.from(
+                container.querySelectorAll('input[name$="[name]"]')
+            ).some(function (inp) { return inp.value.trim() !== ''; });
+            if (!hasNames) {
+                fillFromCustomer(this.options[this.selectedIndex]);
+            }
+        });
+
+        // Initial render
+        if (initData && initData.length) {
+            initData.forEach(function (p) { addPerson(p); });
+        } else if (customerSel.value) {
+            fillFromCustomer(customerSel.options[customerSel.selectedIndex]);
+        } else {
+            addPerson();
+        }
+        updateMsg();
+    })();
 
     // ── Dynamic requirements list ────────────────────────────────────────────
     var list = document.getElementById('requirements-list');

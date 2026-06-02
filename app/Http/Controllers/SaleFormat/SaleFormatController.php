@@ -47,7 +47,9 @@ class SaleFormatController extends Controller
     {
         $validated = $request->validated();
         unset($validated['requirements'], $validated['upload_files'], $validated['existing_files']);
-        $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
+        $validated['sale_details']    = $this->filterSaleDetails($request->input('sale_details', []));
+        $cp = $this->filterContactPersons($request->input('contact_persons', []));
+        $validated['contact_persons'] = !empty($cp) ? $cp : null;
 
         $filePaths = [];
         if ($request->hasFile('upload_files')) {
@@ -107,6 +109,8 @@ class SaleFormatController extends Controller
         $validated = $request->validated();
         unset($validated['requirements'], $validated['upload_files'], $validated['existing_files']);
         $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
+        $cp2 = $this->filterContactPersons($request->input('contact_persons', []));
+        $validated['contact_persons'] = !empty($cp2) ? $cp2 : null;
 
         // Keep existing files that were not removed + append newly uploaded files
         $filePaths = array_values(array_filter($request->input('existing_files', [])));
@@ -138,6 +142,24 @@ class SaleFormatController extends Controller
     }
 
     // ─── Private helpers ──────────────────────────────────────────────────────
+
+    private function filterContactPersons(array $persons): array
+    {
+        $result = [];
+        foreach ($persons as $p) {
+            $contacts = array_values(array_filter($p['contact'] ?? [], fn($c) => filled($c)));
+            $emails   = array_values(array_filter($p['email']   ?? [], fn($e) => filled($e)));
+            if (filled($p['name'] ?? '') || filled($p['designation'] ?? '') || !empty($contacts) || !empty($emails)) {
+                $result[] = [
+                    'name'        => $p['name']        ?? '',
+                    'designation' => $p['designation'] ?? '',
+                    'contact'     => $contacts,
+                    'email'       => $emails,
+                ];
+            }
+        }
+        return $result;
+    }
 
     private function filterSaleDetails(array $details): array
     {

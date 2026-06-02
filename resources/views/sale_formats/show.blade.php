@@ -63,43 +63,49 @@
             </div>
         </div>
 
-        {{-- Contact Person --}}
+        {{-- Contact Persons --}}
         <div class="col-md-4 mb-3 mb-md-0">
             <div class="crm-index-card h-100">
                 <div class="card-header">
-                    <h3 class="card-title"><i class="fas fa-user"></i> Contact Person</h3>
+                    <h3 class="card-title"><i class="fas fa-users"></i> Contact Persons</h3>
                 </div>
-                <div class="card-body">
-                    @if($saleFormat->cp_name || $saleFormat->cp_contact || $saleFormat->cp_email)
-                        @if($saleFormat->cp_name)
-                            <div style="font-size:.95rem;font-weight:600;color:#1e293b">
-                                {{ $saleFormat->cp_name }}
+                <div class="card-body" style="padding:0">
+                    @php $persons = $saleFormat->contact_persons ?? []; @endphp
+                    @forelse($persons as $i => $cp)
+                        <div style="padding:12px 16px;{{ $i > 0 ? 'border-top:1px solid #f1f5f9' : '' }}">
+                            <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px">
+                                <span style="background:#2563eb;color:#fff;font-size:.65rem;font-weight:700;letter-spacing:.05em;border-radius:20px;padding:2px 8px">
+                                    #{{ $i + 1 }}
+                                </span>
+                                @if(!empty($cp['name']))
+                                    <span style="font-size:.9rem;font-weight:600;color:#1e293b">{{ $cp['name'] }}</span>
+                                @endif
                             </div>
-                        @endif
-                        @if($saleFormat->cp_designation)
-                            <div style="font-size:.8rem;color:#64748b;margin-bottom:8px">
-                                {{ $saleFormat->cp_designation }}
-                            </div>
-                        @endif
-                        @if($saleFormat->cp_contact)
-                            <div style="font-size:.85rem;margin-bottom:4px">
-                                <i class="fas fa-phone text-muted mr-1" style="width:14px"></i>
-                                <a href="tel:{{ $saleFormat->cp_contact }}" class="text-decoration-none text-dark">
-                                    {{ $saleFormat->cp_contact }}
-                                </a>
-                            </div>
-                        @endif
-                        @if($saleFormat->cp_email)
-                            <div style="font-size:.85rem">
-                                <i class="fas fa-envelope text-muted mr-1" style="width:14px"></i>
-                                <a href="mailto:{{ $saleFormat->cp_email }}" class="text-decoration-none text-dark">
-                                    {{ $saleFormat->cp_email }}
-                                </a>
-                            </div>
-                        @endif
-                    @else
-                        <span class="text-muted" style="font-size:.85rem">No contact person added</span>
-                    @endif
+                            @if(!empty($cp['designation']))
+                                <div style="font-size:.78rem;color:#64748b;margin-bottom:6px">{{ $cp['designation'] }}</div>
+                            @endif
+                            @foreach($cp['contact'] ?? [] as $num)
+                                @if(filled($num))
+                                    <div style="font-size:.82rem;margin-bottom:3px">
+                                        <i class="fas fa-phone text-muted mr-1" style="width:14px"></i>
+                                        <a href="tel:{{ $num }}" class="text-decoration-none text-dark">{{ $num }}</a>
+                                    </div>
+                                @endif
+                            @endforeach
+                            @foreach($cp['email'] ?? [] as $mail)
+                                @if(filled($mail))
+                                    <div style="font-size:.82rem;margin-bottom:3px">
+                                        <i class="fas fa-envelope text-muted mr-1" style="width:14px"></i>
+                                        <a href="mailto:{{ $mail }}" class="text-decoration-none text-dark">{{ $mail }}</a>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    @empty
+                        <div class="text-muted" style="font-size:.85rem;padding:14px 16px">
+                            Koi contact person add nahi kiya
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
