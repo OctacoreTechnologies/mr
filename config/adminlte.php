@@ -351,9 +351,8 @@ return [
         [
             'text' => 'Lead',
             'url' => '/lead',
-            'icon' => 'fas fa-fw fa-search-dollar',
+            'icon' => 'fas fa-fw fa-bullseye',
             'can' => 'lead_view',
-
 
         ],
         [
@@ -364,9 +363,16 @@ return [
 
         ],
         [
+            'text' => 'Sale Format',
+            'url' => '/sale-formats',
+            'icon' => 'fas fa-fw fa-file-invoice-dollar',
+            // 'can' => 'sale_format_view',
+
+        ],
+        [
             'text' => 'Quotation',
             'url' => '/quotation',
-            'icon' => 'fas fa-file-invoice-dollar',
+            'icon' => 'fas fa-clipboard-list',
             'can' => 'quotation_view',
         ],
         // [
@@ -396,19 +402,13 @@ return [
                     'icon' => 'fas fa-file-alt',
                     'can' => 'sale_order_view',
                 ],
-                [
-                    'text' => 'Sale Format',
-                    'url' => '/sale-formats',
-                    'icon' => 'fas fa-file-alt',
-                    // 'can' => 'sale_format_view',
-                ],
             ],
         ],
 
         [
             'text' => 'Application',
             'url' => '/applications',
-            'icon' => 'fas fa-database',
+            'icon' => 'fas fa-layer-group',
             'can' => 'application_view',
         ],
         [
@@ -460,7 +460,7 @@ return [
 
         [
             'text' => 'Terms & Email',
-            'icon' => 'fas fa-fw fa-user-shield',
+            'icon' => 'fas fa-fw fa-envelope-open-text',
             'can' => 'terms_view',
 
             'submenu' => [
@@ -485,13 +485,13 @@ return [
                 [
                     'text' => 'Email Send',
                     'url' => '/emails/send',
-                    'icon' => 'fas fa-fw fa-envelope',
+                    'icon' => 'fas fa-fw fa-paper-plane',
                     'can' => ' mail_send',
                 ],
                 [
                     'text' => 'Email Template',
                     'url' => '/email-template',
-                    'icon' => 'fas fa-fw fa-envelope',
+                    'icon' => 'fas fa-fw fa-file-code',
                     'can' => 'email_template_view',
                 ],
             ],

@@ -2,6 +2,7 @@
     $heads = [
         '#',
         'Company',
+        'Contact Person',
         'Country',
         'Status',
         'Followed By',
@@ -20,12 +21,12 @@
     </h1>
     <div class="d-flex" style="gap:8px">
         @can('customer_create')
-            <a href="{{ route('customer.create') }}" class="btn btn-primary">
+            <a href="{{ route('customer.create') }}" class="btn btn-primary btn-sm">
                 <i class="fas fa-plus-circle"></i> Add Customer
             </a>
         @endcan
         @can('customer_import')
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#customerImport">
+            <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#customerImport">
                 <i class="fas fa-file-excel"></i> Import
             </button>
         @endcan
@@ -45,8 +46,8 @@
         $existing = $customers->where('customer_status', 'existing')->count();
     @endphp
 
-    <div class="row mb-4">
-        <div class="col-6 col-md-3 mb-3 mb-md-0">
+    <div class="row mb-2">
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
             <div class="ci-stat">
                 <div class="ci-stat-icon" style="background:#eff6ff; color:#2563eb"><i class="fas fa-users"></i></div>
                 <div class="ci-stat-body">
@@ -55,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-6 col-md-3 mb-3 mb-md-0">
+        <div class="col-6 col-md-3 mb-2 mb-md-0">
             <div class="ci-stat">
                 <div class="ci-stat-icon" style="background:#fffbeb; color:#d97706"><i class="fas fa-user-clock"></i></div>
                 <div class="ci-stat-body">
@@ -119,6 +120,9 @@
                                         {{ $customer->company_name ?: ($customer->contact_person_1_name ?? '—') }}
                                     </strong>
                                 </div>
+                            </td>
+                            <td>
+                                {{ $customer->contact_person_1_name ?? 'N.A' }}
                             </td>
 
                             <td>
@@ -231,39 +235,44 @@
         .ci-stat {
             background: #fff;
             border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 16px 18px;
+            border-radius: 8px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
             box-shadow: 0 1px 4px rgba(0, 0, 0, .05);
         }
 
         .ci-stat-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: .85rem;
             flex-shrink: 0;
         }
 
         .ci-stat-num {
-            font-size: 1.5rem;
+            font-size: 1.15rem;
             font-weight: 700;
             line-height: 1;
             color: #1e293b;
         }
 
         .ci-stat-text {
-            font-size: .72rem;
+            font-size: .68rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: .05em;
             color: #94a3b8;
-            margin-top: 3px;
+            margin-top: 2px;
+        }
+
+        .btn-sm {
+            padding: 5px 12px !important;
+            font-size: .8rem !important;
         }
 
         /* Avatar */
@@ -344,6 +353,10 @@
 
         .ci-btn:hover {
             background: #f1f5f9;
+        }
+
+        .content {
+            padding-bottom: 40px !important;
         }
     </style>
 @endpush

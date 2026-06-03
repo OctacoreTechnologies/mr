@@ -2,6 +2,7 @@
     $heads = [
         '#',
         'Company',
+        'Contact Person',
         'Email',
         'Phone',
         'Status',
@@ -27,58 +28,69 @@
 @stop
 
 @section('content')
+<div class="leads-wrapper pb-3">
 
-    <x-alert-components class="my-3" />
+    <x-alert-components class="mb-2" />
 
     {{-- Summary Cards --}}
     @php
-        $total          = $leads->count();
-        $newCount       = $leads->where('status', 'new')->count();
-        $contacted      = $leads->where('status', 'contacted')->count();
-        $qualified      = $leads->where('status', 'qualified')->count();
-        $disqualified   = $leads->where('status', 'disqualified')->count();
+        $total        = $leads->count();
+        $newCount     = $leads->where('status', 'new')->count();
+        $contacted    = $leads->where('status', 'contacted')->count();
+        $qualified    = $leads->where('status', 'qualified')->count();
+        $disqualified = $leads->where('status', 'disqualified')->count();
     @endphp
 
-    <div class="row mb-4">
-        <div class="col-6 col-md mb-3 mb-md-0">
+    <div class="row mb-2">
+        <div class="col-6 col-sm-4 col-md mb-3 mb-md-0">
             <div class="ci-stat">
-                <div class="ci-stat-icon" style="background:#eff6ff; color:#2563eb"><i class="fas fa-layer-group"></i></div>
+                <div class="ci-stat-icon" style="background:#eff6ff; color:#2563eb">
+                    <i class="fas fa-layer-group"></i>
+                </div>
                 <div class="ci-stat-body">
                     <div class="ci-stat-num">{{ $total }}</div>
                     <div class="ci-stat-text">Total</div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-md mb-3 mb-md-0">
+        <div class="col-6 col-sm-4 col-md mb-3 mb-md-0">
             <div class="ci-stat">
-                <div class="ci-stat-icon" style="background:#fffbeb; color:#d97706"><i class="fas fa-star"></i></div>
+                <div class="ci-stat-icon" style="background:#fffbeb; color:#d97706">
+                    <i class="fas fa-star"></i>
+                </div>
                 <div class="ci-stat-body">
                     <div class="ci-stat-num">{{ $newCount }}</div>
                     <div class="ci-stat-text">New</div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-md mb-3 mb-md-0">
+        <div class="col-6 col-sm-4 col-md mb-3 mb-md-0">
             <div class="ci-stat">
-                <div class="ci-stat-icon" style="background:#f0f9ff; color:#0284c7"><i class="fas fa-headset"></i></div>
+                <div class="ci-stat-icon" style="background:#f0f9ff; color:#0284c7">
+                    <i class="fas fa-headset"></i>
+                </div>
                 <div class="ci-stat-body">
                     <div class="ci-stat-num">{{ $contacted }}</div>
                     <div class="ci-stat-text">Contacted</div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-md">
+        <div class="col-6 col-sm-6 col-md mb-3 mb-md-0">
             <div class="ci-stat">
-                <div class="ci-stat-icon" style="background:#f0fdf4; color:#16a34a"><i class="fas fa-check-circle"></i></div>
+                <div class="ci-stat-icon" style="background:#f0fdf4; color:#16a34a">
+                    <i class="fas fa-check-circle"></i>
+                </div>
                 <div class="ci-stat-body">
                     <div class="ci-stat-num">{{ $qualified }}</div>
                     <div class="ci-stat-text">Qualified</div>
                 </div>
             </div>
         </div>
-        <div class="col-6 col-md mt-3 mt-md-0">
+        <div class="col-6 col-sm-6 col-md">
             <div class="ci-stat">
-                <div class="ci-stat-icon" style="background:#fff1f2; color:#e11d48"><i class="fas fa-times-circle"></i></div>
+                <div class="ci-stat-icon" style="background:#fff1f2; color:#e11d48">
+                    <i class="fas fa-times-circle"></i>
+                </div>
                 <div class="ci-stat-body">
                     <div class="ci-stat-num">{{ $disqualified }}</div>
                     <div class="ci-stat-text">Disqualified</div>
@@ -113,16 +125,24 @@
                                 ?? ['ci-other', ucfirst($lead->status)];
                         @endphp
                         <tr>
-                            <td class="text-muted" style="font-size:.8rem">{{ $key + 1 }}</td>
+                            {{-- # --}}
+                            <td class="text-muted" style="font-size:.8rem; width:40px">
+                                {{ $key + 1 }}
+                            </td>
 
                             {{-- Company --}}
                             <td>
                                 <div class="d-flex align-items-center" style="gap:10px">
                                     <div class="ci-avatar" style="background:{{ $bg }}">{{ $initials }}</div>
-                                    <strong>
+                                    <span class="font-weight-semibold">
                                         {{ $lead->company_name ?: ($lead->contact_person_1_name ?? '—') }}
-                                    </strong>
+                                    </span>
                                 </div>
+                            </td>
+
+                            {{-- Contact Person --}}
+                            <td class="text-muted" style="font-size:.85rem">
+                                {{ $lead->contact_person_1_name ?? '—' }}
                             </td>
 
                             {{-- Email --}}
@@ -200,47 +220,56 @@
         </div>
     </div>
 
+</div>
 @stop
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('style/common.css') }}">
     <style>
-        /* Summary cards */
+        /* Summary stat cards — compact */
         .ci-stat {
             background: #fff;
             border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 16px 18px;
+            border-radius: 8px;
+            padding: 10px 14px;
             display: flex;
             align-items: center;
-            gap: 14px;
-            box-shadow: 0 1px 4px rgba(0,0,0,.05);
+            gap: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
             height: 100%;
+            transition: box-shadow .2s, transform .15s;
+        }
+        .ci-stat:hover {
+            box-shadow: 0 3px 12px rgba(37,99,235,.1);
+            transform: translateY(-1px);
         }
         .ci-stat-icon {
-            width: 44px; height: 44px;
-            border-radius: 10px;
+            width: 36px; height: 36px;
+            border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1rem;
+            font-size: .88rem;
             flex-shrink: 0;
         }
-        .ci-stat-num  { font-size: 1.5rem; font-weight: 700; line-height: 1; color: #1e293b; }
-        .ci-stat-text { font-size: .72rem; font-weight: 600; text-transform: uppercase;
-                        letter-spacing: .05em; color: #94a3b8; margin-top: 3px; }
+        .ci-stat-num  { font-size: 1.25rem; font-weight: 700; line-height: 1; color: #1e293b; }
+        .ci-stat-text { font-size: .68rem; font-weight: 600; text-transform: uppercase;
+                        letter-spacing: .06em; color: #94a3b8; margin-top: 3px; }
 
         /* Avatar */
         .ci-avatar {
-            width: 32px; height: 32px; border-radius: 7px;
-            color: #fff; font-size: .7rem; font-weight: 700;
+            width: 30px; height: 30px; border-radius: 6px;
+            color: #fff; font-size: .68rem; font-weight: 700;
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
         }
+
+        .font-weight-semibold { font-weight: 600; color: #1e293b; }
 
         /* Status badges */
         .ci-badge {
             display: inline-block;
             font-size: .72rem; font-weight: 600;
-            padding: 3px 10px; border-radius: 20px;
+            padding: 4px 12px; border-radius: 20px;
+            white-space: nowrap;
         }
         .ci-new          { background: #fef9c3; color: #854d0e; }
         .ci-contacted    { background: #e0f2fe; color: #0369a1; }
@@ -249,16 +278,22 @@
         .ci-other        { background: #f1f5f9; color: #64748b; }
 
         /* Action buttons */
-        .ci-actions { display: flex; align-items: center; gap: 2px; }
+        .ci-actions { display: flex; align-items: center; gap: 2px; flex-wrap: nowrap; }
         .ci-btn {
-            width: 28px; height: 28px;
+            width: 30px; height: 30px;
             display: inline-flex; align-items: center; justify-content: center;
             border-radius: 6px; border: none; background: transparent;
-            cursor: pointer; font-size: .82rem;
+            cursor: pointer; font-size: .84rem;
             text-decoration: none !important;
-            transition: background .15s;
+            transition: background .15s, color .15s;
         }
         .ci-btn:hover { background: #f1f5f9; }
+
+        /* Table spacing */
+        #leadTable_wrapper { padding: 12px 14px 6px; }
+
+        /* Footer gap */
+        .content-wrapper { padding-bottom: 24px !important; }
     </style>
 @endpush
 
