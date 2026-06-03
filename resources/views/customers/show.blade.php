@@ -66,50 +66,69 @@
 
                 @foreach ($contactPersons as $i => $person)
 
+                    @php
+                        $personEmails = $person['email'] ?? [];
+                        if (is_string($personEmails)) $personEmails = array_filter(explode(',', $personEmails));
+
+                        $personContacts = $person['contact'] ?? [];
+                        if (is_string($personContacts)) $personContacts = array_filter(explode(',', $personContacts));
+
+                        // Collect all uploaded files: new array format > old single > company fallback for person 1
+                        if (!empty($person['visiting_cards'])) {
+                            $personCards = (array) $person['visiting_cards'];
+                        } elseif (!empty($person['visiting_card'])) {
+                            $personCards = [$person['visiting_card']];
+                        } elseif ($i === 0 && !empty($customer->visiting_card)) {
+                            $personCards = [$customer->visiting_card];
+                        } else {
+                            $personCards = [];
+                        }
+                    @endphp
+
                     <div class="col-md-6 mb-3">
                         <div class="crm-detail-box">
 
-                            <strong class="d-block mb-1">
+                            <strong class="d-block mb-2">
                                 <i class="fas fa-user"></i> Contact Person {{ $i + 1 }}
                             </strong>
 
                             <div class="crm-detail-value">
 
-                                <div>
-                                    <b>Name:</b>
-                                    {{ $person['name'] ?? '-' }}
+                                <div class="mb-1"><b>Name:</b> {{ $person['name'] ?? '-' }}</div>
+
+                                <div class="mb-1"><b>Designation:</b> {{ $person['designation'] ?? '-' }}</div>
+
+                                <div class="mb-1">
+                                    <b>Email:</b> {{ implode(', ', $personEmails) ?: '-' }}
                                 </div>
 
-                                <div>
-                                    <b>Designation:</b>
-                                    {{ $person['designation'] ?? '-' }}
+                                <div class="mb-1">
+                                    <b>Contact:</b> {{ implode(', ', $personContacts) ?: '-' }}
                                 </div>
 
-                                {{-- Emails --}}
-                                <div>
-                                    <b>Email:</b>
-                                    @php
-                                        $emails = $person['email'] ?? [];
-                                        if (is_string($emails)) {
-                                            $emails = explode(',', $emails);
-                                        }
-                                    @endphp
-
-                                    {{ implode(', ', $emails) ?: '-' }}
-                                </div>
-
-                                {{-- Phones --}}
-                                <div>
-                                    <b>Contact:</b>
-                                    @php
-                                        $contacts = $person['contact'] ?? [];
-                                        if (is_string($contacts)) {
-                                            $contacts = explode(',', $contacts);
-                                        }
-                                    @endphp
-
-                                    {{ implode(', ', $contacts) ?: '-' }}
-                                </div>
+                                @if(!empty($personCards))
+                                    <div class="mt-2">
+                                        <b>Uploaded files:</b>
+                                        @foreach($personCards as $cardPath)
+                                            @php $ext = strtolower(pathinfo($cardPath, PATHINFO_EXTENSION)); @endphp
+                                            @if(in_array($ext, ['jpg','jpeg','png','gif','webp','svg']))
+                                                <div class="mt-1">
+                                                    <img src="{{ asset($cardPath) }}"
+                                                         alt="File"
+                                                         style="max-width:100%;max-height:150px;border-radius:6px;border:1px solid #e5e7eb">
+                                                </div>
+                                            @else
+                                                <div class="mt-1">
+                                                    <a href="{{ asset($cardPath) }}" target="_blank"
+                                                       style="font-size:12px;color:#1D4ED8;text-decoration:none">
+                                                        <i class="fas fa-file-alt"></i>
+                                                        {{ basename($cardPath) }}
+                                                    </a>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
 
                             </div>
 
@@ -121,19 +140,6 @@
             </div>
         </div>
 
-        {{-- show visiting card --}}
-        @if($customer->visiting_card)
-            <div class="mt-4">
-                <h5 class="crm-section-title">Visiting Card</h5>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <div class="crm-detail-box">
-                            <img src="{{ asset($customer->visiting_card) }}" alt="Visiting Card" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
 
         {{-- Address --}}
         <div class="mt-4">

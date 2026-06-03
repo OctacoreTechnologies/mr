@@ -58,6 +58,26 @@
         return items.map((v, i) => makeEntryRow(fieldName, type, v, i === 0)).join('');
     }
 
+    const FILE_ACCEPT = '.jpg,.jpeg,.png,.gif,.svg,.pdf,.xls,.xlsx,.csv,.doc,.docx,.zip,.rar';
+
+    // Existing saved files preview (edit page) — one pill per file, non-removable
+    function makeExistingFilePreviews(cards) {
+        if (!cards || !cards.length) return '';
+        return cards.map(card => `
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#6b7280;
+                        padding:5px 8px;background:#f9fafb;border:1px solid #e5e7eb;
+                        border-radius:6px;margin-top:4px">
+                <i class="fas fa-paperclip" style="flex-shrink:0"></i>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+                    ${escHtml(card.split('/').pop())}
+                </span>
+                <a href="/${escHtml(card)}" target="_blank"
+                   style="margin-left:auto;flex-shrink:0;font-size:11px;color:#1D4ED8;text-decoration:none">
+                    <i class="fas fa-external-link-alt"></i> View
+                </a>
+            </div>`).join('');
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
     // Full person card banana (blank ya pre-filled)
     // ─────────────────────────────────────────────────────────────────────────
@@ -67,6 +87,11 @@
         // DB mein contact field ka naam alag ho sakta hai — dono handle karo
         const contacts = data.contact ?? data.phones ?? [];
         const emails   = data.email   ?? data.emails  ?? [];
+
+        // Multiple saved files (new) or single saved file (old) — both handled
+        const savedCards = Array.isArray(data.visiting_cards)
+            ? data.visiting_cards
+            : (data.visiting_card ? [data.visiting_card] : []);
 
         const removeBtn = displayNum > 1
             ? `<button type="button" class="btn-remove-person" onclick="removePerson(this)">
@@ -115,6 +140,18 @@
                         ${makeMultiBlock(arrayIdx, 'email', Array.isArray(emails) ? emails : [emails])}
                     </div>
                 </div>
+                <div class="crm-field-wrap">
+                    <label class="crm-field-label">Upload files (visiting card / documents)</label>
+                    <input type="file"
+                           name="contact_person_files[${arrayIdx}][]"
+                           class="crm-input"
+                           accept="${FILE_ACCEPT}"
+                           multiple>
+                    <span style="font-size:11px;color:#9ca3af;margin-top:3px;display:block">
+                        Ctrl+Click to select multiple files
+                    </span>
+                    ${makeExistingFilePreviews(savedCards)}
+                </div>
             </div>`;
 
         return div;
@@ -124,11 +161,11 @@
     // + button click → naya row add karo
     // ─────────────────────────────────────────────────────────────────────────
     function addMultiEntry(btn) {
-        const type    = btn.dataset.type;
-        const wrap    = btn.closest('.multi-entry');
-        const idx     = wrap.dataset.idx;
-        const isEmail = (type === 'email');
+        const type = btn.dataset.type;
+        const wrap = btn.closest('.multi-entry');
+        const idx  = wrap.dataset.idx;
 
+        const isEmail = (type === 'email');
         const row = document.createElement('div');
         row.className = 'multi-row';
         row.innerHTML = `
@@ -161,7 +198,9 @@
                 `<i class="fas fa-user" style="font-size:11px"></i> Contact person ${num}`;
 
             card.querySelectorAll('[name]').forEach(el => {
-                el.name = el.name.replace(/contact_persons\[\d+\]/, `contact_persons[${i}]`);
+                el.name = el.name
+                    .replace(/contact_persons\[\d+\]/, `contact_persons[${i}]`)
+                    .replace(/contact_person_files\[\d+\]/, `contact_person_files[${i}]`);
             });
 
             card.querySelectorAll('.btn-add-entry').forEach(b => b.dataset.idx = i);

@@ -139,7 +139,7 @@
 @push('js')
 <script>
 function confirmDelete(id) {
-    if (confirm('Yeh sale format delete karna chahte hain?')) {
+    if (confirm('Do you really want to delete this sale format? This action cannot be undone.')) {
         document.getElementById('del-' + id).submit();
     }
 }

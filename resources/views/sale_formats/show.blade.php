@@ -100,6 +100,20 @@
                                     </div>
                                 @endif
                             @endforeach
+                            @php $cpDocs = array_filter($cp['documents'] ?? []); @endphp
+                            @if(!empty($cpDocs))
+                                <div style="margin-top:6px;padding-top:6px;border-top:1px dashed #e2e8f0">
+                                    @foreach($cpDocs as $docPath)
+                                    @php $docExt = strtolower(pathinfo($docPath, PATHINFO_EXTENSION)); @endphp
+                                    <div style="font-size:.81rem;margin-bottom:3px;display:flex;align-items:center;gap:5px">
+                                        <i class="fas {{ in_array($docExt, ['jpg','jpeg','png','gif','svg']) ? 'fa-image' : 'fa-file-pdf' }} text-muted" style="width:14px;color:{{ in_array($docExt, ['jpg','jpeg','png','gif','svg']) ? '#3b82f6' : '#dc2626' }}"></i>
+                                        <a href="{{ asset($docPath) }}" target="_blank" style="color:#2563eb;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px" title="{{ basename($docPath) }}">
+                                            {{ basename($docPath) }}
+                                        </a>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     @empty
                         <div class="text-muted" style="font-size:.85rem;padding:14px 16px">

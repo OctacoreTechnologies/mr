@@ -95,7 +95,8 @@
                 <x-adminlte-datatable id="customer-table" :heads="$heads" striped hoverable with-buttons>
                     @foreach ($customers as $key => $customer)
                         @php
-                            $words = preg_split('/\s+/', trim($customer->company_name));
+                            $avatarName = $customer->company_name ?: ($customer->contact_person_1_name ?? '');
+                            $words = preg_split('/\s+/', trim($avatarName));
                             $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
                             $colors = ['#3b82f6', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
                             $bg = $colors[$key % count($colors)];
@@ -114,7 +115,19 @@
                             <td>
                                 <div class="d-flex align-items-center" style="gap:10px">
                                     <div class="ci-avatar" style="background:{{ $bg }}">{{ $initials }}</div>
-                                    <strong>{{ $customer->company_name }}</strong>
+                                    <div>
+                                        @if($customer->company_name)
+                                            <strong>{{ $customer->company_name }}</strong>
+                                            @if($customer->contact_person_1_name)
+                                                <div style="font-size:.75rem;color:#6b7280;margin-top:1px">
+                                                    <i class="fas fa-user" style="font-size:.65rem"></i>
+                                                    {{ $customer->contact_person_1_name }}
+                                                </div>
+                                            @endif
+                                        @else
+                                            <strong>{{ $customer->contact_person_1_name ?? '—' }}</strong>
+                                        @endif
+                                    </div>
                                 </div>
                             </td>
 

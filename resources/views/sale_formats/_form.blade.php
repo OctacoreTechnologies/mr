@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="crm-section-body">
-        <div class="crm-form-grid crm-form-grid-3">
+        <div class="crm-form-grid crm-form-grid-2">
 
             <div class="crm-field-wrap">
                 <label class="crm-field-label">
@@ -73,16 +73,11 @@
         <div class="sec-title">
             <i class="fas fa-users"></i> Contact Persons
         </div>
-        <div style="display:flex;align-items:center;gap:10px">
-            <small style="color:#64748b;font-weight:400;font-size:.78rem">
-                Contact persons will auto-fill when a customer is selected.
-            </small>
-            <button type="button" id="sf-add-person"
-                    class="btn btn-sm btn-outline-primary"
-                    style="font-size:.75rem;padding:4px 10px">
-                <i class="fas fa-plus"></i> Add Person
-            </button>
-        </div>
+        <button type="button" id="sf-add-person"
+                class="btn btn-sm btn-outline-light"
+                style="font-size:.75rem;padding:4px 12px">
+            <i class="fas fa-plus"></i> Add Person
+        </button>
     </div>
     <div class="crm-section-body">
         <div id="sf-persons-container"></div>
@@ -94,61 +89,14 @@
 </div>
 
 {{-- ══════════════════════════════════════════════════
-     SECTION 3: Upload Files
-══════════════════════════════════════════════════ --}}
-<div class="crm-section-card">
-    <div class="crm-section-header">
-        <div class="sec-title">
-            <i class="fas fa-paperclip"></i> Upload Files
-        </div>
-        <small style="color:#64748b;font-weight:400;font-size:.78rem">JPG, PNG, PDF — multiple files allowed</small>
-    </div>
-    <div class="crm-section-body">
-
-        {{-- Show existing files in edit mode --}}
-        @if($isEdit && !empty($saleFormat->upload_file_path))
-        <div id="existing-files-list" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px">
-            @foreach((array)$saleFormat->upload_file_path as $filePath)
-            @php $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION)); @endphp
-            <div class="existing-file-item" style="position:relative;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:6px;font-size:.82rem">
-                <input type="hidden" name="existing_files[]" value="{{ $filePath }}">
-                @if(in_array($ext, ['jpg','jpeg','png','gif','svg']))
-                    <img src="{{ asset($filePath) }}" style="height:40px;width:40px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0">
-                @else
-                    <i class="fas fa-file-pdf" style="font-size:1.6rem;color:#dc2626"></i>
-                @endif
-                <span style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ basename($filePath) }}</span>
-                <button type="button" class="remove-existing-file"
-                        style="background:none;border:none;color:#dc2626;cursor:pointer;padding:0;line-height:1;font-size:1rem;flex-shrink:0"
-                        title="Remove file">
-                    <i class="fas fa-times-circle"></i>
-                </button>
-            </div>
-            @endforeach
-        </div>
-        @endif
-
-        <input type="file" name="upload_files[]" id="upload_files"
-               class="crm-input"
-               accept=".jpg,.jpeg,.png,.gif,.svg,.pdf"
-               multiple>
-        <small style="color:#94a3b8;font-size:.75rem">To select multiple files, hold <kbd>Ctrl</kbd> while clicking.</small>
-
-        {{-- New file preview --}}
-        <div id="new-files-preview" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:10px"></div>
-
-    </div>
-</div>
-
-{{-- ══════════════════════════════════════════════════
-     SECTION 4: Sale Details
+     SECTION 3: Sale Details
 ══════════════════════════════════════════════════ --}}
 <div class="crm-section-card">
     <div class="crm-section-header">
         <div class="sec-title">
             <i class="fas fa-cogs"></i> Sale Details
         </div>
-        <button type="button" id="add-detail" class="btn btn-sm btn-outline-primary">
+        <button type="button" id="add-detail" class="btn btn-sm btn-outline-light">
             <i class="fas fa-plus"></i> Add Row
         </button>
     </div>
@@ -213,14 +161,14 @@
 </div>
 
 {{-- ══════════════════════════════════════════════════
-     SECTION 5: Requirements
+     SECTION 4: Requirements
 ══════════════════════════════════════════════════ --}}
 <div class="crm-section-card">
     <div class="crm-section-header">
         <div class="sec-title">
             <i class="fas fa-list-ul"></i> Requirements
         </div>
-        <button type="button" id="add-req" class="btn btn-sm btn-outline-primary">
+        <button type="button" id="add-req" class="btn btn-sm btn-outline-light">
             <i class="fas fa-plus"></i> Add Row
         </button>
     </div>
@@ -260,7 +208,7 @@
 </div>
 
 {{-- ══════════════════════════════════════════════════
-     SECTION 6: Remark & Sign-off
+     SECTION 5: Remark & Sign-off
 ══════════════════════════════════════════════════ --}}
 <div class="crm-section-card">
     <div class="crm-section-header">
@@ -300,21 +248,34 @@
 <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 <style>
-.sf-person-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:14px}
-.sf-person-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.sf-person-badge{background:#2563eb;color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:4px 12px}
-.sf-btn-rm-person{background:none;border:1px solid #fca5a5;color:#dc2626;border-radius:5px;font-size:.75rem;padding:3px 10px;cursor:pointer}
+/* ── Person Card ── */
+.sf-person-card{background:#fff;border:1px solid #e2e8f0;border-left:3px solid #2563eb;border-radius:10px;margin-bottom:14px;overflow:hidden}
+.sf-person-header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#f0f6ff;border-bottom:1px solid #dbeafe}
+.sf-person-badge{background:#2563eb;color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:3px 12px}
+.sf-person-body{padding:16px}
+.sf-btn-rm-person{background:none;border:1px solid #fca5a5;color:#dc2626;border-radius:5px;font-size:.73rem;padding:3px 10px;cursor:pointer;display:flex;align-items:center;gap:4px}
 .sf-btn-rm-person:hover{background:#fee2e2}
+/* ── Field layout inside card ── */
 .sf-person-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.sf-field-group{display:flex;flex-direction:column}
 @media(max-width:576px){.sf-person-grid{grid-template-columns:1fr}}
-.sf-multi-wrap{margin-bottom:12px}
-.sf-multi-list{display:flex;flex-direction:column;gap:6px;margin-top:6px;margin-bottom:6px}
-.sf-multi-row{display:flex;align-items:center;gap:8px}
-.sf-multi-input{flex:1}
-.sf-btn-rm-entry{background:none;border:none;color:#dc2626;font-size:1.15rem;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0}
+/* ── Multi-entry rows (phone / email) ── */
+.sf-multi-list{display:flex;flex-direction:column;gap:5px;margin-top:5px;margin-bottom:5px}
+.sf-multi-row{display:flex;align-items:center;gap:6px}
+.sf-multi-input{flex:1;min-width:0}
+.sf-btn-rm-entry{background:none;border:none;color:#dc2626;font-size:1.1rem;cursor:pointer;padding:0 3px;line-height:1;flex-shrink:0}
 .sf-btn-rm-entry:hover{color:#b91c1c}
-.sf-btn-add-entry{background:none;border:1px dashed #93c5fd;color:#3b82f6;border-radius:5px;font-size:.76rem;padding:4px 10px;cursor:pointer;margin-top:2px}
+.sf-btn-add-entry{align-self:flex-start;background:none;border:1px dashed #93c5fd;color:#3b82f6;border-radius:5px;font-size:.73rem;padding:3px 9px;cursor:pointer;margin-top:3px}
 .sf-btn-add-entry:hover{background:#eff6ff;border-color:#3b82f6}
+/* ── Attachments ── */
+.sf-docs-wrap{padding-top:12px;margin-top:2px;border-top:1px dashed #e2e8f0}
+.sf-existing-docs-list{display:flex;flex-direction:column;gap:4px;margin-top:6px;margin-bottom:8px}
+.sf-existing-doc{display:flex;align-items:center;gap:7px;padding:5px 9px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:5px;font-size:.8rem}
+.sf-existing-doc-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#334155}
+.sf-btn-rm-doc{background:none;border:none;color:#dc2626;font-size:1.05rem;cursor:pointer;padding:0 3px;line-height:1;flex-shrink:0}
+.sf-btn-rm-doc:hover{color:#b91c1c}
+.sf-doc-preview{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.sf-doc-preview-item{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:5px;font-size:.77rem}
 </style>
 @endpush
 @push('js')
@@ -330,7 +291,22 @@
         var addBtn     = document.getElementById('sf-add-person');
         var customerSel = document.getElementById('customer_id');
 
-        var initData = @json(old('contact_persons', $saleFormat->contact_persons ?? []));
+        @php
+            $initPersons = old('contact_persons', $saleFormat->contact_persons ?? []);
+            if ($isEdit && !empty($saleFormat->upload_file_path)) {
+                $migrateFiles = array_values(array_filter((array)$saleFormat->upload_file_path));
+                if (!empty($migrateFiles)) {
+                    $initPersons = array_values((array)$initPersons);
+                    if (empty($initPersons)) {
+                        $initPersons = [['name'=>'','designation'=>'','contact'=>[],'email'=>[],'documents'=>$migrateFiles]];
+                    } else {
+                        $existingDocs = array_values(array_filter($initPersons[0]['documents'] ?? []));
+                        $initPersons[0]['documents'] = array_values(array_unique([...$existingDocs, ...$migrateFiles]));
+                    }
+                }
+            }
+        @endphp
+        var initData = @json($initPersons);
 
         function esc(s) {
             return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -349,6 +325,33 @@
             }).join('');
         }
 
+        function buildExistingDocsHtml(idx, docs) {
+            if (!docs || !docs.length) return '';
+            var html = '<div class="sf-existing-docs-list">';
+            docs.forEach(function (docPath) {
+                if (!docPath) return;
+                var ext   = docPath.split('.').pop().toLowerCase();
+                var isImg = ['jpg','jpeg','png','gif','svg'].indexOf(ext) !== -1;
+                var isPdf = ext === 'pdf';
+                html +=
+                    '<div class="sf-existing-doc">' +
+                    '<input type="hidden" name="person_existing_docs[' + idx + '][]" value="' + esc(docPath) + '">' +
+                    (isPdf
+                        ? '<i class="fas fa-file-pdf" style="color:#dc2626;font-size:1.05rem;flex-shrink:0"></i>'
+                        : isImg
+                            ? '<img src="/' + esc(docPath) + '" style="height:26px;width:26px;object-fit:cover;border-radius:3px;border:1px solid #e2e8f0;flex-shrink:0" alt="">'
+                            : '<i class="fas fa-file" style="color:#64748b;font-size:1.05rem;flex-shrink:0"></i>'
+                    ) +
+                    '<span class="sf-existing-doc-name" title="' + esc(docPath) + '">' +
+                        esc(docPath.split(/[/\\]/).pop()) +
+                    '</span>' +
+                    '<button type="button" class="sf-btn-rm-doc" title="Remove this attachment">&times;</button>' +
+                    '</div>';
+            });
+            html += '</div>';
+            return html;
+        }
+
         function makeCard(idx, data) {
             data = data || {};
             var div = document.createElement('div');
@@ -357,29 +360,55 @@
             div.innerHTML =
                 '<div class="sf-person-header">' +
                     '<span class="sf-person-badge">Contact Person ' + (idx + 1) + '</span>' +
-                    '<button type="button" class="sf-btn-rm-person">Remove</button>' +
+                    '<button type="button" class="sf-btn-rm-person">' +
+                        '<i class="fas fa-times" style="font-size:.65rem"></i> Remove' +
+                    '</button>' +
                 '</div>' +
-                '<div class="sf-person-grid">' +
-                    '<div class="crm-field-wrap">' +
-                        '<label class="crm-field-label">Name</label>' +
-                        '<input type="text" name="contact_persons[' + idx + '][name]" class="crm-input"' +
-                        ' placeholder="Contact person name" value="' + esc(data.name) + '">' +
+                '<div class="sf-person-body">' +
+                    /* Row 1: Name + Designation */
+                    '<div class="sf-person-grid">' +
+                        '<div class="crm-field-wrap">' +
+                            '<label class="crm-field-label">Full Name</label>' +
+                            '<input type="text" name="contact_persons[' + idx + '][name]" class="crm-input"' +
+                            ' placeholder="e.g. Rahul Sharma" value="' + esc(data.name) + '">' +
+                        '</div>' +
+                        '<div class="crm-field-wrap">' +
+                            '<label class="crm-field-label">Designation</label>' +
+                            '<input type="text" name="contact_persons[' + idx + '][designation]" class="crm-input"' +
+                            ' placeholder="e.g. Purchase Manager" value="' + esc(data.designation) + '">' +
+                        '</div>' +
                     '</div>' +
-                    '<div class="crm-field-wrap">' +
-                        '<label class="crm-field-label">Designation</label>' +
-                        '<input type="text" name="contact_persons[' + idx + '][designation]" class="crm-input"' +
-                        ' placeholder="Job title" value="' + esc(data.designation) + '">' +
+                    /* Row 2: Contact Numbers | Email Addresses — side by side */
+                    '<div class="sf-person-grid">' +
+                        '<div class="sf-field-group">' +
+                            '<label class="crm-field-label">' +
+                                '<i class="fas fa-phone" style="width:13px;color:#64748b"></i> Contact Numbers' +
+                            '</label>' +
+                            '<div class="sf-multi-list" data-field="contact">' + multiRows(idx, 'contact', data.contact) + '</div>' +
+                            '<button type="button" class="sf-btn-add-entry" data-field="contact">+ Add Number</button>' +
+                        '</div>' +
+                        '<div class="sf-field-group">' +
+                            '<label class="crm-field-label">' +
+                                '<i class="fas fa-envelope" style="width:13px;color:#64748b"></i> Email Addresses' +
+                            '</label>' +
+                            '<div class="sf-multi-list" data-field="email">' + multiRows(idx, 'email', data.email) + '</div>' +
+                            '<button type="button" class="sf-btn-add-entry" data-field="email">+ Add Email</button>' +
+                        '</div>' +
                     '</div>' +
-                '</div>' +
-                '<div class="sf-multi-wrap">' +
-                    '<label class="crm-field-label"><i class="fas fa-phone" style="width:14px"></i> Contact Numbers</label>' +
-                    '<div class="sf-multi-list" data-field="contact">' + multiRows(idx, 'contact', data.contact) + '</div>' +
-                    '<button type="button" class="sf-btn-add-entry" data-field="contact">+ Add Contact Number</button>' +
-                '</div>' +
-                '<div class="sf-multi-wrap">' +
-                    '<label class="crm-field-label"><i class="fas fa-envelope" style="width:14px"></i> Email Addresses</label>' +
-                    '<div class="sf-multi-list" data-field="email">' + multiRows(idx, 'email', data.email) + '</div>' +
-                    '<button type="button" class="sf-btn-add-entry" data-field="email">+ Add Email Address</button>' +
+                    /* Row 3: Attachments */
+                    '<div class="sf-docs-wrap">' +
+                        '<label class="crm-field-label">' +
+                            '<i class="fas fa-paperclip" style="width:13px;color:#64748b"></i> Attachments' +
+                        '</label>' +
+                        buildExistingDocsHtml(idx, data.documents) +
+                        '<input type="file" name="person_documents[' + idx + '][]"' +
+                        ' class="crm-input sf-doc-input" accept=".jpg,.jpeg,.png,.gif,.svg,.pdf" multiple' +
+                        ' style="margin-top:6px">' +
+                        '<small style="color:#94a3b8;font-size:.73rem;display:block;margin-top:3px">' +
+                            'JPG, PNG, PDF — max 5 MB. Hold <kbd>Ctrl</kbd> to pick multiple.' +
+                        '</small>' +
+                        '<div class="sf-doc-preview"></div>' +
+                    '</div>' +
                 '</div>';
             return div;
         }
@@ -390,6 +419,12 @@
                 card.querySelector('.sf-person-badge').textContent = 'Contact Person ' + (i + 1);
                 card.querySelectorAll('input[name^="contact_persons["]').forEach(function (inp) {
                     inp.name = inp.name.replace(/contact_persons\[\d+\]/, 'contact_persons[' + i + ']');
+                });
+                card.querySelectorAll('input[name^="person_documents["]').forEach(function (inp) {
+                    inp.name = inp.name.replace(/person_documents\[\d+\]/, 'person_documents[' + i + ']');
+                });
+                card.querySelectorAll('input[name^="person_existing_docs["]').forEach(function (inp) {
+                    inp.name = inp.name.replace(/person_existing_docs\[\d+\]/, 'person_existing_docs[' + i + ']');
                 });
             });
         }
@@ -426,6 +461,17 @@
                 return;
             }
 
+            var rmDoc = e.target.closest('.sf-btn-rm-doc');
+            if (rmDoc) {
+                var docItem   = rmDoc.closest('.sf-existing-doc');
+                var hiddenInp = docItem.querySelector('input[type="hidden"]');
+                if (hiddenInp) hiddenInp.disabled = true;
+                docItem.style.opacity        = '0.4';
+                docItem.style.textDecoration = 'line-through';
+                rmDoc.disabled = true;
+                return;
+            }
+
             var addEntry = e.target.closest('.sf-btn-add-entry');
             if (addEntry) {
                 var field = addEntry.dataset.field;
@@ -444,6 +490,31 @@
                 mList.appendChild(row);
                 row.querySelector('input').focus();
             }
+        });
+
+        // File preview for per-person attachments
+        container.addEventListener('change', function (e) {
+            if (!e.target.classList.contains('sf-doc-input')) return;
+            var wrap    = e.target.closest('.sf-docs-wrap');
+            var preview = wrap ? wrap.querySelector('.sf-doc-preview') : null;
+            if (!preview) return;
+            preview.innerHTML = '';
+            Array.from(e.target.files).forEach(function (file) {
+                var item = document.createElement('div');
+                item.className = 'sf-doc-preview-item';
+                if (file.type === 'application/pdf') {
+                    item.innerHTML = '<i class="fas fa-file-pdf" style="font-size:1.1rem;color:#dc2626"></i>';
+                } else {
+                    var img   = document.createElement('img');
+                    img.style.cssText = 'height:28px;width:28px;object-fit:cover;border-radius:3px;border:1px solid #e2e8f0';
+                    img.src   = URL.createObjectURL(file);
+                    item.appendChild(img);
+                }
+                var name = document.createElement('span');
+                name.textContent = file.name;
+                item.appendChild(name);
+                preview.appendChild(item);
+            });
         });
 
         addBtn.addEventListener('click', function () { addPerson(); });
@@ -611,52 +682,6 @@
         }
     }
 
-    // ── Existing files: remove button ────────────────────────────────────────
-    var existingList = document.getElementById('existing-files-list');
-    if (existingList) {
-        existingList.addEventListener('click', function (e) {
-            var btn = e.target.closest('.remove-existing-file');
-            if (!btn) return;
-            var item = btn.closest('.existing-file-item');
-            // Disable hidden input so it won't be submitted
-            var hiddenInput = item.querySelector('input[type="hidden"]');
-            if (hiddenInput) hiddenInput.disabled = true;
-            item.style.opacity = '0.35';
-            item.style.textDecoration = 'line-through';
-            btn.disabled = true;
-        });
-    }
-
-    // ── New file input: preview selected files ───────────────────────────────
-    var fileInput   = document.getElementById('upload_files');
-    var previewArea = document.getElementById('new-files-preview');
-
-    if (fileInput && previewArea) {
-        fileInput.addEventListener('change', function () {
-            previewArea.innerHTML = '';
-            Array.from(this.files).forEach(function (file) {
-                var item = document.createElement('div');
-                item.style.cssText = 'display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;font-size:.82rem';
-
-                var isPdf = file.type === 'application/pdf';
-                if (isPdf) {
-                    item.innerHTML = '<i class="fas fa-file-pdf" style="font-size:1.4rem;color:#dc2626"></i>';
-                } else {
-                    var img = document.createElement('img');
-                    img.style.cssText = 'height:40px;width:40px;object-fit:cover;border-radius:4px;border:1px solid #e2e8f0';
-                    img.src = URL.createObjectURL(file);
-                    item.appendChild(img);
-                }
-
-                var name = document.createElement('span');
-                name.style.cssText = 'max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';
-                name.textContent = file.name;
-                item.appendChild(name);
-
-                previewArea.appendChild(item);
-            });
-        });
-    }
 
 })();
 </script>

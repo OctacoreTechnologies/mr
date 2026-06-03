@@ -154,10 +154,6 @@
                         <label class="crm-field-label">GST number</label>
                         <input type="text" name="gst" value="{{ old('gst') }}" class="crm-input" placeholder="Enter GST number">
                     </div>
-                    <div class="crm-field-wrap">
-                        <label class="crm-field-label">Visiting card</label>
-                        <input type="file" name="visiting_card" class="crm-input" accept=".jpg,.jpeg,.png,.gif,.svg,.pdf,.xls,.xlsx,.csv,.doc,.docx,.zip,.rar">
-                    </div>
                 </div>
 
                 <hr class="crm-divider">

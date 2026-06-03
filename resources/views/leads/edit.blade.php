@@ -157,20 +157,6 @@
                     <label class="crm-field-label">GST number</label>
                     <input type="text" name="gst" value="{{ old('gst', $lead->gst) }}" class="crm-input" placeholder="Enter GST number">
                 </div>
-                <div class="crm-field-wrap">
-                    <label class="crm-field-label">Visiting card</label>
-                    <input type="file" name="visiting_card" class="crm-input" accept=".jpg,.jpeg,.png,.gif,.svg,.pdf,.xls,.xlsx,.csv,.doc,.docx,.zip,.rar">
-                    @if($lead->visiting_card)
-                        <div class="visiting-card-preview">
-                            <img src="{{ asset($lead->visiting_card) }}" alt="Visiting Card">
-                            <span>Current card on file</span>
-                            <a href="{{ asset($lead->visiting_card) }}" target="_blank"
-                                style="margin-left:auto;font-size:11px;color:#1D4ED8;text-decoration:none">
-                                <i class="fas fa-external-link-alt"></i> View
-                            </a>
-                        </div>
-                    @endif
-                </div>
             </div>
 
             <hr class="crm-divider">
@@ -275,7 +261,13 @@
 
 @push('js')
 <script>
-    window.EXISTING_PERSONS = @json(old('contact_persons') ? array_values(old('contact_persons')) : ($lead->contact_persons ?? []));
+    @php
+        $personsData = old('contact_persons') ? array_values(old('contact_persons')) : ($lead->contact_persons ?? []);
+        if (!empty($personsData) && empty($personsData[0]['visiting_cards']) && empty($personsData[0]['visiting_card']) && !empty($lead->visiting_card)) {
+            $personsData[0]['visiting_card'] = $lead->visiting_card;
+        }
+    @endphp
+    window.EXISTING_PERSONS = @json($personsData);
 </script>
 
 <script src="{{ asset('js/customer.js') }}"></script>

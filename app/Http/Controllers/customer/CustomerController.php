@@ -51,21 +51,14 @@ class CustomerController extends Controller
     {
         $data = $request->validated();
 
-  
+
         if (isset($data['status']) && $data['status'] === 'qualified') {
             $data['type'] = 'customer';
         }
-        // visiting card upload handling
-        if ($request->hasFile('visiting_card')) {
 
-            $file = $request->file('visiting_card');
+        // Per-contact-person file uploads
+        $data = $this->handleContactPersonFiles($request, $data);
 
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-
-            $file->move(public_path('uploads/visiting_cards'), $filename);
-
-            $data['visiting_card'] = 'uploads/visiting_cards/' . $filename;
-        }
         $data = $this->fillContactPerson1($data);
         Customer::create($data);
 
@@ -122,17 +115,11 @@ class CustomerController extends Controller
         if (isset($data['status']) && $data['status'] === 'qualified') {
             $data['type'] = 'customer';
         }
-        // visiting card upload handling
-        if ($request->hasFile('visiting_card')) {
 
-            $file = $request->file('visiting_card');
+        // Per-contact-person file uploads (preserve existing paths; migrate old visiting_card into person 1)
+        $existing = $customer->contact_persons ?? [];
+        $data = $this->handleContactPersonFiles($request, $data, $existing, $customer->visiting_card ?? null);
 
-            $filename = time() . '.' . $file->getClientOriginalExtension();
-
-            $file->move(public_path('uploads/visiting_cards'), $filename);
-
-            $data['visiting_card'] = 'uploads/visiting_cards/' . $filename;
-        }
         $data = $this->fillContactPerson1($data);
 
         $customer->update($data);
@@ -185,6 +172,55 @@ class CustomerController extends Controller
     public function getCustomerExcelSample()
     {
         return Excel::download(new SampleCustomerImport(), 'customers_sample.xlsx');
+    }
+
+    private function handleContactPersonFiles(StoreCustomerRequest $request, array $data, array $existing = [], ?string $legacyCard = null): array
+    {
+        $uploadDir = public_path('uploads/contact_persons');
+
+        $allPersonFiles = $request->file('contact_person_files') ?? [];
+
+        foreach ($data['contact_persons'] ?? [] as $i => $person) {
+            // Start with existing saved files for this person (backward compat: single or array)
+            $existingCards = [];
+            if (!empty($existing[$i]['visiting_cards'])) {
+                $existingCards = (array) $existing[$i]['visiting_cards'];
+            } elseif (!empty($existing[$i]['visiting_card'])) {
+                $existingCards = [$existing[$i]['visiting_card']];
+            }
+
+            // For contact person 1: migrate old company-level visiting_card if not already included
+            if ($i === 0 && $legacyCard && !in_array($legacyCard, $existingCards)) {
+                array_unshift($existingCards, $legacyCard);
+            }
+
+            $newPaths = [];
+
+            $personFiles = $allPersonFiles[$i] ?? [];
+            if (!is_array($personFiles)) {
+                $personFiles = [$personFiles];
+            }
+
+            foreach ($personFiles as $j => $file) {
+                if (!$file || !$file->isValid()) continue;
+
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
+
+                $filename = time() . '_' . $i . '_' . $j . '.' . $file->getClientOriginalExtension();
+                $file->move($uploadDir, $filename);
+                $newPaths[] = 'uploads/contact_persons/' . $filename;
+            }
+
+            $allCards = array_merge($existingCards, $newPaths);
+
+            if (!empty($allCards)) {
+                $data['contact_persons'][$i]['visiting_cards'] = $allCards;
+            }
+        }
+
+        return $data;
     }
 
     private function fillContactPerson1(array $data): array

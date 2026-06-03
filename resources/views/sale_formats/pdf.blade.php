@@ -264,6 +264,29 @@ body {
             <td class="info-val-link">{{ implode(' / ', $emails) }}</td>
         </tr>
         @endif
+        @php $cpDocs = array_values(array_filter($cp['documents'] ?? [])); @endphp
+        @if(!empty($cpDocs))
+        <tr>
+            <td class="info-lbl">Attachments</td>
+            <td class="info-sep">:</td>
+            <td class="info-val">
+                @foreach($cpDocs as $di => $docPath)
+                    @php
+                        $docExt  = strtolower(pathinfo($docPath, PATHINFO_EXTENSION));
+                        $isImg   = in_array($docExt, ['jpg','jpeg','png','gif','svg']);
+                        $absPath = public_path($docPath);
+                        $fileOk  = $isImg && file_exists($absPath);
+                    @endphp
+                    @if($fileOk)
+                        <img src="data:image/{{ $docExt === 'jpg' ? 'jpeg' : $docExt }};base64,{{ base64_encode(file_get_contents($absPath)) }}"
+                             style="height:40px;max-width:60px;object-fit:cover;border:1px solid #ddd;border-radius:3px;margin-right:4px;vertical-align:middle" alt="">
+                    @else
+                        <span style="color:#334155">{{ basename($docPath) }}</span>@if(!$loop->last),&nbsp;@endif
+                    @endif
+                @endforeach
+            </td>
+        </tr>
+        @endif
     </table>
     @endforeach
     @endif

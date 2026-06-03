@@ -46,20 +46,11 @@ class SaleFormatController extends Controller
     public function store(SaleFormatRequest $request)
     {
         $validated = $request->validated();
-        unset($validated['requirements'], $validated['upload_files'], $validated['existing_files']);
+        unset($validated['requirements'], $validated['person_documents'], $validated['person_existing_docs']);
         $validated['sale_details']    = $this->filterSaleDetails($request->input('sale_details', []));
-        $cp = $this->filterContactPersons($request->input('contact_persons', []));
+        $rawPersons = $this->mergePersonDocuments($request->input('contact_persons', []), $request);
+        $cp = $this->filterContactPersons($rawPersons);
         $validated['contact_persons'] = !empty($cp) ? $cp : null;
-
-        $filePaths = [];
-        if ($request->hasFile('upload_files')) {
-            foreach ($request->file('upload_files') as $file) {
-                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('uploads/sale_formats'), $filename);
-                $filePaths[] = 'uploads/sale_formats/' . $filename;
-            }
-        }
-        $validated['upload_file_path'] = !empty($filePaths) ? $filePaths : null;
 
         $saleFormat = SaleFormat::create($validated);
         $this->syncRequirements($saleFormat, $request->input('requirements', []));
@@ -107,21 +98,12 @@ class SaleFormatController extends Controller
     public function update(SaleFormatRequest $request, SaleFormat $saleFormat)
     {
         $validated = $request->validated();
-        unset($validated['requirements'], $validated['upload_files'], $validated['existing_files']);
+        unset($validated['requirements'], $validated['person_documents'], $validated['person_existing_docs']);
         $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
-        $cp2 = $this->filterContactPersons($request->input('contact_persons', []));
+        $rawPersons2 = $this->mergePersonDocuments($request->input('contact_persons', []), $request);
+        $cp2 = $this->filterContactPersons($rawPersons2);
         $validated['contact_persons'] = !empty($cp2) ? $cp2 : null;
-
-        // Keep existing files that were not removed + append newly uploaded files
-        $filePaths = array_values(array_filter($request->input('existing_files', [])));
-        if ($request->hasFile('upload_files')) {
-            foreach ($request->file('upload_files') as $file) {
-                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('uploads/sale_formats'), $filename);
-                $filePaths[] = 'uploads/sale_formats/' . $filename;
-            }
-        }
-        $validated['upload_file_path'] = !empty($filePaths) ? $filePaths : null;
+        $validated['upload_file_path'] = null;
 
         $saleFormat->update($validated);
         $this->syncRequirements($saleFormat, $request->input('requirements', []));
@@ -143,18 +125,40 @@ class SaleFormatController extends Controller
 
     // ─── Private helpers ──────────────────────────────────────────────────────
 
+    private function mergePersonDocuments(array $persons, Request $request): array
+    {
+        $existingDocs = $request->input('person_existing_docs', []);
+        $uploadedDocs = $request->file('person_documents', []);
+
+        foreach ($persons as $i => &$person) {
+            $docs = array_values(array_filter((array) ($existingDocs[$i] ?? []), fn($d) => filled($d)));
+            foreach ((array) ($uploadedDocs[$i] ?? []) as $file) {
+                if ($file && $file->isValid()) {
+                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $file->move(public_path('uploads/sale_formats'), $filename);
+                    $docs[] = 'uploads/sale_formats/' . $filename;
+                }
+            }
+            $person['documents'] = $docs;
+        }
+        unset($person);
+        return $persons;
+    }
+
     private function filterContactPersons(array $persons): array
     {
         $result = [];
         foreach ($persons as $p) {
-            $contacts = array_values(array_filter($p['contact'] ?? [], fn($c) => filled($c)));
-            $emails   = array_values(array_filter($p['email']   ?? [], fn($e) => filled($e)));
-            if (filled($p['name'] ?? '') || filled($p['designation'] ?? '') || !empty($contacts) || !empty($emails)) {
+            $contacts = array_values(array_filter($p['contact']   ?? [], fn($c) => filled($c)));
+            $emails   = array_values(array_filter($p['email']     ?? [], fn($e) => filled($e)));
+            $docs     = array_values(array_filter($p['documents'] ?? [], fn($d) => filled($d)));
+            if (filled($p['name'] ?? '') || filled($p['designation'] ?? '') || !empty($contacts) || !empty($emails) || !empty($docs)) {
                 $result[] = [
                     'name'        => $p['name']        ?? '',
                     'designation' => $p['designation'] ?? '',
                     'contact'     => $contacts,
                     'email'       => $emails,
+                    'documents'   => $docs,
                 ];
             }
         }
