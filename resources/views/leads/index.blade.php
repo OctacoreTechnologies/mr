@@ -119,19 +119,9 @@
                             <td>
                                 <div class="d-flex align-items-center" style="gap:10px">
                                     <div class="ci-avatar" style="background:{{ $bg }}">{{ $initials }}</div>
-                                    <div>
-                                        @if($lead->company_name)
-                                            <strong>{{ $lead->company_name }}</strong>
-                                            @if($lead->contact_person_1_name)
-                                                <div style="font-size:.75rem;color:#6b7280;margin-top:1px">
-                                                    <i class="fas fa-user" style="font-size:.65rem"></i>
-                                                    {{ $lead->contact_person_1_name }}
-                                                </div>
-                                            @endif
-                                        @else
-                                            <strong>{{ $lead->contact_person_1_name ?? '—' }}</strong>
-                                        @endif
-                                    </div>
+                                    <strong>
+                                        {{ $lead->company_name ?: ($lead->contact_person_1_name ?? '—') }}
+                                    </strong>
                                 </div>
                             </td>
 
