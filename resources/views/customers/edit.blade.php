@@ -124,7 +124,18 @@
             <div class="crm-form-grid crm-form-grid-3">
                 <div class="crm-field-wrap">
                     <label class="crm-field-label">Company name</label>
-                    <input type="text" name="company_name" value="{{ old('company_name', $customer->company_name) }}" class="crm-input" placeholder="Enter company name">
+                    <input type="text" name="company_name" id="company_name" value="{{ old('company_name', $customer->company_name) }}" class="crm-input" placeholder="Enter company name">
+                </div>
+                <div class="crm-field-wrap">
+                    <label class="crm-field-label" id="cp_name_label">
+                        Contact person name
+                    </label>
+                    <input type="text" name="contact_person_1_name" id="contact_person_1_name"
+                           value="{{ old('contact_person_1_name', $customer->contact_person_1_name) }}"
+                           class="crm-input" placeholder="Enter contact person name">
+                    @error('contact_person_1_name')
+                        <span style="font-size:12px;color:#DC2626;margin-top:3px;display:block">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="crm-field-wrap">
                     <label class="crm-field-label">GST number</label>
@@ -249,5 +260,20 @@
 
 <script src="{{ asset('js/customer.js') }}"></script>
 <script src="{{ asset('js/country.js') }}"></script>
+<script>
+    const companyInput = document.getElementById('company_name');
+    const cpNameInput  = document.getElementById('contact_person_1_name');
+    const cpNameLabel  = document.getElementById('cp_name_label');
+
+    function syncCpRequired() {
+        const required = companyInput.value.trim() === '';
+        cpNameInput.required = required;
+        cpNameLabel.innerHTML = 'Contact person name'
+            + (required ? ' <span style="color:#DC2626">*</span>' : '');
+    }
+
+    companyInput.addEventListener('input', syncCpRequired);
+    syncCpRequired();
+</script>
 
 @endpush

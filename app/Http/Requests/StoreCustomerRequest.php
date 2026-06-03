@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class StoreCustomerRequest extends FormRequest
 {
@@ -34,7 +35,11 @@ class StoreCustomerRequest extends FormRequest
             'area' => 'nullable|string|max:255',
             'pincode' => 'nullable|string|max:10',
             'contact_no' => 'nullable|string|min:9',
-            'company_name' => 'nullable|string',
+            'company_name'          => 'nullable|string',
+            'contact_person_1_name' => [
+                'nullable', 'string', 'max:255',
+                Rule::requiredIf(fn () => !$this->filled('company_name')),
+            ],
             'type' => 'nullable|string|in:customer,lead',
             'address_line_1' => 'nullable|string|max:255',
             'address_line_2' => 'nullable|string|max:255',

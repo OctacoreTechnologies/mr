@@ -180,7 +180,7 @@ class CustomerController extends Controller
 
         $allPersonFiles = $request->file('contact_person_files') ?? [];
 
-        foreach ($data['contact_persons'] ?? [] as $i => $person) {
+        foreach (array_keys($data['contact_persons'] ?? []) as $i) {
             // Start with existing saved files for this person (backward compat: single or array)
             $existingCards = [];
             if (!empty($existing[$i]['visiting_cards'])) {
@@ -228,7 +228,10 @@ class CustomerController extends Controller
         $persons = $data['contact_persons'] ?? [];
         if (!empty($persons)) {
             $first = $persons[0];
-            $data['contact_person_1_name']        = $first['name'] ?? null;
+            // Only fill name from JSON if not already submitted as a direct field
+            if (empty($data['contact_person_1_name'])) {
+                $data['contact_person_1_name'] = $first['name'] ?? null;
+            }
             $data['contact_person_1_designation'] = $first['designation'] ?? null;
             $data['contact_person_1_email']       = !empty($first['email']) ? $first['email'][0] : null;
             $data['contact_person_1_contact']     = !empty($first['contact']) ? $first['contact'][0] : null;
