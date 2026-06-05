@@ -102,15 +102,21 @@
                             @endforeach
                             @php $cpDocs = array_filter($cp['documents'] ?? []); @endphp
                             @if(!empty($cpDocs))
-                                <div style="margin-top:6px;padding-top:6px;border-top:1px dashed #e2e8f0">
+                                <div style="margin-top:8px;padding-top:8px;border-top:1px dashed #e2e8f0;display:flex;flex-wrap:wrap;gap:8px">
                                     @foreach($cpDocs as $docPath)
-                                    @php $docExt = strtolower(pathinfo($docPath, PATHINFO_EXTENSION)); @endphp
-                                    <div style="font-size:.81rem;margin-bottom:3px;display:flex;align-items:center;gap:5px">
-                                        <i class="fas {{ in_array($docExt, ['jpg','jpeg','png','gif','svg']) ? 'fa-image' : 'fa-file-pdf' }} text-muted" style="width:14px;color:{{ in_array($docExt, ['jpg','jpeg','png','gif','svg']) ? '#3b82f6' : '#dc2626' }}"></i>
-                                        <a href="{{ asset($docPath) }}" target="_blank" style="color:#2563eb;text-decoration:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px" title="{{ basename($docPath) }}">
-                                            {{ basename($docPath) }}
+                                    @php $docExt = strtolower(pathinfo($docPath, PATHINFO_EXTENSION)); $isImg = in_array($docExt, ['jpg','jpeg','png','gif','svg']); @endphp
+                                    @if($isImg)
+                                        <a href="{{ asset($docPath) }}" target="_blank" title="{{ basename($docPath) }}">
+                                            <img src="{{ asset($docPath) }}" alt="doc"
+                                                 style="width:70px;height:55px;object-fit:cover;border-radius:6px;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.08)">
                                         </a>
-                                    </div>
+                                    @else
+                                        <a href="{{ asset($docPath) }}" target="_blank" title="{{ basename($docPath) }}"
+                                           style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:70px;height:55px;border-radius:6px;border:1px solid #fecaca;background:#fff5f5;text-decoration:none">
+                                            <i class="fas fa-file-pdf" style="font-size:1.4rem;color:#dc2626"></i>
+                                            <span style="font-size:.6rem;color:#64748b;text-align:center;line-height:1.2;padding:0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:66px">{{ basename($docPath) }}</span>
+                                        </a>
+                                    @endif
                                     @endforeach
                                 </div>
                             @endif
@@ -217,8 +223,12 @@
     </div>
     @endif
 
-    {{-- ── Uploaded Files ─────────────────────────────────────────────────────── --}}
-    @php $uploadedFiles = array_filter((array)($saleFormat->upload_file_path ?? [])); @endphp
+    {{-- ── Uploaded Files (sale format files + visiting card) ───────────────── --}}
+    @php
+        $uploadedFiles = array_filter((array)($saleFormat->upload_file_path ?? []));
+        $vcPath = $saleFormat->customer->visiting_card ?? null;
+        if ($vcPath) $uploadedFiles[] = $vcPath;
+    @endphp
     @if(!empty($uploadedFiles))
     <div class="crm-index-card mb-3">
         <div class="card-header">
@@ -250,20 +260,6 @@
                 </div>
                 @endforeach
             </div>
-        </div>
-    </div>
-    @endif
-
-    {{-- ── Visiting Card (customer) ─────────────────────────────────────────── --}}
-    @php $vcPath = $saleFormat->customer->visiting_card ?? null; @endphp
-    @if($vcPath)
-    <div class="crm-index-card mb-3">
-        <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-id-card"></i> Visiting Card</h3>
-        </div>
-        <div class="card-body text-center">
-            <img src="{{ asset($vcPath) }}" alt="Visiting Card"
-                 style="max-width:380px;width:100%;border-radius:8px;border:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.08)">
         </div>
     </div>
     @endif

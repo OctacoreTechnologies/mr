@@ -47,13 +47,21 @@ class SaleFormatController extends Controller
     {
         $validated = $request->validated();
         unset($validated['requirements'], $validated['person_documents'], $validated['person_existing_docs']);
-        $validated['sale_details']    = $this->filterSaleDetails($request->input('sale_details', []));
-        $rawPersons = $this->mergePersonDocuments($request->input('contact_persons', []), $request);
-        $cp = $this->filterContactPersons($rawPersons);
+        $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
+
+        $personInputs = $request->input('contact_persons', []);
+
+        // DB operations first (files not moved yet — keeps temp file valid if DB fails)
+        $cp = $this->filterContactPersons($personInputs);
         $validated['contact_persons'] = !empty($cp) ? $cp : null;
 
         $saleFormat = SaleFormat::create($validated);
         $this->syncRequirements($saleFormat, $request->input('requirements', []));
+
+        // Move files only after successful DB insert
+        $rawPersons  = $this->mergePersonDocuments($personInputs, $request);
+        $cpWithDocs  = $this->filterContactPersons($rawPersons);
+        $saleFormat->update(['contact_persons' => !empty($cpWithDocs) ? $cpWithDocs : null]);
 
         return redirect()
             ->route('sale-formats.show', $saleFormat)
@@ -99,14 +107,22 @@ class SaleFormatController extends Controller
     {
         $validated = $request->validated();
         unset($validated['requirements'], $validated['person_documents'], $validated['person_existing_docs']);
-        $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
-        $rawPersons2 = $this->mergePersonDocuments($request->input('contact_persons', []), $request);
-        $cp2 = $this->filterContactPersons($rawPersons2);
-        $validated['contact_persons'] = !empty($cp2) ? $cp2 : null;
+        $validated['sale_details']     = $this->filterSaleDetails($request->input('sale_details', []));
         $validated['upload_file_path'] = null;
+
+        $personInputs = $request->input('contact_persons', []);
+
+        // DB operations first (files not moved yet — keeps temp file valid if DB fails)
+        $cp = $this->filterContactPersons($personInputs);
+        $validated['contact_persons'] = !empty($cp) ? $cp : null;
 
         $saleFormat->update($validated);
         $this->syncRequirements($saleFormat, $request->input('requirements', []));
+
+        // Move files only after successful DB update
+        $rawPersons = $this->mergePersonDocuments($personInputs, $request);
+        $cpWithDocs = $this->filterContactPersons($rawPersons);
+        $saleFormat->update(['contact_persons' => !empty($cpWithDocs) ? $cpWithDocs : null]);
 
         return redirect()
             ->route('sale-formats.show', $saleFormat)
@@ -129,13 +145,18 @@ class SaleFormatController extends Controller
     {
         $existingDocs = $request->input('person_existing_docs', []);
         $uploadedDocs = $request->file('person_documents', []);
+        $uploadDir    = public_path('uploads/sale_formats');
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
 
         foreach ($persons as $i => &$person) {
             $docs = array_values(array_filter((array) ($existingDocs[$i] ?? []), fn($d) => filled($d)));
             foreach ((array) ($uploadedDocs[$i] ?? []) as $file) {
                 if ($file && $file->isValid()) {
                     $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                    $file->move(public_path('uploads/sale_formats'), $filename);
+                    $file->move($uploadDir, $filename);
                     $docs[] = 'uploads/sale_formats/' . $filename;
                 }
             }

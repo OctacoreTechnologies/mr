@@ -236,6 +236,45 @@
     // Event listeners
     // ─────────────────────────────────────────────────────────────────────────
 
+    // ─────────────────────────────────────────────────────────────────────────
+    // Phone number auto-format: 10 digits → +91 XXXXX XXXXX
+    // ─────────────────────────────────────────────────────────────────────────
+    function formatPhoneNumber(val) {
+        // Sirf digits rakhlo
+        let digits = val.replace(/\D/g, '');
+
+        // Leading 91 hata do agar 12 digits hai (country code already included)
+        if (digits.length === 12 && digits.startsWith('91')) {
+            digits = digits.slice(2);
+        }
+
+        // 10 digits se zyada nahi
+        digits = digits.slice(0, 10);
+
+        if (digits.length === 0) return '';
+        if (digits.length <= 5) return '+91 ' + digits;
+        return '+91 ' + digits.slice(0, 5) + ' ' + digits.slice(5);
+    }
+
+    container.addEventListener('input', function (e) {
+        const inp = e.target;
+        // Sirf contact (phone) inputs pe apply karo, email nahi
+        if (
+            inp.tagName === 'INPUT' &&
+            inp.type === 'text' &&
+            inp.closest('[data-field="contact"]')
+        ) {
+            const cursor = inp.selectionStart;
+            const old    = inp.value;
+            const formatted = formatPhoneNumber(old);
+            if (formatted !== old) {
+                inp.value = formatted;
+                // Cursor end pe rakho formatting ke baad
+                inp.setSelectionRange(formatted.length, formatted.length);
+            }
+        }
+    });
+
     // + / email add — event delegation (dynamically added rows bhi handle hoti hain)
     container.addEventListener('click', function (e) {
         const btn = e.target.closest('.btn-add-entry');

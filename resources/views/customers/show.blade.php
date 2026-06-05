@@ -141,6 +141,57 @@
         </div>
 
 
+        {{-- UPLOADED FILES --}}
+        @php
+            $allUploadedFiles = [];
+            foreach (($customer->contact_persons ?? []) as $person) {
+                if (!empty($person['visiting_cards'])) {
+                    foreach ((array) $person['visiting_cards'] as $f) {
+                        if ($f) $allUploadedFiles[] = $f;
+                    }
+                } elseif (!empty($person['visiting_card'])) {
+                    $allUploadedFiles[] = $person['visiting_card'];
+                }
+            }
+            if (!empty($customer->visiting_card) && !in_array($customer->visiting_card, $allUploadedFiles)) {
+                $allUploadedFiles[] = $customer->visiting_card;
+            }
+            $allUploadedFiles = array_values(array_unique($allUploadedFiles));
+        @endphp
+        @if(!empty($allUploadedFiles))
+        <div class="mt-4">
+            <h5 class="crm-section-title">
+                Uploaded Files
+                <span style="background:#e2e8f0;color:#475569;font-size:.7rem;font-weight:700;border-radius:20px;padding:1px 8px;margin-left:6px;vertical-align:middle">
+                    {{ count($allUploadedFiles) }}
+                </span>
+            </h5>
+            <div style="display:flex;flex-wrap:wrap;gap:14px">
+                @foreach($allUploadedFiles as $filePath)
+                    @php $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION)); @endphp
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:130px">
+                        @if(in_array($ext, ['jpg','jpeg','png','gif','webp','svg']))
+                            <a href="{{ asset($filePath) }}" target="_blank">
+                                <img src="{{ asset($filePath) }}" alt="file"
+                                     style="width:130px;height:100px;object-fit:cover;border-radius:8px;border:1px solid #e2e8f0;box-shadow:0 2px 6px rgba(0,0,0,.07)">
+                            </a>
+                        @else
+                            <a href="{{ asset($filePath) }}" target="_blank"
+                               style="display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none">
+                                <div style="width:130px;height:100px;display:flex;align-items:center;justify-content:center;border-radius:8px;border:1px solid #fecaca;background:#fff5f5">
+                                    <i class="fas fa-file-pdf" style="font-size:2.5rem;color:#dc2626"></i>
+                                </div>
+                            </a>
+                        @endif
+                        <span style="font-size:.72rem;color:#94a3b8;word-break:break-all;text-align:center;max-width:130px">
+                            {{ basename($filePath) }}
+                        </span>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
+
         {{-- Address --}}
         <div class="mt-4">
             <h5 class="crm-section-title">Address</h5>
