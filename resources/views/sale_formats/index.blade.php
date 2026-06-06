@@ -66,7 +66,7 @@
 
                     {{-- Customer --}}
                     <td style="min-width:170px;max-width:220px">
-                        <a href="{{ route('customers.sale-formats.index', $sf->customer_id) }}"
+                        <a href="#"
                            class="text-decoration-none"
                            style="display:flex;align-items:center;gap:9px">
                             <div style="width:30px;height:30px;border-radius:7px;background:{{ $bg }};
