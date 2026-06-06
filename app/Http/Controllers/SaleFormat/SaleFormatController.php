@@ -65,7 +65,7 @@ class SaleFormatController extends Controller
 
         return redirect()
             ->route('sale-formats.show', $saleFormat)
-            ->with('success', 'Sale Format successfully create ho gaya!');
+            ->with('success', 'Sale Format successfully created!');
     }
 
     // Show single sale format
@@ -126,7 +126,7 @@ class SaleFormatController extends Controller
 
         return redirect()
             ->route('sale-formats.show', $saleFormat)
-            ->with('success', 'Sale Format update ho gaya!');
+            ->with('success', 'Sale Format updated successfully!');
     }
 
     // Delete
@@ -136,7 +136,7 @@ class SaleFormatController extends Controller
 
         return redirect()
             ->route('sale-formats.index')
-            ->with('success', 'Sale Format delete ho gaya!');
+            ->with('success', 'Sale Format deleted successfully!');
     }
 
     // ─── Private helpers ──────────────────────────────────────────────────────
