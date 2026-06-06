@@ -104,19 +104,51 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    // public function update(StoreCustomerRequest $request, string $id)
+    // {
+
+    //     $customer = Customer::findOrFail($id);
+    //     $data = $request->validated();
+
+
+
+    //     if (isset($data['status']) && $data['status'] === 'qualified') {
+    //         $data['type'] = 'customer';
+    //     }
+
+    //     // Per-contact-person file uploads (preserve existing paths; migrate old visiting_card into person 1)
+    //     $existing = $customer->contact_persons ?? [];
+    //     $data = $this->handleContactPersonFiles($request, $data, $existing, $customer->visiting_card ?? null);
+
+    //     $data = $this->fillContactPerson1($data);
+
+    //     $customer->update($data);
+
+    //     // Redirect based on submitted type (customer vs lead)
+    //     $type = $request->input('type', 'customer');
+
+    //     if ($type === 'customer') {
+    //         session()->flash('success', 'Customer updated successfully');
+    //         return response()->redirectToRoute('customer.index');
+    //     }
+
+    //     // if type is 'lead' or anything else, redirect to lead index
+    //     session()->flash('success', 'Lead updated successfully');
+    //     return response()->redirectToRoute('lead.index');
+    // }
+
     public function update(StoreCustomerRequest $request, string $id)
     {
-
         $customer = Customer::findOrFail($id);
         $data = $request->validated();
 
+        // Remove file field — DB column nahi hai
+        unset($data['contact_person_files']);
 
-        
         if (isset($data['status']) && $data['status'] === 'qualified') {
             $data['type'] = 'customer';
         }
 
-        // Per-contact-person file uploads (preserve existing paths; migrate old visiting_card into person 1)
         $existing = $customer->contact_persons ?? [];
         $data = $this->handleContactPersonFiles($request, $data, $existing, $customer->visiting_card ?? null);
 
@@ -124,7 +156,6 @@ class CustomerController extends Controller
 
         $customer->update($data);
 
-        // Redirect based on submitted type (customer vs lead)
         $type = $request->input('type', 'customer');
 
         if ($type === 'customer') {
@@ -132,7 +163,6 @@ class CustomerController extends Controller
             return response()->redirectToRoute('customer.index');
         }
 
-        // if type is 'lead' or anything else, redirect to lead index
         session()->flash('success', 'Lead updated successfully');
         return response()->redirectToRoute('lead.index');
     }
@@ -174,14 +204,63 @@ class CustomerController extends Controller
         return Excel::download(new SampleCustomerImport(), 'customers_sample.xlsx');
     }
 
+    // private function handleContactPersonFiles(StoreCustomerRequest $request, array $data, array $existing = [], ?string $legacyCard = null): array
+    // {
+    //     $uploadDir = public_path('uploads/contact_persons');
+
+    //     $allPersonFiles = $request->file('contact_person_files') ?? [];
+
+    //     foreach (array_keys($data['contact_persons'] ?? []) as $i) {
+    //         // Start with existing saved files for this person (backward compat: single or array)
+    //         $existingCards = [];
+    //         if (!empty($existing[$i]['visiting_cards'])) {
+    //             $existingCards = (array) $existing[$i]['visiting_cards'];
+    //         } elseif (!empty($existing[$i]['visiting_card'])) {
+    //             $existingCards = [$existing[$i]['visiting_card']];
+    //         }
+
+    //         // For contact person 1: migrate old company-level visiting_card if not already included
+    //         if ($i === 0 && $legacyCard && !in_array($legacyCard, $existingCards)) {
+    //             array_unshift($existingCards, $legacyCard);
+    //         }
+
+    //         $newPaths = [];
+
+    //         $personFiles = $allPersonFiles[$i] ?? [];
+    //         if (!is_array($personFiles)) {
+    //             $personFiles = [$personFiles];
+    //         }
+
+    //         foreach ($personFiles as $j => $file) {
+    //             if (!$file || !$file->isValid()) continue;
+
+    //             if (!is_dir($uploadDir)) {
+    //                 mkdir($uploadDir, 0755, true);
+    //             }
+
+    //             $filename = time() . '_' . $i . '_' . $j . '.' . $file->getClientOriginalExtension();
+    //             $file->move($uploadDir, $filename);
+    //             $newPaths[] = 'uploads/contact_persons/' . $filename;
+    //         }
+
+    //         $allCards = array_merge($existingCards, $newPaths);
+
+    //         if (!empty($allCards)) {
+    //             $data['contact_persons'][$i]['visiting_cards'] = $allCards;
+    //         }
+    //     }
+
+    //     return $data;
+    // }
+
+
+
     private function handleContactPersonFiles(StoreCustomerRequest $request, array $data, array $existing = [], ?string $legacyCard = null): array
     {
-        $uploadDir = public_path('uploads/contact_persons');
-
+        // public_path() ki jagah Storage use karo
         $allPersonFiles = $request->file('contact_person_files') ?? [];
 
         foreach (array_keys($data['contact_persons'] ?? []) as $i) {
-            // Start with existing saved files for this person (backward compat: single or array)
             $existingCards = [];
             if (!empty($existing[$i]['visiting_cards'])) {
                 $existingCards = (array) $existing[$i]['visiting_cards'];
@@ -189,7 +268,6 @@ class CustomerController extends Controller
                 $existingCards = [$existing[$i]['visiting_card']];
             }
 
-            // For contact person 1: migrate old company-level visiting_card if not already included
             if ($i === 0 && $legacyCard && !in_array($legacyCard, $existingCards)) {
                 array_unshift($existingCards, $legacyCard);
             }
@@ -204,13 +282,10 @@ class CustomerController extends Controller
             foreach ($personFiles as $j => $file) {
                 if (!$file || !$file->isValid()) continue;
 
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0755, true);
-                }
-
+                // ✅ Storage::disk('public') use karo
                 $filename = time() . '_' . $i . '_' . $j . '.' . $file->getClientOriginalExtension();
-                $file->move($uploadDir, $filename);
-                $newPaths[] = 'uploads/contact_persons/' . $filename;
+                $path = $file->storeAs('contact_persons', $filename, 'public');
+                $newPaths[] = 'storage/' . $path;
             }
 
             $allCards = array_merge($existingCards, $newPaths);
