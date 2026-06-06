@@ -240,10 +240,11 @@
     // Phone number auto-format: 10 digits → +91 XXXXX XXXXX
     // ─────────────────────────────────────────────────────────────────────────
     function formatPhoneNumber(val) {
-        // Sirf digits rakhlo
-        let digits = val.replace(/\D/g, '');
+        // +91 prefix already hai toh pehle hata do, warna digits mein "91" count ho jaata hai
+        let stripped = val.replace(/^\+91\s*/, '');
+        let digits = stripped.replace(/\D/g, '');
 
-        // Leading 91 hata do agar 12 digits hai (country code already included)
+        // Leading 91 hata do agar 12 digits hai (country code without + prefix pasted)
         if (digits.length === 12 && digits.startsWith('91')) {
             digits = digits.slice(2);
         }
