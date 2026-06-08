@@ -36,6 +36,10 @@ class SaleFormatRequest extends FormRequest
             'person_existing_docs'   => 'nullable|array',
             'person_existing_docs.*' => 'nullable|array',
             'person_existing_docs.*.*' => 'nullable|string',
+            'remark_documents'     => 'nullable|array',
+            'remark_documents.*'   => 'nullable|file|mimes:jpeg,jpg,png,gif,svg,pdf|max:5120',
+            'remark_existing_docs'   => 'nullable|array',
+            'remark_existing_docs.*' => 'nullable|string',
             'requirements'   => 'nullable|array',
             'requirements.*' => 'nullable|string|max:500',
         ];

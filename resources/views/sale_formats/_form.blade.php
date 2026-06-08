@@ -224,6 +224,43 @@
             <div id="quill-remark" style="width:100%;min-height:150px;background:#fff;border-radius:6px;"></div>
         </div>
 
+        {{-- ── Remark Documents ── --}}
+        <div class="crm-field-wrap mb-3">
+            <label class="crm-field-label">
+                <i class="fas fa-paperclip" style="width:13px;color:#64748b"></i> Documents
+            </label>
+            @if($isEdit && !empty($saleFormat->upload_file_path))
+                <div id="remark-existing-docs" class="sf-existing-docs-list">
+                    @foreach(array_filter((array)$saleFormat->upload_file_path) as $docPath)
+                        @php
+                            $ext   = strtolower(pathinfo($docPath, PATHINFO_EXTENSION));
+                            $isImg = in_array($ext, ['jpg','jpeg','png','gif','svg']);
+                            $isPdf = $ext === 'pdf';
+                        @endphp
+                        <div class="sf-existing-doc">
+                            <input type="hidden" name="remark_existing_docs[]" value="{{ $docPath }}">
+                            @if($isPdf)
+                                <i class="fas fa-file-pdf" style="color:#dc2626;font-size:1.05rem;flex-shrink:0"></i>
+                            @elseif($isImg)
+                                <img src="/{{ $docPath }}" style="height:26px;width:26px;object-fit:cover;border-radius:3px;border:1px solid #e2e8f0;flex-shrink:0" alt="">
+                            @else
+                                <i class="fas fa-file" style="color:#64748b;font-size:1.05rem;flex-shrink:0"></i>
+                            @endif
+                            <span class="sf-existing-doc-name" title="{{ $docPath }}">{{ basename($docPath) }}</span>
+                            <button type="button" class="sf-btn-rm-doc" title="Remove">&times;</button>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+            <input type="file" name="remark_documents[]" id="remark-doc-input"
+                   class="crm-input" accept=".jpg,.jpeg,.png,.gif,.svg,.pdf" multiple
+                   style="margin-top:6px">
+            <small style="color:#94a3b8;font-size:.73rem;display:block;margin-top:3px">
+                JPG, PNG, PDF — max 5 MB. Hold <kbd>Ctrl</kbd> to pick multiple.
+            </small>
+            <div id="remark-doc-preview" class="sf-doc-preview"></div>
+        </div>
+
         <div class="crm-form-grid crm-form-grid-2">
             <div class="crm-field-wrap">
                 <label class="crm-field-label">Prepared By</label>
@@ -682,6 +719,44 @@
         }
     }
 
+    // ── Remark document handlers ─────────────────────────────────────────────
+    var remarkExistingDocs = document.getElementById('remark-existing-docs');
+    if (remarkExistingDocs) {
+        remarkExistingDocs.addEventListener('click', function (e) {
+            var rmDoc = e.target.closest('.sf-btn-rm-doc');
+            if (!rmDoc) return;
+            var docItem   = rmDoc.closest('.sf-existing-doc');
+            var hiddenInp = docItem.querySelector('input[type="hidden"]');
+            if (hiddenInp) hiddenInp.disabled = true;
+            docItem.style.opacity        = '0.4';
+            docItem.style.textDecoration = 'line-through';
+            rmDoc.disabled = true;
+        });
+    }
+
+    var remarkDocInput   = document.getElementById('remark-doc-input');
+    var remarkDocPreview = document.getElementById('remark-doc-preview');
+    if (remarkDocInput && remarkDocPreview) {
+        remarkDocInput.addEventListener('change', function () {
+            remarkDocPreview.innerHTML = '';
+            Array.from(this.files).forEach(function (file) {
+                var item = document.createElement('div');
+                item.className = 'sf-doc-preview-item';
+                if (file.type === 'application/pdf') {
+                    item.innerHTML = '<i class="fas fa-file-pdf" style="font-size:1.1rem;color:#dc2626"></i>';
+                } else {
+                    var img = document.createElement('img');
+                    img.style.cssText = 'height:28px;width:28px;object-fit:cover;border-radius:3px;border:1px solid #e2e8f0';
+                    img.src = URL.createObjectURL(file);
+                    item.appendChild(img);
+                }
+                var name = document.createElement('span');
+                name.textContent = file.name;
+                item.appendChild(name);
+                remarkDocPreview.appendChild(item);
+            });
+        });
+    }
 
 })();
 </script>

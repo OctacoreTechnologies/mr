@@ -3,6 +3,7 @@
         'Sr.No',
         'Customer',
         'Date',
+        'Requirements',
         'Prepared By',
         ['label' => 'Actions', 'no-export' => true, 'width' => 10],
     ];
@@ -89,6 +90,27 @@
 
                
 
+
+                    {{-- Requirements --}}
+                    <td style="min-width:200px;max-width:300px">
+                        @if($sf->requirements->isNotEmpty())
+                            <ol style="margin:0;padding-left:16px;font-size:.8rem;color:#334155;line-height:1.6">
+                                @foreach($sf->requirements->take(3) as $req)
+                                    <li style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:260px"
+                                        title="{{ $req->requirement_description }}">
+                                        {{ $req->requirement_description }}
+                                    </li>
+                                @endforeach
+                            </ol>
+                            @if($sf->requirements_count > 3)
+                                <span style="font-size:.72rem;color:#94a3b8;margin-left:16px">
+                                    +{{ $sf->requirements_count - 3 }} more
+                                </span>
+                            @endif
+                        @else
+                            <span style="color:#cbd5e1;font-size:.82rem">—</span>
+                        @endif
+                    </td>
 
                     {{-- Prepared By --}}
                     <td style="max-width:140px">

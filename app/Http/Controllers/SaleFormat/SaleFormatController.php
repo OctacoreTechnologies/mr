@@ -14,7 +14,7 @@ class SaleFormatController extends Controller
     // List all sale formats (optionally filter by customer)
     public function index(Request $request)
     {
-        $query = SaleFormat::with('customer')
+        $query = SaleFormat::with(['customer', 'requirements'])
             ->withCount('requirements')
             ->latest();
 
@@ -46,8 +46,9 @@ class SaleFormatController extends Controller
     public function store(SaleFormatRequest $request)
     {
         $validated = $request->validated();
-        unset($validated['requirements'], $validated['person_documents'], $validated['person_existing_docs']);
-        $validated['sale_details'] = $this->filterSaleDetails($request->input('sale_details', []));
+        unset($validated['requirements'], $validated['person_documents'], $validated['person_existing_docs'], $validated['remark_documents'], $validated['remark_existing_docs']);
+        $validated['sale_details']     = $this->filterSaleDetails($request->input('sale_details', []));
+        $validated['upload_file_path'] = null;
 
         $personInputs = $request->input('contact_persons', []);
 
@@ -61,7 +62,11 @@ class SaleFormatController extends Controller
         // Move files only after successful DB insert
         $rawPersons  = $this->mergePersonDocuments($personInputs, $request);
         $cpWithDocs  = $this->filterContactPersons($rawPersons);
-        $saleFormat->update(['contact_persons' => !empty($cpWithDocs) ? $cpWithDocs : null]);
+        $remarkDocs  = $this->mergeRemarkDocuments([], $request);
+        $saleFormat->update([
+            'contact_persons'  => !empty($cpWithDocs) ? $cpWithDocs : null,
+            'upload_file_path' => !empty($remarkDocs) ? $remarkDocs : null,
+        ]);
 
         return redirect()
             ->route('sale-formats.show', $saleFormat)
@@ -106,7 +111,7 @@ class SaleFormatController extends Controller
     public function update(SaleFormatRequest $request, SaleFormat $saleFormat)
     {
         $validated = $request->validated();
-        unset($validated['requirements'], $validated['person_documents'], $validated['person_existing_docs']);
+        unset($validated['requirements'], $validated['person_documents'], $validated['person_existing_docs'], $validated['remark_documents'], $validated['remark_existing_docs']);
         $validated['sale_details']     = $this->filterSaleDetails($request->input('sale_details', []));
         $validated['upload_file_path'] = null;
 
@@ -120,9 +125,14 @@ class SaleFormatController extends Controller
         $this->syncRequirements($saleFormat, $request->input('requirements', []));
 
         // Move files only after successful DB update
-        $rawPersons = $this->mergePersonDocuments($personInputs, $request);
-        $cpWithDocs = $this->filterContactPersons($rawPersons);
-        $saleFormat->update(['contact_persons' => !empty($cpWithDocs) ? $cpWithDocs : null]);
+        $rawPersons  = $this->mergePersonDocuments($personInputs, $request);
+        $cpWithDocs  = $this->filterContactPersons($rawPersons);
+        $existingRemarkDocs = array_values(array_filter($request->input('remark_existing_docs', []), fn($d) => filled($d)));
+        $remarkDocs  = $this->mergeRemarkDocuments($existingRemarkDocs, $request);
+        $saleFormat->update([
+            'contact_persons'  => !empty($cpWithDocs) ? $cpWithDocs : null,
+            'upload_file_path' => !empty($remarkDocs) ? $remarkDocs : null,
+        ]);
 
         return redirect()
             ->route('sale-formats.show', $saleFormat)
@@ -164,6 +174,24 @@ class SaleFormatController extends Controller
         }
         unset($person);
         return $persons;
+    }
+
+    private function mergeRemarkDocuments(array $existingDocs, Request $request): array
+    {
+        $uploadDir = public_path('uploads/sale_formats');
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $docs = $existingDocs;
+        foreach ((array) $request->file('remark_documents', []) as $file) {
+            if ($file && $file->isValid()) {
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move($uploadDir, $filename);
+                $docs[] = 'uploads/sale_formats/' . $filename;
+            }
+        }
+        return $docs;
     }
 
     private function filterContactPersons(array $persons): array
