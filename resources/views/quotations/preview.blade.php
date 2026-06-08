@@ -476,7 +476,7 @@
                     var application = quotation.application ? quotation.application.name : 'N/A';
                     var createdDate = quotation.created_at  ? new Date(quotation.created_at).toLocaleDateString('en-IN') : '-';
                     var status      = quotation.status      || 'pending';
-                    var showUrl     = '/quotaion/pdf/' + quotation.id;
+                    var showUrl     = '/quotation/' + quotation.id + '/pdf';
                     var customerId  = $('#customerId').val();
                     var reorderUrl  = '/quotation/' + quotation.id + '/edit?reorder=1&customer_id=' + customerId;
 

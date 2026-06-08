@@ -133,7 +133,7 @@
                                 <span class="ci-badge {{ $stClass }}">{{ $stLabel }}</span>
                             </td>
 
-                            <td class="text-muted">{{ $customer->user->name ?? '—' }}</td>
+                            <td class="text-muted">{{ $customer->followedBy->name ?? '—' }}</td>
 
                             <td>
                                 <div class="ci-actions">
