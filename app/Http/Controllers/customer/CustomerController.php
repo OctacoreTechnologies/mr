@@ -51,6 +51,8 @@ class CustomerController extends Controller
     {
         $data = $request->validated();
 
+        unset($data['contact_person_files']);
+
 
         if (isset($data['status']) && $data['status'] === 'qualified') {
             $data['type'] = 'customer';
@@ -143,7 +145,9 @@ class CustomerController extends Controller
         $data = $request->validated();
 
         // Remove file field — DB column nahi hai
-        unset($data['contact_person_files']);
+        if (isset($data['contact_person_files'])) {
+            unset($data['contact_person_files']);
+        }
 
         if (isset($data['status']) && $data['status'] === 'qualified') {
             $data['type'] = 'customer';
