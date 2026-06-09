@@ -51,7 +51,7 @@ class CustomerController extends Controller
     {
         $data = $request->validated();
 
-        unset($data['contact_person_files']);
+       
 
 
         if (isset($data['status']) && $data['status'] === 'qualified') {
@@ -62,6 +62,7 @@ class CustomerController extends Controller
         $data = $this->handleContactPersonFiles($request, $data);
 
         $data = $this->fillContactPerson1($data);
+         unset($data['contact_person_files']);
         Customer::create($data);
 
         // Redirect based on submitted type (customer vs lead)
