@@ -349,11 +349,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             container.insertAdjacentHTML('afterbegin', html);
 
-            // Flatpickr on new date inputs
-            container.querySelectorAll('.fu-date-new').forEach(function (el) {
-                flatpickr(el, { enableTime: true, dateFormat: 'Y-m-d h:i K', time_24hr: false });
-                el.classList.remove('fu-date-new');
-            });
+            // Flatpickr on new date inputs — follow_up_date gets current datetime as default
+            const newRow = container.querySelector('[data-index="'+uid+'"]');
+            const fpBase = { enableTime: true, dateFormat: 'Y-m-d H:i', altInput: true, altFormat: 'd-m-y h:i K', time_24hr: false };
+            flatpickr(newRow.querySelector('input[name="follow_up_date[]"]'),      Object.assign({}, fpBase, { defaultDate: new Date() }));
+            flatpickr(newRow.querySelector('input[name="next_follow_up_date[]"]'), fpBase);
+            newRow.querySelectorAll('.fu-date-new').forEach(function (el) { el.classList.remove('fu-date-new'); });
 
             initQuill(uid);
             initDropzone(uid);
@@ -381,7 +382,9 @@ document.addEventListener('DOMContentLoaded', function () {
     ════════════════════════════════════════ */
     flatpickr('.date-time', {
         enableTime: true,
-        dateFormat: 'Y-m-d h:i K',
+        dateFormat: 'Y-m-d H:i',
+        altInput:   true,
+        altFormat:  'd-m-y h:i K',
         time_24hr:  false,
     });
 
