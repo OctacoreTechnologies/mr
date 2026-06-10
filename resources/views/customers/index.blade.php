@@ -96,7 +96,7 @@
                 <x-adminlte-datatable id="customer-table" :heads="$heads" striped hoverable with-buttons>
                     @foreach ($customers as $key => $customer)
                         @php
-                            $avatarName = $customer->company_name ?: ($customer->contact_person_1_name ?? '');
+                            $avatarName = $customer->company_name ?: 'NA';
                             $words = preg_split('/\s+/', trim($avatarName));
                             $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
                             $colors = ['#3b82f6', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
@@ -117,12 +117,12 @@
                                 <div class="d-flex align-items-center" style="gap:10px">
                                     <div class="ci-avatar" style="background:{{ $bg }}">{{ $initials }}</div>
                                     <strong>
-                                        {{ $customer->company_name ?: ($customer->contact_person_1_name ?? '—') }}
+                                        {{ $customer->company_name ?: 'NA' }}
                                     </strong>
                                 </div>
                             </td>
-                            <td>
-                                {{ $customer->contact_person_1_name ?? 'N.A' }}
+                            <td class="text-muted" style="font-size:.85rem">
+                                {{ $customer->contact_person_1_name ?: 'NA' }}
                             </td>
 
                             <td>
@@ -147,7 +147,7 @@
 
                                     @can('followup_customer')
                                         <a href="{{ route('followup.edit', $customer->id) }}" class="ci-btn" style="color:#2563eb"
-                                            title="Follow Up" target="_blank">
+                                            title="Follow Up">
                                             <i class="fas fa-phone-alt"></i>
                                         </a>
                                     @endcan
