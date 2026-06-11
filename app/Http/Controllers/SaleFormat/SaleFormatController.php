@@ -89,10 +89,11 @@ class SaleFormatController extends Controller
             ->setOptions([
                 'fontDir'             => public_path('fonts'),
                 'fontCache'           => public_path('fonts'),
-                'defaultFont'         => 'Poppins',
+                'defaultFont'         => 'poppins',
                 'isHtml5ParserEnabled'=> true,
                 'isPhpEnabled'        => true,
                 'isRemoteEnabled'     => true,
+                'dpi' => 86,
             ])
             ->setPaper('A4', 'portrait');
 
