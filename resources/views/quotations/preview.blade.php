@@ -200,49 +200,141 @@
 <div class="modal fade" id="customerSelectModal" tabindex="-1" role="dialog"
     aria-labelledby="customerSelectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
+        <div class="modal-content cs-modal">
 
-            <div class="modal-header">
-                <h5 class="modal-title" id="customerSelectModalLabel">
-                    <i class="fas fa-user-circle mr-2"></i> Select Customer
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+            <div class="cs-modal-header">
+                <div class="cs-modal-title">
+                    <div class="cs-modal-icon"><i class="fas fa-users"></i></div>
+                    <div>
+                        <h5 class="mb-0">Select Customer</h5>
+                        <small class="text-muted" id="customerCountLabel">{{ count($customers) }} customers</small>
+                    </div>
+                </div>
+                <button type="button" class="cs-close-btn" data-dismiss="modal">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
 
-            <div class="modal-body">
-                <div class="form-group mb-0">
-                    <label for="customerSelect">Choose a customer</label>
-                    <select id="customerSelect" class="form-control select2" style="width:100%">
-                        <option value="">-- Select Customer --</option>
-                        @foreach($customers as $customer)
-                            <option value="{{ $customer->id }}"
-                                data-name="{{ $customer->company_name ?? $customer->name }}" {{ $customer->id == request()->get('opportunity_id') ? 'selected' : '' }}>
-                                {{ $customer->company_name ?? $customer->name }}
-                            </option>
-                        @endforeach
-                    </select>
+            <div class="cs-modal-search">
+                <i class="fas fa-search cs-search-icon"></i>
+                <input type="text" id="customerSearchInput" class="cs-search-input"
+                    placeholder="Search by customer name..." autocomplete="off">
+                <button type="button" id="clearCustomerSearch" class="cs-clear-btn" style="display:none;">
+                    <i class="fas fa-times-circle"></i>
+                </button>
+            </div>
+
+            <div class="cs-list-wrapper">
+                <div id="customerListContainer">
+                    @foreach($customers as $customer)
+                        @php $label = $customer->company_name ?? $customer->name; @endphp
+                        <div class="cs-item"
+                            data-id="{{ $customer->id }}"
+                            data-name="{{ $label }}">
+                            <i class="fas fa-user cs-item-icon"></i>
+                            <span class="cs-item-name">{{ $label }}</span>
+                            <i class="fas fa-check cs-check-icon"></i>
+                        </div>
+                    @endforeach
+                    <div id="csNoResults" class="cs-no-results" style="display:none;">
+                        <i class="fas fa-search-minus"></i>
+                        <p>No customers found</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="modal-footer">
+            <div class="cs-modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
-                    <i class="fas fa-times"></i> Close
+                    <i class="fas fa-times mr-1"></i> Cancel
                 </button>
                 <button type="button" class="btn btn-primary" id="confirmCustomerSelect">
-                    <i class="fas fa-check"></i> Select Customer
+                    <i class="fas fa-check mr-1"></i> Confirm Selection
                 </button>
             </div>
 
         </div>
     </div>
 </div>
+<input type="hidden" id="customerSelect">
 
 @stop
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('style/common.css') }}">
+    <style>
+        /* ── Customer Select Modal ── */
+        .cs-modal { border-radius: 8px; overflow: hidden; border: none; }
+
+        .cs-modal-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 12px 16px; background: #0d6efd;
+        }
+        .cs-modal-title { display: flex; align-items: center; gap: 10px; }
+        .cs-modal-icon { font-size: 15px; color: #fff; }
+        .cs-modal-title h5 { color: #fff; font-weight: 600; font-size: 14px; margin: 0; }
+        .cs-modal-title small { color: rgba(255,255,255,.75); font-size: 11px; }
+        .cs-close-btn {
+            background: none; border: none; color: #fff; font-size: 14px;
+            cursor: pointer; padding: 0; opacity: .8;
+        }
+        .cs-close-btn:hover { opacity: 1; }
+
+        /* Search */
+        .cs-modal-search { position: relative; padding: 12px 14px 0; background: #fff; }
+        .cs-search-icon {
+            position: absolute; left: 26px; top: 50%; transform: translateY(10%);
+            color: #aaa; font-size: 12px; pointer-events: none;
+        }
+        .cs-search-input {
+            width: 100%; padding: 7px 32px 7px 30px;
+            border: 1px solid #ced4da; border-radius: 5px;
+            font-size: 13px; outline: none; transition: border-color .2s;
+        }
+        .cs-search-input:focus { border-color: #0d6efd; box-shadow: 0 0 0 2px rgba(13,110,253,.1); }
+        .cs-clear-btn {
+            position: absolute; right: 26px; top: 50%; transform: translateY(10%);
+            background: none; border: none; color: #aaa; font-size: 13px; cursor: pointer; padding: 0;
+        }
+        .cs-clear-btn:hover { color: #555; }
+
+        /* List */
+        .cs-list-wrapper {
+            max-height: 300px; overflow-y: auto;
+            margin: 10px 14px 0; border: 1px solid #dee2e6;
+            border-radius: 5px; background: #fff;
+        }
+        .cs-list-wrapper::-webkit-scrollbar { width: 4px; }
+        .cs-list-wrapper::-webkit-scrollbar-track { background: #f5f5f5; }
+        .cs-list-wrapper::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+
+        .cs-item {
+            display: flex; align-items: center; gap: 8px;
+            padding: 8px 12px; cursor: pointer;
+            border-bottom: 1px solid #f3f4f6; transition: background .12s;
+            font-size: 13px;
+        }
+        .cs-item:last-child { border-bottom: none; }
+        .cs-item:hover { background: #f0f5ff; }
+        .cs-item.active-customer { background: #e8f0fe; }
+        .cs-item.active-customer .cs-item-name { color: #0d6efd; font-weight: 600; }
+        .cs-item.active-customer .cs-check-icon { display: block; }
+
+        .cs-item-icon { color: #adb5bd; font-size: 12px; flex-shrink: 0; }
+        .cs-item.active-customer .cs-item-icon { color: #0d6efd; }
+        .cs-item-name { flex: 1; color: #333; }
+        .cs-check-icon { display: none; color: #0d6efd; font-size: 11px; }
+
+        .cs-no-results { text-align: center; padding: 28px 20px; color: #aaa; }
+        .cs-no-results i { font-size: 24px; margin-bottom: 8px; display: block; }
+        .cs-no-results p { margin: 0; font-size: 12px; }
+
+        /* Footer */
+        .cs-modal-footer {
+            display: flex; justify-content: flex-end; gap: 8px;
+            padding: 10px 14px 12px; background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
 @endpush
 
 @push('js')
@@ -348,31 +440,57 @@
                 input.prop('readonly', false).prop('disabled', false).removeClass('readonly-input');
             });
 
-            // customer selection and report's
+            // ── Customer search & selection ──
 
-              $('#customerSelect').select2({
-                dropdownParent: $('#customerSelectModal'),
-                width: '100%'
-             });
+            // Filter list on typing
+            $('#customerSearchInput').on('input', function () {
+                var q = $(this).val().toLowerCase().trim();
+                var visible = 0;
+                $('.cs-item').each(function () {
+                    var name = $(this).data('name').toLowerCase();
+                    var show = q === '' || name.indexOf(q) !== -1;
+                    $(this).toggle(show);
+                    if (show) visible++;
+                });
+                $('#csNoResults').toggle(visible === 0);
+                $('#clearCustomerSearch').toggle(q.length > 0);
+                $('#customerCountLabel').text(q ? visible + ' result' + (visible !== 1 ? 's' : '') : '{{ count($customers) }} customers');
+            });
 
-               // Auto-open customer modal when page loads if no customer selected
+            // Clear search
+            $('#clearCustomerSearch').on('click', function () {
+                $('#customerSearchInput').val('').trigger('input').focus();
+            });
+
+            // Highlight selected item on click
+            $(document).on('click', '.cs-item', function () {
+                $('.cs-item').removeClass('active-customer');
+                $(this).addClass('active-customer');
+                $('#customerSelect').val($(this).data('id'));
+                $('#customerSelect').data('selected-name', $(this).data('name'));
+            });
+
+            // Focus search input when modal opens
+            $('#customerSelectModal').on('shown.bs.modal', function () {
+                $('#customerSearchInput').val('').trigger('input').focus();
+                // Re-highlight if already selected
+                var currentId = $('#customerId').val();
+                if (currentId) {
+                    $('.cs-item').removeClass('active-customer');
+                    $('.cs-item[data-id="' + currentId + '"]').addClass('active-customer');
+                    $('#customerSelect').val(currentId);
+                }
+            });
+
+            // Auto-open customer modal when page loads if no customer selected
             @if (isset($preselectedCustomer))
                 $('#customerId').val({{ $preselectedCustomer->id }});
                 $('#customerName').val('{{ $preselectedCustomer->company_name ?? $preselectedCustomer->name }}');
-                $('#customerSelect').val({{ $preselectedCustomer->id }}).trigger('change');
                 fetchSaleOrdersForCustomer({{ $preselectedCustomer->id }});
                 fetchQuotationsForCustomer({{ $preselectedCustomer->id }});
             @else
                 if (!$('#customerId').val()) {
                     $('#customerSelectModal').modal('show');
-                    $('#customerSelectModal').on('shown.bs.modal', function () {
-                        $('#customerSelect').select2('open');
-                    });
-                } else {
-                    var existing = $('#customerId').val();
-                    if (existing) {
-                        $('#customerSelect').val(existing).trigger('change');
-                    }
                 }
             @endif
 
@@ -388,8 +506,8 @@
                     alert('Please select a customer');
                     return;
                 }
-                var name = $('#customerSelect').find('option:selected').data('name')
-                        || $('#customerSelect').find('option:selected').text();
+                var name = $('#customerSelect').data('selected-name')
+                        || $('.cs-item.active-customer').data('name') || '';
                 $('#customerId').val(id);
                 $('#customerName').val(name);
                 $('#customerSelectModal').modal('hide');
