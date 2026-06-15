@@ -14,7 +14,7 @@
            style="display:flex;align-items:center;gap:6px;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid #bfdbfe;background:#eff6ff;color:#2563eb;text-decoration:none">
             <i class="fas fa-eye"></i> View
         </a>
-        <a href="{{ route('sale-formats.index') }}"
+        <a href="{{ url()->previous() }}"
            style="display:flex;align-items:center;gap:6px;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid #d1d5db;background:#fff;color:#6b7280;text-decoration:none">
             <i class="fas fa-arrow-left"></i> Back
         </a>
@@ -34,7 +34,7 @@
 
     <div class="crm-form-actions">
         <button type="button" class="btn-cancel-crm"
-                onclick="window.location='{{ route('sale-formats.show', $saleFormat) }}'">
+                onclick="window.location='{{ url()->previous() }}'">
             Cancel
         </button>
         <button type="submit" class="btn-primary-crm">

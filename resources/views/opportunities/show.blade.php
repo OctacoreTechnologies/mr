@@ -91,7 +91,7 @@
 
         {{-- ── Actions ── --}}
         <div class="crm-form-actions">
-            <a href="{{ route('opportunity.index') }}" class="btn btn-outline-secondary">
+            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
 

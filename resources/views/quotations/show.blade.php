@@ -54,7 +54,7 @@
             </div>
 
             <div class="mt-3">
-                <a href="{{ route('quotation.index') }}" class="btn btn-secondary">Back to Opportunities</a>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary">Back </a>
             </div>
         </div>
     </div>

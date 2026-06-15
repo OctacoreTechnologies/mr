@@ -20,7 +20,7 @@
         <a href="{{ route('sale-formats.edit', $saleFormat) }}" class="btn btn-sm btn-outline-primary">
             <i class="fas fa-edit"></i> Edit
         </a>
-        <a href="{{ route('sale-formats.index') }}" class="btn btn-sm btn-outline-secondary">
+        <a href="{{ url()->previous() }}" class="btn btn-sm btn-outline-secondary">
             <i class="fas fa-arrow-left"></i> Back
         </a>
     </div>

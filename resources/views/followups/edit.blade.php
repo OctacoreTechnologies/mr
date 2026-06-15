@@ -10,7 +10,7 @@
  
 @section('content_header')
 <div class="crm-page-header">
-    <h1><i class="fas fa-calendar-check"></i> Customer Follow-ups</h1>
+    <h1><i class="fas fa-calendar-check"></i> Customer Follow-ups ({{ $customer->company_name ?? $customer->contact_person_1_name ?? 'N/A' }})</h1>
     <a href="{{ url()->previous() }}" class="btn btn-outline-primary btn-sm">
         <i class="fas fa-arrow-left"></i> Back
     </a>

@@ -8,7 +8,7 @@
         <i class="fas fa-plus-circle"></i>
         Create Opportunity
     </h1>
-    <a href="{{ route('opportunity.index') }}" class="btn btn-outline-primary btn-sm">
+    <a href="{{ url()->previous() }}" class="btn btn-outline-primary btn-sm">
         <i class="fas fa-arrow-left"></i> Back to Opportunities
     </a>
 </div>

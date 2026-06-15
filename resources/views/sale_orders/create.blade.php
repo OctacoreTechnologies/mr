@@ -5,8 +5,8 @@
 @section('content_header')
    <div class="crm-page-header">
         <h1 class="mb-0 text-primary font-weight-bold">Create Total Order</h1>
-        <a href="{{ route('sale-order.index') }}" class="btn btn-sm">
-            <i class="fas fa-arrow-left"></i> Back to Orders
+        <a href="{{ url()->previous() }}" class="btn btn-sm">
+            <i class="fas fa-arrow-left"></i> Back 
         </a>
     </div>
 @stop

@@ -127,8 +127,8 @@
         <i class="fas fa-plus-circle"></i>
         Create Quotation
     </h1>
-    <a href="{{ route('quotation.index') }}" class="btn btn-outline-primary btn-sm">
-        <i class="fas fa-arrow-left"></i> Back to Index
+    <a href="{{ url()->previous() }}" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-arrow-left"></i> Back 
     </a>
 </div>
 @stop

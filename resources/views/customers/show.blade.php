@@ -255,8 +255,9 @@
 
         {{-- BACK BUTTON --}}
         <div class="mt-4">
-            <a href="{{ route('customer.index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left"></i> Back to Customers
+            <a href="{{url()->previous()}}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back  
+                
             </a>
         </div>
 

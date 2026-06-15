@@ -11,7 +11,7 @@
     <h1 style="font-size:20px;font-weight:500;display:flex;align-items:center;gap:10px;margin:0">
         <i class="fas fa-user-plus" style="color:#6b7280"></i> Create Customer
     </h1>
-    <a href="{{ route('customer.index') }}"
+    <a href="{{ url()->previous() }}"
         style="display:flex;align-items:center;gap:6px;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid #d1d5db;background:#fff;color:#6b7280;text-decoration:none">
         <i class="fas fa-arrow-left"></i> Back
     </a>

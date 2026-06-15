@@ -5,8 +5,8 @@
 @section('content_header')
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1 class="mb-0 text-primary font-weight-bold">Sales Order #{{ $saleOrder->id }}</h1>
-    <a href="{{ route('sale-order.index') }}" class="btn btn-outline-primary btn-sm">
-        <i class="fas fa-arrow-left"></i> Back to Orders
+    <a href="{{ url()->previous() }}" class="btn btn-outline-primary btn-sm">
+        <i class="fas fa-arrow-left"></i> Back
     </a>
 </div>
 @stop

@@ -158,7 +158,7 @@
         </div>
 
         <div class="crm-form-actions">
-            <a href="{{ route('lead.index') }}" class="btn btn-outline-secondary">
+            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
                 <i class="fas fa-arrow-left"></i> Back to Leads
             </a>
         </div>

@@ -66,7 +66,7 @@ class CustomerFollowUpController extends Controller
     public function CustomerfollowUpEdit(Request $request, string $customerId)
     {
         $query = CustomerFollowUp::where('customer_id', $customerId)
-            ->with('documents');
+            ->with(['documents','customer:id,company_name,contact_person_1_name']);
 
         if ($request->filled('quotation_id')) {
             $query->where('quotation_id', $request->query('quotation_id'));
@@ -77,10 +77,12 @@ class CustomerFollowUpController extends Controller
 
         // Editable rows = same records newest first
         $ofollowups = (clone $query)->orderByDesc('created_at')->get();
+        $customer   = Customer::findOrFail($customerId);
 
         return view('followups.edit', [
             'followups'   => $followups,
             'ofollowups'  => $ofollowups,
+            'customer'    => $customer,
             'customer_id' => $customerId,
         ]);
     }

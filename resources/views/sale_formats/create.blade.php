@@ -7,7 +7,7 @@
     <h1 style="font-size:20px;font-weight:600;display:flex;align-items:center;gap:10px;margin:0;color:#1e293b">
         <i class="fas fa-file-invoice" style="color:#2563eb"></i> New Sale Format
     </h1>
-    <a href="{{ route('sale-formats.index') }}"
+    <a href="{{ url()->previous() }}"
        style="display:flex;align-items:center;gap:6px;font-size:13px;padding:7px 14px;border-radius:6px;border:1px solid #d1d5db;background:#fff;color:#6b7280;text-decoration:none">
         <i class="fas fa-arrow-left"></i> Back
     </a>
