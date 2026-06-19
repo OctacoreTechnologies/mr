@@ -100,6 +100,14 @@ class LeadController extends Controller
         return response()->redirectTo(route('lead.index'));
     }
 
+    public function updateStatus(Request $request, string $id)
+    {
+        $request->validate(['status' => 'required|in:new,contacted,qualified,disqualified']);
+        $lead = Customer::findOrFail($id);
+        $lead->update(['status' => $request->status]);
+        return response()->json(['success' => true, 'status' => $request->status]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

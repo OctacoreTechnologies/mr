@@ -94,6 +94,7 @@ Route::middleware(['auth'])->group(function () {
     // ========== LEAD MANAGEMENT ==========
     Route::middleware(['can:lead_view'])->group(function () {
         Route::resource('/lead', LeadController::class);
+        Route::patch('/lead/{id}/status', [LeadController::class, 'updateStatus'])->name('lead.updateStatus');
 
         Route::controller(LeadFollowUpController::class)
             ->prefix('/lead/followup')

@@ -157,7 +157,25 @@
 
                             {{-- Status --}}
                             <td>
+                                @can('lead_edit')
+                                <div class="lead-status-wrapper" style="position:relative;display:inline-block">
+                                    <span class="ci-badge {{ $stClass }} lead-status-trigger"
+                                          data-id="{{ $lead->id }}"
+                                          data-status="{{ $lead->status }}"
+                                          style="cursor:pointer;user-select:none"
+                                          title="Click to change status">
+                                        {{ $stLabel }} <i class="fas fa-chevron-down" style="font-size:.6rem;margin-left:3px;opacity:.7"></i>
+                                    </span>
+                                    <div class="lead-status-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:999;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:148px;overflow:hidden">
+                                        <div class="lead-status-opt" data-value="new"          style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#854d0e;background:#fef9c3">New</div>
+                                        <div class="lead-status-opt" data-value="contacted"    style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#0369a1;background:#e0f2fe">Contacted</div>
+                                        <div class="lead-status-opt" data-value="qualified"    style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#15803d;background:#dcfce7">Qualified</div>
+                                        <div class="lead-status-opt" data-value="disqualified" style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#be123c;background:#ffe4e6">Disqualified</div>
+                                    </div>
+                                </div>
+                                @else
                                 <span class="ci-badge {{ $stClass }}">{{ $stLabel }}</span>
+                                @endcan
                             </td>
 
                             {{-- Actions --}}
@@ -304,6 +322,81 @@
             if (confirm('Delete this lead? This cannot be undone.')) {
                 form.submit();
             }
+        });
+
+        // ── Inline Status Update ──────────────────────────────────────────
+        const statusMeta = {
+            new:          { cls: 'ci-new',          label: 'New' },
+            contacted:    { cls: 'ci-contacted',    label: 'Contacted' },
+            qualified:    { cls: 'ci-qualified',    label: 'Qualified' },
+            disqualified: { cls: 'ci-disqualified', label: 'Disqualified' },
+        };
+
+        // Open / close dropdown
+        $(document).on('click', '.lead-status-trigger', function (e) {
+            e.stopPropagation();
+            const $wrap = $(this).closest('.lead-status-wrapper');
+            const $dd   = $wrap.find('.lead-status-dropdown');
+            // close all others first
+            $('.lead-status-dropdown').not($dd).hide();
+            $dd.toggle();
+        });
+
+        // Close on outside click
+        $(document).on('click', function () {
+            $('.lead-status-dropdown').hide();
+        });
+
+        // Pick a new status
+        $(document).on('click', '.lead-status-opt', function (e) {
+            e.stopPropagation();
+            const $opt    = $(this);
+            const $wrap   = $opt.closest('.lead-status-wrapper');
+            const $badge  = $wrap.find('.lead-status-trigger');
+            const leadId  = $badge.data('id');
+            const newStatus = $opt.data('value');
+            const oldStatus = $badge.data('status');
+
+            if (newStatus === oldStatus) { $wrap.find('.lead-status-dropdown').hide(); return; }
+
+            $badge.css('opacity', '.5').prop('disabled', true);
+
+            $.ajax({
+                url:    '{{ route("lead.updateStatus", ":id") }}'.replace(':id', leadId),
+                method: 'PATCH',
+                data:   { _token: '{{ csrf_token() }}', status: newStatus },
+                success: function () {
+                    const meta = statusMeta[newStatus];
+                    $badge
+                        .removeClass('ci-new ci-contacted ci-qualified ci-disqualified ci-other')
+                        .addClass(meta.cls)
+                        .data('status', newStatus)
+                        .html(meta.label + ' <i class="fas fa-chevron-down" style="font-size:.6rem;margin-left:3px;opacity:.7"></i>');
+                    // flash green ring briefly
+                    $badge.css({'opacity':'1','outline':'2px solid #22c55e','outline-offset':'2px'});
+                    setTimeout(() => $badge.css('outline',''), 1200);
+                },
+                error: function () {
+                    $badge.css('opacity','1');
+                    alert('Status update failed. Please try again.');
+                },
+                complete: function () {
+                    $badge.prop('disabled', false);
+                    $wrap.find('.lead-status-dropdown').hide();
+                }
+            });
+        });
+
+        // Highlight current active option when dropdown opens
+        $(document).on('click', '.lead-status-trigger', function () {
+            const cur  = $(this).data('status');
+            $(this).closest('.lead-status-wrapper').find('.lead-status-opt').each(function () {
+                $(this).css('font-weight', $(this).data('value') === cur ? '700' : '600');
+                $(this).find('.fa-check').remove();
+                if ($(this).data('value') === cur) {
+                    $(this).prepend('<i class="fas fa-check" style="margin-right:6px;font-size:.7rem"></i>');
+                }
+            });
         });
     </script>
 @endpush
