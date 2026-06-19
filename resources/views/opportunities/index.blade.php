@@ -48,7 +48,7 @@ $i = 1;
                                             <tr>
                                                 <td class="sr-no">{{ $i++ }}</td>
 
-                                                <td>{{ $opportunity->customer->company_name ?? '—' }}</td>
+                                                <td>{{ $opportunity->customer ? ($opportunity->customer->company_name ?: ($opportunity->customer->contact_person_1_name ?: '—')) : '—' }}</td>
 
                                                 <td>{{ $opportunity->created_at ? \Carbon\Carbon::parse($opportunity->created_at)->format('d M Y') : '—' }}</td>
 

@@ -187,9 +187,9 @@
                     <select id="customerSelect" class="form-control select2" style="width:100%">
                         <option value="">-- Select Customer --</option>
                         @foreach($customers as $customer)
-                            <option value="{{ $customer->id }}"
-                                data-name="{{ $customer->company_name ?? $customer->name }}">
-                                {{ $customer->company_name ?? $customer->name }}
+                            @php $displayName = $customer->company_name ?: ($customer->contact_person_1_name ?: '—'); @endphp
+                            <option value="{{ $customer->id }}" data-name="{{ $displayName }}">
+                                {{ $displayName }}
                             </option>
                         @endforeach
                     </select>
@@ -232,7 +232,7 @@
             // Auto-open customer modal when page loads if no customer selected
             @if (isset($preselectedCustomer))
                 $('#customerId').val({{ $preselectedCustomer->id }});
-                $('#customerName').val('{{ $preselectedCustomer->company_name ?? $preselectedCustomer->name }}');
+                $('#customerName').val('{{ $preselectedCustomer->company_name ?: ($preselectedCustomer->contact_person_1_name ?: '') }}');
                 $('#customerSelect').val({{ $preselectedCustomer->id }}).trigger('change');
                 fetchSaleOrdersForCustomer({{ $preselectedCustomer->id }});
                 fetchQuotationsForCustomer({{ $preselectedCustomer->id }});

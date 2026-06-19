@@ -32,12 +32,16 @@ class OpportunityController extends Controller
         $users = User::orderByDesc('created_at')->get();
         $customers = Customer::orderByDesc('created_at')->get();
 
-
+        $preselectedCustomer = null;
+        if ($request->filled('lead_id')) {
+            $preselectedCustomer = Customer::find($request->lead_id);
+        }
 
         return response()->view('opportunities.create', [
-            'leads' => $leads,
-            'users' => $users,
-            'customers' => $customers
+            'leads'               => $leads,
+            'users'               => $users,
+            'customers'           => $customers,
+            'preselectedCustomer' => $preselectedCustomer,
         ]);
     }
 

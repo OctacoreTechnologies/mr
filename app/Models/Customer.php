@@ -60,19 +60,6 @@ class Customer extends Model
                 $model->user_id = Auth::id();
             }
         });
-        static::saved(function ($model) {
-            if ($model->status == 'qualified') {
-                Opportunity::create(
-                    [
-                        'customer_id' => $model->id,
-                        'type' => 'new_enquiry',
-                        'followed_by' => $model->followed_by,
-                        'created_by' => Auth::id(),
-                    ]
-                );
-            }
-        });
-
         static::addGlobalScope('order', function ($query) {
             $query->orderBy('company_name', 'asc');
         });

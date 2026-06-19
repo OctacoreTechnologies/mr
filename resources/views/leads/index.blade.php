@@ -239,6 +239,33 @@
     </div>
 
 </div>
+
+{{-- Convert to Opportunity Modal --}}
+<div class="modal fade" id="convertOpportunityModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:420px" role="document">
+        <div class="modal-content" style="border-radius:12px;border:none;box-shadow:0 8px 32px rgba(0,0,0,.15)">
+            <div class="modal-body text-center" style="padding:32px 28px 20px">
+                <div style="width:56px;height:56px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+                    <i class="fas fa-rocket" style="font-size:1.4rem;color:#16a34a"></i>
+                </div>
+                <h5 style="font-weight:700;color:#1e293b;margin-bottom:8px">Lead Qualified!</h5>
+                <p style="color:#64748b;font-size:.88rem;margin-bottom:0">
+                    <strong id="convertLeadName"></strong> is now marked as <span class="ci-badge ci-qualified">Qualified</span>.<br>
+                    Do you want to convert this lead into an <strong>Opportunity</strong>?
+                </p>
+            </div>
+            <div class="modal-footer" style="border:none;padding:4px 28px 24px;justify-content:center;gap:10px">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" style="min-width:110px">
+                    <i class="fas fa-times"></i> Not Now
+                </button>
+                <a href="#" id="convertOpportunityBtn" class="btn btn-success" style="min-width:150px">
+                    <i class="fas fa-rocket"></i> Convert
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 @stop
 
 @push('css')
@@ -372,9 +399,15 @@
                         .addClass(meta.cls)
                         .data('status', newStatus)
                         .html(meta.label + ' <i class="fas fa-chevron-down" style="font-size:.6rem;margin-left:3px;opacity:.7"></i>');
-                    // flash green ring briefly
                     $badge.css({'opacity':'1','outline':'2px solid #22c55e','outline-offset':'2px'});
                     setTimeout(() => $badge.css('outline',''), 1200);
+
+                    if (newStatus === 'qualified') {
+                        const companyName = $badge.closest('tr').find('td:nth-child(2) .font-weight-semibold').text().trim();
+                        $('#convertLeadName').text(companyName);
+                        $('#convertOpportunityBtn').attr('href', '{{ route("opportunity.create") }}?lead_id=' + leadId);
+                        $('#convertOpportunityModal').modal('show');
+                    }
                 },
                 error: function () {
                     $badge.css('opacity','1');
