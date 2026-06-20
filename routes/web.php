@@ -127,7 +127,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/{id}/edit-form', 'full_edit')->name('quotation.fullEditForm');
                 Route::put('/{id}/full-update', 'full_update')->name('quotation.fullUpdate');
             });
-        Route::resource('/quotation', QuotationController::class);
+        Route::resource('/quotation', QuotationController::class)->except(['store']);
 
         // Quotation Verification (used in sale orders)
         Route::post('admin/quotation-verify', [QuotationController::class, 'isVerified'])
