@@ -390,8 +390,8 @@
 
             $.ajax({
                 url:    '{{ route("lead.updateStatus", ":id") }}'.replace(':id', leadId),
-                method: 'PUT',
-                data:   { _token: '{{ csrf_token() }}', status: newStatus },
+                method: 'POST',
+                data:   { _token: '{{ csrf_token() }}', _method: 'PUT', status: newStatus },
                 success: function () {
                     const meta = statusMeta[newStatus];
                     $badge
