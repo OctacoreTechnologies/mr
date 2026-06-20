@@ -15,16 +15,16 @@
 @section('title', 'Leads')
 
 @section('content_header')
-<div class="crm-page-header">
-    <h1>
-        <i class="fas fa-funnel-dollar"></i> Leads
-    </h1>
-    @can('lead_create')
-        <a href="{{ route('lead.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus-circle"></i> Create Lead
-        </a>
-    @endcan
-</div>
+    <div class="crm-page-header">
+        <h1>
+            <i class="fas fa-funnel-dollar"></i> Leads
+        </h1>
+        @can('lead_create')
+            <a href="{{ route('lead.create') }}" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Create Lead
+            </a>
+        @endcan
+    </div>
 @stop
 
 @section('content')
@@ -34,10 +34,10 @@
 
     {{-- Summary Cards --}}
     @php
-        $total = $leads->count();
-        $newCount = $leads->where('status', 'new')->count();
-        $contacted = $leads->where('status', 'contacted')->count();
-        $qualified = $leads->where('status', 'qualified')->count();
+        $total        = $leads->count();
+        $newCount     = $leads->where('status', 'new')->count();
+        $contacted    = $leads->where('status', 'contacted')->count();
+        $qualified    = $leads->where('status', 'qualified')->count();
         $disqualified = $leads->where('status', 'disqualified')->count();
     @endphp
 
@@ -110,15 +110,15 @@
                     @foreach ($leads as $key => $lead)
                         @php
                             $avatarName = $lead->company_name ?: 'NA';
-                            $words = preg_split('/\s+/', trim($avatarName));
+                            $words    = preg_split('/\s+/', trim($avatarName));
                             $initials = strtoupper(substr($words[0], 0, 1) . (isset($words[1]) ? substr($words[1], 0, 1) : ''));
-                            $colors = ['#3b82f6', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16'];
-                            $bg = $colors[$key % count($colors)];
+                            $colors   = ['#3b82f6','#0ea5e9','#10b981','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#84cc16'];
+                            $bg       = $colors[$key % count($colors)];
 
                             $statusMap = [
-                                'new' => ['ci-new', 'New'],
-                                'contacted' => ['ci-contacted', 'Contacted'],
-                                'qualified' => ['ci-qualified', 'Qualified'],
+                                'new'          => ['ci-new',          'New'],
+                                'contacted'    => ['ci-contacted',    'Contacted'],
+                                'qualified'    => ['ci-qualified',    'Qualified'],
                                 'disqualified' => ['ci-disqualified', 'Disqualified'],
                             ];
                             [$stClass, $stLabel] = $statusMap[$lead->status]
@@ -158,31 +158,23 @@
                             {{-- Status --}}
                             <td>
                                 @can('lead_edit')
-                                    <div class="lead-status-wrapper" style="position:relative;display:inline-block">
-                                        <span class="ci-badge {{ $stClass }} lead-status-trigger" data-id="{{ $lead->id }}"
-                                            data-status="{{ $lead->status }}" style="cursor:pointer;user-select:none"
-                                            title="Click to change status">
-                                            {{ $stLabel }} <i class="fas fa-chevron-down"
-                                                style="font-size:.6rem;margin-left:3px;opacity:.7"></i>
-                                        </span>
-                                        <div class="lead-status-dropdown"
-                                            style="display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:999;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:148px;overflow:hidden">
-                                            <div class="lead-status-opt" data-value="new"
-                                                style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#854d0e;background:#fef9c3">
-                                                New</div>
-                                            <div class="lead-status-opt" data-value="contacted"
-                                                style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#0369a1;background:#e0f2fe">
-                                                Contacted</div>
-                                            <div class="lead-status-opt" data-value="qualified"
-                                                style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#15803d;background:#dcfce7">
-                                                Qualified</div>
-                                            <div class="lead-status-opt" data-value="disqualified"
-                                                style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#be123c;background:#ffe4e6">
-                                                Disqualified</div>
-                                        </div>
+                                <div class="lead-status-wrapper" style="position:relative;display:inline-block">
+                                    <span class="ci-badge {{ $stClass }} lead-status-trigger"
+                                          data-id="{{ $lead->id }}"
+                                          data-status="{{ $lead->status }}"
+                                          style="cursor:pointer;user-select:none"
+                                          title="Click to change status">
+                                        {{ $stLabel }} <i class="fas fa-chevron-down" style="font-size:.6rem;margin-left:3px;opacity:.7"></i>
+                                    </span>
+                                    <div class="lead-status-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;z-index:999;background:#fff;border:1px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);min-width:148px;overflow:hidden">
+                                        <div class="lead-status-opt" data-value="new"          style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#854d0e;background:#fef9c3">New</div>
+                                        <div class="lead-status-opt" data-value="contacted"    style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#0369a1;background:#e0f2fe">Contacted</div>
+                                        <div class="lead-status-opt" data-value="qualified"    style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#15803d;background:#dcfce7">Qualified</div>
+                                        <div class="lead-status-opt" data-value="disqualified" style="padding:8px 14px;cursor:pointer;font-size:.78rem;font-weight:600;color:#be123c;background:#ffe4e6">Disqualified</div>
                                     </div>
+                                </div>
                                 @else
-                                    <span class="ci-badge {{ $stClass }}">{{ $stLabel }}</span>
+                                <span class="ci-badge {{ $stClass }}">{{ $stLabel }}</span>
                                 @endcan
                             </td>
 
@@ -191,45 +183,47 @@
                                 <div class="ci-actions">
 
                                     @can('followup_customer')
-                                        <a href="{{ route('followup.edit', $lead->id) }}?type='lead'" class="ci-btn"
-                                            style="color:#2563eb" title="Follow Up">
+                                        <a href="{{ route('followup.edit', $lead->id) }}?type='lead'"
+                                           class="ci-btn" style="color:#2563eb" title="Follow Up"
+                                        >
                                             <i class="fas fa-phone-alt"></i>
                                         </a>
                                     @endcan
 
                                     @can('lead_show')
-                                        <a href="{{ route('customer.show', $lead->id) }}" class="ci-btn" style="color:#0284c7"
-                                            title="View Details">
+                                        <a href="{{ route('customer.show', $lead->id) }}"
+                                           class="ci-btn" style="color:#0284c7" title="View Details">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     @endcan
 
                                     @can('lead_edit')
-                                        <a href="{{ route('lead.edit', $lead->id) }}" class="ci-btn" style="color:#d97706"
-                                            title="Edit">
+                                        <a href="{{ route('lead.edit', $lead->id) }}"
+                                           class="ci-btn" style="color:#d97706" title="Edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     @endcan
 
                                     @if ($lead->sale_formats_count() != 0)
-                                        <a href="{{ route('sale-formats.show', $lead->sale_formats->id) }}" class="ci-btn"
-                                            style="color:#7c3aed" title="View Sale Formats">
+                                        <a href="{{ route('sale-formats.show', $lead->sale_formats->id) }}"
+                                           class="ci-btn" style="color:#7c3aed" title="View Sale Formats">
                                             <i class="fas fa-file-alt"></i>
                                         </a>
                                     @else
                                         <a href="{{ route('sale-formats.create', ['customer_id' => $lead->id]) }}"
-                                            class="ci-btn" style="color:#2563eb" title="New Sale Format">
+                                           class="ci-btn" style="color:#2563eb" title="New Sale Format">
                                             <i class="fas fa-plus-square"></i>
                                         </a>
                                     @endif
 
                                     @can('lead_delete')
-                                        <form action="{{ route('customer.destroy', $lead->id) }}" method="POST"
-                                            class="d-inline m-0 p-0">
+                                        <form action="{{ route('customer.destroy', $lead->id) }}"
+                                              method="POST" class="d-inline m-0 p-0">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="ci-btn delete-lead" style="color:#e11d48"
-                                                title="Delete">
+                                            <button type="button"
+                                                    class="ci-btn delete-lead"
+                                                    style="color:#e11d48" title="Delete">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -251,14 +245,12 @@
     <div class="modal-dialog modal-dialog-centered" style="max-width:420px" role="document">
         <div class="modal-content" style="border-radius:12px;border:none;box-shadow:0 8px 32px rgba(0,0,0,.15)">
             <div class="modal-body text-center" style="padding:32px 28px 20px">
-                <div
-                    style="width:56px;height:56px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
+                <div style="width:56px;height:56px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px">
                     <i class="fas fa-rocket" style="font-size:1.4rem;color:#16a34a"></i>
                 </div>
                 <h5 style="font-weight:700;color:#1e293b;margin-bottom:8px">Lead Qualified!</h5>
                 <p style="color:#64748b;font-size:.88rem;margin-bottom:0">
-                    <strong id="convertLeadName"></strong> is now marked as <span
-                        class="ci-badge ci-qualified">Qualified</span>.<br>
+                    <strong id="convertLeadName"></strong> is now marked as <span class="ci-badge ci-qualified">Qualified</span>.<br>
                     Do you want to convert this lead into an <strong>Opportunity</strong>?
                 </p>
             </div>
@@ -288,133 +280,65 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+            box-shadow: 0 1px 3px rgba(0,0,0,.05);
             height: 100%;
             transition: box-shadow .2s, transform .15s;
         }
-
         .ci-stat:hover {
-            box-shadow: 0 3px 12px rgba(37, 99, 235, .1);
+            box-shadow: 0 3px 12px rgba(37,99,235,.1);
             transform: translateY(-1px);
         }
-
         .ci-stat-icon {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             font-size: .88rem;
             flex-shrink: 0;
         }
-
-        .ci-stat-num {
-            font-size: 1.25rem;
-            font-weight: 700;
-            line-height: 1;
-            color: #1e293b;
-        }
-
-        .ci-stat-text {
-            font-size: .68rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .06em;
-            color: #94a3b8;
-            margin-top: 3px;
-        }
+        .ci-stat-num  { font-size: 1.25rem; font-weight: 700; line-height: 1; color: #1e293b; }
+        .ci-stat-text { font-size: .68rem; font-weight: 600; text-transform: uppercase;
+                        letter-spacing: .06em; color: #94a3b8; margin-top: 3px; }
 
         /* Avatar */
         .ci-avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 6px;
-            color: #fff;
-            font-size: .68rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 30px; height: 30px; border-radius: 6px;
+            color: #fff; font-size: .68rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
         }
 
-        .font-weight-semibold {
-            font-weight: 600;
-            color: #1e293b;
-        }
+        .font-weight-semibold { font-weight: 600; color: #1e293b; }
 
         /* Status badges */
         .ci-badge {
             display: inline-block;
-            font-size: .72rem;
-            font-weight: 600;
-            padding: 4px 12px;
-            border-radius: 20px;
+            font-size: .72rem; font-weight: 600;
+            padding: 4px 12px; border-radius: 20px;
             white-space: nowrap;
         }
-
-        .ci-new {
-            background: #fef9c3;
-            color: #854d0e;
-        }
-
-        .ci-contacted {
-            background: #e0f2fe;
-            color: #0369a1;
-        }
-
-        .ci-qualified {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .ci-disqualified {
-            background: #ffe4e6;
-            color: #be123c;
-        }
-
-        .ci-other {
-            background: #f1f5f9;
-            color: #64748b;
-        }
+        .ci-new          { background: #fef9c3; color: #854d0e; }
+        .ci-contacted    { background: #e0f2fe; color: #0369a1; }
+        .ci-qualified    { background: #dcfce7; color: #15803d; }
+        .ci-disqualified { background: #ffe4e6; color: #be123c; }
+        .ci-other        { background: #f1f5f9; color: #64748b; }
 
         /* Action buttons */
-        .ci-actions {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            flex-wrap: nowrap;
-        }
-
+        .ci-actions { display: flex; align-items: center; gap: 2px; flex-wrap: nowrap; }
         .ci-btn {
-            width: 30px;
-            height: 30px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 6px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-size: .84rem;
+            width: 30px; height: 30px;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 6px; border: none; background: transparent;
+            cursor: pointer; font-size: .84rem;
             text-decoration: none !important;
             transition: background .15s, color .15s;
         }
-
-        .ci-btn:hover {
-            background: #f1f5f9;
-        }
+        .ci-btn:hover { background: #f1f5f9; }
 
         /* Table spacing */
-        #leadTable_wrapper {
-            padding: 12px 14px 6px;
-        }
+        #leadTable_wrapper { padding: 12px 14px 6px; }
 
         /* Footer gap */
-        .content-wrapper {
-            padding-bottom: 24px !important;
-        }
+        .content-wrapper { padding-bottom: 24px !important; }
     </style>
 @endpush
 
@@ -429,9 +353,9 @@
 
         // ── Inline Status Update ──────────────────────────────────────────
         const statusMeta = {
-            new: { cls: 'ci-new', label: 'New' },
-            contacted: { cls: 'ci-contacted', label: 'Contacted' },
-            qualified: { cls: 'ci-qualified', label: 'Qualified' },
+            new:          { cls: 'ci-new',          label: 'New' },
+            contacted:    { cls: 'ci-contacted',    label: 'Contacted' },
+            qualified:    { cls: 'ci-qualified',    label: 'Qualified' },
             disqualified: { cls: 'ci-disqualified', label: 'Disqualified' },
         };
 
@@ -439,7 +363,7 @@
         $(document).on('click', '.lead-status-trigger', function (e) {
             e.stopPropagation();
             const $wrap = $(this).closest('.lead-status-wrapper');
-            const $dd = $wrap.find('.lead-status-dropdown');
+            const $dd   = $wrap.find('.lead-status-dropdown');
             // close all others first
             $('.lead-status-dropdown').not($dd).hide();
             $dd.toggle();
@@ -453,10 +377,10 @@
         // Pick a new status
         $(document).on('click', '.lead-status-opt', function (e) {
             e.stopPropagation();
-            const $opt = $(this);
-            const $wrap = $opt.closest('.lead-status-wrapper');
-            const $badge = $wrap.find('.lead-status-trigger');
-            const leadId = $badge.data('id');
+            const $opt    = $(this);
+            const $wrap   = $opt.closest('.lead-status-wrapper');
+            const $badge  = $wrap.find('.lead-status-trigger');
+            const leadId  = $badge.data('id');
             const newStatus = $opt.data('value');
             const oldStatus = $badge.data('status');
 
@@ -465,12 +389,9 @@
             $badge.css('opacity', '.5').prop('disabled', true);
 
             $.ajax({
-                url: '{{ route("lead.updateStatus", ":id") }}'.replace(':id', leadId),
-                method: 'PATCH',
-                data: {
-                    _token: $('meta[name="csrf-token"]').attr('content'),
-                    status: newStatus
-                },
+                url:    '{{ route("lead.updateStatus", ":id") }}'.replace(':id', leadId),
+                method: 'PUT',
+                data:   { _token: '{{ csrf_token() }}', status: newStatus },
                 success: function () {
                     const meta = statusMeta[newStatus];
                     $badge
@@ -478,8 +399,8 @@
                         .addClass(meta.cls)
                         .data('status', newStatus)
                         .html(meta.label + ' <i class="fas fa-chevron-down" style="font-size:.6rem;margin-left:3px;opacity:.7"></i>');
-                    $badge.css({ 'opacity': '1', 'outline': '2px solid #22c55e', 'outline-offset': '2px' });
-                    setTimeout(() => $badge.css('outline', ''), 1200);
+                    $badge.css({'opacity':'1','outline':'2px solid #22c55e','outline-offset':'2px'});
+                    setTimeout(() => $badge.css('outline',''), 1200);
 
                     if (newStatus === 'qualified') {
                         const companyName = $badge.closest('tr').find('td:nth-child(2) .font-weight-semibold').text().trim();
@@ -489,7 +410,7 @@
                     }
                 },
                 error: function () {
-                    $badge.css('opacity', '1');
+                    $badge.css('opacity','1');
                     alert('Status update failed. Please try again.');
                 },
                 complete: function () {
@@ -501,7 +422,7 @@
 
         // Highlight current active option when dropdown opens
         $(document).on('click', '.lead-status-trigger', function () {
-            const cur = $(this).data('status');
+            const cur  = $(this).data('status');
             $(this).closest('.lead-status-wrapper').find('.lead-status-opt').each(function () {
                 $(this).css('font-weight', $(this).data('value') === cur ? '700' : '600');
                 $(this).find('.fa-check').remove();

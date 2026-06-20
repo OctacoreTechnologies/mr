@@ -94,7 +94,6 @@ Route::middleware(['auth'])->group(function () {
     // ========== LEAD MANAGEMENT ==========
     Route::middleware(['can:lead_view'])->group(function () {
         Route::resource('/lead', LeadController::class);
-        Route::patch('/lead/{id}/status', [LeadController::class, 'updateStatus'])->name('lead.updateStatus')->middleware('can:lead_edit');
 
         Route::controller(LeadFollowUpController::class)
             ->prefix('/lead/followup')
@@ -103,6 +102,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/update/{leadId}', 'followUpQuotationStore')->name('lead.followup.update');
             });
     });
+    Route::put('/lead/{id}/status', [LeadController::class, 'updateStatus'])->name('lead.updateStatus')->middleware('can:lead_edit');
 
     // ========== OPPORTUNITY MANAGEMENT ==========
     Route::middleware(['can:opportunity_view'])->group(function () {
