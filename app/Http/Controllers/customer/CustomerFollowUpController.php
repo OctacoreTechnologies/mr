@@ -79,11 +79,25 @@ class CustomerFollowUpController extends Controller
         $ofollowups = (clone $query)->orderByDesc('created_at')->get();
         $customer   = Customer::findOrFail($customerId);
 
+        // Remember the genuine previous page so the "Back"/"Cancel" links keep
+        // working after a save (redirect()->back() re-lands on this same URL,
+        // which would otherwise make url()->previous() point to itself).
+        $sessionKey  = "followup_return_url_{$customerId}";
+        $currentUrl  = $request->fullUrl();
+        $previousUrl = url()->previous();
+
+        if ($previousUrl !== $currentUrl) {
+            session([$sessionKey => $previousUrl]);
+        }
+
+        $returnUrl = session($sessionKey, $previousUrl);
+
         return view('followups.edit', [
             'followups'   => $followups,
             'ofollowups'  => $ofollowups,
             'customer'    => $customer,
             'customer_id' => $customerId,
+            'returnUrl'   => $returnUrl,
         ]);
     }
 
