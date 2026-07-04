@@ -80,6 +80,7 @@
                                 <th class="fu-th fu-th-date">Next Follow-Up</th>
                                 <th class="fu-th fu-th-notes">Notes</th>
                                 <th class="fu-th fu-th-docs">Documents</th>
+                                <th class="fu-th fu-th-date">Followed By</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -153,6 +154,15 @@
                                                 </a>
                                             @endforeach
                                         </div>
+                                    @else
+                                        <span class="fu-empty">—</span>
+                                    @endif
+                                </td>
+
+                                {{-- Followed By --}}
+                                <td class="fu-td fu-td-notes">
+                                    @if($hfu->followed_by)
+                                        <div class="fu-notes-body">{!! $hfu->followedBy->name !!}</div>
                                     @else
                                         <span class="fu-empty">—</span>
                                     @endif
@@ -276,6 +286,16 @@
                             <x-adminlte-input type="text" name="next_follow_up_date[]"
                                 label="Next Follow-Up Date" value="{{ $followup->next_follow_up_date }}"
                                 fgroup-class="mb-3" class="date-time"/>
+                        </div>
+                        <div class="col-md-6">
+                          <x-adminlte-select name="followed_by[]" label="Followed By">
+                            <option value="">Select User</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}" {{ $followup->followed_by == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }}
+                                </option>
+                            @endforeach
+                          </x-adminlte-select>
                         </div>
                         <div class="col-md-12">
                             <div class="fu-editor-wrap mb-3">

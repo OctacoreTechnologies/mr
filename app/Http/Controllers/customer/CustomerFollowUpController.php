@@ -10,6 +10,7 @@ use App\Models\CustomerFollowUp;
 use App\Models\CustomerFollowUpDocument;
 use App\Models\Notification;
 use App\Models\Reminder;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -98,6 +99,7 @@ class CustomerFollowUpController extends Controller
             'customer'    => $customer,
             'customer_id' => $customerId,
             'returnUrl'   => $returnUrl,
+            'users' => User::orderBy('name')->get(['id', 'name']), // Fetch users for "Followed By" dropdown
         ]);
     }
 
@@ -170,6 +172,7 @@ class CustomerFollowUpController extends Controller
                         'customer_id'        => $customerId,
                         'quotation_id'       => $validated['quotation_id']   ?? null,
                         'opportunity_id'     => $validated['opportunity_id'] ?? null,
+                        'followed_by'        => $validated['followed_by'][$index] ?? null,
                         'follow_up_date'     => $followDateParsed,
                         'notes'              => $validated['notes'][$index],
                         'next_follow_up_date' => $nextDate,
@@ -183,6 +186,7 @@ class CustomerFollowUpController extends Controller
                     $oldDate  = $followUp->next_follow_up_date;
 
                     $followUp->update([
+                        'followed_by'         => $validated['followed_by'][$index] ?? null,
                         'follow_up_date'      => $followDateParsed,
                         'notes'               => $validated['notes'][$index],
                         'next_follow_up_date' => $nextDate,

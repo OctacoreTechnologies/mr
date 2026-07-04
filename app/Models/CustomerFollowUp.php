@@ -27,4 +27,8 @@ class CustomerFollowUp extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
+
+    public function followedBy(){
+        return $this->belongsTo(User::class,'followed_by');
+    }
 }

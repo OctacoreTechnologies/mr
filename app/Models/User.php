@@ -165,6 +165,11 @@ class User extends Authenticatable
         return $this->hasMany(CustomerFollowUp::class, 'user_id');
     }
 
+     public function followUps()
+    {
+        return $this->hasMany(\App\Models\CustomerFollowUp::class, 'followed_by');
+    }
+
     /**
      * Get all sale orders created by this user
      */

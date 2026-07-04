@@ -26,6 +26,8 @@ class UpdateCustomerFollowUpRequest extends FormRequest
             'follow_up_date.*'          => ['required', 'string'],
             'next_follow_up_date'       => ['nullable', 'array'],
             'next_follow_up_date.*'     => ['nullable', 'string'],
+            'followed_by'               => ['nullable', 'array'],
+            'followed_by.*'             => ['nullable', 'string', 'max:24'],
             'notes'                     => ['required', 'array'],
             'notes.*'                   => ['required', 'string'],
 
@@ -50,6 +52,7 @@ class UpdateCustomerFollowUpRequest extends FormRequest
             'follow_up_date.*.required'      => 'Follow-up date is required for each entry.',
             'next_follow_up_date.*.required' => 'Next follow-up date is required for each entry.',
             'notes.*.required'               => 'Notes are required for each entry.',
+            'followed_by.*.max'              => 'Followed by name must be 24 characters or less.',
             'documents.*.*.mimes'            => 'Allowed file types: PDF, Excel, Word, Images, ZIP.',
             'documents.*.*.max'              => 'Each file must be under 20 MB.',
         ];
