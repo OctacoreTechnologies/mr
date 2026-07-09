@@ -41,7 +41,23 @@ document.addEventListener('DOMContentLoaded', function () {
     const CSRF       = CFG.csrfToken    || '';
     const QUOT_ID    = CFG.quotationId  || '';
     const DEL_URL    = CFG.deleteDocUrl || '/customer/followup-document';
+    const USERS      = Array.isArray(CFG.users) ? CFG.users : [];
     let   nextIdx    = CFG.initialCount || 1;   // only used for unique quill/dropzone IDs
+
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function getFollowedByOptions() {
+        return USERS.map(function (user) {
+            return '<option value="' + user.id + '">' + escapeHtml(user.name) + '</option>';
+        }).join('');
+    }
 
     /* ════════════════════════════════════════
     |  2.  QUILL TOOLBAR
@@ -321,6 +337,13 @@ document.addEventListener('DOMContentLoaded', function () {
                             '<div class="form-group mb-3"><label>Next Follow-Up Date</label>' +
                             '<input type="text" name="next_follow_up_date[]" class="form-control fu-date-new"></div>' +
                         '</div>' +
+                        '<div class="col-md-6">' +
+                          '<label class="form-label">Followed By</label>' +
+                          '<select name="followed_by[]" class="form-control">' +
+                            '<option value="">Select User</option>' +
+                            getFollowedByOptions() +
+                          '</select>' +
+                        '</div>'+
                         '<div class="col-md-12">' +
                             '<div class="fu-editor-wrap mb-3">' +
                                 '<label class="fu-editor-label">' +
