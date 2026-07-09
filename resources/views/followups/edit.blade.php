@@ -399,6 +399,7 @@
             opportunityId:  '{{ $opportunity_id ?? "" }}',
             initialCount:   {{ $ofollowups->count() + 1 }},
             deleteDocUrl:   '{{ url("customer/followup-document") }}',
+            users:           {!! json_encode($users->map(fn($u) => ['id' => $u->id, 'name' => $u->name])) !!},
         };
     </script>
     <script src="{{ asset('js/followup.js') }}"></script>
