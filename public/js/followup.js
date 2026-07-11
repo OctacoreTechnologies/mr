@@ -384,6 +384,9 @@ document.addEventListener('DOMContentLoaded', function () {
             nextIdx++;
             updateCount();
         });
+
+        // Page load par hamesha ek by-default new blank entry add karo
+        addBtn.click();
     }
 
     /* ════════════════════════════════════════
