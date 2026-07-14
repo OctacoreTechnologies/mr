@@ -166,6 +166,19 @@ class CustomerFollowUpController extends Controller
                 $nextDate         = $this->parseDate($rawNext);
                 $followDateParsed = $this->parseDate($followDate);
                 $isNew            = is_null($validated['follow_up_id'][$index]);
+                $notesValue       = $validated['notes'][$index] ?? null;
+                $hasFiles         = !empty($request->file("documents.{$index}"));
+
+                // The UI always keeps one blank "new entry" template row in the
+                // form. If the user never touched it (no notes, no files) skip
+                // it instead of persisting an empty row or letting an empty
+                // required field reject the whole submission — this was the
+                // cause of removed entries appearing to "not delete": the
+                // blank row failed validation/creation and rolled back the
+                // whole transaction, including the deletion of the removed row.
+                if ($isNew && trim(strip_tags((string) $notesValue)) === '' && !$hasFiles) {
+                    continue;
+                }
 
                 if ($isNew) {
                     $followUp = CustomerFollowUp::create([
@@ -174,7 +187,7 @@ class CustomerFollowUpController extends Controller
                         'opportunity_id'     => $validated['opportunity_id'] ?? null,
                         'followed_by'        => $validated['followed_by'][$index] ?? null,
                         'follow_up_date'     => $followDateParsed,
-                        'notes'              => $validated['notes'][$index],
+                        'notes'              => $notesValue,
                         'next_follow_up_date' => $nextDate,
                     ]);
 
@@ -182,13 +195,29 @@ class CustomerFollowUpController extends Controller
                         $this->createNotifications($customerId, $nextDate, $context);
                     }
                 } else {
-                    $followUp = CustomerFollowUp::findOrFail($validated['follow_up_id'][$index]);
+                    $followUp = CustomerFollowUp::where('customer_id', $customerId)
+                        ->find($validated['follow_up_id'][$index]);
+
+                    // Row no longer exists (already removed, stale form, etc.) —
+                    // skip it rather than throwing and rolling back everything
+                    // else in this save (see class doc comment above).
+                    if (!$followUp) {
+                        Log::warning('CustomerFollowUp update: skipped missing row', [
+                            'follow_up_id' => $validated['follow_up_id'][$index],
+                            'customer_id'  => $customerId,
+                        ]);
+                        continue;
+                    }
+
                     $oldDate  = $followUp->next_follow_up_date;
 
                     $followUp->update([
                         'followed_by'         => $validated['followed_by'][$index] ?? null,
-                        'follow_up_date'      => $followDateParsed,
-                        'notes'               => $validated['notes'][$index],
+                        'follow_up_date'      => $followDateParsed ?? $followUp->follow_up_date,
+                        // `notes` is NOT NULL in the DB — keep the existing value
+                        // rather than writing an empty string/null if the field
+                        // came through blank.
+                        'notes'               => trim(strip_tags((string) $notesValue)) !== '' ? $notesValue : $followUp->notes,
                         'next_follow_up_date' => $nextDate,
                     ]);
 
